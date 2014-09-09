@@ -24,10 +24,13 @@ namespace AutoWP7
             //Uri uri = new Uri(urlStr, UriKind.Absolute);
             //this.webBrowser.Navigate(uri);
 
+       
+
             string video = "http://video.ch9.ms/ch9/0420/5ad1f148-cad7-4d82-a7e4-898e009c0420/20140905TWC9_mid.mp4";
             string cover = "http://static.youku.com/index/img/header/yklogo.png";
-            videoPlayer.SetSource(video);
             videoPlayer.SetCover(cover);
+            videoPlayer.SetSource(video);
+
         }
 
         private void videoPlayer_FullScreen(object sender, bool fullScreen)

@@ -22,7 +22,7 @@ namespace AutoWP7.UcControl
         bool isMenuShown = false;
         double videoDuration;
         bool manipulating = false;
-        bool playing = false;
+        public bool IsPlaying = false;
         bool isFullScreen = false;
 
         #endregion
@@ -223,8 +223,8 @@ namespace AutoWP7.UcControl
 
         private void PlayPause()
         {
-            playing = !playing;
-            if (playing)
+            IsPlaying = !IsPlaying;
+            if (IsPlaying)
             {
                 mediaElement.Play();
             }
