@@ -1,0 +1,112 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.Forum.LetterListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:AutoWP7"
+xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+        <local:LoadMoreVisibilityConverter x:Key="loadMoreVisibility"/>
+        <local:ImageConverter x:Name="ImageConverter"/>
+    </phone:PhoneApplicationPage.Resources>
+
+
+    <Grid x:Name="LayoutRoot"  Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="870"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="ContentPanel" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="640"/>
+            </Grid.RowDefinitions>
+            <TextBlock FontSize="32" Foreground="#3cadeb" Grid.Row="0"
+                       HorizontalAlignment="Center" x:Name="letterName" />
+            <StackPanel Margin="10,0,0,0" Grid.Row="1" Orientation="Horizontal">
+                <TextBlock  Foreground="#3cadeb" Text="共 "/>
+                <TextBlock  Foreground="#3cadeb" x:Name="letterTotal"/>
+                <TextBlock Foreground="#3cadeb" Text=" 帖子"/>
+            </StackPanel>
+            <ListBox Grid.Row="2" x:Name="forumListbox" Margin="0,0,0,-50">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="5,15,5,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Tap="bbsIdGrid_Tap" x:Name="bbsIdGrid" 
+                                  Tag="{Binding TopicId}" Margin="0,20,0,10" Visibility="{Binding ShowData}" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+
+                                <TextBlock Grid.Row="0"  Foreground="Red" FontSize="26" Margin="5,-40,0,0" Text="{Binding TopicType}"  />
+                                <TextBlock Grid.Row="0" Foreground="Black"  FontSize="22" Margin="35,-40,0,0"
+                                               TextWrapping="Wrap" Text="{Binding Title}"/>
+
+
+
+                                <TextBlock  FontSize="16" Foreground="Gray"  Grid.Row="1" Margin="35,10,0,0"   
+                                                Text="{Binding PostUserName}"/>
+                                <TextBlock  FontSize="16" Foreground="Gray" Grid.Row="1" Margin="210,10,0,0"
+                                                Text="回复数："/>
+                                <TextBlock  FontSize="16" Foreground="Gray" Grid.Row="1" Margin="270,10,0,0"
+                                                Text="{Binding ReplyCounts}"/>
+                                <TextBlock  FontSize="16" Foreground="Gray" Grid.Row="1" Margin="350,10,0,0"
+                                                Text="{Binding LastReplyDate}"/>
+
+                                <!--下划线-->
+                                <Border Grid.Row="2" Visibility="{Binding ShowData}"  
+                                    Grid.Column="0" Height="1" Width="465" 
+                   BorderBrush="Gray" BorderThickness="1" Opacity="1" Margin="5,20"/>
+
+                            </Grid>
+
+
+
+                            <Border Grid.Row="1"  Margin="5,10,0,27" x:Name="forumLoadMore" 
+                                    Tap="forumLoadMore_Tap" Visibility="{Binding LoadMore,Converter={StaticResource loadMoreVisibility}}" Background="White" Height="70" Width="460">
+                                <TextBlock Foreground="Black" HorizontalAlignment="Center" FontSize="28" Text="{Binding LoadMore}"/>
+                            </Border>
+
+                        </Grid>
+
+
+
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar BackgroundColor="Black" Opacity="0.8" ForegroundColor="White" IsVisible="True" IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton x:Name="lastestReply" Click="lastestReply_Click" IconUri="Images/bar_lastReply.png" Text="最后回复"/>
+            <shell:ApplicationBarIconButton x:Name="newest" Click="newest_Click" IconUri="Images/bar_newest.png" Text="最新发帖"/>
+            <shell:ApplicationBarIconButton x:Name="refine"  Click="refine_Click" IconUri="Images/bar_ring.png" Text="精华贴"/>
+            <shell:ApplicationBarIconButton x:Name="sendLetter"  Click="sendLetter_Click"  IconUri="Images/bar_writeComment.png" Text="发帖"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

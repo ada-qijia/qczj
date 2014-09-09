@@ -1,0 +1,208 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.Forum.ForumListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+  xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+   
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+
+        <!--车系分组-->
+        <!--头-->
+        <DataTemplate x:Key="groupHeaderTemplate">
+            <Grid Margin="5,10,0,0">
+                <Grid Width="60" Height="60" HorizontalAlignment="Left">
+                    <Border Background="#3cadeb">
+                        <StackPanel>
+                            <TextBlock Margin="5,0,1,5" Foreground="White" Style="{StaticResource PhoneTextLargeStyle}" Text="{Binding key}" TextAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Text="{Binding brandName}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+        <!--组-->
+        <DataTemplate x:Key="jumpListItemTemplate">
+            <TextBlock Foreground="Black" Tap="carSeriesForumStack_Tap" Tag="{Binding Id}"  
+                    Text="{Binding bbsName}"  FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                     FontSize="28"  Width="480" Height="50" Margin="{StaticResource PhoneTouchTargetOverhang}"  
+                   VerticalAlignment="Bottom"/>
+        </DataTemplate>
+
+
+        <Style x:Key="carSeriesJumpList" TargetType="p:LongListSelector">
+            <Setter Property="GridCellSize"  Value="113,113"/>
+            <Setter Property="LayoutMode" Value="Grid" />
+            <Setter Property="ItemTemplate">
+                <Setter.Value >
+
+                    <!--字母索引-->
+                    <DataTemplate  >
+                        <Border Background="#3cadeb" VerticalAlignment="Center"  HorizontalAlignment="Center" Width="100" Height="110" Margin="10,15,0,0">
+                            <TextBlock Text="{Binding key}" Margin="10,10,10,10" Foreground="White" FontSize="32" TextAlignment="Center" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                        </Border>
+                    </DataTemplate>
+
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <!--地区分组-->
+        <!--头-->
+        <DataTemplate x:Key="areaHeaderTemplate">
+            <Grid Margin="5,10,0,0">
+                <Grid Width="60" Height="60" HorizontalAlignment="Left">
+                    <Border Background="#3cadeb">
+                        <StackPanel>
+                            <TextBlock Margin="5,0,1,5" Foreground="White" Style="{StaticResource PhoneTextLargeStyle}" Text="{Binding key}" TextAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Text="{Binding brandName}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+        <!--组-->
+        <DataTemplate x:Key="areaListItemTemplate">
+            <TextBlock Foreground="Black" Tap="areaForumStack_Tap" Tag="{Binding Id}"
+                           Text="{Binding bbsName}"  FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
+                           FontSize="28"  Height="50" Width="480" Margin="{StaticResource PhoneTouchTargetOverhang}"  
+                           VerticalAlignment="Bottom"/>
+
+        </DataTemplate>
+
+
+
+        <Style x:Key="areaJumpList" TargetType="p:LongListSelector">
+            <Setter Property="GridCellSize"  Value="113,113"/>
+            <Setter Property="LayoutMode" Value="Grid" />
+            <Setter Property="ItemTemplate">
+                <Setter.Value >
+                    <!--字母索引-->
+                    <DataTemplate>
+                        <Border Background="#3cadeb" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100" Height="110" Margin="10,15,0,0">
+                            <TextBlock Text="{Binding key}" Margin="10,10,10,10" Foreground="White" FontSize="28" TextAlignment="Center" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                        </Border>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </phone:PhoneApplicationPage.Resources>
+    <!--LayoutRoot 是包含所有页面内容的根网格-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--枢轴控件-->
+        <Image Grid.Row="0" VerticalAlignment="Top"
+                   Margin="-300,10,0,0" Width="130"                  
+                 Source="/AutoWP7;component/Images/MainLOGO.png" />
+
+        <controls:Pivot Grid.Row="1" Margin="0,-10,0,0" x:Name="piv" SelectionChanged="piv_SelectionChanged" Foreground="Black">
+            <!--车系论坛-->
+            <controls:PivotItem>
+                <controls:PivotItem.Header>
+                    <TextBlock Text="车系论坛"  Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <p:LongListSelector  x:Name="carSeriesAllForumGropus" Background="Transparent" 
+                                       IsGroupingEnabled="True"   
+                                          HideEmptyGroups="True" 
+                                           LayoutMode="List"
+                                     ItemTemplate="{StaticResource jumpListItemTemplate}"
+                                     GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" 
+                                     JumpListStyle="{StaticResource carSeriesJumpList}">
+
+                </p:LongListSelector>
+
+            </controls:PivotItem>
+            <!--地区论坛-->
+            <controls:PivotItem >
+                <controls:PivotItem.Header>
+                    <TextBlock Text="地区论坛" Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <p:LongListSelector  x:Name="areaForumGroups" 
+                                          Background="Transparent" 
+                                       IsGroupingEnabled="True"   
+                                          HideEmptyGroups="True" 
+                                           LayoutMode="List"
+                                          ItemTemplate="{StaticResource areaListItemTemplate}"       
+                                          GroupHeaderTemplate="{StaticResource areaHeaderTemplate}"  
+                                          JumpListStyle="{StaticResource areaJumpList}">
+
+                </p:LongListSelector>
+
+            </controls:PivotItem>
+            <!--主题论坛-->
+            <controls:PivotItem >
+                <controls:PivotItem.Header>
+                    <TextBlock Text="主题论坛" Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <ListBox x:Name="subjectListbox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Foreground="Black"   FontSize="28" 
+                                           Tap="subjectGrid_Tap" Tag="{Binding Id}"
+                                             Margin="{StaticResource PhoneTouchTargetOverhang}"  
+                                             Width="480" Height="50"
+                                           Text="{Binding bbsName}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PivotItem>
+
+            <!--我的论坛-->
+            <controls:PivotItem>
+                <controls:PivotItem.Header>
+                    <TextBlock Text="我的论坛" Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <Grid>
+                    <StackPanel Visibility="Collapsed" x:Name="loginPanel" Orientation="Vertical">
+                        <TextBlock Text="您还没有登录噢~~" FontSize="26" Foreground="DarkGray"  Margin="30,30,0,0" />
+                        <Border Margin="-260,20,0,0" Background="#3cadeb" x:Name="loginBorder" Tap="loginBorder_Tap"
+                                 Height="60" Width="130">
+                            <TextBlock  Foreground="White"  FontSize="26" 
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Text="点我登录"/>
+                        </Border>
+                    </StackPanel>
+
+                    <ListBox x:Name="myForumListbox">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock FontSize="28"  Tag="{Binding Id}" 
+                                        x:Name="bbsIdTap"  Tap="bbsIdTap_Tap" 
+                                        Width="480" Height="50"
+                                        Text="{Binding bbsName}"  Foreground="Black"
+                                        Margin="{StaticResource PhoneTouchTargetOverhang}"  
+                                        FontFamily="{StaticResource PhoneFontFamilySemiBold}"/>
+
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </controls:PivotItem>
+
+        </controls:Pivot>
+
+    </Grid>
+
+
+
+</phone:PhoneApplicationPage>

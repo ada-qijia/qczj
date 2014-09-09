@@ -1,0 +1,125 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.Car.DealerDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:my="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps"
+    xmlns:local="clr-namespace:AutoWP7.Handler"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot 是包含所有页面内容的根网格-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock  x:Name="PageTitle" Foreground="#3cadeb" HorizontalAlignment="Center" Text="经销商详情" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+
+        <Grid x:Name="ContentPanel" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ListBox  Grid.Row="0" x:Name="dealerDetailListbox">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="70"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" x:Name="callName" Margin="10" Grid.ColumnSpan="2" Foreground="Black"  FontSize="26" Text="{Binding name}"/>
+                            <StackPanel Margin="10" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                <TextBlock Foreground="Black"  Text="商家性质："/>
+                                <TextBlock Foreground="Black"  Text="{Binding Scope}"/>
+                            </StackPanel>
+
+
+                            <TextBlock  Margin="10" Grid.Row="3"  Grid.Column="0" Foreground="Black"  
+                                        Text="公司地址: "/>
+                            <TextBlock Margin="10" Grid.Row="3"  Grid.Column="1" Foreground="Black" 
+                                           TextWrapping="Wrap"
+                                           Text="{Binding Address}"/>
+
+                            <StackPanel Margin="10" Grid.Row="4"  Grid.ColumnSpan="2"  Orientation="Horizontal">
+                                <TextBlock Foreground="Black"  Text="公司电话："/>
+                                <TextBlock Foreground="Black"  Text="{Binding Tel}"/>
+                                <Image  Tap="callDealer_Tap" 
+                                        Tag="{Binding Tel}"
+                                        x:Name="callDealer" 
+                                        Height="70"
+                                        Width="150"
+                                        VerticalAlignment="Center" 
+                                        HorizontalAlignment="Right"                                                                       Margin="55,0,0,0"                                  
+                                        Source="/AutoWP7;component/Images/CallPhone.jpg"/>
+                            </StackPanel>
+
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+            <Canvas Grid.Row="1"  x:Name="Layout">
+
+                <!-- Map View -->
+                <Border x:Name="Mapw"
+                  VerticalAlignment="Bottom"
+                  HorizontalAlignment="Center"
+                  Height="480"  Width="480">
+                    <my:Map Name="Map" 
+                    CopyrightVisibility="Collapsed"                   
+                    LogoVisibility="Collapsed"
+                    ZoomLevel="{Binding Zoom, Mode=TwoWay}"
+                    Center="{Binding Center, Mode=TwoWay}"
+                    CredentialsProvider="Ai93tjeUJEYTiIVyiuBSOOL1Fug5S6Y7eaQs2MGT9rLWwoQeXNm0LfWZKsSMc4y8 ">
+
+                        <my:Map.Mode>
+                            <my:RoadMode/>
+                        </my:Map.Mode>
+                        <my:Map.Children>
+                            <my:MapTileLayer>
+                                <my:MapTileLayer.TileSources>
+                                    <local:GoogleTileSource/>
+                                </my:MapTileLayer.TileSources>
+                            </my:MapTileLayer>
+                        </my:Map.Children>
+
+                        <!--<my:MapItemsControl x:Name="mapControl"/>-->
+                    </my:Map>
+
+                    <!-- TODO : Add map control -->
+
+                </Border>
+
+            </Canvas>
+        </Grid>
+    </Grid>
+
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" Opacity="0.3" IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton IconUri="Images/bar_myLocation.png" Text="我的位置" Click="CurrentLocation_Click"/>
+            <shell:ApplicationBarIconButton IconUri="Images/bar_dealerLocation.png" Text="经销商位置" Click="VenueLocation_Click"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

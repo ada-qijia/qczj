@@ -1,0 +1,92 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.More.MorePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+  xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot 是包含所有页面内容的根网格-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel 包含应用程序的名称和页标题-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="PageTitle" Text="更多"  Foreground="#3cadeb" HorizontalAlignment="Left" FontSize="72"  Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - 在此处放置其他内容-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <ScrollViewer>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel HorizontalAlignment="Left" Grid.Row="0" Height="100" Width="450" x:Name="login" Tap="login_Tap"  Orientation="Horizontal">
+                        <Image Margin="10,0,0,0"  Source="/AutoWP7;component/Images/More/login.png" Width="70"/>
+                        <TextBlock x:Name="loginStats" Padding="20,25,0,0" Text="登录"  FontSize="33" Width="370" Height="100" Foreground="#3cadeb"/>
+                    </StackPanel>
+
+                    <!--<StackPanel HorizontalAlignment="Left" Grid.Row="1"  Height="100" Width="450" x:Name="choiceness" Tap="choiceness_Tap" Orientation="Horizontal">
+                        <Image Margin="10,0,0,0"  Source="/AutoWP7;component/Images/More/clear.png" Width="70"/>
+                        <TextBlock Padding="20,25,0,0"  Width="370" Height="100" Text="精选推荐" FontSize="33" VerticalAlignment="Center" Foreground="#3cadeb"/>
+                    </StackPanel>-->
+
+                    <StackPanel  HorizontalAlignment="Left" Grid.Row="1"  Height="100" Width="450" x:Name="carcompare" Tap="carcompare_Tap"  Orientation="Horizontal">
+                        <Image Margin="10,0,0,0"  Source="/Images/More/VS.png" Width="70"/>
+                        <TextBlock Padding="20,25,0,0" Width="370" Height="100"  Text="车型对比"  FontSize="33" VerticalAlignment="Center" Foreground="#3cadeb"/>
+                    </StackPanel>
+
+                    <StackPanel  HorizontalAlignment="Left" Grid.Row="2"  Height="100" Width="450" x:Name="feedback" Tap="feedback_Tap"  Orientation="Horizontal">
+                        <Image Margin="10,0,0,0"  Source="/AutoWP7;component/Images/More/feedback.png" Width="70"/>
+                        <TextBlock Padding="20,25,0,0" Width="370" Height="100"  Text="意见反馈"  FontSize="33" VerticalAlignment="Center" Foreground="#3cadeb"/>
+                    </StackPanel>
+
+                    <StackPanel HorizontalAlignment="Left" Grid.Row="3"  Height="100" Width="450" x:Name="autohomeMobile" Tap="autohomeMobile_Tap" Orientation="Horizontal">
+                        <Image Margin="10,0,0,0"  Source="/AutoWP7;component/Images/More/autohome.png" Width="70"/>
+                        <TextBlock Padding="20,25,0,0"  Width="370" Height="100" Text="手机汽车之家" FontSize="33" VerticalAlignment="Center" Foreground="#3cadeb"/>
+                    </StackPanel>
+
+                    <StackPanel HorizontalAlignment="Left" Grid.Row="4"  Height="100" Width="450" x:Name="about" Tap="about_Tap"  Orientation="Horizontal">
+                        <Image Margin="10,0,0,0"  Source="/AutoWP7;component/Images/More/about.png" Width="70"/>
+                        <TextBlock Padding="20,25,0,0" Width="370" Height="100" Text="关于" FontSize="33" VerticalAlignment="Center" Foreground="#3cadeb"/>
+                    </StackPanel>
+
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+
+    <!--演示 ApplicationBar 用法的示例代码-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="按钮 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="按钮 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="菜单项 1"/>
+                <shell:ApplicationBarMenuItem Text="菜单项 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>

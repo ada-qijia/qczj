@@ -1,0 +1,45 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.More.FeedBackPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="728" d:DesignWidth="480"
+    xmlns:myTextbox="clr-namespace:WaterTextBox;assembly=WaterTextBox"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot 是包含所有页面内容的根网格-->
+    <Grid x:Name="LayoutRoot" Background="WhiteSmoke" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--<phone:WebBrowser IsScriptEnabled="True"  Navigating="wb_Navigating" Navigated="wb_Navigated"  x:Name="wb" />
+        <ProgressBar Foreground="Blue"  x:Name="ProgBar" Visibility="Collapsed" IsIndeterminate="True" Height="4" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />-->
+        <TextBlock Grid.Row="0"  Text="意见反馈" FontSize="35" Margin="10,10,0,0" Foreground="#3cadeb" HorizontalAlignment="Left"/>
+        <myTextbox:WaterTextBox BorderBrush="Gray" BorderThickness="1" TextWrapping="Wrap" Grid.Row="1" 
+                                AcceptsReturn="True"  Background="LightGray" 
+                                x:Name="adviceConent">
+            <myTextbox:WaterTextBox.WaterContent>
+                <TextBlock TextWrapping="Wrap" FontSize="20" Text="我们每周会从留下联系方式的用户中抽取幸运用户赠送金属质感的汽车之家车标~~"/>
+            </myTextbox:WaterTextBox.WaterContent>
+        </myTextbox:WaterTextBox>
+        <myTextbox:WaterTextBox BorderBrush="Gray" BorderThickness="1" InputScope="Number" Height="90" Background="LightGray" x:Name="advicePhoneNumber" 
+                              VerticalAlignment="Top" Grid.Row="2" FontSize="20" WaterContent="请输入您的联系方式~~" />
+    </Grid>
+
+    <!--演示 ApplicationBar 用法的示例代码-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" Opacity="0.8" IsMenuEnabled="False" ForegroundColor="White" BackgroundColor="Black">
+            <shell:ApplicationBarIconButton IconUri="/Images/bar_submit.png" x:Name="sendAdvice" Click="sendAdvice_Click" Text="发送"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

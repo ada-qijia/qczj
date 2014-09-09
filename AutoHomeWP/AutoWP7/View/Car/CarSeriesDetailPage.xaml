@@ -1,0 +1,417 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.Car.CarSeriesDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
+    xmlns:handler="clr-namespace:AutoWP7.Handler"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+    xmlns:local="clr-namespace:AutoWP7"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+   xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+        <local:LoadMoreVisibilityConverter x:Name="loadMoreVisibility"/>
+        <!--<local:LoadMoreVisibilityConverter x:Name="loadMoreVisibility"/>-->
+        <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" Opacity="0.8" x:Key="appForum" IsVisible="True" IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton x:Name="lastReplyAppbar" Click="lastReplyAppbar_Click" IconUri="Images/bar_lastReply.png"   Text="最后回复"/>
+            <shell:ApplicationBarIconButton x:Name="newestAppbar" Click="newestAppbar_Click" IconUri="Images/bar_newest.png"   Text="最新发帖"/>
+            <shell:ApplicationBarIconButton x:Name="refineAppbar" Click="refineAppbar_Click" IconUri="Images/bar_ring.png" Text="精华贴"/>
+            <shell:ApplicationBarIconButton x:Name="sendLetter"  Click="sendLetter_Click_1" IconUri="Images/bar_writeComment.png" Text="发帖"/>
+        </shell:ApplicationBar>
+
+        <shell:ApplicationBar Opacity="0.8" BackgroundColor="Black" ForegroundColor="White" x:Key="appArticle" IsVisible="True" IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton x:Name="newsBar" Click="newsBar_Click" IconUri="Images/bar_news.png"   Text="新闻中心"/>
+            <shell:ApplicationBarIconButton x:Name="qutotationsBar" Click="qutotationsBar_Click" IconUri="Images/bar_qutotations.png" Text="各地行情"/>
+            <shell:ApplicationBarIconButton x:Name="driveBar" Click="driveBar_Click" IconUri="Images/bar_drive.png" Text="评测导购"/>
+            <shell:ApplicationBarIconButton x:Name="shoppingGuidBar" Click="shoppingGuidBar_Click" IconUri="Images/bar_shoppingGuid.png" Text="汽车周边"/>
+        </shell:ApplicationBar>
+
+        <!--头-->
+        <DataTemplate x:Key="groupHeaderTemplate">
+            <Grid Margin="0,10,0,0">
+                <Grid Width="300" Height="50" HorizontalAlignment="Left">
+                    <Border Background="LightGray">
+                        <TextBlock Margin="10,0,1,5" Foreground="Black" 
+                                   FontSize="26"
+                                   Text="{Binding key}" TextAlignment="Left" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+
+        <!--组-->
+        <!--Foreground="{StaticResource PhoneForegroundBrush}"-->
+        <DataTemplate x:Key="jumpListItemTemplate" x:Name="itemTempLate">
+            <!--<Border Background="{Binding GroupBackgroundBrush}" Margin="0"-->
+            <Grid Width="480" x:Name="carSeriesGird" Margin="0,10,0,0">
+                <Grid  Tap="carSeriesGird_Tap" Tag="{Binding Id}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"></ColumnDefinition>
+                        <ColumnDefinition Width="250"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="specNameTB" Text="{Binding Name}" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="0"
+                           FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                           FontSize="26"
+                           Foreground="Black"
+                               TextWrapping="Wrap"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top">
+                    </TextBlock>
+                    <TextBlock Text="{Binding Transmission}"  Margin="0,-15,0,0" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" 
+                           FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
+                           FontSize="20"                            
+                           Foreground="Gray"/>
+                    <TextBlock Text="{Binding Price}"  Margin="0,-15,0,0"  Grid.Column="2" Grid.Row="1" 
+                           FontSize="24"
+                           Foreground="Red"
+                           />
+                </Grid>
+                <Grid Margin="0,80,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="10" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"></ColumnDefinition>
+                        <ColumnDefinition Width="250"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <!--添加对比-->
+                    <Border Background="{Binding Compare}" Grid.Column="0" 
+                            x:Name="addComBd"
+                            Grid.ColumnSpan="2"  Grid.Row="0" 
+                             Tap="addComPare_Tap"
+                            Tag="{Binding Id}"
+                            Height="50" 
+                            Width="150"
+                            HorizontalAlignment="Left"
+                            >
+                        <TextBlock x:Name="addComPage" Foreground="#F4F3F4"
+                                   Text="{Binding CompareText}"
+                                   FontWeight="Bold"
+                                   FontSize="23"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                           />
+                    </Border>
+                    <Border Background="#3CACEB" Grid.Column="2" 
+                            Tap="callPriceSeries_Tap"
+                            Tag="{Binding Id}"
+                            Grid.Row="0" 
+                            Height="50" 
+                            Width="150"
+                            HorizontalAlignment="Right"
+                            Margin="-100,0,50,0"
+                            >
+                        <TextBlock x:Name="callPrice" Foreground="#F4F3F4"
+                                   Text="询问最低价"
+                                   FontWeight="Bold"
+                                   FontSize="23"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                           />
+                    </Border>
+                    <Rectangle VerticalAlignment="Bottom" Height="2" Margin="0,0,-8,0" Grid.ColumnSpan="3" Grid.Row="1" Fill="LightGray">
+                        <Rectangle.OpacityMask>
+                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                <GradientStop Offset="0" Color="#19FFFFFF"/>
+                                <GradientStop Color="White" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Grid>
+            </Grid>
+            <!--</Border>-->
+        </DataTemplate>
+
+        <!--字母索引-->
+        <DataTemplate x:Key="groupItemTemplate" >
+            <Border Background="RoyalBlue" VerticalAlignment="Center" HorizontalAlignment="Center" Width="170" Height="70" Margin="6">
+                <TextBlock Text="{Binding key}" Margin="10,10,10,10" Foreground="Black" Style="{StaticResource PhoneTextLargeStyle}" TextAlignment="Left" VerticalAlignment="Center"/>
+            </Border>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+    <Grid x:Name="LayoutRoot" Background="White" Margin="0,0,0,75">
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" x:Name="autoName" Margin="20,0,0,-10"  FontSize="32"  Foreground="#3cadeb"/>
+        <controls:Pivot Grid.Row="1" x:Name="piv" SelectionChanged="piv_SelectionChanged" Foreground="Black">
+            <!--报价一-->
+            <controls:PivotItem >
+                <controls:PivotItem.Header>
+                    <TextBlock Text="车型" FontSize="56" Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <Grid>
+
+
+                    <TextBlock  Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesQuotePropmt"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无经销商报价信息"/>
+                    <p:LongListSelector Margin="10,10,10,10"  
+                                          x:Name="carSeriesQuoteListGropus"
+                                          Background="Transparent" 
+                                        IsGroupingEnabled="True"   
+                                          HideEmptyGroups="True" 
+                                           LayoutMode="List"
+                                          ItemTemplate="{StaticResource jumpListItemTemplate}" 
+                                        GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" >
+                        <!--GroupItemTemplate="{StaticResource groupItemTemplate}"-->
+                        <!--<toolkit:LongListSelector.GroupItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </toolkit:LongListSelector.GroupItemsPanel>-->
+
+                    </p:LongListSelector>
+                </Grid>
+            </controls:PivotItem>
+            <!--图片一-->
+            <controls:PivotItem >
+                <controls:PivotItem.Header>
+                    <TextBlock Text="图片" FontSize="56" Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <toolkit:HubTile x:Name="facade" Tap="facade_Tap"                                                                           IsTabStop="True" IsFrozen="True"
+                                         Grid.Column="0" Grid.Row="0" 
+                                         Background="#3cadeb"                                         
+                                          Source="/AutoWP7;component/Images/瓷片图标/车身外观.png"
+                                         Margin="0,-50,0,0" Title="车身外观" />
+                        <toolkit:HubTile x:Name="wheel" Tap="wheel_Tap" IsTabStop="True"
+                                         Grid.Column="1" Grid.Row="0" IsFrozen="True"
+                                           Background="#3cadeb"
+                                         Source="/AutoWP7;component/Images/瓷片图标/中控方向盘.png"
+                                         Margin="0,-50,60,0" Title="中控方向盘"/>
+                        <toolkit:HubTile x:Name="carCompartment" Tap="carCompartment_Tap"
+                                         Grid.Column="0" Grid.Row="1" IsTabStop="True" IsFrozen="True"
+                                           Background="#3cadeb"
+                                         Source="/AutoWP7;component/Images/瓷片图标/车厢座椅.png"                                        
+                                         Margin="0,-250,0,0" Title="车厢座椅"/>
+                        <toolkit:HubTile x:Name="elseDetail" Tap="elseDetail_Tap"
+                                         Grid.Column="1" Grid.Row="1" IsTabStop="True" IsFrozen="True"
+                                           Background="#3cadeb"
+                                         Source="/AutoWP7;component/Images/瓷片图标/其他细节.png"
+                                         Margin="0,-250,60,0" Title="其他细节"/>
+                    </Grid>
+                </ScrollViewer>
+            </controls:PivotItem>
+            <!--文章一-->
+            <controls:PivotItem >
+                <controls:PivotItem.Header>
+                    <TextBlock Text="文章" FontSize="56" Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <Grid>
+                    <TextBlock  Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesArticlePropmt"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无相关数据~~"/>
+                    <ListBox x:Name="carSeriesActicleListbox" Height="590" VerticalAlignment="Top">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <!--<Grid Tap="{Binding id}" Margin="0,15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>-->
+                                <Grid Margin="10,20,0,0" Tag="{Binding id}" Tap="acticleStack_Tap">
+                                    <TextBlock Foreground="Black" TextWrapping="Wrap" FontSize="26"  Text="{Binding title}"/>
+                                    <TextBlock    Margin="340,40,0,0"
+                                        Foreground="Gray" Text="{Binding time}"/>
+                                    <!--<Button Tap="btnLoadMore_Tap"   
+                                        Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}"                                            Content="{Binding loadMore}"/>-->
+                                    <Border  Margin="0,10,0,17" x:Name="loadMore" Tap="btnLoadMore_Tap" Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}" Background="LightGray" Height="50" Width="440">
+                                        <TextBlock Foreground="Black" HorizontalAlignment="Center" FontSize="28" Text="{Binding loadMore}"/>
+                                    </Border>
+                                    <!--</Grid>-->
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </controls:PivotItem>
+            <!--经销商一-->
+            <controls:PivotItem >
+                <controls:PivotItem.Header>
+                    <TextBlock Text="经销商" FontSize="56" Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <!--<Border BorderBrush="#00adef" BorderThickness="3,3,3,3" Margin="-330,0,0,0" Height="50" Width="120" Grid.Row="0">
+                        <TextBlock Text="北京" 
+                                   Foreground="#3cadeb"
+                                   FontSize="25"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   x:Name="detailChooseCity" Tap="detailChooseCity_Tap"/>
+                    </Border>-->
+                    <Button BorderBrush="#00adef" BorderThickness="3,3,3,3" Margin="-310,0,0,0" Width="150" Grid.Row="0" 
+                            Content="北京" Foreground="#3cadeb" FontSize="25"  x:Name="detailChooseCity" Tap="detailChooseCity_Tap"/>
+                    <TextBlock Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="Gray"  FontSize="30" x:Name="notCarseriesPropmt"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Text="该车系未上市"/>
+                    <ListBox Grid.Row="1" x:Name="dealerListbox">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <Grid Margin="0,10,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="70"></RowDefinition>
+                                            <RowDefinition Height="50"></RowDefinition>
+
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition ></ColumnDefinition>
+                                            <ColumnDefinition ></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.ColumnSpan="3" Grid.Row="0"
+                                           FontSize="28"
+                                           Foreground="Black"
+                                           Text="{Binding name}"/>
+
+                                        <Image   Tag="{Binding id}"
+                                                  Grid.ColumnSpan="3"
+                                                 
+                                                 Grid.Row="0" 
+                                                 Height="50"
+                                                 Width="100"
+                                                 HorizontalAlignment="Right" 
+                                                 VerticalAlignment="Top" 
+                                                 Tap="dealerDeatail_Tap" 
+                                                 Source="/AutoWP7;component/Images/Detail1.jpg"/>
+
+                                        <!--拨打电话-->
+                                        <Image  Tap="callDealer_Tap" 
+                                                Tag="{Binding Tel}"
+                                                Grid.Column="0"  Grid.Row="1" 
+                                                Height="80"
+                                                Width="150"
+                                                Margin="0,0,-5,0"
+                                                VerticalAlignment="Center"  
+                                                HorizontalAlignment="Left"
+                                                Source="/AutoWP7;component/Images/CallPhone.jpg"/>
+                                        <!--详情-->
+                                        <!--<Image   Tag="{Binding id}" 
+                                                 Grid.Column="0"
+                                                 Grid.Row="1" 
+                                                 Height="100"
+                                                 Width="100"
+                                                 HorizontalAlignment="Left" 
+                                                 Tap="dealerDeatail_Tap" 
+                                                 Source="/AutoWP7;component/Images/Detail.jpg"/>-->
+                                        <!-- 询价-->
+                                        <Image  Tap="callPrice_Tap" 
+                                                Tag="{Binding id}"
+                                                Grid.Column="2"  Grid.Row="1" 
+                                                Height="80"
+                                                Width="150"
+                                                Margin="0,0,-5,0"
+                                                VerticalAlignment="Center" 
+                                                HorizontalAlignment="Right"
+                                                Source="/AutoWP7;component/Images/CallPrice.jpg"/>
+
+                                    </Grid>
+                                    <Border Grid.Row="1"  Grid.Column="0" Height="0.7" Width="465" 
+                   BorderBrush="Gray" BorderThickness="1" Opacity="0.5" Margin="5,5,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </controls:PivotItem>
+            <!--论坛一-->
+            <controls:PivotItem >
+                <controls:PivotItem.Header>
+                    <TextBlock Text="论坛" FontSize="56" Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <Grid>
+                    <TextBlock Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesForumsPropmt"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无相关数据~~"/>
+                    <ListBox x:Name="forumListbox" Height="570" VerticalAlignment="Top">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,20,0,10" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Row="0" Tap="topicIdGrid_Tap" x:Name="topicIdGrid" Tag="{Binding TopicId}" Margin="0,15,0,10" Visibility="{Binding ShowData}" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+
+                                        <TextBlock Grid.Row="0"  Foreground="Red" FontSize="26" Margin="5,-40,0,0" Text="{Binding TopicType}"  />
+                                        <TextBlock Grid.Row="0" Foreground="Black"  FontSize="22" Margin="35,-40,0,0"
+                                               TextWrapping="Wrap" Text="{Binding Title}"/>
+
+
+
+                                        <TextBlock  FontSize="16" Foreground="Gray"  Grid.Row="1" Margin="35,10,0,0"   
+                                                Text="{Binding PostUserName}"/>
+                                        <TextBlock  FontSize="16" Foreground="Gray" Grid.Row="1" Margin="210,10,0,0"
+                                                Text="回复数："/>
+                                        <TextBlock  FontSize="16" Foreground="Gray" Grid.Row="1" Margin="270,10,0,0"
+                                                Text="{Binding ReplyCounts}"/>
+                                        <TextBlock  FontSize="16" Foreground="Gray" Grid.Row="1" Margin="350,10,0,0"
+                                                Text="{Binding LastReplyDate}"/>
+
+                                        <!--下划线-->
+                                        <Border Grid.Row="2" Visibility="{Binding ShowData}"  
+                                    Grid.Column="0" Height="1" Width="465" 
+                   BorderBrush="Gray" BorderThickness="1" Opacity="1" Margin="5,20"/>
+                                    </Grid>
+
+                                    <TextBlock Grid.Row="1" Margin="120,0,0,0" FontSize="28" VerticalAlignment="Center"
+                                           Foreground="Black" 
+                                           Height="60"  Width="460" x:Name="forumLoadMore" 
+                                           Tap="forumLoadMore_Tap" Text="{Binding LoadMore}" 
+                                           Visibility="{Binding LoadMore,Converter={StaticResource loadMoreVisibility}}"/>
+                                    <!--<Button Grid.Row="1" Foreground="Black"  Width="460" x:Name="forumLoadMore" Tap="forumLoadMore_Tap" Content="{Binding LoadMore}" Visibility="{Binding LoadMore,Converter={StaticResource loadMoreVisibility}}"/>-->
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar Opacity="0.8" BackgroundColor="Black"  ForegroundColor="White" IsVisible="True" IsMenuEnabled="False">
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+</phone:PhoneApplicationPage>

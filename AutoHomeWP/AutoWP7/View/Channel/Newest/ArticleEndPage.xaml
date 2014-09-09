@@ -1,0 +1,43 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.Channel.Newest.ArticleEndPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False">
+   
+        <Grid x:Name="ContentPanel"  Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="730"/>
+        </Grid.RowDefinitions>
+
+
+
+
+        <phone:WebBrowser Visibility="Visible" x:Name="wb" NavigationFailed="wb_NavigationFailed"  Navigated="wb_Navigated" Navigating="wb_Navigating"  Margin="0,0,0,-70"  />
+        <ProgressBar Foreground="#3cadeb" x:Name="ProgBar" Visibility="Visible" IsIndeterminate="True" Height="10" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />
+
+        <TextBlock x:Name="prompt" Visibility="Collapsed" Text="您的网络不可用~请检查连接设置" Height="200" Width="400" VerticalAlignment="Center" Foreground="LightGray" FontSize="26"/>
+        <Button x:Name="refreshButton" Content="点击刷新" Height="100" VerticalAlignment='Center' 
+                HorizontalAlignment="Center" Width="160"  Tap="refreshButton_Tap_1"
+                Background="#3cadeb" Foreground="White" Visibility="Collapsed"  />
+    </Grid>
+
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar x:Name="appBar" BackgroundColor="Black" ForegroundColor="White" IsVisible="True" Opacity="0.8"  IsMenuEnabled="False">
+            <!--<shell:ApplicationBarIconButton x:Name="previousPage" Click="previousPage_Click" IconUri="Images/bar_pre.png" Text="上页"/>-->    
+            <shell:ApplicationBarIconButton x:Name="partPage" Click="partPage_Click"  IconUri="Images/bar_paging.png" Text="分页"/>
+            <shell:ApplicationBarIconButton x:Name="checkComment" Click="checkComment_Click" IconUri="Images/bar_checkComment.png" Text="查看评论"/>
+            <!--<shell:ApplicationBarIconButton x:Name="nextPage" Click="nextPage_Click" IconUri="Images/bar_next.png" Text="下页"/>-->
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

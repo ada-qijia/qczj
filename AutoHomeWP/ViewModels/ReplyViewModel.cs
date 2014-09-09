@@ -1,0 +1,100 @@
+﻿using System;
+using System.Net;
+using Microsoft.Phone.Info;
+using Model;
+using ViewModels.Handler;
+
+namespace ViewModels
+{
+    public class ReplyViewModel
+    {
+
+
+        //事件通知
+        public event EventHandler<APIEventArgs<string>> LoadDataCompleted;
+
+        WebClient wc = null;
+        public void sendData(string url, CommentReplyModel model,int pageType,string UA)
+        {
+            if (wc == null)
+            {
+                wc = new WebClient();
+            }
+            if (pageType == 2)
+            {
+                //说客
+                pageType = 7;
+            }
+            //手机型号
+            // string phoneType = "windows phone " + DeviceExtendedProperties.GetValue("DeviceName").ToString();
+            //TODU  改为动态获取
+            String phoneType = "WP\t8\tautohome\t1.4.0\tWP";
+            //手机设备id
+            string deviceid = DeviceExtendedProperties.GetValue("DeviceUniqueId").ToString();
+            //post 数据
+            string strData = "authorization=" + model.Authorization
+                + "&_appid=app"
+                + "&appid=" + pageType
+                +"&objid=" + model.NewsId
+                + "&txtcontent=" + model.Content
+                + "&TargetReplyId=" + model.ReplyId
+                + "&encoding=gb2312"
+                + "&datatype=json"
+                + "&phonetype=" + phoneType;
+
+            #region 获得设备号
+            byte[] byteArray = DeviceExtendedProperties.GetValue("DeviceUniqueId") as byte[];
+            string strTemp = "";
+            string strDeviceUniqueID = string.Empty;
+            foreach (byte b in byteArray)
+            {
+                strTemp = b.ToString();
+                if (1 == strTemp.Length)
+                {
+                    strTemp = "00" + strTemp;
+                }
+                else if (2 == strTemp.Length)
+                {
+                    strTemp = "0" + strTemp;
+                }
+                strDeviceUniqueID += strTemp;
+            }
+            #endregion
+
+            Uri urlSource = new Uri(url, UriKind.Absolute);
+
+            
+            wc.Encoding = DBCSEncoding.GetDBCSEncoding("gb2312");
+            wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
+            wc.Headers["Accept-Charset"] = "gb2312";
+            wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+            //TODU 改成统一格式
+            wc.Headers["User-Agent"] = UA;
+
+            wc.UploadStringAsync(urlSource, "POST", strData);
+            wc.UploadStringCompleted += new UploadStringCompletedEventHandler((ss, ee) =>
+            {
+                APIEventArgs<string> apiArgs = new APIEventArgs<string>();
+
+
+                if (ee.Error != null)
+                {
+                    apiArgs.Error = ee.Error;
+                }
+                else
+                {
+                    //返回的json数据
+                    string json = ee.Result;
+
+                    apiArgs.Result = json;
+                }
+
+                if (LoadDataCompleted != null)
+                {
+                    LoadDataCompleted(this, apiArgs);
+                }
+            });
+        }
+
+    }
+}

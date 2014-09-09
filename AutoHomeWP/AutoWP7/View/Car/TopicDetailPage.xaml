@@ -1,0 +1,35 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.Car.TopicDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False" >
+
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="690"/>
+        </Grid.RowDefinitions>
+
+            <phone:WebBrowser Margin="0,20,0,-110"  IsScriptEnabled="True" Navigating="webTopicDetail_Navigating" ScriptNotify="webTopicDetail_ScriptNotify"  Navigated="webTopicDetail_Navigated" Name="webTopicDetail"  />
+
+            <ProgressBar Foreground="Blue" x:Name="ProgBar" Visibility="Collapsed" IsIndeterminate="True" Height="4" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />
+        
+    </Grid>
+ 
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" Opacity="0.8" BackgroundColor="Black" ForegroundColor="White" IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton x:Name="previousPage" Click="previousPage_Click" IconUri="Images/bar_pre.png" Text="上页"/>
+            <shell:ApplicationBarIconButton x:Name="fastReply" Click="fastReply_Click_1" IconUri="Images/bar_writeComment.png" Text="快速回复"/>
+            <shell:ApplicationBarIconButton x:Name="nextPage" Click="nextPage_Click" IconUri="Images/bar_next.png" Text="下页"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

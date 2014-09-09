@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="AutoWP7.View.Channel.ArticlePartPageUserControl"
+             LostFocus="LayoutRoot_LostFocus"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="500" d:DesignWidth="360">
+
+    <Grid  x:Name="LayoutRoot" Height="300"  >
+        <Grid.Resources>
+            <Style TargetType="Border">
+                <Setter Property="BorderBrush" Value="#3cadeb">
+                </Setter>
+                <Setter Property="BorderThickness" Value="3"></Setter>
+            </Style>
+        </Grid.Resources>
+        <Grid.Background>
+            <SolidColorBrush Color="Black"/>
+        </Grid.Background>
+
+        <ListBox LostFocus="LayoutRoot_LostFocus"  Loaded="partPagelist_Loaded"  Name="partPagelist"  
+                 HorizontalAlignment="Left" >
+
+            <ListBox.ItemTemplate>
+                <DataTemplate >
+                    <Border Margin="10,10,0,0"  VerticalAlignment="Bottom" Background="#3cadeb" Height="70" Width="450">
+
+                        <Grid  Margin="10,0,0,0" VerticalAlignment="Center"  Tag="{Binding Id}" x:Name="newsDetailIndex" Tap="newsDetailIndex_Tap">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <!--<Border Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                            Background="#3cadeb" Height="50" Width="460">-->
+                            <StackPanel Margin="10,5,0,0" VerticalAlignment="Top" Orientation="Horizontal" Grid.Row="0">
+                                <TextBlock  FontSize="25" Foreground="White" Text="第"/>
+                                <TextBlock  FontSize="25" Foreground="White" Text="{Binding Id}"/>
+                                <TextBlock   FontSize="25" Foreground="White" Text="页 :  "/>
+                                <TextBlock  FontSize="25" Foreground="White" TextTrimming="WordEllipsis" Text="{Binding PageTitle}" />
+                            </StackPanel>
+                            <!--</Border>-->
+
+                            <!--<Rectangle VerticalAlignment="Bottom" Height="2" Margin="0,0,-8,0"
+                                   Grid.ColumnSpan="2" Grid.Row="2" Fill="White">
+                                <Rectangle.OpacityMask>
+                                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                        <GradientStop Offset="0" Color="White"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>-->
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+    </Grid>
+
+</UserControl>

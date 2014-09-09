@@ -1,0 +1,128 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="AutoWP7.View.Car.CarCompareListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    xmlns:data="clr-namespace:AutoWP7.View.Car"
+    shell:SystemTray.IsVisible="True">
+
+    <phone:PhoneApplicationPage.Resources>
+        <data:CarCompareModels x:Key="carCompareCollent" />
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot 是包含所有页面内容的根网格-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel 包含应用程序的名称和页标题-->
+        <StackPanel Grid.Row="0" Margin="-15,40,0,0" Width="450">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Width="300" HorizontalAlignment="Left"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           FontSize="56"
+                           Foreground="#3cadeb" Text="车型对比" Margin="0,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+                <TextBlock x:Name="numTB" Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,-27,10,0"  FontSize="30" Foreground="#c0c0c0" Text="已选0/0" Style="{StaticResource PhoneTextTitle1Style}" ></TextBlock>
+            </Grid>
+        </StackPanel>
+
+        <!--ContentPanel - 在此处放置其他内容-->
+        <StackPanel Grid.Row="1" Margin="-15,0,0,18" Width="450">
+            <Grid x:Name="carCompareGrid" Margin="0,10,0,20" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Grid x:Name="promptGrid" Grid.Row="0">
+                    <TextBlock x:Name="prompt"
+                           Text="车型库还空着呐"
+                           Foreground="#C0C0C0"
+                           HorizontalAlignment="Center"
+                           FontSize="40"
+                           Margin="0,200,0,0"
+                           />
+                </Grid>
+                <Grid x:Name="carcomGrid" Grid.Row="0" Margin="30,0,0,0">                    
+                    <ListBox x:Name="carCompareListBox" Grid.Row="0"
+                             Background="White"
+                             Margin="10,0,0,30"
+                             Loaded="carCompareListBox_Loaded"
+                             Height="500"
+                     >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid x:Name="carCompareSpecGrid" Tag="{Binding SpecId}" 
+                                      Margin="0,0,0,0" 
+                                     >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="70"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60" />
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <!--选中时的"√"颜色取决于手机的主题颜色-->
+                                    <CheckBox x:Name="carComPareCB" Grid.Column="0" Grid.Row="0"
+                                              IsChecked="{Binding IsChoosed}"
+                                              Tag="{Binding SpecId}" 
+                                              Click="carComPareCB_Click"
+                                              BorderBrush="#3cadeb"
+                                              Background="#D1D1D1"
+                                              Margin="-10,0,0,0"
+                                              />
+                                    <TextBlock x:Name="carCompareNameTB" Grid.Column="1" Grid.Row="0"
+                                               Text="{Binding SpecName}"
+                                               Tag="{Binding SpecId}" 
+                                               Tap="carCompareNameTB_Tap"
+                                               Foreground="Black" 
+                                               TextWrapping="Wrap"
+                                               FontSize="26"   
+                                               Margin="-15,0,0,3"
+                                               VerticalAlignment="Center" 
+                                               />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+                <Grid x:Name="startCompare" Tap="startCompare_Tap"
+                  VerticalAlignment="Bottom"
+                  Margin="20,0,30,0"
+                  Height="50"
+                  Grid.Row="1"
+                  HorizontalAlignment="Stretch"
+                  Background="#3cadeb">
+                    <TextBlock x:Name="startCom"
+                           Text="开始对比"
+                           Foreground="#ffffff"
+                           HorizontalAlignment="Center"
+                           FontSize="30"
+                           />
+                </Grid>
+            </Grid>
+        </StackPanel>
+    </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar x:Name="carCompareBar" Opacity="0.8" BackgroundColor="Black"  ForegroundColor="White" IsVisible="True" IsMenuEnabled="False">
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

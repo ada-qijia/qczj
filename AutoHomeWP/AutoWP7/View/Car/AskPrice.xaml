@@ -1,0 +1,54 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="AutoWP7.View.Car.AskPrice"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:myTextbox="clr-namespace:WaterTextBox;assembly=WaterTextBox"
+
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot 是包含所有页面内容的根网格-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"   FontSize="32"  Foreground="#3cadeb" Text="车型:"/>
+
+        <myTextbox:WaterTextBox BorderBrush="Gray" BorderThickness="1" AcceptsReturn="True" x:Name="ispec"
+                                    Margin="0,40,0,43"
+                                    WaterContent="" Grid.RowSpan="3" GotFocus="ispec_GotFocus" />
+
+
+        <TextBlock Grid.Row="2"  FontSize="32"  Foreground="#3cadeb" Text="姓名:"/>
+        <myTextbox:WaterTextBox BorderBrush="Gray" BorderThickness="1" AcceptsReturn="True" x:Name="iName" 
+                                    Grid.Row="2"
+                                    Margin="0,40,0,0"
+                                    VerticalAlignment="Top" 
+                                    WaterContent="" Height="68" Grid.RowSpan="2" LostFocus="iName_LostFocus" />
+        <TextBlock Grid.Row="3"  FontSize="32"  Foreground="#3cadeb" Text="手机号:" Margin="0,50,0,55" Grid.RowSpan="2"/>
+        <myTextbox:WaterTextBox BorderBrush="Gray" BorderThickness="1" AcceptsReturn="True" x:Name="iPhone" 
+                                    Grid.Row="4"
+                                    Margin="0,37,0,43" 
+                                    WaterContent="" Grid.RowSpan="2" LostFocus="iPhone_LostFocus"/>
+        
+    </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True"   BackgroundColor="Black" ForegroundColor="White" IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton x:Name="askSubmit"   Click="login_Click" IconUri="/Images/bar_submit.png" Text="提交"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+</phone:PhoneApplicationPage>

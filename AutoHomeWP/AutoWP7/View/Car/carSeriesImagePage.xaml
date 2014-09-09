@@ -1,0 +1,277 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.Car.carSeriesImagePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
+    xmlns:handler="clr-namespace:AutoWP7.Handler"
+    xmlns:local="clr-namespace:AutoWP7"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+        <local:LoadMoreVisibilityConverter x:Key="loadMoreVisibility"/>
+    </phone:PhoneApplicationPage.Resources>
+    
+    <Grid x:Name="LayoutRoot" Background="White">
+        <controls:Pivot Foreground="Black" x:Name="piv" SelectionChanged="piv_SelectionChanged">
+            <!--车身外观-->
+            <controls:PivotItem >
+                <controls:PivotItem.Header>
+                    <TextBlock Foreground="#3cadeb" Text="车身外观"/>
+                </controls:PivotItem.Header>
+                <ListBox  x:Name="facadeImgListbox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Image Margin="10,10,0,0" Grid.Column="0" Grid.Row="0"
+                                       Width="140" Height="105"                                   
+                                       Visibility="{Binding bitmap,Converter={StaticResource loadMoreVisibility}}"                                          Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="0" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       Tag="{Binding SmallPic}"
+                                       Tap="img1_Tap"
+                                       Visibility="{Binding bitmap,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmap}"/>
+
+                                <Image Margin="10,10,0,0" Grid.Column="1" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmapTwo,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="1" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       Tag="{Binding SmallPicTwo}"
+                                       Tap="img1_Tap"
+                                       Visibility="{Binding bitmapTwo,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmapTwo}"/>
+
+                                <Image Margin="10,10,0,0" Grid.Column="2" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmapThree,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="2" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       Tag="{Binding SmallPicThree}"
+                                       Tap="img1_Tap"
+                                       Visibility="{Binding bitmapThree,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmapThree}"/>
+
+                                <Border Grid.ColumnSpan="3" Grid.Row="1" Margin="10,10,0,17" x:Name="loadMoreWheel" Tap="loadMore_Tap" Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}" Background="LightGray" Height="50" Width="440">
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" FontSize="28" Text="{Binding loadMore}"/>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </controls:PivotItem>
+            <!--中控方向盘-->
+            <controls:PivotItem >
+                <controls:PivotItem.Header>
+                    <TextBlock Foreground="#3cadeb" Text="中控方向盘"/>
+                </controls:PivotItem.Header>
+                <ListBox x:Name="wheelImgListbox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Image Margin="10,10,0,0" Grid.Column="0" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmap,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="0" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       Tag="{Binding SmallPic}"
+                                       Tap="img2_Tap"
+                                       Visibility="{Binding bitmap,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmap}"/>
+
+                                <Image Margin="10,10,0,0" Grid.Column="1" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmapTwo,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="1" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       Tag="{Binding SmallPicTwo}"
+                                       Tap="img2_Tap"
+                                       Visibility="{Binding bitmapTwo,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmapTwo}"/>
+
+                                <Image Margin="10,10,0,0" Grid.Column="2" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmapThree,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="2" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"                                       
+                                       Tag="{Binding SmallPicThree}"
+                                       Tap="img2_Tap"
+                                       Visibility="{Binding bitmapThree,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmapThree}"/>
+
+                                <Border Grid.ColumnSpan="3" Grid.Row="1" Margin="10,10,0,17" x:Name="loadMoreWheel" Tap="loadMoreWheel_Tap" Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}" Background="LightGray" Height="50" Width="440">
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" FontSize="28" Text="{Binding loadMore}"/>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </controls:PivotItem>
+            <!--车厢座椅-->
+            <controls:PivotItem >
+                <controls:PivotItem.Header>
+                    <TextBlock Foreground="#3cadeb" Text="车厢座椅"/>
+                </controls:PivotItem.Header>
+                <ListBox x:Name="carComparmentImgListbox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Image Margin="10,10,0,0" Grid.Column="0" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmap,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="0" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       x:Name="img1"
+                                       Tag="{Binding  SmallPic}"
+                                        Tap="img3_Tap"
+                                       Visibility="{Binding bitmap,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmap}"/>
+
+                                <Image Margin="10,10,0,0" Grid.Column="1" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmapTwo,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="1" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       x:Name="img2"
+                                       Tag="{Binding SmallPicTwo}"
+                                       Tap="img3_Tap"
+                                       Visibility="{Binding bitmapTwo,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmapTwo}"/>
+
+                                <Image Margin="10,10,0,0" Grid.Column="2" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmapThree,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="2" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       x:Name="img3"
+                                       Tag="{Binding SmallPicThree}"
+                                       Tap="img3_Tap"
+                                       Visibility="{Binding bitmapThree,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmapThree}"/>
+
+                                <Border Grid.ColumnSpan="3" Grid.Row="1" Margin="10,10,0,17" x:Name="loadMoreComparment" Tap="loadMoreComparment_Tap" Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}" Background="LightGray" Height="50" Width="440">
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" FontSize="28" Text="{Binding loadMore}"/>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </controls:PivotItem>
+            <!--其他细节-->
+            <controls:PivotItem>
+                <controls:PivotItem.Header>
+                    <TextBlock Foreground="#3cadeb" Text="其他细节"/>
+                </controls:PivotItem.Header>
+                <ListBox x:Name="elseDetailImgListbox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Image Margin="10,10,0,0" Grid.Column="0" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmap,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="0" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       x:Name="img1"
+                                       Tag="{Binding  SmallPic}"
+                                       Tap="img4_Tap"
+                                       Visibility="{Binding bitmap,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmap}"/>
+
+                                <Image Margin="10,10,0,0" Grid.Column="1" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmapTwo,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="1" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       x:Name="img2"
+                                       Tag="{Binding SmallPicTwo}"
+                                       Tap="img4_Tap"
+                                       Visibility="{Binding bitmapTwo,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmapTwo}"/>
+
+                                <Image Margin="10,10,0,0" Grid.Column="2" Grid.Row="0"
+                                       Width="140" Height="105"  
+                                       Visibility="{Binding bitmapThree,Converter={StaticResource loadMoreVisibility}}"                                             Source="Images/smallImage.jpg"/>
+                                <Image Grid.Column="2" Grid.Row="0" 
+                                       Width="140" Height="105" 
+                                       Margin="10,10,0,0"
+                                       x:Name="img4"
+                                       Tag="{Binding SmallPicThree}"
+                                       Tap="img4_Tap"
+                                       Visibility="{Binding bitmapThree,Converter={StaticResource loadMoreVisibility}}"   
+                                       Source="{Binding bitmapThree}"/>
+
+                                <Border Grid.ColumnSpan="3" Grid.Row="1" Margin="10,10,0,17" x:Name="loadMoreComparment" Tap="loadMoreElseDetail_Tap" Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}" Background="LightGray" Height="50" Width="440">
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" FontSize="28" Text="{Binding loadMore}"/>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+
+
+</phone:PhoneApplicationPage>

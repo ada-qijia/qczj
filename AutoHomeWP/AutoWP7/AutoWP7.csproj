@@ -1,0 +1,569 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C281CFD6-B4DC-495F-8D35-DC7639C87B44}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AutoWP7</RootNamespace>
+    <AssemblyName>AutoWP7</AssemblyName>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <SilverlightVersion>
+    </SilverlightVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>AutoWP7_$(Configuration)_$(Platform).xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>AutoWP7.App</SilverlightAppEntry>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>Bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>
+    </PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>Bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>
+    </PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>Bin\ARM\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>
+    </PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>Bin\ARM\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>
+    </PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Coding4Fun.Phone.Controls, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="MessageControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Maps, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
+    <Reference Include="MyPhoneControls">
+      <HintPath>lib\MyPhoneControls.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="UmengClassLibrary, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="WaterTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Handler\AppUrlMgr.cs" />
+    <Compile Include="Handler\Common.cs" />
+    <Compile Include="Handler\GlobalIndicator.cs" />
+    <Compile Include="Handler\GoogleTileSource.cs" />
+    <Compile Include="Handler\Group.cs" />
+    <Compile Include="Handler\ImageConverter.cs" />
+    <Compile Include="Handler\JsonHelper.cs" />
+    <Compile Include="Handler\LoadMoreVisibilityConverter.cs" />
+    <Compile Include="Handler\MD5Helper.cs" />
+    <Compile Include="Handler\MemoryDiagnosticsHelper.cs" />
+    <Compile Include="Handler\MutiResImageChooser.cs" />
+    <Compile Include="Handler\PlaceImage.cs" />
+    <Compile Include="Handler\ResolutionHelper.cs" />
+    <Compile Include="Handler\UpdateDBHelper.cs" />
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NavigateMain.xaml.cs">
+      <DependentUpon>NavigateMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestPage.xaml.cs">
+      <DependentUpon>TestPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Themes\CustListBox.cs" />
+    <Compile Include="Themes\CustListbox.xaml.cs">
+      <DependentUpon>CustListbox.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Themes\NegativeValueConverter.cs" />
+    <Compile Include="Themes\PullDownToRefreshPanel.cs" />
+    <Compile Include="UcControl\UcMediaElement\MediaElementUc.xaml.cs">
+      <DependentUpon>MediaElementUc.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcControl\UcListBox\ListBoxUc.cs" />
+    <Compile Include="Utils\DateTimerHelper.cs" />
+    <Compile Include="View\Car\AskPrice.xaml.cs">
+      <DependentUpon>AskPrice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\CarChoosePage.xaml.cs">
+      <DependentUpon>CarChoosePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\CarCompareListPage.xaml.cs">
+      <DependentUpon>CarCompareListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\CarComparePage.xaml.cs">
+      <DependentUpon>CarComparePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\CarSeriesArticleEndPage.xaml.cs">
+      <DependentUpon>CarSeriesArticleEndPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\CarSeriesDetailPage.xaml.cs">
+      <DependentUpon>CarSeriesDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\carSeriesImagePage.xaml.cs">
+      <DependentUpon>carSeriesImagePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\CarSeriesListPage.xaml.cs">
+      <DependentUpon>CarSeriesListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\CarSeriesQuotePage.xaml.cs">
+      <DependentUpon>CarSeriesQuotePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\ChooseSpec.xaml.cs">
+      <DependentUpon>ChooseSpec.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\DealerDetailPage.xaml.cs">
+      <DependentUpon>DealerDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\ShowBigImage.xaml.cs">
+      <DependentUpon>ShowBigImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Car\TopicDetailPage.xaml.cs">
+      <DependentUpon>TopicDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\ArticlePartPageUserControl.xaml.cs">
+      <DependentUpon>ArticlePartPageUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\CarSeriesPartPageUserControl.xaml.cs">
+      <DependentUpon>CarSeriesPartPageUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\Newest\ArticleEndPage.xaml.cs">
+      <DependentUpon>ArticleEndPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\Newest\CommentListPage.xaml.cs">
+      <DependentUpon>CommentListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\Newest\CommentPage.xaml.cs">
+      <DependentUpon>CommentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\Newest\ShowBigImage.xaml.cs">
+      <DependentUpon>ShowBigImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\NewsListPage.xaml.cs">
+      <DependentUpon>NewsListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\NewsPartPageUserControl.xaml.cs">
+      <DependentUpon>NewsPartPageUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\News\CityListPage.xaml.cs">
+      <DependentUpon>CityListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\News\NewsCommentListPage.xaml.cs">
+      <DependentUpon>NewsCommentListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Channel\News\NewsEndPage.xaml.cs">
+      <DependentUpon>NewsEndPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Forum\ForumListPage.xaml.cs">
+      <DependentUpon>ForumListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Forum\LetterListPage.xaml.cs">
+      <DependentUpon>LetterListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Forum\ReplyCommentPage.xaml.cs">
+      <DependentUpon>ReplyCommentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Forum\SendLetterPage.xaml.cs">
+      <DependentUpon>SendLetterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Forum\ShowBigImage.xaml.cs">
+      <DependentUpon>ShowBigImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Forum\TopicDetailPage.xaml.cs">
+      <DependentUpon>TopicDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\More\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\More\FeedBackPage.xaml.cs">
+      <DependentUpon>FeedBackPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\More\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\More\MorePage.xaml.cs">
+      <DependentUpon>MorePage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NavigateMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TestPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\CustListbox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\UcMediaElement\MediaElementUc.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\UcListBox\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\UcListBox\ListBoxUc.Theme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\AskPrice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\CarChoosePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\CarCompareListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\CarComparePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\CarSeriesArticleEndPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\CarSeriesDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\carSeriesImagePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\CarSeriesListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\CarSeriesQuotePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\ChooseSpec.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\DealerDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\ShowBigImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\TopicDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\ArticlePartPageUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\CarSeriesPartPageUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\Newest\ArticleEndPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\Newest\CommentListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\Newest\CommentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\Newest\ShowBigImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\NewsListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\NewsPartPageUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\News\CityListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\News\NewsCommentListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Channel\News\NewsEndPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Forum\ForumListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Forum\LetterListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Forum\ReplyCommentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Forum\SendLetterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Forum\ShowBigImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Forum\TopicDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\More\AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\More\FeedBackPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\More\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\More\MorePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CallPrice.jpg" />
+    <Resource Include="Images\detail1.jpg" />
+    <Resource Include="Images\瓷片图标\说客.png" />
+    <Content Include="Images\bar_all.png" />
+    <Content Include="Images\bar_louzhu.png" />
+    <Content Include="Images\bar_xshquanbu.png" />
+    <Content Include="Images\bg.png" />
+    <Content Include="Images\car_addcomspec.png" />
+    <Content Include="Images\car_added.png" />
+    <Content Include="Images\car_addvs.png" />
+    <Content Include="Images\car_addvs1.png" />
+    <Content Include="Images\car_del.png" />
+    <Content Include="Images\car_yincang.png" />
+    <Content Include="Images\close.png" />
+    <Content Include="Images\More\VS.png" />
+    <Content Include="Images\selectall.png" />
+    <Content Include="Images\VideoPlayer\fast_forward.png" />
+    <Content Include="Images\VideoPlayer\full_screen.png" />
+    <Content Include="Images\VideoPlayer\pause.png" />
+    <Content Include="Images\VideoPlayer\play.png" />
+    <Content Include="Images\VideoPlayer\fast_backward.png" />
+    <Content Include="Images\vs1.png" />
+    <Content Include="lib\DBCS.dll" />
+    <Content Include="lib\HtmlAgilityPack.dll" />
+    <Content Include="SplashScreenImage.Screen-720p.jpg" />
+    <Content Include="SplashScreenImage.Screen-WVGA.jpg" />
+    <Content Include="SplashScreenImage.Screen-WXGA.jpg" />
+    <Resource Include="Images\Background.jpg" />
+    <Resource Include="Images\smallImage.jpg" />
+    <Resource Include="Images\topImage.jpg" />
+    <Content Include="Images\bar_Comment.png" />
+    <Resource Include="Images\pop.png" />
+    <Resource Include="Images\More\autohome.png" />
+    <Resource Include="Images\More\clear.png" />
+    <Resource Include="Images\More\feedback.png" />
+    <Resource Include="Images\More\login.png" />
+    <Resource Include="Images\More\about.png" />
+    <Content Include="Images\NavigateImg\help1.png" />
+    <Content Include="Images\NavigateImg\help2.png" />
+    <Content Include="Images\NavigateImg\help4.png" />
+    <Content Include="Images\NavigateImg\help5.png" />
+    <Content Include="LargeBackground.png" />
+    <Content Include="lib\MessageControl.dll" />
+    <Content Include="lib\WaterTextBox.dll" />
+    <Content Include="MiddelBackground .png" />
+    <Content Include="MiddelBackground.png" />
+    <Content Include="SmallBackground .png" />
+    <Content Include="SmallBackground.png" />
+    <Content Include="SplashScreenImage.jpg" />
+    <Resource Include="Images\article_comment.png" />
+    <Resource Include="Images\about.png" />
+    <Content Include="Images\bar_drive.png" />
+    <Content Include="Images\bar_lastReply.png" />
+    <Content Include="Images\bar_news.png" />
+    <Content Include="Images\bar_next.png" />
+    <Content Include="Images\bar_paging.png" />
+    <Content Include="Images\bar_pre.png" />
+    <Content Include="Images\bar_qutotations.png" />
+    <Content Include="Images\bar_shoppingGuid.png" />
+    <Resource Include="Images\CallPhone.jpg" />
+    <Resource Include="Images\Detail.jpg" />
+    <Content Include="Images\icon_location.png" />
+    <Content Include="Images\bar_ring.png" />
+    <Resource Include="Images\LOGO.png" />
+    <Content Include="Images\refresh.png" />
+    <Content Include="Images\bar_myLocation.png" />
+    <Content Include="Images\bar_newest.png" />
+    <Resource Include="Images\瓷片图标\中控方向盘.png" />
+    <Resource Include="Images\瓷片图标\主题论坛.png" />
+    <Resource Include="Images\瓷片图标\其他细节.png" />
+    <Resource Include="Images\瓷片图标\地区论坛.png" />
+    <Resource Include="Images\瓷片图标\导购.png" />
+    <Resource Include="Images\瓷片图标\我的论坛.png" />
+    <Resource Include="Images\瓷片图标\技术.png" />
+    <Resource Include="Images\瓷片图标\改装.png" />
+    <Resource Include="Images\瓷片图标\文化.png" />
+    <Resource Include="Images\瓷片图标\新闻.png" />
+    <Resource Include="Images\瓷片图标\游记.png" />
+    <Resource Include="Images\瓷片图标\用车.png" />
+    <Resource Include="Images\瓷片图标\行情.png" />
+    <Resource Include="Images\瓷片图标\评测.png" />
+    <Resource Include="Images\瓷片图标\赛事.png" />
+    <Resource Include="Images\瓷片图标\车厢座椅.png" />
+    <Resource Include="Images\瓷片图标\车系论坛.png" />
+    <Resource Include="Images\瓷片图标\车身外观.png" />
+    <Content Include="Images\bar_dealerLocation.png" />
+    <Content Include="lib\UmengClassLibrary.dll" />
+    <Resource Include="Images\MainRefresh.png" />
+    <Content Include="Images\bar_checkComment.png" />
+    <Content Include="Images\bar_writeComment.png" />
+    <Content Include="Images\bar_submit.png" />
+    <Resource Include="Images\loadImage.png" />
+    <Content Include="lib\Coding4Fun.Phone.Controls.dll" />
+    <Content Include="lib\Coding4Fun.Phone.Controls.Toolkit.dll" />
+    <Content Include="lib\Coding4Fun.Phone.Site.Controls.dll" />
+    <Resource Include="Images\autohome.jpg" />
+    <Resource Include="Images\MainLOGO.png" />
+    <Content Include="Background.png" />
+    <Content Include="ApplicationIcon.png" />
+    <Content Include="lib\Microsoft.Phone.Controls.Toolkit.dll" />
+    <Content Include="lib\Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLayer\CommonLayer.csproj">
+      <Project>{E79844D2-07F8-47F5-AF38-DC4BE9A1BD65}</Project>
+      <Name>CommonLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{CC8908DF-E5D4-4818-A415-A2A9166BC83D}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModels\ViewModels.csproj">
+      <Project>{8738F857-7357-4D7E-9ADF-7F69D534E14A}</Project>
+      <Name>ViewModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions />
+</Project>
