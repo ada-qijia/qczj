@@ -24,10 +24,10 @@ namespace AutoWP7
             //Uri uri = new Uri(urlStr, UriKind.Absolute);
             //this.webBrowser.Navigate(uri);
 
-       
 
-            string video = "http://video.ch9.ms/ch9/0420/5ad1f148-cad7-4d82-a7e4-898e009c0420/20140905TWC9_mid.mp4";
-            string cover = "http://static.youku.com/index/img/header/yklogo.png";
+
+            string video = "http://video.ch9.ms/ch9/eafd/4f2a4d99-05fe-4ebd-97c2-709957a5eafd/EnableTestingInProductionInAzureWebsites_mid.mp4";
+            string cover = "http://video.ch9.ms/ch9/eafd/4f2a4d99-05fe-4ebd-97c2-709957a5eafd/EnableTestingInProductionInAzureWebsites_512.jpg";
             videoPlayer.SetCover(cover);
             videoPlayer.SetSource(video);
 

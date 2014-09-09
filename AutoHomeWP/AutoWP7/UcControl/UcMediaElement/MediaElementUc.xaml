@@ -52,27 +52,27 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Grid x:Name="HorizontalTemplate" Margin="{StaticResource PhoneHorizontalMargin}">
-                                <Rectangle x:Name="HorizontalTrack" Fill="{TemplateBinding Background}" Height="12" IsHitTestVisible="False" Margin="0,22"/>
-                                <Rectangle x:Name="HorizontalFill" Fill="{TemplateBinding Foreground}" Height="12" IsHitTestVisible="False" Margin="0,22">
+                            <Grid x:Name="HorizontalTemplate">
+                                <Rectangle x:Name="HorizontalTrack" Fill="{TemplateBinding Background}" Height="4" IsHitTestVisible="False" Margin="0"/>
+                                <Rectangle x:Name="HorizontalFill" Fill="{TemplateBinding Foreground}" Height="4" IsHitTestVisible="False" Margin="0">
                                     <Rectangle.Clip>
                                         <RectangleGeometry Rect="0, 0, 6, 12"/>
                                     </Rectangle.Clip>
                                 </Rectangle>
-                                <Rectangle x:Name="HorizontalCenterElement" Fill="{StaticResource PhoneForegroundBrush}" HorizontalAlignment="Left" Height="24" Margin="0,16" Width="12" Opacity="0">
+                                <Rectangle x:Name="HorizontalCenterElement" Fill="{StaticResource PhoneForegroundBrush}" HorizontalAlignment="Left" Height="4" Margin="0" Width="4" Opacity="0">
                                     <Rectangle.RenderTransform>
                                         <TranslateTransform/>
                                     </Rectangle.RenderTransform>
                                 </Rectangle>
                             </Grid>
-                            <Grid x:Name="VerticalTemplate" Margin="{StaticResource PhoneVerticalMargin}">
-                                <Rectangle x:Name="VerticalTrack" Fill="{TemplateBinding Background}" IsHitTestVisible="False" Margin="18,0,18,0" Width="12"/>
-                                <Rectangle x:Name="VerticalFill" Fill="{TemplateBinding Foreground}" IsHitTestVisible="False" Margin="18,0,18,0" Width="12">
+                            <Grid x:Name="VerticalTemplate">
+                                <Rectangle x:Name="VerticalTrack" Fill="{TemplateBinding Background}" IsHitTestVisible="False" Margin="0" Width="4"/>
+                                <Rectangle x:Name="VerticalFill" Fill="{TemplateBinding Foreground}" IsHitTestVisible="False" Margin="0" Width="4">
                                     <Rectangle.Clip>
                                         <RectangleGeometry Rect="0, 0, 12, 6"/>
                                     </Rectangle.Clip>
                                 </Rectangle>
-                                <Rectangle x:Name="VerticalCenterElement" Fill="{StaticResource PhoneForegroundBrush}" Height="12" Margin="12,0,12,0" VerticalAlignment="Top" Width="24" Opacity="0">
+                                <Rectangle x:Name="VerticalCenterElement" Fill="{StaticResource PhoneForegroundBrush}" Height="4" Margin="0" VerticalAlignment="Top" Width="4" Opacity="0">
                                     <Rectangle.RenderTransform>
                                         <TranslateTransform/>
                                     </Rectangle.RenderTransform>
@@ -86,14 +86,14 @@
 
     </UserControl.Resources>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Background="#ff000000">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VSGTime">
                 <VisualStateGroup.Transitions>
                     <VisualTransition GeneratedDuration="0:0:0.3"/>
                 </VisualStateGroup.Transitions>
-                <VisualState x:Name="SmallTimePanelHidden"/>
-                <VisualState x:Name="SmallTimePanelShown">
+                <VisualState x:Name="TimePanelHidden"/>
+                <VisualState x:Name="TimePanelShown">
                     <Storyboard>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="timePanel">
                             <DiscreteObjectKeyFrame KeyTime="0">
@@ -125,46 +125,92 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <MediaElement x:Name="mediaElement" Grid.RowSpan="2" Tap="mediaElement_Tap"/>
+        <MediaElement x:Name="mediaElement" Grid.RowSpan="2" Tap="mediaElement_Tap" ManipulationDelta="mediaElement_ManipulationDelta"/>
 
-        <Grid x:Name="timePanel" VerticalAlignment="Bottom" Background="#80000000" Grid.Row="1" Opacity="0" IsHitTestVisible="False">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="48"/>
-                <ColumnDefinition Width="90"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="90"/>
-                <ColumnDefinition Width="48"/>
-            </Grid.ColumnDefinitions>
+        <Grid x:Name="timePanel" Grid.Row="1" Opacity="0" IsHitTestVisible="False" Background="#80000000">
 
-            <Grid x:Name="playPauseButtons" Grid.Column="0" Tap="playPauseButtons_Tap">
-                <Image x:Name="playButtonSmall" Source="/Images/VideoPlayer/play.png" Stretch="Uniform" />
-                <Image x:Name="pauseButtonSmall" Source="/Images/VideoPlayer/pause.png" Stretch="Uniform" Opacity="0" IsHitTestVisible="False"/>
+            <Grid x:Name="timePanelSmall">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="48"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid x:Name="playPauseButtons" Grid.Column="0" Tap="playPauseButtons_Tap">
+                    <Image x:Name="playButtonSmall" Source="/Images/VideoPlayer/play.png" Stretch="Uniform" />
+                    <Image x:Name="pauseButtonSmall" Source="/Images/VideoPlayer/pause.png" Stretch="Uniform" Opacity="0" IsHitTestVisible="False"/>
+                </Grid>
+
+                <Grid x:Name="screenSizeButtons" Grid.Column="4" Tap="screenSizeButtons_Tap">
+                    <Image x:Name="screenExpandButtonSmall" Source="/Images/VideoPlayer/full_screen.png" Stretch="Uniform"/>
+                    <Image x:Name="screenShrinkButtonSmall" Source="/Images/VideoPlayer/pause.png" Stretch="Uniform" Opacity="0" IsHitTestVisible="False"/>
+                </Grid>
+
+                <TextBlock Grid.Column="1" x:Name="currentTimeTextSmall" Text="00:00:00" Style="{StaticResource VideoPlayer_Time_Style}"/>
+                <TextBlock Grid.Column="3" x:Name="totalTimeTextSmall" Text="00:01:30" Style="{StaticResource VideoPlayer_Time_Style}"/>
+                <!--<ProgressBar Grid.Column="2" x:Name="timeBar" Value="0" Maximum="100"/>-->
+                <Slider Grid.Column="2" x:Name="timeBarSmall" Value="0" Maximum="100" 
+                        ManipulationStarted="timeBar_ManipulationStarted"
+                        ManipulationCompleted="timeBar_ManipulationCompleted" 
+                        Style="{StaticResource SliderStyle1}"/>
             </Grid>
 
-            <Grid x:Name="fullScreenButtons" Grid.Column="4" Tap="fullScreenButtons_Tap">
-                <Image x:Name="fullScreenButton" Source="/Images/VideoPlayer/full_screen.png" Stretch="Uniform"/>
-                <Image x:Name="smallScreenButton" Source="/Images/VideoPlayer/pause.png" Stretch="Uniform" Opacity="0" IsHitTestVisible="False"/>
+            <Grid x:Name="timePanelBig" Opacity="0" IsHitTestVisible="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="48"/>
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="1" Grid.Column="2" x:Name="backwardButton" 
+                   Source="/Images/VideoPlayer/fast_backward.png" Stretch="Uniform" 
+                   Tap="backwardButton_Tap"/>
+
+                <Image Grid.Row="1" Grid.Column="4" x:Name="forwardButton" 
+                   Source="/Images/VideoPlayer/fast_forward.png" Stretch="Uniform" 
+                   Tap="forwardButton_Tap"/>
+
+                <Grid x:Name="playPauseButtonsBig" Grid.Row="1" Grid.Column="3" Tap="playPauseButtons_Tap">
+                    <Image x:Name="playButtonBig" Source="/Images/VideoPlayer/play.png" Stretch="Uniform" />
+                    <Image x:Name="pauseButtonBig" Source="/Images/VideoPlayer/pause.png" Stretch="Uniform" Opacity="0" IsHitTestVisible="False"/>
+                </Grid>
+
+                <Grid x:Name="screenSizeButtonsBig" Grid.Row="1" Grid.Column="6" Tap="screenSizeButtons_Tap" HorizontalAlignment="Right">
+                    <Image x:Name="screenExpandButtonBig" Source="/Images/VideoPlayer/full_screen.png" Stretch="Uniform"/>
+                    <Image x:Name="screenShrinkButtonBig" Source="/Images/VideoPlayer/pause.png" Stretch="Uniform" Opacity="0" IsHitTestVisible="False"/>
+                </Grid>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" x:Name="currentTimeTextBig" Text="00:00:00" Style="{StaticResource VideoPlayer_Time_Style}"/>
+                <TextBlock Grid.Row="0" Grid.Column="6" x:Name="totalTimeTextBig" Text="00:01:30" Style="{StaticResource VideoPlayer_Time_Style}"/>
+                <Slider Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" x:Name="timeBarBig" Value="0" Maximum="100" 
+                        ManipulationStarted="timeBar_ManipulationStarted"
+                        ManipulationCompleted="timeBar_ManipulationCompleted" 
+                        Style="{StaticResource SliderStyle1}"/>
             </Grid>
 
-            <TextBlock Grid.Column="1" x:Name="currentTimeText" Text="00:00:00" Style="{StaticResource VideoPlayer_Time_Style}"/>
-            <TextBlock Grid.Column="3" x:Name="totalTimeText" Text="00:01:30" Style="{StaticResource VideoPlayer_Time_Style}"/>
-            <!--<ProgressBar Grid.Column="2" x:Name="timeBar" Value="0" Maximum="100"/>-->
-            <Slider Grid.Column="2" x:Name="timeBar" Value="0" Maximum="100" 
-				ManipulationStarted="timeBar_ManipulationStarted"
-				ManipulationCompleted="timeBar_ManipulationCompleted" 
-				Style="{StaticResource SliderStyle1}"/>
         </Grid>
 
-        <Grid x:Name="volumePanel" HorizontalAlignment="Right" Background="#80000000" Grid.Row="0" Margin="0,48,24,48" Opacity="0" IsHitTestVisible="False" >
-            <Slider x:Name="volumeBar" Minimum="0.0" Maximum="1.0" Width="64" 
+        <Grid x:Name="volumePanel" HorizontalAlignment="Right" Background="#80000000" Grid.Row="0" Margin="0,48,24,48" Opacity="0" IsHitTestVisible="False" Width="72" >
+            <Slider x:Name="volumeBar" Minimum="0.0" Maximum="1.0" 
 				Style="{StaticResource SliderStyle1}"
 				ManipulationCompleted="volumeBar_ManipulationCompleted" 
-				Orientation="Vertical"/>
+				Orientation="Vertical" Margin="0,24"/>
         </Grid>
 
         <Image x:Name="coverImage" Grid.RowSpan="2" Tap="cover_Tap" Stretch="UniformToFill"/>
