@@ -178,8 +178,6 @@ namespace AutoWP7
 
         }
 
-
-
         #region 头条数据加载
 
         //计时器
@@ -486,7 +484,6 @@ namespace AutoWP7
         }
         #endregion
 
-
         #region  频 道
         /// <summary>
         /// 新闻
@@ -497,12 +494,19 @@ namespace AutoWP7
         }
 
         /// <summary>
+        /// Video
+        /// </summary>
+        private void videoHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.NavigationService.Navigate(CreateChannelUrl(1));
+        }
+
+        /// <summary>
         /// 评测
         /// </summary>
         private void evaluatingHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(1));
-
         }
         /// <summary>
         /// 行情
@@ -568,7 +572,6 @@ namespace AutoWP7
             this.NavigationService.Navigate(CreateChannelUrl(9));
         }
         #endregion
-
 
         // 文章最终页
         private void NaviGoArticleEndPage_Tap(object sender, System.Windows.Input.GestureEventArgs e)

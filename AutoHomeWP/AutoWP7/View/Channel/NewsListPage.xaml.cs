@@ -32,11 +32,11 @@ namespace AutoWP7.View.Channel
                     }
                     break;
             }
-
         }
 
         //标示是否已加载数据
         bool isNewsLoaded = false;
+        bool isVideoLoaded = false;
         bool isEvalLoaded = false;
         bool isQutoLoaded = false;
         bool isShoopingLoaded = false;
@@ -49,7 +49,6 @@ namespace AutoWP7.View.Channel
         bool isTechnologyLoaded = false;
         private void piv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             switch (piv.SelectedIndex)
             {
 
@@ -65,7 +64,19 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 1: //评测
+                case 1: //视频
+                    {
+                        UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "视频点击量");
+                        pageType = 1;
+                        if (isVideoLoaded == false)
+                        {
+                            VideoLoadData(1, loadPageSize);
+                            isVideoLoaded = true;
+
+                        }
+                    }
+                    break;
+                case 2: //评测
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "评测点击量");
                         pageType = 1;
@@ -76,7 +87,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 2: //行情
+                case 3: //行情
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "行情点击量");
                         pageType = 1;
@@ -95,7 +106,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 3: //导购
+                case 4: //导购
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "导购点击量");
                         pageType = 1;
@@ -106,7 +117,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 4:  //用车
+                case 5:  //用车
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "用车点击量");
                         pageType = 1;
@@ -117,7 +128,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 5:  //文化
+                case 6:  //文化
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "文化点击量");
                         pageType = 1;
@@ -128,7 +139,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 6: //改装
+                case 7: //改装
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "改装点击量");
                         pageType = 1;
@@ -139,7 +150,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 7: //说客
+                case 8: //说客
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "说客点击量");
                         pageType = 2;
@@ -150,7 +161,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 8: //游记
+                case 9: //游记
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "游记点击量");
                         pageType = 1;
@@ -161,7 +172,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 9: //技术
+                case 10: //技术
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "技术点击量");
                         pageType = 1;
@@ -174,7 +185,6 @@ namespace AutoWP7.View.Channel
                     break;
             }
         }
-
 
         #region 新闻数据加载
 
@@ -233,6 +243,60 @@ namespace AutoWP7.View.Channel
                     newsListbox.ItemsSource = newsDataSource;
                 }
             }
+        }
+        #endregion
+
+        #region 视频
+
+        public ObservableCollection<NewsModel> videoDataSource = null;
+        NewsViewModel videoComm = null;
+        int videoPageIndex = 1; 
+
+        public void VideoLoadData(int pageIndex, int pageSize)
+        {
+            GlobalIndicator.Instance.Text = "正在获取中...";
+            GlobalIndicator.Instance.IsBusy = true;
+
+            if (videoComm == null)
+            {
+                videoComm = new NewsViewModel();
+            }
+            
+            //http://app.api.autohome.com.cn/wpv1.4/news/videos-a2-pm3-v1.5.0-vt0-p1-s20.html
+            string format = App.appUrl + App.versionStr + "/news/videos-" + App.AppInfo + "-vt{0}-p{1}-s{2}.html";
+            string videoType = "0";//video list channel
+            string url = string.Format(format, videoType, pageIndex, pageSize);
+            videoComm.LoadDataAysnc(url);
+            videoComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(videoComm_LoadDataCompleted);
+        }
+
+        void videoComm_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<NewsModel>> e)
+        {
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false;
+            if (e.Error != null)
+            {
+                Common.NetworkAvailablePrompt();
+            }
+            else
+            {
+                if (e.Result.Count() <= 1 && videoPageIndex > 1)
+                {
+                    Common.showMsg("已经是最后一页了");
+                }
+                else
+                {
+                    videoDataSource = (ObservableCollection<NewsModel>)e.Result;
+                    videoListbox.ItemsSource = videoDataSource;
+                }
+            }
+        }
+
+        private void videoLoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            videoDataSource.RemoveAt(videoDataSource.Count - 1);
+            videoPageIndex++;
+            VideoLoadData(videoPageIndex, loadPageSize);
         }
         #endregion
 
@@ -823,39 +887,43 @@ namespace AutoWP7.View.Channel
                     if (newsDataSource != null)
                         news = newsDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 1: //评测
+                case 1: //视频
+                    if (videoDataSource != null)
+                        news = videoDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
+                    break;
+                case 2: //评测
                     if (evalDataSource != null)
                         news = evalDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 2: //行情
+                case 3: //行情
                     if (qutoDataSource != null)
                         news = qutoDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 3: //导购
+                case 4: //导购
                     if (shoppingDataSource != null)
                         news = shoppingDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 4:  //用车
+                case 5:  //用车
                     if (useCarDataSource != null)
                         news = useCarDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 5:  //文化
+                case 6:  //文化
                     if (acticleDataSource != null)
                         news = acticleDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 6: //改装
+                case 7: //改装
                     if (changeDataSource != null)
                         news = changeDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 7: //说客
+                case 8: //说客
                     if (shuokeDataSource != null)
                         news = shuokeDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 8: //游记
+                case 9: //游记
                     if (travelsDataSoure != null)
                         news = travelsDataSoure.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 9: //技术
+                case 10: //技术
                     if (technologyDataSource != null)
                         news = technologyDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
