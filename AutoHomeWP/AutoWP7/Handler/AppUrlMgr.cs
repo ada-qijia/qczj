@@ -68,5 +68,6 @@ namespace AutoWP7.Handler
                 return App.appUrl + App.versionStr + "/news/newslist-" + App.AppInfo + "-c{0}-nt{1}-p{2}-s{3}-l{4}.html";
             }
         }
+
     }
 }
