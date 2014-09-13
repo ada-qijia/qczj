@@ -77,7 +77,7 @@ namespace ViewModels
         /// 请求Json格式的数据
         /// </summary>
         /// <param name="url">请求的地址url</param>
-        /// <param name="datatype">数据类型，1-文章类数据（默认），2-说客</param>
+        /// <param name="datatype">数据类型，1-文章类数据（默认），2-说客，3-视频</param>
         public void LoadDataAysnc(string url,int datatype=1)
         {
             WebClient wc = new WebClient();
@@ -156,6 +156,35 @@ namespace ViewModels
 
                             model = new NewsModel();
                             model.Total = (int)json.SelectToken("result").SelectToken("total");
+                            model.showData = "Collapsed";
+                            model.loadMore = "点击加载更多......";
+                            newestDataSource.Add(model);
+                        }
+                        else if (datatype == 3)
+                        {
+                            JArray newestJson = (JArray)json.SelectToken("result").SelectToken("list");
+
+                            VideoModel model = null;
+                            for (int i = 0; i < newestJson.Count; i++)
+                            {
+                                model = new VideoModel();
+                                model.id = (int)newestJson[i].SelectToken("id");
+                                model.title = (string)newestJson[i].SelectToken("title");
+                                model.time = (string)newestJson[i].SelectToken("time");
+                                model.type = (string)newestJson[i].SelectToken("type");
+                                model.indexdetail = (string)newestJson[i].SelectToken("indexdetail");
+                                model.smallpic = (string)newestJson[i].SelectToken("smallimg");
+                                model.replycount = newestJson[i].SelectToken("replycount").ToString();
+                                model.playcount = newestJson[i].SelectToken("playcount").ToString();
+                                model.nickname = (string)newestJson[i].SelectToken("nickname");
+                                model.videoaddress = (string)newestJson[i].SelectToken("videoaddress");
+                                model.shareaddress = (string)newestJson[i].SelectToken("shareaddress");
+                                model.showData = "Visible";
+                                newestDataSource.Add(model);
+                            }
+
+                            model = new VideoModel();
+                            model.Total = (int)json.SelectToken("result").SelectToken("rowcount");
                             model.showData = "Collapsed";
                             model.loadMore = "点击加载更多......";
                             newestDataSource.Add(model);

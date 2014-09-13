@@ -13,26 +13,9 @@ namespace AutoWP7.View.Channel
 {
     public partial class NewsListPage : PhoneApplicationPage
     {
-        public NewsListPage()
-        {
-            InitializeComponent();
-        }
-
         //页容量
         int loadPageSize = 20;
         int pageType = 1;
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            switch (e.NavigationMode)
-            {
-                case System.Windows.Navigation.NavigationMode.New:
-                    {
-                        this.piv.SelectedIndex = int.Parse(NavigationContext.QueryString["index"]);
-                    }
-                    break;
-            }
-        }
 
         //标示是否已加载数据
         bool isNewsLoaded = false;
@@ -47,6 +30,44 @@ namespace AutoWP7.View.Channel
         bool isShuokeLoaded = false;
         bool isTravelsLoaded = false;
         bool isTechnologyLoaded = false;
+
+        bool isFilterShown = false;
+
+        #region Lifecycle
+
+        public NewsListPage()
+        {
+            InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            switch (e.NavigationMode)
+            {
+                case System.Windows.Navigation.NavigationMode.New:
+                    {
+                        this.piv.SelectedIndex = int.Parse(NavigationContext.QueryString["index"]);
+                    }
+                    break;
+            }
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (isFilterShown)
+            {
+                e.Cancel = true;
+                HideVideoFilter();
+                return;
+            }
+            base.OnBackKeyPress(e);
+        }
+
+        #endregion
+
+        #region Pivot
+
         private void piv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             switch (piv.SelectedIndex)
@@ -186,6 +207,8 @@ namespace AutoWP7.View.Channel
             }
         }
 
+        #endregion
+
         #region 新闻数据加载
 
         public ObservableCollection<NewsModel> newsDataSource = null;
@@ -250,7 +273,7 @@ namespace AutoWP7.View.Channel
 
         public ObservableCollection<NewsModel> videoDataSource = null;
         NewsViewModel videoComm = null;
-        int videoPageIndex = 1; 
+        int videoPageIndex = 1;
 
         public void VideoLoadData(int pageIndex, int pageSize)
         {
@@ -261,13 +284,13 @@ namespace AutoWP7.View.Channel
             {
                 videoComm = new NewsViewModel();
             }
-            
+
             //http://app.api.autohome.com.cn/wpv1.4/news/videos-a2-pm3-v1.5.0-vt0-p1-s20.html
             string format = App.appUrl + App.versionStr + "/news/videos-" + App.AppInfo + "-vt{0}-p{1}-s{2}.html";
             string videoType = "0";//video list channel
             string url = string.Format(format, videoType, pageIndex, pageSize);
-            videoComm.LoadDataAysnc(url);
             videoComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(videoComm_LoadDataCompleted);
+            videoComm.LoadDataAysnc(url, 3);
         }
 
         void videoComm_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<NewsModel>> e)
@@ -298,6 +321,25 @@ namespace AutoWP7.View.Channel
             videoPageIndex++;
             VideoLoadData(videoPageIndex, loadPageSize);
         }
+
+        private void videoFilterButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowVideoFilter();
+        }
+
+        protected void ShowVideoFilter()
+        {
+            this.videoFilter.Opacity = 1;
+            this.videoFilter.IsHitTestVisible = true;
+            isFilterShown = true;
+        }
+        protected void HideVideoFilter()
+        {
+            this.videoFilter.Opacity = 0;
+            this.videoFilter.IsHitTestVisible = false;
+            isFilterShown = false;
+        }
+
         #endregion
 
         #region 评测数据加载
