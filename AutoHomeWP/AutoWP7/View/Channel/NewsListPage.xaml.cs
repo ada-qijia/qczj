@@ -8,6 +8,7 @@ using Microsoft.Phone.Controls;
 using Model;
 using ViewModels;
 using ViewModels.Handler;
+using System.Windows;
 
 namespace AutoWP7.View.Channel
 {
@@ -329,14 +330,12 @@ namespace AutoWP7.View.Channel
 
         protected void ShowVideoFilter()
         {
-            this.videoFilter.Opacity = 1;
-            this.videoFilter.IsHitTestVisible = true;
+            VisualStateManager.GoToState(this, "VSVideoFilterShown", true);
             isFilterShown = true;
         }
         protected void HideVideoFilter()
         {
-            this.videoFilter.Opacity = 0;
-            this.videoFilter.IsHitTestVisible = false;
+            VisualStateManager.GoToState(this, "VSVideoFilterHidden", true);
             isFilterShown = false;
         }
 
@@ -978,6 +977,22 @@ namespace AutoWP7.View.Channel
         private void piv_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
 
+        }
+
+        private void videoFilter_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            string tag = ((FrameworkElement)sender).Tag.ToString();
+            switch (tag)
+            {
+                case "all":
+
+                    break;
+                case "":
+                    break;
+                default:
+                    break;
+            }
+            HideVideoFilter();
         }
     }
 

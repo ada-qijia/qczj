@@ -45,8 +45,6 @@
                 </Border>
             </Grid>
         </DataTemplate>
-
-
         <!--组-->
         <DataTemplate x:Key="jumpListItemTemplate">
             <Grid Margin="10,10,0,0" Width="480"   Tap="carBrandIcon_Tap" Tag="{Binding Id}" >
