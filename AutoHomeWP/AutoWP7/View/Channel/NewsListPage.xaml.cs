@@ -210,7 +210,7 @@ namespace AutoWP7.View.Channel
 
         #endregion
 
-        #region 新闻数据加载
+        #region 新闻
 
         public ObservableCollection<NewsModel> newsDataSource = null;
         NewsViewModel comm = null;
@@ -244,7 +244,7 @@ namespace AutoWP7.View.Channel
         }
 
         /// <summary>
-        /// 新闻—数据加载完成
+        /// 新闻—完成
         /// </summary>
         void comm_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<NewsModel>> e)
         {
@@ -272,9 +272,10 @@ namespace AutoWP7.View.Channel
 
         #region 视频
 
-        public ObservableCollection<NewsModel> videoDataSource = null;
+        ObservableCollection<NewsModel> videoDataSource = null;
         NewsViewModel videoComm = null;
         int videoPageIndex = 1;
+        string videoType = "0";//all
 
         public void VideoLoadData(int pageIndex, int pageSize)
         {
@@ -339,9 +340,21 @@ namespace AutoWP7.View.Channel
             isFilterShown = false;
         }
 
+        private void videoFilter_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            string tag = ((FrameworkElement)sender).Tag.ToString();
+            videoType = tag;
+            HideVideoFilter();
+
+            //reload data
+            videoPageIndex = 1;
+            videoDataSource.RemoveAt(videoDataSource.Count - 1);
+            VideoLoadData(videoPageIndex, loadPageSize);
+        }
+
         #endregion
 
-        #region 评测数据加载
+        #region 评测
 
         //评测集合
         public ObservableCollection<NewsModel> evalDataSource = null;
@@ -406,7 +419,7 @@ namespace AutoWP7.View.Channel
         }
         #endregion
 
-        #region 行情数据加载
+        #region 行情
 
         public ObservableCollection<NewsModel> qutoDataSource = null;
         NewsViewModel qutoComm = null;
@@ -480,7 +493,7 @@ namespace AutoWP7.View.Channel
         }
         #endregion
 
-        #region 导购数据加载
+        #region 导购
 
         public ObservableCollection<NewsModel> shoppingDataSource = new ObservableCollection<NewsModel>();
         NewsViewModel shoppingComm = null;
@@ -549,7 +562,7 @@ namespace AutoWP7.View.Channel
 
         #endregion
 
-        #region 用车数据加载
+        #region 用车
 
         public ObservableCollection<NewsModel> useCarDataSource = null;
         NewsViewModel useCarComm = null;
@@ -608,7 +621,7 @@ namespace AutoWP7.View.Channel
         }
         #endregion
 
-        #region 文化数据加载
+        #region 文化
 
         public ObservableCollection<NewsModel> acticleDataSource = null;
         NewsViewModel cultureComm = null;
@@ -668,7 +681,7 @@ namespace AutoWP7.View.Channel
 
         #endregion
 
-        #region 改装数据加载
+        #region 改装
 
         public ObservableCollection<NewsModel> changeDataSource = null;
         NewsViewModel changeComm = null;
@@ -728,7 +741,7 @@ namespace AutoWP7.View.Channel
         }
         #endregion
 
-        #region 说客数据加载
+        #region 说客
 
         public ObservableCollection<NewsModel> shuokeDataSource = null;
         NewsViewModel shuokeComm = null;
@@ -789,7 +802,7 @@ namespace AutoWP7.View.Channel
         }
         #endregion
 
-        #region 游记数据加载
+        #region 游记
 
         public ObservableCollection<NewsModel> travelsDataSoure = null;
         NewsViewModel travelsComm = null;
@@ -848,7 +861,7 @@ namespace AutoWP7.View.Channel
         }
         #endregion
 
-        #region  技术数据加载
+        #region  技术
 
         public ObservableCollection<NewsModel> technologyDataSource = null;
         NewsViewModel technologyComm = null;
@@ -979,21 +992,6 @@ namespace AutoWP7.View.Channel
 
         }
 
-        private void videoFilter_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            string tag = ((FrameworkElement)sender).Tag.ToString();
-            switch (tag)
-            {
-                case "all":
-
-                    break;
-                case "":
-                    break;
-                default:
-                    break;
-            }
-            HideVideoFilter();
-        }
     }
 
 }
