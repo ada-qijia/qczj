@@ -1,0 +1,60 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.Channel.News.VideoEndPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:AutoWP7.UcControl"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="White">
+        <ScrollViewer>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <uc:MediaElementUc Grid.Row="0" x:Name="videoPlayer" FullScreen="videoPlayer_FullScreen"/>
+                <TextBlock Grid.Row="1" x:Name="titleTextBlock" Text="{Binding Title}" Foreground="#ff000000" FontSize="25"/>
+                
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Style="{StaticResource News_Time_Style}" Text="{Binding categoryname}"/>
+                </Grid>
+                <TextBlock Grid.Row="3" x:Name="descriptionTextBlock" Text="{Binding Description}"/>
+            </Grid>
+        </ScrollViewer>
+
+        <ProgressBar Foreground="Blue" x:Name="ProgBar" Visibility="Collapsed" IsIndeterminate="True" Height="4" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />
+
+        <TextBlock x:Name="prompt" Visibility="Collapsed" Text="您的网络不可用~请检查连接设置" Height="200" Width="400" VerticalAlignment="Center" Foreground="LightGray" FontSize="26"/>
+        <Button x:Name="refreshButton" Content="点击刷新" Height="100" VerticalAlignment='Center' 
+                    HorizontalAlignment="Center" Width="160"  Tap="refreshButton_Tap_1"
+                    Background="#3cadeb" Foreground="White" Visibility="Collapsed"  />
+
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" IsVisible="True" Opacity="0.8"  IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton x:Name="checkComment" Click="checkComment_Click" IconUri="Images/bar_checkComment.png" Text="查看评论"/>
+        </shell:ApplicationBar>
+
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

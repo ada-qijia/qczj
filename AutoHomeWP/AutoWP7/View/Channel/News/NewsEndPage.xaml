@@ -13,7 +13,6 @@
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
     shell:SystemTray.IsVisible="False">
 
-    <!--LayoutRoot 是包含所有页面内容的根网格-->
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="730"/>
@@ -30,7 +29,6 @@
         
     </Grid>
 
-    <!--演示 ApplicationBar 用法的示例代码-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" IsVisible="True" Opacity="0.8"  IsMenuEnabled="False">
             <!--<shell:ApplicationBarIconButton x:Name="previousPage" Click="previousPage_Click" IconUri="Images/bar_pre.png" Text="上页"/>-->

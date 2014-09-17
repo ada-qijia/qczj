@@ -69,7 +69,6 @@ namespace ViewModels
         //事件通知
         public event EventHandler<APIEventArgs<IEnumerable<NewsDetailModel>>> LoadDataCompleted;
 
-
         WebClient wc = null;
         /// <summary>
         /// 请求文章详情页数据

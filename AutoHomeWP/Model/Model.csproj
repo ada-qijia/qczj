@@ -107,6 +107,8 @@
     <Compile Include="CarSeriesQuoteModel.cs" />
     <Compile Include="CommentModel.cs" />
     <Compile Include="CommentReplyModel.cs" />
+    <Compile Include="Base\BindableBase.cs" />
+    <Compile Include="VideoDetailModel.cs" />
     <Compile Include="DealerModel.cs" />
     <Compile Include="ForumModel.cs" />
     <Compile Include="ImageDuTuModel.cs" />

@@ -949,7 +949,10 @@ namespace AutoWP7.View.Channel
                     break;
                 case 1: //视频
                     if (videoDataSource != null)
+                    {
                         news = videoDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
+                        this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + gg.Tag, UriKind.Relative));
+                    }
                     break;
                 case 2: //评测
                     if (evalDataSource != null)
@@ -988,9 +991,12 @@ namespace AutoWP7.View.Channel
                         news = technologyDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
             }
+
             if (news != null)
+            {
                 pageindex = news.pageIndex;
-            this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=" + pageindex + "&pageType=" + pageType, UriKind.Relative));
+                this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=" + pageindex + "&pageType=" + pageType, UriKind.Relative));
+            }
         }
 
         #endregion
