@@ -14,6 +14,8 @@ namespace AutoWP7.View.Channel
 {
     public partial class NewsListPage : PhoneApplicationPage
     {
+        #region Property
+
         //页容量
         int loadPageSize = 20;
         int pageType = 1;
@@ -33,6 +35,8 @@ namespace AutoWP7.View.Channel
         bool isTechnologyLoaded = false;
 
         bool isFilterShown = false;
+
+        #endregion
 
         #region Lifecycle
 
@@ -289,7 +293,6 @@ namespace AutoWP7.View.Channel
 
             //http://app.api.autohome.com.cn/wpv1.4/news/videos-a2-pm3-v1.5.0-vt0-p1-s20.html
             string format = App.appUrl + App.versionStr + "/news/videos-" + App.AppInfo + "-vt{0}-p{1}-s{2}.html";
-            string videoType = "0";//video list channel
             string url = string.Format(format, videoType, pageIndex, pageSize);
             videoComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(videoComm_LoadDataCompleted);
             videoComm.LoadDataAysnc(url, 3);
@@ -344,12 +347,13 @@ namespace AutoWP7.View.Channel
         {
             string tag = ((FrameworkElement)sender).Tag.ToString();
             videoType = tag;
-            HideVideoFilter();
 
             //reload data
             videoPageIndex = 1;
             videoDataSource.RemoveAt(videoDataSource.Count - 1);
             VideoLoadData(videoPageIndex, loadPageSize);
+
+            HideVideoFilter();
         }
 
         #endregion
@@ -921,6 +925,8 @@ namespace AutoWP7.View.Channel
         }
         #endregion
 
+        #region News List & Item
+
         private static string CreateNewsListUrl(int cityid, int newsType, int pageIndex, int pageSize)
         {
             return string.Format(AppUrlMgr.NewsListUrl, cityid, newsType, pageIndex, pageSize, 0);
@@ -987,10 +993,8 @@ namespace AutoWP7.View.Channel
             this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=" + pageindex + "&pageType=" + pageType, UriKind.Relative));
         }
 
-        private void piv_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
+        #endregion
 
-        }
 
     }
 

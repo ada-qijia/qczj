@@ -70,7 +70,7 @@
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
         
-		<p:Pivot x:Name="piv" SelectionChanged="piv_SelectionChanged" Loaded="piv_Loaded">
+		<p:Pivot x:Name="piv" SelectionChanged="piv_SelectionChanged">
 			<!--新闻-->
 			<p:PivotItem >
 				<p:PivotItem.Header>
@@ -1107,42 +1107,42 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<Button Grid.Row="0" Grid.Column="0" x:Name="videoFilter1" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="全部" Tag="all">
+			<Button Grid.Row="0" Grid.Column="0" x:Name="videoFilter1" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="全部" Tag="0">
 				<Button.Projection>
 					<PlaneProjection RotationX="90"/>
 				</Button.Projection>
 			</Button>
-			<Button Grid.Row="0" Grid.Column="1" x:Name="videoFilter2" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="原创" Tag="original">
+			<Button Grid.Row="0" Grid.Column="1" x:Name="videoFilter2" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="原创" Tag="8">
 				<Button.Projection>
 					<PlaneProjection RotationX="90"/>
 				</Button.Projection>
 			</Button>
-			<Button Grid.Row="1" Grid.Column="0" x:Name="videoFilter3" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="试车" Tag="trialRun">
+			<Button Grid.Row="1" Grid.Column="0" x:Name="videoFilter3" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="试车" Tag="2">
 				<Button.Projection>
 					<PlaneProjection RotationX="90"/>
 				</Button.Projection>
 			</Button>
-			<Button Grid.Row="1" Grid.Column="1" x:Name="videoFilter4" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="花边" Tag="sidelight">
+			<Button Grid.Row="1" Grid.Column="1" x:Name="videoFilter4" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="花边" Tag="4">
 				<Button.Projection>
 					<PlaneProjection RotationX="90"/>
 				</Button.Projection>
 			</Button>
-			<Button Grid.Row="2" Grid.Column="0" x:Name="videoFilter5" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="事件" Tag="event">
+			<Button Grid.Row="2" Grid.Column="0" x:Name="videoFilter5" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="事件" Tag="7">
 				<Button.Projection>
 					<PlaneProjection RotationX="90"/>
 				</Button.Projection>
 			</Button>
-			<Button Grid.Row="2" Grid.Column="1" x:Name="videoFilter6" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="新车" Tag="newCar">
+			<Button Grid.Row="2" Grid.Column="1" x:Name="videoFilter6" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="新车" Tag="1">
 				<Button.Projection>
 					<PlaneProjection RotationX="90"/>
 				</Button.Projection>
 			</Button>
-			<Button Grid.Row="3" Grid.Column="0" x:Name="videoFilter7" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="广告" Tag="ad">
+			<Button Grid.Row="3" Grid.Column="0" x:Name="videoFilter7" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="广告" Tag="3">
 				<Button.Projection>
 					<PlaneProjection RotationX="90"/>
 				</Button.Projection>
 			</Button>
-			<Button Grid.Row="3" Grid.Column="1" x:Name="videoFilter8" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="技术" Tag="tech">
+			<Button Grid.Row="3" Grid.Column="1" x:Name="videoFilter8" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="技术" Tag="5">
 				<Button.Projection>
 					<PlaneProjection RotationX="90"/>
 				</Button.Projection>
