@@ -471,6 +471,7 @@
     <Content Include="Images\VideoPlayer\pause.png" />
     <Content Include="Images\VideoPlayer\play.png" />
     <Content Include="Images\VideoPlayer\fast_backward.png" />
+    <Content Include="Images\VideoPlayer\BigPlayButtonPortrait.png" />
     <Content Include="Images\vs1.png" />
     <Content Include="Images\瓷片图标\VideoHubTile.png" />
     <Content Include="lib\DBCS.dll" />

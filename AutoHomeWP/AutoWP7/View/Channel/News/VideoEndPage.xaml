@@ -12,7 +12,16 @@
     shell:SystemTray.IsVisible="False">
 
     <phone:PhoneApplicationPage.Resources>
-
+        <Style x:Key="VideoEndPage_Title_Style" TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBase}">
+            <Setter Property="Foreground" Value="#ff000000"/>
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <Style x:Key="VideoEndPage_Description_Style" TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBase}">
+            <Setter Property="Foreground" Value="#ff000000"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot" Background="White">
@@ -22,9 +31,10 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <uc:MediaElementUc Grid.Row="0" x:Name="videoPlayer" FullScreen="videoPlayer_FullScreen"/>
-                <TextBlock Grid.Row="1" x:Name="titleTextBlock" Text="{Binding Title}" Foreground="#ff000000" FontSize="25"/>
+                <uc:MediaElementUc Grid.Row="0" x:Name="videoPlayer" Height="270" FullScreen="videoPlayer_FullScreen"/>
+                <TextBlock Grid.Row="1" Text="{Binding Title}" Style="{StaticResource VideoEndPage_Title_Style}" Margin="12,12,12,12"/>
                 
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
@@ -35,9 +45,13 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Style="{StaticResource News_Time_Style}" Text="{Binding categoryname}"/>
+                    <TextBlock Grid.Column="0" Style="{StaticResource News_Time_Style}" Margin="12,0,0,0" Text="{Binding CategoryName}"/>
+                    <TextBlock Grid.Column="1" Style="{StaticResource News_Time_Style}" Margin="12,0,0,0" Text="{Binding NickName}"/>
+                    <TextBlock Grid.Column="2" Style="{StaticResource News_Time_Style}" Margin="12,0,0,0" Text="{Binding PlayTimes}"/>
+                    <TextBlock Grid.Column="3" Style="{StaticResource News_Time_Style}" Margin="8,0,0,0" Text="次播放"/>
+                    <TextBlock Grid.Column="5" Style="{StaticResource News_Time_Style}" Margin="0,0,12,0" Text="{Binding InputTime}"/>
                 </Grid>
-                <TextBlock Grid.Row="3" x:Name="descriptionTextBlock" Text="{Binding Description}"/>
+                <TextBlock Grid.Row="3" Text="{Binding Description}" Margin="12,12,12,12" Style="{StaticResource VideoEndPage_Description_Style}"/>
             </Grid>
         </ScrollViewer>
 

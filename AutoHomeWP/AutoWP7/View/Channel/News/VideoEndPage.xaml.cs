@@ -67,8 +67,8 @@ namespace AutoWP7.View.Channel.News
             VM = new VideoDetailViewModel();
 
             //http://221.192.136.99:804/wpv1.5/news/videopagejson-a2-pm3-v1.5.0-vid29509.html
-            //string url = string.Format("{0}{1}/news/videopagejson-{2}-vid{3}.html", App.appUrl, App.versionStr, App.AppInfo, videoId);
-            string url = string.Format("{0}{1}/news/videopagejson-{2}-vid{3}.html", "http://221.192.136.99:804", "/wpv1.5", App.AppInfo, videoId);
+            string url = string.Format("{0}{1}/news/videopagejson-{2}-vid{3}.html", App.appUrl, App.versionStr, App.AppInfo, videoId);
+            //string url = string.Format("{0}{1}/news/videopagejson-{2}-vid{3}.html", "http://221.192.136.99:804", "/wpv1.5", App.AppInfo, videoId);
             VM.LoadDataAysnc(url);
             VM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<VideoDetailModel>>((ss, ee) =>
             {
@@ -80,6 +80,8 @@ namespace AutoWP7.View.Channel.News
                 {
                     var videoData = ee.Result;
                     this.DataContext = videoData;
+                    videoPlayer.SetCover(videoData.PicUrl);
+                    videoPlayer.SetSource(videoData.VideoAddress);
                 }
 
             });
