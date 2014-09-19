@@ -34,6 +34,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <uc:MediaElementUc Grid.Row="0" x:Name="videoPlayer" Height="270" FullScreen="videoPlayer_FullScreen"/>
+                <Image x:Name="videoImage" Height="270" Stretch="UniformToFill" Tap="videoImage_Tap" Source="{Binding}"/>
                 <TextBlock Grid.Row="1" Text="{Binding Title}" Style="{StaticResource VideoEndPage_Title_Style}" Margin="12,12,12,12"/>
                 
                 <Grid Grid.Row="2">

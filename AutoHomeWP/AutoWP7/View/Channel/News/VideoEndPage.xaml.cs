@@ -8,6 +8,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Model;
 using ViewModels;
+using Microsoft.Phone.Tasks;
 
 namespace AutoWP7.View.Channel.News
 {
@@ -62,6 +63,7 @@ namespace AutoWP7.View.Channel.News
         #region 数据加载
 
         VideoDetailViewModel VM = null;
+        VideoDetailModel videoData = null;
         private void LoadData()
         {
             VM = new VideoDetailViewModel();
@@ -78,10 +80,12 @@ namespace AutoWP7.View.Channel.News
                 }
                 else
                 {
-                    var videoData = ee.Result;
+                    videoData = ee.Result;
                     this.DataContext = videoData;
                     videoPlayer.SetCover(videoData.PicUrl);
                     videoPlayer.SetSource(videoData.VideoAddress);
+
+                    videoImage.DataContext = videoData.PicUrl;
                 }
 
             });
@@ -119,6 +123,15 @@ namespace AutoWP7.View.Channel.News
         private void videoPlayer_FullScreen(object sender, bool e)
         {
 
+        }
+
+        private void videoImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            WebBrowserTask webBrowserTask = new WebBrowserTask();
+            //string url = string.Format("http://player.youku.com/embed/{0}", videoData.YoukuVideoKey);
+            string url = string.Format("http://autohometest.azurewebsites.net/3.html?vid={0}", videoData.YoukuVideoKey);
+            webBrowserTask.Uri = new Uri(url, UriKind.RelativeOrAbsolute);
+            webBrowserTask.Show();
         }
 
     }

@@ -87,7 +87,7 @@ namespace ViewModels
                             model.Description = (string)result.SelectToken("description");
                             model.NickName = (string)result.SelectToken("nickName");
                             model.VideoAddress = (string)result.SelectToken("videoaddress");
-
+                            model.YoukuVideoKey = (string)result.SelectToken("youkuvideokey");
                             DataSource = model;
                         }
                     }
