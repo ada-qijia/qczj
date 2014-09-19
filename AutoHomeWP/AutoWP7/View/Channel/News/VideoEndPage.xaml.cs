@@ -26,6 +26,12 @@ namespace AutoWP7.View.Channel.News
             videoId = NavigationContext.QueryString["videoid"];
             LoadData();
 
+            var xx = NavigationService.BackStack.First();
+            if (xx.Source.ToString().Contains("VideoEndPage"))
+            {
+                NavigationService.RemoveBackEntry();
+            }
+
             //switch (e.NavigationMode)
             //{
             //    case System.Windows.Navigation.NavigationMode.New:
@@ -88,6 +94,12 @@ namespace AutoWP7.View.Channel.News
                     videoPlayer.SetSource(videoData.VideoAddress);
 
                     videoImage.DataContext = videoData.PicUrl;
+
+                    timePanel.Visibility = Visibility.Visible;
+                    if (videoData.RelationVideoList != null && videoData.RelationVideoList.Count() > 0)
+                    {
+                        relationVideoTitle.Visibility = Visibility.Visible;
+                    }
                 }
                 ProgBar.Visibility = Visibility.Collapsed;
             });
@@ -138,7 +150,8 @@ namespace AutoWP7.View.Channel.News
 
         private void relationVideo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            string vid = (sender as FrameworkElement).Tag.ToString();
+            this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + vid, UriKind.Relative));
         }
 
     }

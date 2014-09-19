@@ -30,12 +30,9 @@
         <Style x:Key="NewsList_ItemTitle_Style" TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBase}">
             <Setter Property="Foreground" Value="#ff000000"/>
             <Setter Property="FontSize" Value="22"/>
-            <Setter Property="Margin" Value="0,10,12,10"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="TextTrimming" Value="WordEllipsis"/>
-
         </Style>
-        
 
     </phone:PhoneApplicationPage.Resources>
 
@@ -54,7 +51,7 @@
                 <Image x:Name="videoImage" Height="270" Stretch="UniformToFill" Tap="videoImage_Tap" Source="{Binding}"/>
                 <TextBlock Grid.Row="1" Text="{Binding Title}" Style="{StaticResource VideoEndPage_Title_Style}" Margin="12,12,12,12"/>
 
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="2" x:Name="timePanel" Visibility="Collapsed">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -70,35 +67,35 @@
                     <TextBlock Grid.Column="5" Style="{StaticResource News_Time_Style}" Margin="0,0,12,0" Text="{Binding InputTime}"/>
                 </Grid>
                 <TextBlock Grid.Row="3" Text="{Binding Description}" Margin="12,12,12,12" Style="{StaticResource VideoEndPage_Description_Style}"/>
-                <Grid Grid.Row="4" Background="#ff4d4d4d">
+                <Grid Grid.Row="4" Background="#ffe0e0e0" x:Name="relationVideoTitle" Visibility="Collapsed">
                     <TextBlock Text="相关视频" Margin="12,12,12,12" Style="{StaticResource VideoEndPage_SectionTitle_Style}"/>
                 </Grid>
-                <ItemsControl Grid.Row="5" ItemsSource="{Binding RelationVideoList}">
+                <ItemsControl Grid.Row="5" ItemsSource="{Binding RelationVideoList}" Margin="0,10,0,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Tag="{Binding id}" Tap="relationVideo_Tap">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="120"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                            <Grid Tag="{Binding ID}" Tap="relationVideo_Tap" Margin="12,0,12,12">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Image Width="120" Height="90" 
-                                       Grid.RowSpan="2" Grid.Row="0"
-                                       Source="Images/smallImage.jpg"/>
                                 <!--图片-->
-                                <Image Width="120" Height="90" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PicUrl}"/>
-                                <!--标题-->
-                                <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource NewsList_ItemTitle_Style}" Text="{Binding Title}" />
-                                <!--时间-->
-                                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource News_Time_Style}" Margin="0,0,0,0" Text="{Binding InputTime}"/>
-                                <!--回复数-->
-                                <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right">
-                                    <TextBlock Style="{StaticResource News_Time_Style}" Margin="0,0,0,0" Text="{Binding PlayTimes}"/>
-                                    <TextBlock Style="{StaticResource News_Time_Style}" Margin="8,0,0,0" Text="播放"/>
-                                </StackPanel>
+                                <Image Width="120" Height="90" Source="Images/smallImage.jpg"/>
+                                <Image Width="120" Height="90" Source="{Binding PicUrl}"/>
+                                <Grid Grid.Column="1" Margin="10,0,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <!--标题-->
+                                    <TextBlock Grid.Row="0" Style="{StaticResource NewsList_ItemTitle_Style}" Text="{Binding Title}" />
+                                    <!--时间-->
+                                    <TextBlock Grid.Row="1" Style="{StaticResource News_Time_Style}" Text="{Binding InputTime}"/>
+                                    <!--回复数-->
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <TextBlock Style="{StaticResource News_Time_Style}" Margin="0,0,0,0" Text="{Binding PlayTimes}"/>
+                                        <TextBlock Style="{StaticResource News_Time_Style}" Margin="8,0,0,0" Text="播放"/>
+                                    </StackPanel>
+                                </Grid>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -116,7 +113,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" IsVisible="True" Opacity="0.8"  IsMenuEnabled="False">
+        <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" IsVisible="True" IsMenuEnabled="False">
             <shell:ApplicationBarIconButton x:Name="checkComment" Click="checkComment_Click" IconUri="Images/bar_checkComment.png" Text="查看评论"/>
         </shell:ApplicationBar>
 
