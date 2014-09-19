@@ -217,7 +217,8 @@
 												Foreground="Gray" Text="评论"/>
 										</StackPanel>
 									</Grid>
-									<Border Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"  Tap="videoLoadMore_Tap"                                                 Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
+									<Border Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"  Tap="videoLoadMore_Tap"
+                                            Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
 										Background="LightGray" Height="60" Width="440">
 										<TextBlock Foreground="Black" HorizontalAlignment="Center" 
 											VerticalAlignment="Center"

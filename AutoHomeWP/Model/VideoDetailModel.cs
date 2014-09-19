@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Data.Linq.Mapping;
+using System.Collections.Generic;
 
 
 
@@ -19,7 +20,7 @@ namespace Model
     public class VideoDetailModel
     {
         [Column]
-        public string ID { get; set; }
+        public int ID { get; set; }
 
         [Column]
         public string Title { get; set; }
@@ -67,7 +68,7 @@ namespace Model
         public string YoukuVideoKey { get; set; }
 
         [Column]
-        public RelationVideoModel[] RelationVideoList { get; set; }
+        public IEnumerable<RelationVideoModel> RelationVideoList { get; set; }
 
     }
 
@@ -75,7 +76,7 @@ namespace Model
     public class RelationVideoModel
     {
         [Column]
-        public string ID { get; set; }
+        public int ID { get; set; }
 
         [Column]
         public string Title { get; set; }
@@ -87,6 +88,6 @@ namespace Model
         public string InputTime { get; set; }
 
         [Column]
-        public string PlayTimes { get; set; }
+        public int PlayTimes { get; set; }
     }
 }

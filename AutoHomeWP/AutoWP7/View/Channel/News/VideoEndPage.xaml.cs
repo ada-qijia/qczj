@@ -66,6 +66,8 @@ namespace AutoWP7.View.Channel.News
         VideoDetailModel videoData = null;
         private void LoadData()
         {
+            ProgBar.Visibility = Visibility.Visible;
+
             VM = new VideoDetailViewModel();
 
             //http://221.192.136.99:804/wpv1.5/news/videopagejson-a2-pm3-v1.5.0-vid29509.html
@@ -87,7 +89,7 @@ namespace AutoWP7.View.Channel.News
 
                     videoImage.DataContext = videoData.PicUrl;
                 }
-
+                ProgBar.Visibility = Visibility.Collapsed;
             });
 
         }
@@ -132,6 +134,11 @@ namespace AutoWP7.View.Channel.News
             string url = string.Format("http://autohometest.azurewebsites.net/3.html?vid={0}", videoData.YoukuVideoKey);
             webBrowserTask.Uri = new Uri(url, UriKind.RelativeOrAbsolute);
             webBrowserTask.Show();
+        }
+
+        private void relationVideo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
         }
 
     }

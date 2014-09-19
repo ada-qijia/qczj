@@ -88,6 +88,25 @@ namespace ViewModels
                             model.NickName = (string)result.SelectToken("nickName");
                             model.VideoAddress = (string)result.SelectToken("videoaddress");
                             model.YoukuVideoKey = (string)result.SelectToken("youkuvideokey");
+
+                            var ja = (JArray)result.SelectToken("relationvideolist");
+                            if (ja != null && ja.Count > 0)
+                            {
+                                var list = new List<RelationVideoModel>();
+                                foreach (var item in ja)
+                                {
+                                    RelationVideoModel rv = new RelationVideoModel();
+                                    rv.ID = (int)item.SelectToken("id");
+                                    rv.Title = (string)item.SelectToken("title");
+                                    rv.PicUrl = (string)item.SelectToken("picurl");
+                                    rv.InputTime = (string)item.SelectToken("inputtime");
+                                    rv.PlayTimes = (int)item.SelectToken("playtimes");
+                                    list.Add(rv);
+                                }
+                                model.RelationVideoList = list;
+                            }
+
+                            //model.RelationVideoList = (IEnumerable<RelationVideoModel>)();
                             DataSource = model;
                         }
                     }
