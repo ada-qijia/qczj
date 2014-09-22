@@ -289,12 +289,12 @@ namespace AutoWP7.View.Channel
             if (videoComm == null)
             {
                 videoComm = new NewsViewModel();
+                videoComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(videoComm_LoadDataCompleted);
             }
 
             //http://app.api.autohome.com.cn/wpv1.4/news/videos-a2-pm3-v1.5.0-vt0-p1-s20.html
             string format = App.appUrl + App.versionStr + "/news/videos-" + App.AppInfo + "-vt{0}-p{1}-s{2}.html";
             string url = string.Format(format, videoType, pageIndex, pageSize);
-            videoComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(videoComm_LoadDataCompleted);
             videoComm.LoadDataAysnc(url, 3);
         }
 
@@ -350,8 +350,11 @@ namespace AutoWP7.View.Channel
 
             //reload data
             videoPageIndex = 1;
-            videoDataSource.RemoveAt(videoDataSource.Count - 1);
+            videoComm.newestDataSource.Clear();
             VideoLoadData(videoPageIndex, loadPageSize);
+
+            //change filter title
+            videoFilterButton.Content = ((Button)sender).Content;
 
             HideVideoFilter();
         }

@@ -170,7 +170,7 @@
 						Content="全部" Height="64" Width="150" 
 						VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-12,-40,0,0" 
 						Tap="videoFilterButton_Tap"/>
-					<ListBox   x:Name="videoListbox" Margin="0,24,0,0">
+					<ListBox x:Name="videoListbox" Margin="0,24,0,0">
 						<ListBox.ItemTemplate>
 							<DataTemplate>
 								<Grid>
