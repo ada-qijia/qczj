@@ -332,6 +332,10 @@
                                          Source="Images/瓷片图标/VideoHubTile.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="0" Grid.Row="5" IsFrozen="True"/>
+                        <toolkit:HubTile x:Name="originalVideoHub" Tap="originalVideoHub_Tap" Title="原创视频"  
+                                         Source="Images/瓷片图标/VideoHubTile.png"
+                                         Background="#3cadeb"
+                                         Margin="5" Grid.Column="1" Grid.Row="5" IsFrozen="True"/>
 
                     </Grid>
                 </ScrollViewer>

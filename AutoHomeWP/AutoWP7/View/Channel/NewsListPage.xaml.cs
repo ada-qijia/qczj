@@ -33,6 +33,7 @@ namespace AutoWP7.View.Channel
         bool isShuokeLoaded = false;
         bool isTravelsLoaded = false;
         bool isTechnologyLoaded = false;
+        bool isOriginalVideoLoaded = false;
 
         bool isFilterShown = false;
 
@@ -93,12 +94,11 @@ namespace AutoWP7.View.Channel
                 case 1: //视频
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "视频点击量");
-                        pageType = 1;
+                        pageType = 3;
                         if (isVideoLoaded == false)
                         {
                             VideoLoadData(1, loadPageSize);
                             isVideoLoaded = true;
-
                         }
                     }
                     break;
@@ -206,6 +206,17 @@ namespace AutoWP7.View.Channel
                         {
                             TechnologyLoadData(1, loadPageSize);
                             isTechnologyLoaded = true;
+                        }
+                    }
+                    break;
+                case 11: //原创视频
+                    {
+                        UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "原创视频点击量");
+                        pageType = 3;
+                        if (isOriginalVideoLoaded == false)
+                        {
+                            OriginalVideoLoadData(1, loadPageSize);
+                            isOriginalVideoLoaded = true;
                         }
                     }
                     break;
@@ -928,6 +939,61 @@ namespace AutoWP7.View.Channel
         }
         #endregion
 
+        #region 原创视频
+
+        ObservableCollection<NewsModel> originalVideoDataSource = null;
+        NewsViewModel originalVideoComm = null;
+        int originalVideoPageIndex = 1;
+        string originalVideoType = "8";//原创视频
+
+        public void OriginalVideoLoadData(int pageIndex, int pageSize)
+        {
+            GlobalIndicator.Instance.Text = "正在获取中...";
+            GlobalIndicator.Instance.IsBusy = true;
+
+            if (originalVideoComm == null)
+            {
+                originalVideoComm = new NewsViewModel();
+                originalVideoComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(originalVideoComm_LoadDataCompleted);
+            }
+
+            //http://app.api.autohome.com.cn/wpv1.4/news/videos-a2-pm3-v1.5.0-vt0-p1-s20.html
+            string format = App.appUrl + App.versionStr + "/news/videos-" + App.AppInfo + "-vt{0}-p{1}-s{2}.html";
+            string url = string.Format(format, originalVideoType, pageIndex, pageSize);
+            originalVideoComm.LoadDataAysnc(url, 3);
+        }
+
+        void originalVideoComm_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<NewsModel>> e)
+        {
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false;
+            if (e.Error != null)
+            {
+                Common.NetworkAvailablePrompt();
+            }
+            else
+            {
+                if (e.Result.Count() <= 1 && originalVideoPageIndex > 1)
+                {
+                    Common.showMsg("已经是最后一页了");
+                }
+                else
+                {
+                    originalVideoDataSource = (ObservableCollection<NewsModel>)e.Result;
+                    originalVideoListbox.ItemsSource = originalVideoDataSource;
+                }
+            }
+        }
+
+        private void originalVideoLoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            originalVideoDataSource.RemoveAt(originalVideoDataSource.Count - 1);
+            originalVideoPageIndex++;
+            OriginalVideoLoadData(originalVideoPageIndex, loadPageSize);
+        }
+
+        #endregion
+
         #region News List & Item
 
         private static string CreateNewsListUrl(int cityid, int newsType, int pageIndex, int pageSize)
@@ -992,6 +1058,13 @@ namespace AutoWP7.View.Channel
                 case 10: //技术
                     if (technologyDataSource != null)
                         news = technologyDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
+                    break;
+                case 11: //原创视频
+                    if (videoDataSource != null)
+                    {
+                        news = videoDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
+                        this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + gg.Tag, UriKind.Relative));
+                    }
                     break;
             }
 

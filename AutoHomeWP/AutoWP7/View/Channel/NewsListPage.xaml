@@ -20,1136 +20,1190 @@
         <local:LoadMoreVisibilityConverter x:Key="loadMoreVisibility"/>
 
         <Style x:Key="VideoFilterButtonStyle" TargetType="Button">
-        	<Setter Property="Foreground"  Value="#ffffffff"/>
-        	<Setter Property="BorderThickness" Value="0" />
-        	<Setter Property="Background" Value="#ff3cadeb" />
-        	<Setter Property="Height" Value="100" />
-        	<Setter Property="Width" Value="200" />
-        	<Setter Property="Margin" Value="10" />
+            <Setter Property="Foreground"  Value="#ffffffff"/>
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="#ff3cadeb" />
+            <Setter Property="Height" Value="100" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Margin" Value="10" />
         </Style>
-        
+
     </p:PhoneApplicationPage.Resources>
 
-	<p:PhoneApplicationPage.FontFamily>
-		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
-	</p:PhoneApplicationPage.FontFamily>
-	<p:PhoneApplicationPage.FontSize>
-		<StaticResource ResourceKey="PhoneFontSizeNormal"/>
-	</p:PhoneApplicationPage.FontSize>
-	<p:PhoneApplicationPage.Foreground>
-		<StaticResource ResourceKey="PhoneForegroundBrush"/>
-	</p:PhoneApplicationPage.Foreground>
+    <Grid x:Name="LayoutRoot" Background="White" >
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VSGVideoFilter">
+                <VisualStateGroup.Transitions>
+                    <VisualTransition GeneratedDuration="0:0:0.3"/>
+                </VisualStateGroup.Transitions>
+                <VisualState x:Name="VSVideoFilterHidden"/>
+                <VisualState x:Name="VSVideoFilterShown">
+                    <Storyboard>
+                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter1" d:IsOptimized="True"/>
+                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter2" d:IsOptimized="True"/>
+                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter3" d:IsOptimized="True"/>
+                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter4" d:IsOptimized="True"/>
+                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter5" d:IsOptimized="True"/>
+                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter6" d:IsOptimized="True"/>
+                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter7" d:IsOptimized="True"/>
+                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter8" d:IsOptimized="True"/>
+                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="videoFilter" d:IsOptimized="True"/>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="videoFilter">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <System:Boolean>True</System:Boolean>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
-	<Grid x:Name="LayoutRoot" Background="White" >
-		<VisualStateManager.VisualStateGroups>
-			<VisualStateGroup x:Name="VSGVideoFilter">
-				<VisualStateGroup.Transitions>
-					<VisualTransition GeneratedDuration="0:0:0.3"/>
-				</VisualStateGroup.Transitions>
-				<VisualState x:Name="VSVideoFilterHidden"/>
-				<VisualState x:Name="VSVideoFilterShown">
-					<Storyboard>
-						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter1" d:IsOptimized="True"/>
-						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter2" d:IsOptimized="True"/>
-						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter3" d:IsOptimized="True"/>
-						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter4" d:IsOptimized="True"/>
-						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter5" d:IsOptimized="True"/>
-						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter6" d:IsOptimized="True"/>
-						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter7" d:IsOptimized="True"/>
-						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="videoFilter8" d:IsOptimized="True"/>
-						<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="videoFilter" d:IsOptimized="True"/>
-						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="videoFilter">
-							<DiscreteObjectKeyFrame KeyTime="0">
-								<DiscreteObjectKeyFrame.Value>
-									<System:Boolean>True</System:Boolean>
-								</DiscreteObjectKeyFrame.Value>
-							</DiscreteObjectKeyFrame>
-						</ObjectAnimationUsingKeyFrames>
-					</Storyboard>
-				</VisualState>
-			</VisualStateGroup>
-		</VisualStateManager.VisualStateGroups>
-        
-		<p:Pivot x:Name="piv" SelectionChanged="piv_SelectionChanged">
-			<!--新闻-->
-			<p:PivotItem >
-				<p:PivotItem.Header>
-					<TextBlock Text="新闻" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<ListBox   x:Name="newsListbox">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
-								<Grid  Tag="{Binding id}" 
+        <p:Pivot x:Name="piv" SelectionChanged="piv_SelectionChanged">
+            <!--新闻-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="新闻" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox   x:Name="newsListbox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid  Tag="{Binding id}" 
 									Grid.Row="0"
 									Tap="newsGrid_Tap"
 									Visibility="{Binding showData}"
 									x:Name="NaviGoArticleEndPage" 
 									Margin="0"
 									HorizontalAlignment="Left">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="120"/>
-										<RowDefinition />
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="130"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<Image Width="120" Height="90" 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"
 										Source="Images/smallImage.jpg"/>
-									<Image Width="120" Height="90" 
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
-									<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-										<!--标题-->
-										<TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
 											Margin="0,10,0,0" 
 											TextWrapping="Wrap"
 											TextTrimming="WordEllipsis"
 											Text="{Binding title}" 
 											FontSize="22"/>
 
-									</StackPanel>
-									<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-										<!--详情-->
-										<!--<TextBlock  Text="{Binding indexdetail}"  
+                                    </StackPanel>
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
                                                 HorizontalAlignment="Left"
                                                 TextWrapping="Wrap"    
                                                 Margin="0,-55,0,0"
                                                 FontSize="16"
                                                 Foreground="Gray"/>-->
-										<!--时间-->
-										<TextBlock   FontSize="16"   
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
 											Margin="0,-33,15,0"
 											HorizontalAlignment="Left"
 											Foreground="Gray"
 											Text="{Binding time}"/>
-										<!--回复数-->
+                                        <!--回复数-->
 
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
                                                    HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
 											Text="{Binding replycount}"/>
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="40,-33,2,0"
 											Foreground="Gray" Text="评论"/>
-										<!--<Image  Margin="40,-31,2,0" 
+                                        <!--<Image  Margin="40,-31,2,0" 
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-									</StackPanel>
-								</Grid>
-								<Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"  Tap="moreStack_Tap"                                                 Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
+                                    </StackPanel>
+                                </Grid>
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"  Tap="moreStack_Tap"                                                 Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
 									Background="LightGray" Height="60" Width="440">
-									<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
 										FontSize="28" Text="{Binding loadMore}"/>
-								</Border>
-							</Grid>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</p:PivotItem>
-			<!--视频-->
-			<p:PivotItem >
-				<p:PivotItem.Header>
-					<TextBlock Text="视频" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<Grid>
-					<Button x:Name="videoFilterButton" Foreground="Gray" FontSize="18" BorderBrush="#00adef" BorderThickness="3,3,3,3" 
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--视频-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="视频" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <Grid>
+                    <Button x:Name="videoFilterButton" Foreground="Gray" FontSize="18" BorderBrush="#00adef" BorderThickness="3,3,3,3" 
 						Content="全部" Height="64" Width="150" 
 						VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-12,-40,0,0" 
 						Tap="videoFilterButton_Tap"/>
-					<ListBox x:Name="videoListbox" Margin="0,24,0,0">
-						<ListBox.ItemTemplate>
-							<DataTemplate>
-								<Grid>
-									<Grid.RowDefinitions>
-										<RowDefinition/>
-										<RowDefinition/>
-									</Grid.RowDefinitions>
-									<Grid Tag="{Binding id}" Tap="newsGrid_Tap"
+                    <ListBox x:Name="videoListbox" Margin="0,24,0,0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Tag="{Binding id}" Tap="newsGrid_Tap"
 										Visibility="{Binding showData}" HorizontalAlignment="Left">
-										<Grid.RowDefinitions>
-											<RowDefinition Height="120"/>
-											<RowDefinition />
-										</Grid.RowDefinitions>
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="130"/>
-											<ColumnDefinition Width="auto"/>
-										</Grid.ColumnDefinitions>
-										<Image Width="120" Height="90" 
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="120"/>
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="130"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Width="120" Height="90" 
 											Grid.RowSpan="2" Grid.Row="0"
 											Source="Images/smallImage.jpg"/>
-										<Image Width="120" Height="90" 
+                                        <Image Width="120" Height="90" 
 											Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
-										<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-											<!--标题-->
-											<TextBlock HorizontalAlignment="Left" Foreground="Black" Margin="0,10,0,0" 
+                                        <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                            <!--标题-->
+                                            <TextBlock HorizontalAlignment="Left" Foreground="Black" Margin="0,10,0,0" 
 												FontSize="22" TextWrapping="Wrap" TextTrimming="WordEllipsis"
 												Text="{Binding title}" />
-										</StackPanel>
-										<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-											<!--时间-->
-											<TextBlock   FontSize="16"   
+                                        </StackPanel>
+                                        <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                            <!--时间-->
+                                            <TextBlock   FontSize="16"   
 												Margin="0,-33,15,0"
 												HorizontalAlignment="Left"
 												Foreground="Gray"
 												Text="{Binding time}"/>
-											<!--回复数-->
-											<TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"
+                                            <!--回复数-->
+                                            <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"
 												FontSize="17" Foreground="Gray" Margin="35,-33"
 												Text="{Binding replycount}"/>
-											<TextBlock Grid.Row="2" Grid.Column="1" 
+                                            <TextBlock Grid.Row="2" Grid.Column="1" 
 												HorizontalAlignment="Right"
 												FontSize="17"
 												Margin="40,-33,2,0"
 												Foreground="Gray" Text="评论"/>
-										</StackPanel>
-									</Grid>
-									<Border Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"  Tap="videoLoadMore_Tap"
+                                        </StackPanel>
+                                    </Grid>
+                                    <Border Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"  Tap="videoLoadMore_Tap"
                                             Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
 										Background="LightGray" Height="60" Width="440">
-										<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                        <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 											VerticalAlignment="Center"
 											FontSize="28" Text="{Binding loadMore}"/>
-									</Border>
-								</Grid>
-							</DataTemplate>
-						</ListBox.ItemTemplate>
-					</ListBox>
-				</Grid>
-			</p:PivotItem>
-			<!--评测-->
-			<p:PivotItem >
-				<p:PivotItem.Header>
-					<TextBlock Text="评测" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<ListBox   x:Name="evaluatingListbox">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </p:PivotItem>
+            <!--评测-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="评测" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox   x:Name="evaluatingListbox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-								<Grid  Tag="{Binding id}" 
+                                <Grid  Tag="{Binding id}" 
 									Grid.Row="0"
 									Tap="newsGrid_Tap"
 									Visibility="{Binding showData}"
 									x:Name="NaviGoArticleEndPage" 
 									Margin="0"
 									HorizontalAlignment="Left">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="120"/>
-										<RowDefinition />
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="130"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<Image Width="120" Height="90" 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"
 										Source="Images/smallImage.jpg"/>
 
-									<Image Width="120" Height="90" 
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
 
 
-									<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-										<!--标题-->
-										<TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
 											Margin="0,10,0,0" 
 											TextWrapping="Wrap"
 											TextTrimming="WordEllipsis"
 											Text="{Binding title}" 
 											FontSize="22"/>
 
-									</StackPanel>
+                                    </StackPanel>
 
-									<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-										<!--详情-->
-										<!--<TextBlock  Text="{Binding indexdetail}"  
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
                                                 HorizontalAlignment="Left"
                                                 TextWrapping="Wrap"    
                                                 Margin="0,-55,0,0"
                                                 FontSize="16"
                                                 Foreground="Gray"/>-->
-										<!--时间-->
-										<TextBlock   FontSize="16"   
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
 											Margin="0,-33,15,0"
 											HorizontalAlignment="Left"
 											Foreground="Gray"
 											Text="{Binding time}"/>
-										<!--回复数-->
+                                        <!--回复数-->
 
-										<TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
 											Text="{Binding replycount}"/>
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="40,-33,2,0"
 											Foreground="Gray" Text="评论"/>
-										<!--<Image  Margin="40,-31,2,0" 
+                                        <!--<Image  Margin="40,-31,2,0" 
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-									</StackPanel>
+                                    </StackPanel>
 
-								</Grid>
-								<Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"   Tap="btnLoadMore_Tap"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
+                                </Grid>
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"   Tap="btnLoadMore_Tap"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
 									Background="LightGray" Height="60" Width="440">
-									<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
 										FontSize="28" Text="{Binding loadMore}"/>
-								</Border>
-							</Grid>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</p:PivotItem>
-			<!--行情-->
-			<p:PivotItem>
-				<p:PivotItem.Header>
-					<TextBlock Text="行情" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<ListBox  x:Name="quotationsListBox">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--行情-->
+            <p:PivotItem>
+                <p:PivotItem.Header>
+                    <TextBlock Text="行情" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox  x:Name="quotationsListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-								<Grid  Tag="{Binding id}" 
+                                <Grid  Tag="{Binding id}" 
 									Grid.Row="0"
 									Tap="newsGrid_Tap"
 									Visibility="{Binding showData}"
 									x:Name="NaviGoArticleEndPage" 
 									Margin="0"
 									HorizontalAlignment="Left">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="120"/>
-										<RowDefinition />
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="130"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<Image Width="120" Height="90" 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"
 										Source="Images/smallImage.jpg"/>
-									<Image Width="120" Height="90" 
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
 
 
-									<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-										<!--标题-->
-										<TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
 											Margin="0,10,0,0" 
 											TextWrapping="Wrap"
 											TextTrimming="WordEllipsis"
 											Text="{Binding title}" 
 											FontSize="22"/>
 
-									</StackPanel>
+                                    </StackPanel>
 
-									<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-										<!--详情-->
-										<!--<TextBlock  Text="{Binding indexdetail}"  
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
                                                 HorizontalAlignment="Left"
                                                 TextWrapping="Wrap"    
                                                 Margin="0,-55,0,0"
                                                 FontSize="16"
                                                 Foreground="Gray"/>-->
-										<!--时间-->
-										<TextBlock   FontSize="16"   
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
 											Margin="0,-33,15,0"
 											HorizontalAlignment="Left"
 											Foreground="Gray"
 											Text="{Binding time}"/>
-										<!--回复数-->
+                                        <!--回复数-->
 
-										<TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
 											Text="{Binding replycount}"/>
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="40,-33,2,0"
 											Foreground="Gray" Text="评论"/>
-										<!--<Image  Margin="40,-31,2,0" 
+                                        <!--<Image  Margin="40,-31,2,0" 
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-									</StackPanel>
+                                    </StackPanel>
 
-								</Grid>
+                                </Grid>
 
-								<Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"    Tap="btnQutoLoadMore_Tap"                                              Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"    Tap="btnQutoLoadMore_Tap"                                              Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
 									Background="LightGray" Height="60" Width="440">
-									<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
 										FontSize="28" Text="{Binding loadMore}"/>
-								</Border>
+                                </Border>
 
-							</Grid>
-						</DataTemplate>
+                            </Grid>
+                        </DataTemplate>
 
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</p:PivotItem>
-			<!--导购-->
-			<p:PivotItem >
-				<p:PivotItem.Header>
-					<TextBlock Text="导购" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<ListBox  x:Name="shoppingGuidListBox">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--导购-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="导购" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox  x:Name="shoppingGuidListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-								<Grid  Tag="{Binding id}" 
+                                <Grid  Tag="{Binding id}" 
 									Grid.Row="0"
 									Tap="newsGrid_Tap"
 									Visibility="{Binding showData}"
 									x:Name="NaviGoArticleEndPage" 
 									Margin="0"
 									HorizontalAlignment="Left">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="120"/>
-										<RowDefinition />
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="130"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<Image Width="120" Height="90" 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"
 										Source="Images/smallImage.jpg"/>
-									<Image Width="120" Height="90" 
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
 
 
-									<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-										<!--标题-->
-										<TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
 											Margin="0,10,0,0" 
 											TextWrapping="Wrap"
 											TextTrimming="WordEllipsis"
 											Text="{Binding title}" 
 											FontSize="22" />
 
-									</StackPanel>
+                                    </StackPanel>
 
-									<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-										<!--详情-->
-										<!--<TextBlock  Text="{Binding indexdetail}"  
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
                                                 HorizontalAlignment="Left"
                                                 TextWrapping="Wrap"    
                                                 Margin="0,-55,0,0"
                                                 FontSize="16"
                                                 Foreground="Gray"/>-->
-										<!--时间-->
-										<TextBlock   FontSize="16"   
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
 											Margin="0,-33,15,0"
 											HorizontalAlignment="Left"
 											Foreground="Gray"
 											Text="{Binding time}"/>
-										<!--回复数-->
+                                        <!--回复数-->
 
-										<TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
 											Text="{Binding replycount}"/>
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="40,-33,2,0"
 											Foreground="Gray" Text="评论"/>
-										<!--<Image  Margin="40,-31,2,0" 
+                                        <!--<Image  Margin="40,-31,2,0" 
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-									</StackPanel>
+                                    </StackPanel>
 
-								</Grid>
+                                </Grid>
 
-								<Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"    Tap="shoppingLoadMore_Tap"                                              Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"    Tap="shoppingLoadMore_Tap"                                              Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
 									Background="LightGray" Height="60" Width="440">
-									<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
 										FontSize="28" Text="{Binding loadMore}"/>
-								</Border>
+                                </Border>
 
-							</Grid>
-						</DataTemplate>
+                            </Grid>
+                        </DataTemplate>
 
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</p:PivotItem>
-			<!--用车-->
-			<p:PivotItem >
-				<p:PivotItem.Header>
-					<TextBlock Text="用车" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<ListBox  x:Name="userCarListBox">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--用车-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="用车" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox  x:Name="userCarListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-								<Grid  Tag="{Binding id}" 
+                                <Grid  Tag="{Binding id}" 
 									Grid.Row="0"
 									Tap="newsGrid_Tap"
 									Visibility="{Binding showData}"
 									x:Name="NaviGoArticleEndPage" 
 									Margin="0"
 									HorizontalAlignment="Left">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="120"/>
-										<RowDefinition />
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="130"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<Image Width="120" Height="90" 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"
 										Source="Images/smallImage.jpg"/>
-									<Image Width="120" Height="90" 
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
 
 
-									<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-										<!--标题-->
-										<TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
 											Margin="0,10,0,0" 
 											TextWrapping="Wrap"
 											TextTrimming="WordEllipsis"
 											Text="{Binding title}" 
 											FontSize="22" />
 
-									</StackPanel>
+                                    </StackPanel>
 
-									<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-										<!--详情-->
-										<!--<TextBlock  Text="{Binding indexdetail}"  
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
                                                 HorizontalAlignment="Left"
                                                 TextWrapping="Wrap"    
                                                 Margin="0,-55,0,0"
                                                 FontSize="16"
                                                 Foreground="Gray"/>-->
-										<!--时间-->
-										<TextBlock   FontSize="16"   
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
 											Margin="0,-33,15,0"
 											HorizontalAlignment="Left"
 											Foreground="Gray"
 											Text="{Binding time}"/>
-										<!--回复数-->
+                                        <!--回复数-->
 
-										<TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
 											Text="{Binding replycount}"/>
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="40,-33,2,0"
 											Foreground="Gray" Text="评论"/>
-										<!--<Image  Margin="40,-31,2,0" 
+                                        <!--<Image  Margin="40,-31,2,0" 
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-									</StackPanel>
-								</Grid>
+                                    </StackPanel>
+                                </Grid>
 
 
-								<Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"     Tap="useCarLoadMore_Tap"                                              Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"     Tap="useCarLoadMore_Tap"                                              Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
 									Background="LightGray" Height="60" Width="440">
-									<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
 										FontSize="28" Text="{Binding loadMore}"/>
-								</Border>
-							</Grid>
-						</DataTemplate>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
 
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</p:PivotItem>
-			<!--文化-->
-			<p:PivotItem >
-				<p:PivotItem.Header>
-					<TextBlock Text="文化" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<ListBox  x:Name="cultureListBox">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--文化-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="文化" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox  x:Name="cultureListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-								<Grid  Tag="{Binding id}" 
+                                <Grid  Tag="{Binding id}" 
 									Grid.Row="0"
 									Tap="newsGrid_Tap"
 									Visibility="{Binding showData}"
 									x:Name="NaviGoArticleEndPage" 
 									Margin="0"
 									HorizontalAlignment="Left">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="120"/>
-										<RowDefinition />
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="130"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<Image Width="120" Height="90" 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"
 										Source="Images/smallImage.jpg"/>
-									<Image Width="120" Height="90" 
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
 
 
-									<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-										<!--标题-->
-										<TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
 											Margin="0,10,0,0" 
 											TextWrapping="Wrap"
 											TextTrimming="WordEllipsis"
 											Text="{Binding title}" 
 											FontSize="22" />
 
-									</StackPanel>
+                                    </StackPanel>
 
-									<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-										<!--详情-->
-										<!--<TextBlock  Text="{Binding indexdetail}"  
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
                                                 HorizontalAlignment="Left"
                                                 TextWrapping="Wrap"    
                                                 Margin="0,-55,0,0"
                                                 FontSize="16"
                                                 Foreground="Gray"/>-->
-										<!--时间-->
-										<TextBlock   FontSize="16"   
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
 											Margin="0,-33,15,0"
 											HorizontalAlignment="Left"
 											Foreground="Gray"
 											Text="{Binding time}"/>
-										<!--回复数-->
+                                        <!--回复数-->
 
-										<TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
 											Text="{Binding replycount}"/>
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="40,-33,2,0"
 											Foreground="Gray" Text="评论"/>
-										<!--<Image  Margin="40,-31,2,0" 
+                                        <!--<Image  Margin="40,-31,2,0" 
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-									</StackPanel>
+                                    </StackPanel>
 
-								</Grid>
+                                </Grid>
 
-								<Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                       Tap="cultureLoadMore_Tap"
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                       Tap="cultureLoadMore_Tap"
 									Background="LightGray" Height="60" Width="440">
-									<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
 										FontSize="28" Text="{Binding loadMore}"/>
-								</Border>
-							</Grid>
-						</DataTemplate>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
 
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</p:PivotItem>
-			<!--改装-->
-			<p:PivotItem >
-				<p:PivotItem.Header>
-					<TextBlock Text="改装" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<ListBox  x:Name="changeListBox">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--改装-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="改装" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox  x:Name="changeListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-								<Grid  Tag="{Binding id}" 
+                                <Grid  Tag="{Binding id}" 
 									Grid.Row="0"
 									Tap="newsGrid_Tap"
 									Visibility="{Binding showData}"
 									x:Name="NaviGoArticleEndPage" 
 									Margin="0"
 									HorizontalAlignment="Left">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="120"/>
-										<RowDefinition />
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="130"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<Image Width="120" Height="90" 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"
 										Source="Images/smallImage.jpg"/>
-									<Image Width="120" Height="90" 
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
 
 
-									<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-										<!--标题-->
-										<TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
 											Margin="0,10,0,0" 
 											TextWrapping="Wrap"
 											TextTrimming="WordEllipsis"
 											Text="{Binding title}" 
 											FontSize="22" />
 
-									</StackPanel>
+                                    </StackPanel>
 
-									<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-										<!--详情-->
-										<!--<TextBlock  Text="{Binding indexdetail}"  
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
                                                 HorizontalAlignment="Left"
                                                 TextWrapping="Wrap"    
                                                 Margin="0,-55,0,0"
                                                 FontSize="16"
                                                 Foreground="Gray"/>-->
-										<!--时间-->
-										<TextBlock   FontSize="16"   
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
 											Margin="0,-33,15,0"
 											HorizontalAlignment="Left"
 											Foreground="Gray"
 											Text="{Binding time}"/>
-										<!--回复数-->
+                                        <!--回复数-->
 
-										<TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
 											Text="{Binding replycount}"/>
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="40,-33,2,0"
 											Foreground="Gray" Text="评论"/>
-										<!--<Image  Margin="40,-31,2,0" 
+                                        <!--<Image  Margin="40,-31,2,0" 
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-									</StackPanel>
+                                    </StackPanel>
 
-								</Grid>
+                                </Grid>
 
 
 
-								<Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                       Tap="changeLoadMore_Tap"
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                       Tap="changeLoadMore_Tap"
 									Background="LightGray" Height="60" Width="440">
-									<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
 										FontSize="28" Text="{Binding loadMore}"/>
-								</Border>
-							</Grid>
-						</DataTemplate>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
 
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</p:PivotItem>
-			<!--说客-->
-			<p:PivotItem >
-				<p:PivotItem.Header>
-					<TextBlock Text="说客" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<ListBox  x:Name="shuokeCommListBox">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--说客-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="说客" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox  x:Name="shuokeCommListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-								<Grid  Tag="{Binding id}" 
+                                <Grid  Tag="{Binding id}" 
 									Grid.Row="0"
 									Tap="newsGrid_Tap"
 									Visibility="{Binding showData}"
 									x:Name="NaviGoArticleEndPage" 
 									Margin="0"
 									HorizontalAlignment="Left">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="120"/>
-										<RowDefinition />
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="130"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<Image Width="120" Height="90" 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"
 										Source="Images/smallImage.jpg"/>
-									<Image Width="120" Height="90" 
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
 
 
-									<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-										<!--标题-->
-										<TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
 											Margin="0,10,0,0" 
 											TextWrapping="Wrap"
 											TextTrimming="WordEllipsis"
 											Text="{Binding title}" 
 											FontSize="22" />
 
-									</StackPanel>
+                                    </StackPanel>
 
-									<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-										<!--详情-->
-										<!--<TextBlock  Text="{Binding indexdetail}"  
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
                                                 HorizontalAlignment="Left"
                                                 TextWrapping="Wrap"    
                                                 Margin="0,-55,0,0"
                                                 FontSize="16"
                                                 Foreground="Gray"/>-->
-										<!--时间-->
-										<TextBlock   FontSize="16"   
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
 											Margin="0,-33,15,0"
 											HorizontalAlignment="Left"
 											Foreground="Gray"
 											Text="{Binding time}"/>
-										<!--回复数-->
+                                        <!--回复数-->
 
-										<TextBlock Grid.Row="2" Grid.Column="1"                                                                                     
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
 											Text="{Binding replycount}"/>
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="40,-33,2,0"
 											Foreground="Gray" Text="评论"/>
-										<!--<Image  Margin="40,-31,2,0" 
+                                        <!--<Image  Margin="40,-31,2,0" 
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-									</StackPanel>
+                                    </StackPanel>
 
-								</Grid>
+                                </Grid>
 
 
-								<Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                
 									Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                 
 									Tap="shuokeLoadMore_Tap"
 									Background="LightGray" Height="60" Width="440">
-									<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
 										FontSize="28" Text="{Binding loadMore}"/>
-								</Border>
-							</Grid>
-						</DataTemplate>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
 
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</p:PivotItem>
-			<!--游记-->
-			<p:PivotItem >
-				<p:PivotItem.Header>
-					<TextBlock Text="游记" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<ListBox  x:Name="travelsListBox">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--游记-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="游记" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox  x:Name="travelsListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-								<Grid  Tag="{Binding id}" 
+                                <Grid  Tag="{Binding id}" 
 									Grid.Row="0"
 									Tap="newsGrid_Tap"
 									Visibility="{Binding showData}"
 									x:Name="NaviGoArticleEndPage" 
 									Margin="0"
 									HorizontalAlignment="Left">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="120"/>
-										<RowDefinition />
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="130"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<Image Width="120" Height="90" 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"
 										Source="Images/smallImage.jpg"/>
-									<Image Width="120" Height="90" 
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
 
 
-									<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-										<!--标题-->
-										<TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
 											Margin="0,10,0,0" 
 											TextWrapping="Wrap"
 											TextTrimming="WordEllipsis"
 											Text="{Binding title}" 
 											FontSize="22" />
 
-									</StackPanel>
+                                    </StackPanel>
 
-									<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-										<!--详情-->
-										<!--<TextBlock  Text="{Binding indexdetail}"  
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
                                                 HorizontalAlignment="Left"
                                                 TextWrapping="Wrap"    
                                                 Margin="0,-55,0,0"
                                                 FontSize="16"
                                                 Foreground="Gray"/>-->
-										<!--时间-->
-										<TextBlock   FontSize="16"   
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
 											Margin="0,-33,15,0"
 											HorizontalAlignment="Left"
 											Foreground="Gray"
 											Text="{Binding time}"/>
-										<!--回复数-->
+                                        <!--回复数-->
 
-										<TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
 											Text="{Binding replycount}"/>
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="40,-33,2,0"
 											Foreground="Gray" Text="评论"/>
-										<!--<Image  Margin="40,-31,2,0" 
+                                        <!--<Image  Margin="40,-31,2,0" 
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-									</StackPanel>
+                                    </StackPanel>
 
-								</Grid>
+                                </Grid>
 
 
-								<Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                   Tap="travelsLoadMore_Tap"
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                   Tap="travelsLoadMore_Tap"
 									Background="LightGray" Height="60" Width="440">
-									<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
 										FontSize="28" Text="{Binding loadMore}"/>
-								</Border>
-							</Grid>
-						</DataTemplate>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
 
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</p:PivotItem>
-			<!--技术-->
-			<p:PivotItem >
-				<p:PivotItem.Header>
-					<TextBlock Text="技术" Foreground="#00adef"/>
-				</p:PivotItem.Header>
-				<ListBox  x:Name="technologyListBox">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--技术-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="技术" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox  x:Name="technologyListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-								<Grid  Tag="{Binding id}" 
+                                <Grid  Tag="{Binding id}" 
 									Grid.Row="0"
 									Tap="newsGrid_Tap"
 									Visibility="{Binding showData}"
 									x:Name="NaviGoArticleEndPage" 
 									Margin="0"
 									HorizontalAlignment="Left">
-									<Grid.RowDefinitions>
-										<RowDefinition Height="120"/>
-										<RowDefinition />
-									</Grid.RowDefinitions>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="130"/>
-										<ColumnDefinition Width="auto"/>
-									</Grid.ColumnDefinitions>
-									<Image Width="120" Height="90" 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"
 										Source="Images/smallImage.jpg"/>
-									<Image Width="120" Height="90" 
+                                    <Image Width="120" Height="90" 
 										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
 
 
-									<StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-										<!--标题-->
-										<TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
 											Margin="0,10,0,0" 
 											TextWrapping="Wrap"
 											TextTrimming="WordEllipsis"
 											Text="{Binding title}" 
 											FontSize="22" />
 
-									</StackPanel>
+                                    </StackPanel>
 
-									<StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-										<!--详情-->
-										<!--<TextBlock  Text="{Binding indexdetail}"  
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
                                                 HorizontalAlignment="Left"
                                                 TextWrapping="Wrap"    
                                                 Margin="0,-55,0,0"
                                                 FontSize="16"
                                                 Foreground="Gray"/>-->
-										<!--时间-->
-										<TextBlock   FontSize="16"   
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
 											Margin="0,-33,15,0"
 											HorizontalAlignment="Left"
 											Foreground="Gray"
 											Text="{Binding time}"/>
-										<!--回复数-->
+                                        <!--回复数-->
 
-										<TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
 											Text="{Binding replycount}"/>
-										<TextBlock Grid.Row="2" Grid.Column="1" 
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
 											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="40,-33,2,0"
 											Foreground="Gray" Text="评论"/>
-										<!--<Image  Margin="40,-31,2,0" 
+                                        <!--<Image  Margin="40,-31,2,0" 
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-									</StackPanel>
+                                    </StackPanel>
 
-								</Grid>
+                                </Grid>
 
 
-								<Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                 Tap="technologyLoadMore_Tap"
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                 Tap="technologyLoadMore_Tap"
 									Background="LightGray" Height="60" Width="440">
-									<TextBlock Foreground="Black" HorizontalAlignment="Center" 
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
 										FontSize="28" Text="{Binding loadMore}"/>
-								</Border>
-							</Grid>
-						</DataTemplate>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
 
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</p:PivotItem>
-		</p:Pivot>
-        
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--原创视频-->
+            <p:PivotItem >
+                <p:PivotItem.Header>
+                    <TextBlock Text="原创视频" Foreground="#00adef"/>
+                </p:PivotItem.Header>
+                <ListBox x:Name="originalVideoListbox" Margin="0,0,0,0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid Tag="{Binding id}" Tap="newsGrid_Tap"
+										Visibility="{Binding showData}" HorizontalAlignment="Left">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
+											Grid.RowSpan="2" Grid.Row="0"
+											Source="Images/smallImage.jpg"/>
+                                    <Image Width="120" Height="90" 
+											Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock HorizontalAlignment="Left" Foreground="Black" Margin="0,10,0,0" 
+												FontSize="22" TextWrapping="Wrap" TextTrimming="WordEllipsis"
+												Text="{Binding title}" />
+                                    </StackPanel>
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
+												Margin="0,-33,15,0"
+												HorizontalAlignment="Left"
+												Foreground="Gray"
+												Text="{Binding time}"/>
+                                        <!--回复数-->
+                                        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"
+												FontSize="17" Foreground="Gray" Margin="35,-33"
+												Text="{Binding replycount}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
+												HorizontalAlignment="Right"
+												FontSize="17"
+												Margin="40,-33,2,0"
+												Foreground="Gray" Text="评论"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Border Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"  Tap="videoLoadMore_Tap"
+                                            Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
+										Background="LightGray" Height="60" Width="440">
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
+											VerticalAlignment="Center"
+											FontSize="28" Text="{Binding loadMore}"/>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+        </p:Pivot>
+
         <!--video filter-->
-		<Grid x:Name="videoFilter" Background="#CC000000" IsHitTestVisible="False" Opacity="0">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="*"/>
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
-			<Button Grid.Row="0" Grid.Column="0" x:Name="videoFilter1" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="全部" Tag="0">
-				<Button.Projection>
-					<PlaneProjection RotationX="90"/>
-				</Button.Projection>
-			</Button>
-			<Button Grid.Row="0" Grid.Column="1" x:Name="videoFilter2" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="原创" Tag="8">
-				<Button.Projection>
-					<PlaneProjection RotationX="90"/>
-				</Button.Projection>
-			</Button>
-			<Button Grid.Row="1" Grid.Column="0" x:Name="videoFilter3" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="试车" Tag="2">
-				<Button.Projection>
-					<PlaneProjection RotationX="90"/>
-				</Button.Projection>
-			</Button>
-			<Button Grid.Row="1" Grid.Column="1" x:Name="videoFilter4" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="花边" Tag="4">
-				<Button.Projection>
-					<PlaneProjection RotationX="90"/>
-				</Button.Projection>
-			</Button>
-			<Button Grid.Row="2" Grid.Column="0" x:Name="videoFilter5" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="事件" Tag="7">
-				<Button.Projection>
-					<PlaneProjection RotationX="90"/>
-				</Button.Projection>
-			</Button>
-			<Button Grid.Row="2" Grid.Column="1" x:Name="videoFilter6" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="新车" Tag="1">
-				<Button.Projection>
-					<PlaneProjection RotationX="90"/>
-				</Button.Projection>
-			</Button>
-			<Button Grid.Row="3" Grid.Column="0" x:Name="videoFilter7" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="广告" Tag="3">
-				<Button.Projection>
-					<PlaneProjection RotationX="90"/>
-				</Button.Projection>
-			</Button>
-			<Button Grid.Row="3" Grid.Column="1" x:Name="videoFilter8" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="技术" Tag="5">
-				<Button.Projection>
-					<PlaneProjection RotationX="90"/>
-				</Button.Projection>
-			</Button>
-		</Grid>
-	</Grid>
+        <Grid x:Name="videoFilter" Background="#CC000000" IsHitTestVisible="False" Opacity="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="0" x:Name="videoFilter1" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="全部" Tag="0">
+                <Button.Projection>
+                    <PlaneProjection RotationX="90"/>
+                </Button.Projection>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="videoFilter2" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="原创" Tag="8">
+                <Button.Projection>
+                    <PlaneProjection RotationX="90"/>
+                </Button.Projection>
+            </Button>
+            <Button Grid.Row="1" Grid.Column="0" x:Name="videoFilter3" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="试车" Tag="2">
+                <Button.Projection>
+                    <PlaneProjection RotationX="90"/>
+                </Button.Projection>
+            </Button>
+            <Button Grid.Row="1" Grid.Column="1" x:Name="videoFilter4" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="花边" Tag="4">
+                <Button.Projection>
+                    <PlaneProjection RotationX="90"/>
+                </Button.Projection>
+            </Button>
+            <Button Grid.Row="2" Grid.Column="0" x:Name="videoFilter5" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="事件" Tag="7">
+                <Button.Projection>
+                    <PlaneProjection RotationX="90"/>
+                </Button.Projection>
+            </Button>
+            <Button Grid.Row="2" Grid.Column="1" x:Name="videoFilter6" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="新车" Tag="1">
+                <Button.Projection>
+                    <PlaneProjection RotationX="90"/>
+                </Button.Projection>
+            </Button>
+            <Button Grid.Row="3" Grid.Column="0" x:Name="videoFilter7" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="广告" Tag="3">
+                <Button.Projection>
+                    <PlaneProjection RotationX="90"/>
+                </Button.Projection>
+            </Button>
+            <Button Grid.Row="3" Grid.Column="1" x:Name="videoFilter8" Style="{StaticResource VideoFilterButtonStyle}" Click="videoFilter_Click" Content="技术" Tag="5">
+                <Button.Projection>
+                    <PlaneProjection RotationX="90"/>
+                </Button.Projection>
+            </Button>
+        </Grid>
+    </Grid>
 
 </p:PhoneApplicationPage>

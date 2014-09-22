@@ -19,9 +19,9 @@ using Microsoft.Phone.Data.Linq;
 namespace AutoWP7
 {
 
-    /// <summary>
-    /// 主界面
-    /// </summary>
+    
+    // 主界面
+    // </summary>
     public partial class MainPage : PhoneApplicationPage
     {
         public MainPage()
@@ -95,7 +95,6 @@ namespace AutoWP7
             }
         }
 
-
         // 更新本地城市
         public void UpdateLocalCity()
         {
@@ -154,7 +153,6 @@ namespace AutoWP7
 
             }
         }
-
 
         // 清除缓存
         public void DeletCached()
@@ -241,9 +239,9 @@ namespace AutoWP7
 
         HeadViewModel HeadVM = null;
         int headPageIndex = 1; //页码
-        /// <summary>
-        /// 网络加载
-        /// </summary>
+        
+        // 网络加载
+        // </summary>
         public void SetNetWorkNewestLoadData(int pageIndex, int pageSize, string lastTime, bool isFirstLoad)
         {
             System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -272,9 +270,9 @@ namespace AutoWP7
             HeadVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(comm_LoadDataCompleted);
         }
 
-        /// <summary>
-        /// 分页加载
-        /// </summary>
+        
+        // 分页加载
+        // </summary>
         private void btnLoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //清楚集合中的更多按钮
@@ -286,9 +284,9 @@ namespace AutoWP7
         }
 
 
-        /// <summary>
-        /// 头条—数据加载完成
-        /// </summary>
+        
+        // 头条—数据加载完成
+        // </summary>
         void comm_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<NewsModel>> e)
         {
             System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -419,9 +417,9 @@ namespace AutoWP7
 
         //汽车品牌网络加载
         CarBrandViewModel carVM = null;
-        /// <summary>
-        /// 品牌找车
-        /// </summary>
+        
+        // 品牌找车
+        // </summary>
         public void SetWebCarBrandLoadData()
         {
             if (carVM == null)
@@ -485,92 +483,80 @@ namespace AutoWP7
         #endregion
 
         #region  频 道
-        /// <summary>
-        /// 新闻
-        /// </summary>
+        
+        // 新闻
         private void newsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(0));
         }
 
-        /// <summary>
-        /// Video
-        /// </summary>
+        // 视频
         private void videoHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(1));
         }
-
-        /// <summary>
-        /// 评测
-        /// </summary>
+        
+        // 评测
         private void evaluatingHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(1));
         }
-        /// <summary>
-        /// 行情
-        /// </summary>
+        
+        // 行情
         private void quotationsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(2));
         }
 
-        /// <summary>
-        /// 导购
-        /// </summary>
+        // 导购
         private void shoppingGuidHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(3));
         }
 
-        /// <summary>
-        /// 用车
-        /// </summary>
+        // 用车
         private void useCarHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(4));
         }
-
-        /// <summary>
-        /// 文化
-        /// </summary>
+        
+        // 文化
         private void cultureHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(5));
         }
-
-        /// <summary>
-        /// 改装
-        /// </summary>
+        
+        // 改装
         private void changeHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(6));
         }
-
-        /// <summary>
-        /// 说客
-        /// </summary>
+        
+        // 说客
         private void competitionHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(7));
         }
-
-        /// <summary>
-        /// 游记
-        /// </summary>
+        
+        // 游记
         private void travelsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(8));
 
         }
-        /// <summary>
-        /// 技术
-        /// </summary>
+        
+        // 技术
         private void technologyhub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.NavigationService.Navigate(CreateChannelUrl(9));
         }
+
+        //原创视频
+        private void originalVideoHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.NavigationService.Navigate(CreateChannelUrl(11));
+        }
+
         #endregion
 
         // 文章最终页
@@ -685,12 +671,8 @@ namespace AutoWP7
             UmengSDK.UmengAnalytics.onEvent("MoreActivity", "更多页点击量");
             this.NavigationService.Navigate(new Uri("/View/More/MorePage.xaml", UriKind.Relative));
         }
-
-        /// <summary>
-        /// 新闻频道页
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
+        
+        // 新闻频道页
         private Uri CreateChannelUrl(int index)
         {
             return new Uri(string.Format("/View/Channel/NewsListPage.xaml?index={0}", index), UriKind.Relative);
