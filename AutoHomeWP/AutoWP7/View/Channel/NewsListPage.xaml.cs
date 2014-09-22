@@ -230,9 +230,7 @@ namespace AutoWP7.View.Channel
         public ObservableCollection<NewsModel> newsDataSource = null;
         NewsViewModel comm = null;
         int newspageIndex = 1; //页码
-        /// <summary>
-        /// 新闻 - 第一次加载
-        /// </summary>
+        // 新闻 - 第一次加载
         public void NewsLoadData(int pageIndex, int pageSize)
         {
             GlobalIndicator.Instance.Text = "正在获取中...";

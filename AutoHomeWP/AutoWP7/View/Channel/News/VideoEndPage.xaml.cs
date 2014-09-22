@@ -14,6 +14,8 @@ namespace AutoWP7.View.Channel.News
 {
     public partial class VideoEndPage : PhoneApplicationPage
     {
+        private string pageType = "3";
+
         public VideoEndPage()
         {
             InitializeComponent();
@@ -24,10 +26,12 @@ namespace AutoWP7.View.Channel.News
         {
             base.OnNavigatedTo(e);
             videoId = NavigationContext.QueryString["videoid"];
+            //pageType = NavigationContext.QueryString["pageType"];
+
             LoadData();
 
-            var xx = NavigationService.BackStack.First();
-            if (xx.Source.ToString().Contains("VideoEndPage"))
+            var lastPage = NavigationService.BackStack.First();
+            if (lastPage.Source.ToString().Contains("VideoEndPage"))
             {
                 NavigationService.RemoveBackEntry();
             }
@@ -111,16 +115,8 @@ namespace AutoWP7.View.Channel.News
         // 查看评论
         private void checkComment_Click(object sender, EventArgs e)
         {
-            //UmengSDK.UmengAnalytics.onEvent("ArticleEndPageActivity", "评论页的访问量");
-
-            //for (int i = 0; i < buttonCount; i++)
-            //{
-            //    App.barStatus[i] = (this.ApplicationBar.Buttons[i] as IApplicationBarIconButton).IsEnabled;
-
-            //}
-            //(App.Current as App).newsPartPageMessage.Hide();
-            //this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsCommentListPage.xaml?newsid=" + newsId + "&pageType=" + pageType, UriKind.Relative));
-
+            UmengSDK.UmengAnalytics.onEvent("VideoEndPageActivity", "视频评论页的访问量");
+            this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsCommentListPage.xaml?newsid=" + videoId + "&pageType=" + pageType, UriKind.Relative));
         }
 
         //刷新

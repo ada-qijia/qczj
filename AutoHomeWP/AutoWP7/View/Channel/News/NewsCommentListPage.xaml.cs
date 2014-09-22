@@ -20,7 +20,6 @@ namespace AutoWP7.View.Channel.News
             InitializeComponent();
         }
 
-
         NewsCommentViewModel newsModel = null;
         int newsPageIndex = 1;
         int newsPageSize = 20;
@@ -83,6 +82,11 @@ namespace AutoWP7.View.Channel.News
             else if (pageType == 2)
             {
                 url = string.Format("{0}{4}/news/shuokecomments-a2-pm1-v1.4.0-n{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr);
+            }
+            else if (pageType == 3)
+            {
+    //http://app.api.autohome.com.cn/wpv1.4/news/videocomments-a1-pm3-v1.5.0-vi23-o23-p1-s20.html
+                url = string.Format("{0}{4}/news/videocomments-a2-pm3-v1.5.0-vi{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr);
             }
             newsCommentVM.LoadDataAysnc(url);
             newsCommentVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<CommentModel>>>(newsCommentVM_LoadDataCompleted);
@@ -150,7 +154,6 @@ namespace AutoWP7.View.Channel.News
 
         #endregion
 
-
         //新闻资讯之评论回复
         private void reply_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -169,7 +172,6 @@ namespace AutoWP7.View.Channel.News
             newsPageIndex = 1;
             CommentLoadData(newsPageIndex, newsPageSize);
         }
-
 
         /// <summary>
         ///导向文章评论页
