@@ -150,6 +150,9 @@
     </Compile>
     <Compile Include="Themes\NegativeValueConverter.cs" />
     <Compile Include="Themes\PullDownToRefreshPanel.cs" />
+    <Compile Include="UcControl\AlibiChart.xaml.cs">
+      <DependentUpon>AlibiChart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UcControl\UcMediaElement\MediaElementUc.xaml.cs">
       <DependentUpon>MediaElementUc.xaml</DependentUpon>
     </Compile>
@@ -289,6 +292,10 @@
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\AlibiChart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UcControl\UcMediaElement\MediaElementUc.xaml">
       <SubType>Designer</SubType>

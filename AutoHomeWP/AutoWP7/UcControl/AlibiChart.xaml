@@ -1,0 +1,155 @@
+﻿<UserControl 
+    x:Class="AutoWP7.UcControl.AlibiChart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Height="280" d:DesignWidth="480">
+
+    <UserControl.Resources>
+        <Style x:Key="Chart_Line_Style" TargetType="Rectangle">
+            <Setter Property="Fill" Value="#ffe0e0e0"/>
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+        </Style>
+
+        <Style x:Key="Chart_Legend_V_Style" TargetType="TextBlock" >
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="#ffa0a0a0"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="-16,0,0,-12"/>
+        </Style>
+
+        <Style x:Key="Chart_Legend_H_Style" TargetType="TextBlock" >
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#ffa0a0a0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="0,0,0,-24"/>
+        </Style>
+
+        <Style x:Key="Chart_Column_Style" TargetType="Rectangle">
+            <Setter Property="Fill" Value="#ffbad0c4"/>
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="200"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+        </Style>
+
+        <Style x:Key="Chart_ColumnValue_Style" TargetType="TextBlock" >
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#ff4d4d4d"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid Margin="24,0,24,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <!--lines-->
+            <Rectangle Grid.Row="0" Style="{StaticResource Chart_Line_Style}"/>
+            <Rectangle Grid.Row="1" Style="{StaticResource Chart_Line_Style}"/>
+            <Rectangle Grid.Row="2" Style="{StaticResource Chart_Line_Style}"/>
+            <Rectangle Grid.Row="3" Style="{StaticResource Chart_Line_Style}"/>
+            <Rectangle Grid.Row="4" Style="{StaticResource Chart_Line_Style}"/>
+            <Rectangle Grid.Row="5" Style="{StaticResource Chart_Line_Style}"/>
+
+            <!--legends v-->
+            <TextBlock Text="5" Grid.Row="0" Style="{StaticResource Chart_Legend_V_Style}"/>
+            <TextBlock Text="4" Grid.Row="1" Style="{StaticResource Chart_Legend_V_Style}"/>
+            <TextBlock Text="3" Grid.Row="2" Style="{StaticResource Chart_Legend_V_Style}"/>
+            <TextBlock Text="2" Grid.Row="3" Style="{StaticResource Chart_Legend_V_Style}"/>
+            <TextBlock Text="1" Grid.Row="4" Style="{StaticResource Chart_Legend_V_Style}"/>
+            <TextBlock Text="0" Grid.Row="5" Style="{StaticResource Chart_Legend_V_Style}"/>
+
+            <!--columns-->
+            <Grid Grid.RowSpan="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--legends h-->
+                <TextBlock Grid.Column="0" Style="{StaticResource Chart_Legend_H_Style}" Text="空间"/>
+                <TextBlock Grid.Column="1" Style="{StaticResource Chart_Legend_H_Style}" Text="动力"/>
+                <TextBlock Grid.Column="2" Style="{StaticResource Chart_Legend_H_Style}" Text="操控"/>
+                <TextBlock Grid.Column="3" Style="{StaticResource Chart_Legend_H_Style}" Text="油耗"/>
+                <TextBlock Grid.Column="4" Style="{StaticResource Chart_Legend_H_Style}" Text="舒适性"/>
+                <TextBlock Grid.Column="5" Style="{StaticResource Chart_Legend_H_Style}" Text="外观"/>
+                <TextBlock Grid.Column="6" Style="{StaticResource Chart_Legend_H_Style}" Text="内饰"/>
+                <TextBlock Grid.Column="7" Style="{StaticResource Chart_Legend_H_Style}" Text="性价比"/>
+                
+                <Rectangle x:Name="column_0" Grid.Column="0" Style="{StaticResource Chart_Column_Style}"/>
+                <Rectangle x:Name="column_1" Grid.Column="1" Style="{StaticResource Chart_Column_Style}"/>
+                <Rectangle x:Name="column_2" Grid.Column="2" Style="{StaticResource Chart_Column_Style}"/>
+                <Rectangle x:Name="column_3" Grid.Column="3" Style="{StaticResource Chart_Column_Style}"/>
+                <Rectangle x:Name="column_4" Grid.Column="4" Style="{StaticResource Chart_Column_Style}"/>
+                <Rectangle x:Name="column_5" Grid.Column="5" Style="{StaticResource Chart_Column_Style}"/>
+                <Rectangle x:Name="column_6" Grid.Column="6" Style="{StaticResource Chart_Column_Style}"/>
+                <Rectangle x:Name="column_7" Grid.Column="7" Style="{StaticResource Chart_Column_Style}"/>
+
+                <!--column head-->
+                <TextBlock x:Name="columnHead_0" Grid.Column="0" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <CompositeTransform x:Name="columnHeadTransform_0" TranslateY="-200"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock x:Name="columnHead_1" Grid.Column="1" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <CompositeTransform x:Name="columnHeadTransform_1" TranslateY="-200"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock x:Name="columnHead_2" Grid.Column="2" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <CompositeTransform x:Name="columnHeadTransform_2" TranslateY="-200"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock x:Name="columnHead_3" Grid.Column="3" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <CompositeTransform x:Name="columnHeadTransform_3" TranslateY="-200"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock x:Name="columnHead_4" Grid.Column="4" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <CompositeTransform x:Name="columnHeadTransform_4" TranslateY="-200"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock x:Name="columnHead_5" Grid.Column="5" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <CompositeTransform x:Name="columnHeadTransform_5" TranslateY="-200"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock x:Name="columnHead_6" Grid.Column="6" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <CompositeTransform x:Name="columnHeadTransform_6" TranslateY="-200"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock x:Name="columnHead_7" Grid.Column="7" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <CompositeTransform x:Name="columnHeadTransform_7" TranslateY="-200"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+
+
+            </Grid>
+
+        </Grid>
+    </Grid>
+</UserControl>
