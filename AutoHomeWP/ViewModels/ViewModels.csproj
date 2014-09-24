@@ -108,6 +108,7 @@
     <Compile Include="CarSeriesActicleViewModel.cs" />
     <Compile Include="CarSeriesConfigurationViewModel.cs" />
     <Compile Include="CarSeriesAllForumViewModel.cs" />
+    <Compile Include="CarSeriesAlibiViewModel.cs" />
     <Compile Include="CarSeriesQuoteViewModel.cs" />
     <Compile Include="CarSeriesViewModel.cs" />
     <Compile Include="CityListViewModel.cs" />

@@ -59,6 +59,7 @@ namespace AutoWP7.View.Car
             IconUri = new Uri("/Images/car_addvs.png", UriKind.Relative),
             Text = "添加"
         };
+
         public ApplicationBarIconButton ToVS = new ApplicationBarIconButton()
         {
             IconUri = new Uri("/Images/vs1.png", UriKind.Relative),
@@ -241,11 +242,13 @@ namespace AutoWP7.View.Car
 
         }
 
-        //标识数据加载状态（false 未加载，true已加载）
-        bool isQutoeLoaded = false;
+        //标识状态（false 未加载，true已加载）
+        bool isQuoteLoaded = false;
         bool isArticLoaded = false;
         bool isDealerLoaded = false;
         bool isForumLoaded = false;
+        bool isAlibiLoaded = false;
+
         //论坛接口地址
         string forumUrl = string.Empty;
         //文章接口地址
@@ -257,16 +260,16 @@ namespace AutoWP7.View.Car
 
             switch (tag)
             {
-                case "price": //报价
+                case "quote": //报价
                     {
                         UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "车系报价页点击量");
                         ApplicationBar.IsVisible = true;
                         this.ApplicationBar.Buttons.Clear();
                         this.ApplicationBar.Buttons.Add(ToVS);
-                        if (!isQutoeLoaded)
+                        if (!isQuoteLoaded)
                         {
                             CarSeriesQuoteLoadData();
-                            isQutoeLoaded = true;
+                            isQuoteLoaded = true;
                         }
                     }
                     break;
@@ -317,6 +320,13 @@ namespace AutoWP7.View.Car
                 case "alibi": //口碑
                     {
                         UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "车系页~口碑点击量");
+                        ApplicationBar.IsVisible = false;
+                        if (!isAlibiLoaded)
+                        {
+                            CarSeriesQuoteLoadData();
+                            isAlibiLoaded = true;
+                        }
+
                     }
                     break;
             }
@@ -343,8 +353,7 @@ namespace AutoWP7.View.Car
             }
         }
 
-
-        #region 车系报价数据加载
+        #region 报价
 
         public class CarSeriesQuteGroup : List<CarSeriesQuoteModel>
         {
@@ -388,7 +397,6 @@ namespace AutoWP7.View.Car
             carSeriesQuoteVM.LoadDataAysnc(url, true);
             //这里已经有标准接口carSeriesQuoteVM.LoadDataAysnc(App.appUrl  + "/autov2.5.5/cars/seriessummary-a2-pm3-v2.5.5-s" + carSeriesId + "-t0XFFFF.html");
             carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(carSeriesQuoteVM_LoadDataCompleted);
-
         }
 
         void carSeriesQuoteVM_LoadDataCompleted(object sender, ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>> e)
@@ -452,12 +460,12 @@ namespace AutoWP7.View.Car
 
         #endregion
 
-        #region 车系文章数据加载
+        #region 文章
 
         CarSeriesActicleViewModel carSeriesArticleVM = null;
         int articlePageIndex = 1; //页码
         /// <summary>
-        /// 数据加载
+        /// 
         /// </summary>
         public void ArticleLoadData(bool isFirst, int pageIndex)
         {
@@ -488,7 +496,7 @@ namespace AutoWP7.View.Car
 
 
         /// <summary>
-        /// 数据加载完成
+        /// 完成
         /// </summary>
         void comm_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<NewsModel>> e)
         {
@@ -538,7 +546,7 @@ namespace AutoWP7.View.Car
 
         #endregion
 
-        #region 经销商数据加载
+        #region 经销商
 
         DealerViewModel DealerVM = null;
         /// <summary>
@@ -622,12 +630,12 @@ namespace AutoWP7.View.Car
 
         #endregion
 
-        #region 论坛数据加载
+        #region 论坛
 
         CarSeriesForumViewModel forumVM = null;
         int forumPageIndex = 1; //页码
 
-        // 数据加载
+        // 
         public void ForumLoadData(string url, bool isFirst)
         {
 
@@ -642,7 +650,7 @@ namespace AutoWP7.View.Car
             forumVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<ForumModel>>>(forumVM_LoadDataCompleted);
         }
 
-        // 数据加载完成
+        // 完成
         void forumVM_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<ForumModel>> e)
         {
             isLoading = false;
@@ -709,6 +717,8 @@ namespace AutoWP7.View.Car
             ForumLoadData(forumUrl, false);
         }
         #endregion
+
+
 
         //标识正在加载
         bool isLoading = false;

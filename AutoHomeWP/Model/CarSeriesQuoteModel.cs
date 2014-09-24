@@ -13,7 +13,6 @@ using System.ComponentModel;
 
 namespace Model
 {
-    
     [Table]
     public class CarSeriesQuoteModel: INotifyPropertyChanged, INotifyPropertyChanging
     {

@@ -108,6 +108,7 @@
     <Compile Include="CommentModel.cs" />
     <Compile Include="CommentReplyModel.cs" />
     <Compile Include="Base\BindableBase.cs" />
+    <Compile Include="CarSeriesAlibiModel.cs" />
     <Compile Include="VideoDetailModel.cs" />
     <Compile Include="DealerModel.cs" />
     <Compile Include="ForumModel.cs" />

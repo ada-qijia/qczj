@@ -154,7 +154,7 @@
         <TextBlock Grid.Row="0" x:Name="autoName" Margin="20,0,0,-10"  FontSize="32"  Foreground="#3cadeb"/>
         <controls:Pivot Grid.Row="1" x:Name="piv" SelectionChanged="piv_SelectionChanged" Foreground="Black">
             <!--报价一-->
-            <controls:PivotItem Tag="price">
+            <controls:PivotItem Tag="quote">
                 <controls:PivotItem.Header>
                     <TextBlock Text="车型" FontSize="56" Foreground="#3cadeb"/>
                 </controls:PivotItem.Header>
