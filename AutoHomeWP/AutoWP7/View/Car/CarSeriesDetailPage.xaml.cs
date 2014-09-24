@@ -253,9 +253,11 @@ namespace AutoWP7.View.Car
 
         private void piv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (piv.SelectedIndex)
+            var tag = (piv.SelectedItem as PivotItem).Tag.ToString();
+
+            switch (tag)
             {
-                case 0: //报价
+                case "price": //报价
                     {
                         UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "车系报价页点击量");
                         ApplicationBar.IsVisible = true;
@@ -268,10 +270,10 @@ namespace AutoWP7.View.Car
                         }
                     }
                     break;
-                case 1: //图片
+                case "image": //图片
                     ApplicationBar.IsVisible = false;
                     break;
-                case 2: //文章
+                case "article": //文章
                     {
                         UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "车系文章页~新闻点击量");
                         ApplicationBar.IsVisible = true;
@@ -287,7 +289,7 @@ namespace AutoWP7.View.Car
                         }
                     }
                     break;
-                case 3: //经销商
+                case "dealer": //经销商
                     {
                         UmengSDK.UmengAnalytics.onEvent("SeriesActivity", " 车系经销商点击量");
                         ApplicationBar.IsVisible = false;
@@ -299,7 +301,7 @@ namespace AutoWP7.View.Car
                         }
                     }
                     break;
-                case 4: //论坛
+                case "forum": //论坛
                     {
                         UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "车系页~最后回复论坛点击量");
                         ApplicationBar.IsVisible = true;
@@ -310,6 +312,11 @@ namespace AutoWP7.View.Car
                             forumUrl = CreateTopicsUrl("c", false, 0);
                             ForumLoadData(forumUrl, true);
                         }
+                    }
+                    break;
+                case "alibi": //口碑
+                    {
+                        UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "车系页~口碑点击量");
                     }
                     break;
             }

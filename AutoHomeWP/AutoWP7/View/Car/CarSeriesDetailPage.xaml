@@ -11,9 +11,6 @@
     xmlns:handler="clr-namespace:AutoWP7.Handler"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     xmlns:local="clr-namespace:AutoWP7"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
    xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
 
@@ -150,8 +147,6 @@
 
     </phone:PhoneApplicationPage.Resources>
     <Grid x:Name="LayoutRoot" Background="White" Margin="0,0,0,75">
-
-
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -159,13 +154,11 @@
         <TextBlock Grid.Row="0" x:Name="autoName" Margin="20,0,0,-10"  FontSize="32"  Foreground="#3cadeb"/>
         <controls:Pivot Grid.Row="1" x:Name="piv" SelectionChanged="piv_SelectionChanged" Foreground="Black">
             <!--报价一-->
-            <controls:PivotItem >
+            <controls:PivotItem Tag="price">
                 <controls:PivotItem.Header>
                     <TextBlock Text="车型" FontSize="56" Foreground="#3cadeb"/>
                 </controls:PivotItem.Header>
                 <Grid>
-
-
                     <TextBlock  Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesQuotePropmt"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无经销商报价信息"/>
                     <p:LongListSelector Margin="10,10,10,10"  
@@ -187,7 +180,7 @@
                 </Grid>
             </controls:PivotItem>
             <!--图片一-->
-            <controls:PivotItem >
+            <controls:PivotItem Tag="image">
                 <controls:PivotItem.Header>
                     <TextBlock Text="图片" FontSize="56" Foreground="#3cadeb"/>
                 </controls:PivotItem.Header>
@@ -224,39 +217,8 @@
                     </Grid>
                 </ScrollViewer>
             </controls:PivotItem>
-            <!--文章一-->
-            <controls:PivotItem >
-                <controls:PivotItem.Header>
-                    <TextBlock Text="文章" FontSize="56" Foreground="#3cadeb"/>
-                </controls:PivotItem.Header>
-                <Grid>
-                    <TextBlock  Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesArticlePropmt"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无相关数据~~"/>
-                    <ListBox x:Name="carSeriesActicleListbox" Height="590" VerticalAlignment="Top">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <!--<Grid Tap="{Binding id}" Margin="0,15">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                </Grid.RowDefinitions>-->
-                                <Grid Margin="10,20,0,0" Tag="{Binding id}" Tap="acticleStack_Tap">
-                                    <TextBlock Foreground="Black" TextWrapping="Wrap" FontSize="26"  Text="{Binding title}"/>
-                                    <TextBlock    Margin="340,40,0,0"
-                                        Foreground="Gray" Text="{Binding time}"/>
-                                    <!--<Button Tap="btnLoadMore_Tap"   
-                                        Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}"                                            Content="{Binding loadMore}"/>-->
-                                    <Border  Margin="0,10,0,17" x:Name="loadMore" Tap="btnLoadMore_Tap" Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}" Background="LightGray" Height="50" Width="440">
-                                        <TextBlock Foreground="Black" HorizontalAlignment="Center" FontSize="28" Text="{Binding loadMore}"/>
-                                    </Border>
-                                    <!--</Grid>-->
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-            </controls:PivotItem>
             <!--经销商一-->
-            <controls:PivotItem >
+            <controls:PivotItem Tag="dealer">
                 <controls:PivotItem.Header>
                     <TextBlock Text="经销商" FontSize="56" Foreground="#3cadeb"/>
                 </controls:PivotItem.Header>
@@ -349,7 +311,7 @@
                 </Grid>
             </controls:PivotItem>
             <!--论坛一-->
-            <controls:PivotItem >
+            <controls:PivotItem Tag="forum">
                 <controls:PivotItem.Header>
                     <TextBlock Text="论坛" FontSize="56" Foreground="#3cadeb"/>
                 </controls:PivotItem.Header>
@@ -401,6 +363,46 @@
                                            Tap="forumLoadMore_Tap" Text="{Binding LoadMore}" 
                                            Visibility="{Binding LoadMore,Converter={StaticResource loadMoreVisibility}}"/>
                                     <!--<Button Grid.Row="1" Foreground="Black"  Width="460" x:Name="forumLoadMore" Tap="forumLoadMore_Tap" Content="{Binding LoadMore}" Visibility="{Binding LoadMore,Converter={StaticResource loadMoreVisibility}}"/>-->
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </controls:PivotItem>
+            <!--口碑-->
+            <controls:PivotItem Tag="alibi">
+                <controls:PivotItem.Header>
+                    <TextBlock Text="口碑" FontSize="56" Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <Grid>
+                    
+                </Grid>
+            </controls:PivotItem>
+            <!--文章一-->
+            <controls:PivotItem Tag="article">
+                <controls:PivotItem.Header>
+                    <TextBlock Text="文章" FontSize="56" Foreground="#3cadeb"/>
+                </controls:PivotItem.Header>
+                <Grid>
+                    <TextBlock  Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesArticlePropmt"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无相关数据~~"/>
+                    <ListBox x:Name="carSeriesActicleListbox" Height="590" VerticalAlignment="Top">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <!--<Grid Tap="{Binding id}" Margin="0,15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>-->
+                                <Grid Margin="10,20,0,0" Tag="{Binding id}" Tap="acticleStack_Tap">
+                                    <TextBlock Foreground="Black" TextWrapping="Wrap" FontSize="26"  Text="{Binding title}"/>
+                                    <TextBlock    Margin="340,40,0,0"
+                                        Foreground="Gray" Text="{Binding time}"/>
+                                    <!--<Button Tap="btnLoadMore_Tap"   
+                                        Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}"                                            Content="{Binding loadMore}"/>-->
+                                    <Border  Margin="0,10,0,17" x:Name="loadMore" Tap="btnLoadMore_Tap" Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}" Background="LightGray" Height="50" Width="440">
+                                        <TextBlock Foreground="Black" HorizontalAlignment="Center" FontSize="28" Text="{Binding loadMore}"/>
+                                    </Border>
+                                    <!--</Grid>-->
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
