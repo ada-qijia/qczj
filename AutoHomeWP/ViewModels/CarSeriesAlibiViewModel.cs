@@ -14,36 +14,31 @@ namespace ViewModels
 
         public CarSeriesAlibiViewModel()
         {
-            _carSeriesQuoteDataSource = new ObservableCollection<CarSeriesQuoteModel>();
         }
         /// <summary>
         /// 返回的数据集合
         /// </summary>
-        private ObservableCollection<CarSeriesQuoteModel> _carSeriesQuoteDataSource;
-        public ObservableCollection<CarSeriesQuoteModel> CarSeriesQuoteDataSource
+        private CarSeriesAlibiModel _DataSource;
+        public CarSeriesAlibiModel DataSource
         {
             get
             {
-                return _carSeriesQuoteDataSource;
+                return _DataSource;
             }
             set
             {
-                if (value != _carSeriesQuoteDataSource)
+                if (value != _DataSource)
                 {
-                    _carSeriesQuoteDataSource = value;
-                    OnPropertyChanged("CarSeriesQuoteDataSource");
+                    _DataSource = value;
+                    OnPropertyChanged("DataSource");
                 }
             }
         }
 
         //事件通知
-        public event EventHandler<APIEventArgs<IEnumerable<CarSeriesQuoteModel>>> LoadDataCompleted;
+        public event EventHandler<APIEventArgs<CarSeriesAlibiModel>> LoadDataCompleted;
 
-        /// <summary>
-        /// 请求Json格式的数据
-        /// </summary>
-        /// <param name="url">请求的地址url</param>
-        public void LoadDataAysnc(string url, bool isSeriesSummary = false)
+        public void LoadDataAysnc(string url)
         {
             WebClient wc = new WebClient();
             if (wc.IsBusy != false)
@@ -59,7 +54,7 @@ namespace ViewModels
             wc.DownloadStringAsync(urlSource);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
             {
-                APIEventArgs<IEnumerable<CarSeriesQuoteModel>> apiArgs = new APIEventArgs<IEnumerable<CarSeriesQuoteModel>>();
+                APIEventArgs<CarSeriesAlibiModel> apiArgs = new APIEventArgs<CarSeriesAlibiModel>();
                 if (ee.Error != null)
                 {
                     apiArgs.Error = ee.Error;
@@ -67,76 +62,54 @@ namespace ViewModels
                 else
                 {
 
-                    //返回的json数据
                     JObject json = JObject.Parse(ee.Result);
-                    CarSeriesQuoteDataSource = new ObservableCollection<CarSeriesQuoteModel>();
-                    if (isSeriesSummary)
+                    DataSource = new CarSeriesAlibiModel();
+                    JToken result = json.SelectToken("result");
+                    if (result != null)
                     {
-                        JArray carJson = (JArray)json.SelectToken("result").SelectToken("enginelist");
+                        CarSeriesAlibiModel model = new CarSeriesAlibiModel();
+                        model.Grade = (string)result.SelectToken("grade");
+                        model.PeopleNum = (int)result.SelectToken("peoplenum");
+                        model.HasStopSellAlibi = (int)result.SelectToken("ishasstopsellalibi");
 
-                        using (LocalDataContext ldc = new LocalDataContext())
+                        var ja = (JArray)result.SelectToken("list");
+                        if (ja != null && ja.Count > 0)
                         {
-                            //读取数据
-                            CarSeriesQuoteModel model = null;
-                            for (int i = 0; i < carJson.Count; i++)
+                            var groupList = new List<CarSeriesAlibiSpecGroupModel>();
+                            foreach (var item in ja)
                             {
-                                JArray carItemJson = (JArray)carJson[i].SelectToken("speclist");
-                                for (int j = 0; j < carItemJson.Count; j++)
+                                CarSeriesAlibiSpecGroupModel specGroup = new CarSeriesAlibiSpecGroupModel();
+                                specGroup.GroupName = (string)item.SelectToken("name");
+
+                                var ja2 = (JArray)item.SelectToken("specs");
+                                if (ja2 != null && ja2.Count > 0)
                                 {
-                                    model = new CarSeriesQuoteModel();
-                                    model.GroupName = (string)carJson[i].SelectToken("name");
-                                    model.Id = (int)carItemJson[j].SelectToken("id");
-                                    model.Name = (string)carItemJson[j].SelectToken("name");
-                                    model.Price = (string)carItemJson[j].SelectToken("price");
-                                    model.GearBox = (string)carItemJson[j].SelectToken("gearbox") ?? "";
-                                    model.Structure = (string)carItemJson[j].SelectToken("structure");
-                                    model.Transmission = (string)carItemJson[j].SelectToken("description");
-                                    model.ParamIsShow = string.IsNullOrEmpty((string)carItemJson[j].SelectToken("paramisshow")) ? 0 : Convert.ToInt32((string)carItemJson[j].SelectToken("paramisshow"));
-                                    model.COrder = j + 1;
-                                    model.GroupOrder = i + 1;
-                                    model.Compare = "";
-                                    model.CompareText = "";
-                                    ldc.carQuotes.InsertOnSubmit(model);
-                                    CarSeriesQuoteDataSource.Add(model);
+                                    var specList = new List<CarSeriesAlibiSpecModel>();
+                                    foreach (var item2 in ja2)
+                                    {
+                                        CarSeriesAlibiSpecModel spec = new CarSeriesAlibiSpecModel();
+                                        spec.ID = (int)item2.SelectToken("specid");
+                                        spec.Name = (string)item2.SelectToken("specname");
+                                        spec.Grade = (string)item2.SelectToken("grade");
+                                        spec.PeopleNum = (int)item2.SelectToken("peoplenum");
+                                        spec.FlowModeName = (string)item2.SelectToken("flowmodename");
+                                        spec.Displacement = (double)item2.SelectToken("displacement");
+                                        spec.EnginePower = (string)item2.SelectToken("enginepower");
+                                        spec.Year = (string)item2.SelectToken("year");
+                                        specList.Add(spec);
+                                    }
+                                    specGroup.SpecList = specList;
                                 }
                             }
-                            ldc.SubmitChanges();
+                            model.SpecGroupList = groupList;
                         }
 
+                        DataSource = model;
                     }
-                    else
-                    {
-                        JArray carJson = (JArray)json.SelectToken("result").SelectToken("list");
-
-                        using (LocalDataContext ldc = new LocalDataContext())
-                        {
-                            //读取数据
-                            CarSeriesQuoteModel model = null;
-
-                            for (int i = 0; i < carJson.Count; i++)
-                            {
-
-                                JArray carItemJson = (JArray)carJson[i].SelectToken("speclist");
-                                for (int j = 0; j < carItemJson.Count; j++)
-                                {
-                                    model = new CarSeriesQuoteModel();
-
-                                    model.Id = (int)carItemJson[j].SelectToken("id");
-                                    model.Name = (string)carItemJson[j].SelectToken("name");
-
-                                    ldc.carQuotes.InsertOnSubmit(model);
-                                    CarSeriesQuoteDataSource.Add(model);
-                                }
-                            }
-                            ldc.SubmitChanges();
-                        }
-                    }
-
-
                 }
 
                 //返回结果集
-                apiArgs.Result = CarSeriesQuoteDataSource;
+                apiArgs.Result = DataSource;
 
                 if (LoadDataCompleted != null)
                 {

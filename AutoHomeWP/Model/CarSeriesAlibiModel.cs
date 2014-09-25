@@ -7,7 +7,7 @@ namespace Model
     public class CarSeriesAlibiModel
     {
         [Column]
-        public int Grade { get; set; }
+        public string Grade { get; set; }
 
         [Column]
         public int PeopleNum { get; set; }

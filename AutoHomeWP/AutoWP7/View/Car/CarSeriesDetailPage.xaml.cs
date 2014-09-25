@@ -718,7 +718,86 @@ namespace AutoWP7.View.Car
         }
         #endregion
 
+        #region 口碑
 
+        CarSeriesAlibiViewModel carSeriesAlibiVM = null;
+        public void CarSeriesAlibiLoadData()
+        {
+            GlobalIndicator.Instance.Text = "正在获取中...";
+            GlobalIndicator.Instance.IsBusy = true;
+
+            if (carSeriesAlibiVM == null)
+            {
+                carSeriesAlibiVM = new CarSeriesAlibiViewModel();
+            }
+
+            //http://app.api.autohome.com.cn/autov3.1/alibi/specsalibiinfo-a2-pm1-v3.1.0-ss364-t1.html
+            string url = string.Format("{0}{2}/cars/seriessummary-a2-pm3-v1.4.0-s{1}-t0xffff-c0.html", App.appUrl, carSeriesId, App.versionStr);
+            carSeriesQuoteVM.LoadDataAysnc(url, true);
+            //这里已经有标准接口carSeriesQuoteVM.LoadDataAysnc(App.appUrl  + "/autov2.5.5/cars/seriessummary-a2-pm3-v2.5.5-s" + carSeriesId + "-t0XFFFF.html");
+            carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(carSeriesQuoteVM_LoadDataCompleted);
+        }
+
+        void carSeriesQuoteVM_LoadDataCompleted(object sender, ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>> e)
+        {
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false;
+            if (e.Error != null)
+            {
+                Common.NetworkAvailablePrompt();
+            }
+            else
+            {
+                if (e.Result.Count() < 1)
+                {
+                    notCarseriesQuotePropmt.Visibility = Visibility.Visible;
+                    carSeriesQuoteListGropus.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+
+                    var groupBy = from car in e.Result
+                                  group car by car.GroupName into c
+                                  //orderby c.Key
+                                  select new Group<CarSeriesQuoteModel>(c.Key, c);
+                    var carCompareSpecs = new CarCompareViewModel().GetCompareSpec();
+                    specsGroups = new ObservableCollection<CarSeriesQuteGroup>();
+                    foreach (var entity in groupBy)
+                    {
+                        CarSeriesQuteGroup groupitem = new CarSeriesQuteGroup(entity.key);
+                        foreach (var item in entity)
+                        {
+                            //蓝色，可以添加对比
+                            item.Compare = "#3CACEB";
+                            item.CompareText = "添加对比";
+                            //商用车id>1000000或参数配置不显示（ParamIsShow=0）的不能参加对比
+                            if (item.ParamIsShow == 0 || item.Id > 1000000)
+                            {
+                                //灰色，按钮不可用
+                                item.Compare = "#CCCCCC";
+                                item.CompareText = "添加对比";
+                            }
+                            else
+                            {
+                                if (carCompareSpecs != null && carCompareSpecs.Count(c => c.SpecId == item.Id) > 0)
+                                {
+                                    item.Compare = "#CCCCCC";
+                                    item.CompareText = "已添加";
+                                }
+                            }
+                            groupitem.Add(item);
+                        }
+                        specsGroups.Add(groupitem);
+                        carSeriesQuteSource.Add(groupitem);
+                    }
+                    carSeriesQuoteListGropus.ItemsSource = specsGroups;
+
+                }
+
+            }
+        }
+
+        #endregion
 
         //标识正在加载
         bool isLoading = false;
