@@ -374,8 +374,18 @@
                 <controls:PivotItem.Header>
                     <TextBlock Text="口碑" FontSize="56" Foreground="#3cadeb"/>
                 </controls:PivotItem.Header>
-                <Grid>
-                    
+                <Grid x:Name="alibiPanel">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="{Binding Grade}" FontSize="32"  Foreground="#ff000000"/>
+                        <TextBlock Grid.Row="1" Text="{Binding PeopleNum}" FontSize="32"  Foreground="#ff000000"/>
+
+                    </Grid>
+
                 </Grid>
             </controls:PivotItem>
             <!--文章一-->

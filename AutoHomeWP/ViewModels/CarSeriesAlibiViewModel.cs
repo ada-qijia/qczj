@@ -100,10 +100,10 @@ namespace ViewModels
                                     }
                                     specGroup.SpecList = specList;
                                 }
+                                groupList.Add(specGroup);
                             }
                             model.SpecGroupList = groupList;
                         }
-
                         DataSource = model;
                     }
                 }
