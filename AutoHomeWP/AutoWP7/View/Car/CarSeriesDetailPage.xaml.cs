@@ -747,14 +747,14 @@ namespace AutoWP7.View.Car
             }
             else
             {
-                if (e.Error != null)
-                {
-                }
-                else
-                {
                     carSeriesAlibiDataSource = e.Result;
                     alibiPanel.DataContext = carSeriesAlibiDataSource;
-                }
+                    var groups = new ObservableCollection<CarSeriesAlibiSpecGroupModel>();
+                    foreach (var groupList in carSeriesAlibiDataSource.SpecGroupList)
+                    {
+                        groups.Add(groupList);
+                    }
+                    carSeriesAlibiListSelector.ItemsSource = groups;
             }
         }
 

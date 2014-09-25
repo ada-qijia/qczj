@@ -47,7 +47,6 @@
             </Grid>
         </DataTemplate>
 
-
         <!--组-->
         <!--Foreground="{StaticResource PhoneForegroundBrush}"-->
         <DataTemplate x:Key="jumpListItemTemplate" x:Name="itemTempLate">
@@ -144,8 +143,33 @@
                 <TextBlock Text="{Binding key}" Margin="10,10,10,10" Foreground="Black" Style="{StaticResource PhoneTextLargeStyle}" TextAlignment="Left" VerticalAlignment="Center"/>
             </Border>
         </DataTemplate>
+        
+        <DataTemplate x:Key="alibiSelectorItemTemplate" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{Binding Name}" FontSize="26" Foreground="#ff000000"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Text="{Binding Grade}" FontSize="20" Foreground="#ff808080"/>
+                    <TextBlock Grid.Column="2" Text="分" FontSize="20" Foreground="#ff808080"/>
+                    <TextBlock Grid.Column="4" Text="{Binding PeopleNum}" FontSize="20" Foreground="#ff808080"/>
+                    <TextBlock Grid.Column="5" Text="人参与" FontSize="20" Foreground="#ff808080"/>
+                </Grid>
+            </Grid>
+        </DataTemplate>
 
     </phone:PhoneApplicationPage.Resources>
+    
     <Grid x:Name="LayoutRoot" Background="White" Margin="0,0,0,75">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -169,6 +193,7 @@
                                            LayoutMode="List"
                                           ItemTemplate="{StaticResource jumpListItemTemplate}" 
                                         GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" >
+                        
                         <!--GroupItemTemplate="{StaticResource groupItemTemplate}"-->
                         <!--<toolkit:LongListSelector.GroupItemsPanel>
                         <ItemsPanelTemplate>
@@ -374,7 +399,7 @@
                 <controls:PivotItem.Header>
                     <TextBlock Text="口碑" FontSize="56" Foreground="#3cadeb"/>
                 </controls:PivotItem.Header>
-                <Grid x:Name="alibiPanel">
+                <Grid x:Name="alibiPanel" Margin="12,0,12,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -383,9 +408,15 @@
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="{Binding Grade}" FontSize="32"  Foreground="#ff000000"/>
                         <TextBlock Grid.Row="1" Text="{Binding PeopleNum}" FontSize="32"  Foreground="#ff000000"/>
-
+                        <p:LongListSelector Grid.Row="2" x:Name="carSeriesAlibiListSelector"
+                                            Background="Transparent" 
+                                            IsGroupingEnabled="True"   
+                                            HideEmptyGroups="True" 
+                                            LayoutMode="List"
+                                            ItemTemplate="{StaticResource alibiSelectorItemTemplate}" 
+                                            GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" 
+                                            />
                     </Grid>
-
                 </Grid>
             </controls:PivotItem>
             <!--文章一-->

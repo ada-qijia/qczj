@@ -79,7 +79,7 @@ namespace ViewModels
                             foreach (var item in ja)
                             {
                                 CarSeriesAlibiSpecGroupModel specGroup = new CarSeriesAlibiSpecGroupModel();
-                                specGroup.GroupName = (string)item.SelectToken("name");
+                                specGroup.key = (string)item.SelectToken("name");
 
                                 var ja2 = (JArray)item.SelectToken("specs");
                                 if (ja2 != null && ja2.Count > 0)

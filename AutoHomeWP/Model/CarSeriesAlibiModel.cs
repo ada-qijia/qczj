@@ -23,7 +23,7 @@ namespace Model
     public class CarSeriesAlibiSpecGroupModel
     {
         [Column]
-        public string GroupName { get; set; }
+        public string key { get; set; }
 
         public IEnumerable<CarSeriesAlibiSpecModel> SpecList { get; set; }
     }
