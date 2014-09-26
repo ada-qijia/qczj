@@ -722,6 +722,7 @@ namespace AutoWP7.View.Car
 
         CarSeriesAlibiViewModel carSeriesAlibiVM = null;
         CarSeriesAlibiModel carSeriesAlibiDataSource = null;
+        string alibi_param_t = "1";
         public void CarSeriesAlibiLoadData()
         {
             GlobalIndicator.Instance.Text = "正在获取中...";
@@ -732,7 +733,8 @@ namespace AutoWP7.View.Car
                 carSeriesAlibiVM = new CarSeriesAlibiViewModel();
             }
 
-            string url = "http://app.api.autohome.com.cn/autov3.1/alibi/specsalibiinfo-a2-pm1-v3.1.0-ss364-t1.html";
+            //string url = "http://app.api.autohome.com.cn/autov3.1/alibi/specsalibiinfo-a2-pm1-v3.1.0-ss364-t1.html";
+            string url = string.Format("{0}{1}/alibi/specsalibiinfo-{2}-ss{3}-t{4}.html", App.appUrl, App.versionStr, App.AppInfo, carSeriesId, alibi_param_t);
             carSeriesAlibiVM.LoadDataAysnc(url);
             carSeriesAlibiVM.LoadDataCompleted += carSeriesAlibiVM_LoadDataCompleted;
         }
@@ -747,14 +749,18 @@ namespace AutoWP7.View.Car
             }
             else
             {
-                    carSeriesAlibiDataSource = e.Result;
-                    alibiPanel.DataContext = carSeriesAlibiDataSource;
-                    var groups = new ObservableCollection<CarSeriesAlibiSpecGroupModel>();
+                carSeriesAlibiDataSource = e.Result;
+                alibiPanel.DataContext = carSeriesAlibiDataSource;
+                var groups = new ObservableCollection<CarSeriesAlibiSpecGroupModel>();
+                if (carSeriesAlibiDataSource.SpecGroupList!=null)
+                {
                     foreach (var groupList in carSeriesAlibiDataSource.SpecGroupList)
                     {
                         groups.Add(groupList);
                     }
-                    carSeriesAlibiListSelector.ItemsSource = groups;
+                }
+                
+                carSeriesAlibiListSelector.ItemsSource = groups;
             }
         }
 
