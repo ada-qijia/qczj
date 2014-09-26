@@ -20,12 +20,10 @@ namespace Model
     }
 
     [Table]
-    public class CarSeriesAlibiSpecGroupModel
+    public class CarSeriesAlibiSpecGroupModel : List<CarSeriesAlibiSpecModel>
     {
         [Column]
         public string key { get; set; }
-
-        public IEnumerable<CarSeriesAlibiSpecModel> SpecList { get; set; }
     }
 
     [Table]

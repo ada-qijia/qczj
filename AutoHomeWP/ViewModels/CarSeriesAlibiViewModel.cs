@@ -96,9 +96,8 @@ namespace ViewModels
                                         spec.Displacement = (double)item2.SelectToken("displacement");
                                         spec.EnginePower = (string)item2.SelectToken("enginepower");
                                         spec.Year = (string)item2.SelectToken("year");
-                                        specList.Add(spec);
+                                        specGroup.Add(spec);
                                     }
-                                    specGroup.SpecList = specList;
                                 }
                                 groupList.Add(specGroup);
                             }
