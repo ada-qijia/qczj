@@ -207,7 +207,7 @@ namespace AutoWP7
         #region 向服务器请求数据url地址头部
         //向服务器请求数据url地址头部
         public static string headUrl = "http://sp.autohome.com.cn";
-        public static string appUrl = "http://app.api.autohome.com.cn";//"http://221.192.136.99:804";// 
+        public static string appUrl = "http://221.192.136.99:804";// "http://app.api.autohome.com.cn";//
 
         public static string loginUrl = "http://account.autohome.com.cn";       
 
