@@ -16,7 +16,7 @@ namespace Model
         public string FuelConsumption { get; set; }
 
         [Column]
-        public int OilPeoplenum { get; set; }
+        public int OilPeopleNum { get; set; }
 
         [Column]
         public string LevelName { get; set; }
@@ -34,7 +34,7 @@ namespace Model
         public int Total { get; set; }
 
         [Column]
-        public IEnumerable<AlibiGradeModel> Grades { get; set; }
+        public Dictionary<string, AlibiGradeModel> Grades { get; set; }
 
         [Column]
         public IEnumerable<KoubeiModel> Koubeis { get; set; }
@@ -47,10 +47,10 @@ namespace Model
         public string Name { get; set; }
 
         [Column]
-        public string Grade { get; set; }
+        public double Grade { get; set; }
 
         [Column]
-        public string LevelGrade { get; set; }
+        public double LevelGrade { get; set; }
     }
 
     [Table]
@@ -63,7 +63,9 @@ namespace Model
         public string SpecName { get; set; }
 
         [Column]
-        public IEnumerable<KoubeiMedalModel> Medals { get; set; }
+        public KoubeiMedalModel Medals { get; set; }
+        //[Column]
+        //public int Medal { get; set; }
 
         [Column]
         public string UserName { get; set; }
@@ -85,6 +87,8 @@ namespace Model
 
         [Column]
         public string SeriesName { get; set; }
+
+        public bool IsMoreButton { get; set; }
     }
 
     [Table]

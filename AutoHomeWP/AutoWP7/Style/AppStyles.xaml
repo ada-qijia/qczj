@@ -7,7 +7,7 @@
     <!--colors-->
     <SolidColorBrush x:Key="App_Theme_Color" Color="#ff0056a6"/>
     <!--converters-->
-    
+
     <!--base Styles-->
     <Style x:Key="TextBlockStyleBase" TargetType="TextBlock">
         <!--<Setter Property="FontFamily" Value="Microsoft YaHei"/>-->
@@ -22,7 +22,7 @@
     </Style>
 
     <!--common-->
-
+    
     <!--video player-->
     <Style x:Key="VideoPlayer_Time_Style" TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBase}">
         <Setter Property="FontSize" Value="16"/>

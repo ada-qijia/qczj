@@ -21,6 +21,7 @@ namespace AutoWP7.View.Car
         public CarSeriesQuotePage()
         {
             InitializeComponent();
+            koubeiListBox.ItemsSource = koubeiList;
         }
         //车系id
         string seriesID = string.Empty;
@@ -28,6 +29,9 @@ namespace AutoWP7.View.Car
         string carId = string.Empty;
         //城市id
         string cityId = string.Empty;
+
+        int pageSize = 20;
+
         /// <summary>
         /// 是否显示参数配置，决定是否可以添加对比
         /// </summary>
@@ -158,6 +162,8 @@ namespace AutoWP7.View.Car
         //标志是否加载数据
         bool isDealerLoaded = false;
         bool isCarSeriesConfigLoaded = false;
+        bool isAlibiLoaded = false;
+
         private void piv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this.ApplicationBar.Buttons.Clear();
@@ -192,13 +198,17 @@ namespace AutoWP7.View.Car
                     break;
                 case 2: //口碑
                     this.ApplicationBar.IsVisible = false;
+                    UmengSDK.UmengAnalytics.onEvent("MotorcycleTypeActivity", "车型页~口碑点击量");
+                    if (!isAlibiLoaded)
+                    {
+                        AlibiLoadData();
+                        isAlibiLoaded = true;
+                    }
                     break;
                 case 3: //图片
                     this.ApplicationBar.IsVisible = false;
                     break;
             }
-
-
         }
 
         #region 配置参数
@@ -281,7 +291,7 @@ namespace AutoWP7.View.Car
         #region 经销商
 
         DealerViewModel DealerVM = null;
-        
+
         public void DealerLoadData()
         {
             //从服务器中获得数据
@@ -368,7 +378,7 @@ namespace AutoWP7.View.Car
             phoneCall.PhoneNumber = bb.Tag.ToString();
             phoneCall.Show();
         }
-        
+
         private void callPrice_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             if (string.IsNullOrEmpty(App.CityId)) //默认北京
@@ -422,7 +432,10 @@ namespace AutoWP7.View.Car
         #region 口碑
 
         SpecAlibiViewModel alibiVM = null;
-        SpecAlibiModel specAlibiDataSource = null;
+        ObservableCollection<KoubeiModel> koubeiList = new ObservableCollection<KoubeiModel>();
+        int alibiPageIndex = 1;
+        KoubeiModel koubeiMoreButtonItem = new KoubeiModel() { IsMoreButton = true };
+
         public void AlibiLoadData()
         {
             GlobalIndicator.Instance.Text = "正在获取中...";
@@ -431,12 +444,12 @@ namespace AutoWP7.View.Car
             if (alibiVM == null)
             {
                 alibiVM = new SpecAlibiViewModel();
+                alibiVM.LoadDataCompleted += alibiVM_LoadDataCompleted;
             }
 
-            //string url = "http://app.api.autohome.com.cn/autov3.1/alibi/specsalibiinfo-a2-pm1-v3.1.0-ss364-t1.html";
-            string url = string.Format("{0}{1}/alibi/specsalibiinfo-{2}-ss{3}-t{4}.html", App.appUrl, App.versionStr, App.AppInfo, carSeriesId, alibi_param_t);
+            //string url = "http://app.api.autohome.com.cn/wpv1.4/alibi/specalibilist-a2-pm3-v1.5.0-sp12129-p1-s20.html";
+            string url = string.Format("{0}{1}/alibi/specalibilist-{2}-sp{3}-p{4}-s{5}.html", App.appUrl, App.versionStr, App.AppInfo, App.CarTypeId, alibiPageIndex, pageSize);
             alibiVM.LoadDataAysnc(url);
-            alibiVM.LoadDataCompleted += alibiVM_LoadDataCompleted;
         }
 
         void alibiVM_LoadDataCompleted(object sender, APIEventArgs<SpecAlibiModel> e)
@@ -449,22 +462,55 @@ namespace AutoWP7.View.Car
             }
             else
             {
-                specAlibiDataSource = e.Result;
-                //alibiPanel.DataContext = carSeriesAlibiDataSource;
-                //var groups = new ObservableCollection<CarSeriesAlibiSpecGroupModel>();
-                //if (carSeriesAlibiDataSource.SpecGroupList != null)
-                //{
-                //    foreach (var groupList in carSeriesAlibiDataSource.SpecGroupList)
-                //    {
-                //        groups.Add(groupList);
-                //    }
-                //}
+                SpecAlibiModel data = e.Result;
+                alibiPanel.DataContext = data;
 
-                //carSeriesAlibiListSelector.ItemsSource = groups;
+                TryRemoveMoreButton();
+                if (data.Koubeis != null)
+                {
+                    foreach (var item in data.Koubeis)
+                    {
+                        koubeiList.Add(item);
+                    }
+                    if (data.PageIndex < data.PageCount)
+                    {
+                        EnsureMoreButton();
+                    }
+                }
+
+                if (data.Grades != null && data.Grades.Count == 8)
+                {
+                    alibiChart.SetColumns(
+                        data.Grades["空间"].Grade, data.Grades["动力"].Grade, data.Grades["操控"].Grade, data.Grades["油耗"].Grade,
+                        data.Grades["舒适性"].Grade, data.Grades["外观"].Grade, data.Grades["内饰"].Grade, data.Grades["性价比"].Grade);
+                }
+            }
+        }
+
+        private void alibiLoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            alibiPageIndex++;
+            AlibiLoadData();
+        }
+
+        private void TryRemoveMoreButton()
+        {
+            if (koubeiList.Contains(koubeiMoreButtonItem))
+            {
+                koubeiList.Remove(koubeiMoreButtonItem);
+            }
+        }
+
+        private void EnsureMoreButton()
+        {
+            if (!koubeiList.Contains(koubeiMoreButtonItem))
+            {
+                koubeiList.Add(koubeiMoreButtonItem);
             }
         }
 
         #endregion
+
 
     }
 }

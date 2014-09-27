@@ -153,6 +153,8 @@
     <Compile Include="UcControl\AlibiChart.xaml.cs">
       <DependentUpon>AlibiChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UcControl\DataTemplateSelector.cs" />
+    <Compile Include="UcControl\KoubeiDataTemplateSelector.cs" />
     <Compile Include="UcControl\UcMediaElement\MediaElementUc.xaml.cs">
       <DependentUpon>MediaElementUc.xaml</DependentUpon>
     </Compile>

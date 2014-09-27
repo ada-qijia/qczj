@@ -33,7 +33,7 @@
         <Style x:Key="Chart_Column_Style" TargetType="Rectangle">
             <Setter Property="Fill" Value="#ffbad0c4"/>
             <Setter Property="Width" Value="34"/>
-            <Setter Property="Height" Value="200"/>
+            <Setter Property="Height" Value="0"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
         </Style>
 
@@ -106,44 +106,44 @@
                 <Rectangle x:Name="column_7" Grid.Column="7" Style="{StaticResource Chart_Column_Style}"/>
 
                 <!--column head-->
-                <TextBlock x:Name="columnHead_0" Grid.Column="0" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                <TextBlock x:Name="columnHead_0" Grid.Column="0" Text="0.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
                     <TextBlock.RenderTransform>
-                        <CompositeTransform x:Name="columnHeadTransform_0" TranslateY="-200"/>
+                        <CompositeTransform x:Name="columnHeadTransform_0" TranslateY="0"/>
                     </TextBlock.RenderTransform>
                 </TextBlock>
-                <TextBlock x:Name="columnHead_1" Grid.Column="1" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                <TextBlock x:Name="columnHead_1" Grid.Column="1" Text="0.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
                     <TextBlock.RenderTransform>
-                        <CompositeTransform x:Name="columnHeadTransform_1" TranslateY="-200"/>
+                        <CompositeTransform x:Name="columnHeadTransform_1" TranslateY="0"/>
                     </TextBlock.RenderTransform>
                 </TextBlock>
-                <TextBlock x:Name="columnHead_2" Grid.Column="2" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                <TextBlock x:Name="columnHead_2" Grid.Column="2" Text="0.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
                     <TextBlock.RenderTransform>
-                        <CompositeTransform x:Name="columnHeadTransform_2" TranslateY="-200"/>
+                        <CompositeTransform x:Name="columnHeadTransform_2" TranslateY="0"/>
                     </TextBlock.RenderTransform>
                 </TextBlock>
-                <TextBlock x:Name="columnHead_3" Grid.Column="3" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                <TextBlock x:Name="columnHead_3" Grid.Column="3" Text="0.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
                     <TextBlock.RenderTransform>
-                        <CompositeTransform x:Name="columnHeadTransform_3" TranslateY="-200"/>
+                        <CompositeTransform x:Name="columnHeadTransform_3" TranslateY="0"/>
                     </TextBlock.RenderTransform>
                 </TextBlock>
-                <TextBlock x:Name="columnHead_4" Grid.Column="4" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                <TextBlock x:Name="columnHead_4" Grid.Column="4" Text="0.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
                     <TextBlock.RenderTransform>
-                        <CompositeTransform x:Name="columnHeadTransform_4" TranslateY="-200"/>
+                        <CompositeTransform x:Name="columnHeadTransform_4" TranslateY="0"/>
                     </TextBlock.RenderTransform>
                 </TextBlock>
-                <TextBlock x:Name="columnHead_5" Grid.Column="5" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                <TextBlock x:Name="columnHead_5" Grid.Column="5" Text="0.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
                     <TextBlock.RenderTransform>
-                        <CompositeTransform x:Name="columnHeadTransform_5" TranslateY="-200"/>
+                        <CompositeTransform x:Name="columnHeadTransform_5" TranslateY="0"/>
                     </TextBlock.RenderTransform>
                 </TextBlock>
-                <TextBlock x:Name="columnHead_6" Grid.Column="6" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                <TextBlock x:Name="columnHead_6" Grid.Column="6" Text="0.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
                     <TextBlock.RenderTransform>
-                        <CompositeTransform x:Name="columnHeadTransform_6" TranslateY="-200"/>
+                        <CompositeTransform x:Name="columnHeadTransform_6" TranslateY="0"/>
                     </TextBlock.RenderTransform>
                 </TextBlock>
-                <TextBlock x:Name="columnHead_7" Grid.Column="7" Text="5.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
+                <TextBlock x:Name="columnHead_7" Grid.Column="7" Text="0.00" Style="{StaticResource Chart_ColumnValue_Style}" RenderTransformOrigin="0.5,0.5">
                     <TextBlock.RenderTransform>
-                        <CompositeTransform x:Name="columnHeadTransform_7" TranslateY="-200"/>
+                        <CompositeTransform x:Name="columnHeadTransform_7" TranslateY="0"/>
                     </TextBlock.RenderTransform>
                 </TextBlock>
 

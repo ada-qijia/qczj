@@ -391,12 +391,12 @@ namespace AutoWP7.View.Car
             if (carSeriesQuoteVM == null)
             {
                 carSeriesQuoteVM = new CarSeriesQuoteViewModel();
+                carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(carSeriesQuoteVM_LoadDataCompleted);
             }
 
             string url = string.Format("{0}{2}/cars/seriessummary-a2-pm3-v1.4.0-s{1}-t0xffff-c0.html", App.appUrl, carSeriesId, App.versionStr);
             carSeriesQuoteVM.LoadDataAysnc(url, true);
             //这里已经有标准接口carSeriesQuoteVM.LoadDataAysnc(App.appUrl  + "/autov2.5.5/cars/seriessummary-a2-pm3-v2.5.5-s" + carSeriesId + "-t0XFFFF.html");
-            carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(carSeriesQuoteVM_LoadDataCompleted);
         }
 
         void carSeriesQuoteVM_LoadDataCompleted(object sender, ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>> e)
@@ -496,11 +496,14 @@ namespace AutoWP7.View.Car
             }
             GlobalIndicator.Instance.Text = "正在获取中......";
             GlobalIndicator.Instance.IsBusy = true;
-            carSeriesArticleVM = new CarSeriesActicleViewModel();
+            if (carSeriesArticleVM==null)
+            {
+                carSeriesArticleVM = new CarSeriesActicleViewModel();
+                carSeriesArticleVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(comm_LoadDataCompleted);
+            }
             string url = CreateSeriesNewsUrl(pageIndex, loadPageSize);
             //url = url.Replace("-p0-", "-p" + pageIndex + "-");
             carSeriesArticleVM.LoadDataAysnc(url);
-            carSeriesArticleVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(comm_LoadDataCompleted);
         }
 
         /// <summary>
@@ -597,11 +600,14 @@ namespace AutoWP7.View.Car
                         GlobalIndicator.Instance.Text = "正在获取中...";
                         GlobalIndicator.Instance.IsBusy = true;
 
-                        DealerVM = new DealerViewModel();
+                        if (DealerVM==null)
+                        {
+                            DealerVM = new DealerViewModel();
+                            DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
+                        }
                         string url = string.Format("{0}{3}/dealer/pddealers-a2-pm1-v1.4.0-sp0-ss{1}-c{2}-sc0-p1-s200.html", App.appUrl, carSeriesId, cityId, App.versionStr);
                         DealerVM.LoadDataAysnc(url, carSeriesId, cityId);
                         //DealerVM.LoadDataAysnc(App.headUrl + "/dealers/Profile/Getlist.ashx?action=0x45b5&cityid=" + cityId + "&seriesid=" + carSeriesId, carSeriesId, cityId);
-                        DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
                     }
                 }
             }
@@ -666,9 +672,12 @@ namespace AutoWP7.View.Car
             {
                 forumPageIndex = 1;
             }
-            forumVM = new CarSeriesForumViewModel();
+            if (forumVM==null)
+            {
+                forumVM = new CarSeriesForumViewModel();
+                forumVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<ForumModel>>>(forumVM_LoadDataCompleted);
+            }
             forumVM.LoadDataAysnc(url);
-            forumVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<ForumModel>>>(forumVM_LoadDataCompleted);
         }
 
         // 完成
@@ -752,12 +761,12 @@ namespace AutoWP7.View.Car
             if (carSeriesAlibiVM == null)
             {
                 carSeriesAlibiVM = new CarSeriesAlibiViewModel();
+                carSeriesAlibiVM.LoadDataCompleted += carSeriesAlibiVM_LoadDataCompleted;
             }
 
             //string url = "http://app.api.autohome.com.cn/autov3.1/alibi/specsalibiinfo-a2-pm1-v3.1.0-ss364-t1.html";
             string url = string.Format("{0}{1}/alibi/specsalibiinfo-{2}-ss{3}-t{4}.html", App.appUrl, App.versionStr, App.AppInfo, carSeriesId, alibi_param_t);
             carSeriesAlibiVM.LoadDataAysnc(url);
-            carSeriesAlibiVM.LoadDataCompleted += carSeriesAlibiVM_LoadDataCompleted;
         }
 
         void carSeriesAlibiVM_LoadDataCompleted(object sender, APIEventArgs<CarSeriesAlibiModel> e)

@@ -225,7 +225,7 @@
             <!--口碑-->
             <controls:PivotItem Header="口碑">
                 <ScrollViewer>
-                    <StackPanel Margin="12,0,12,0">
+                    <StackPanel Margin="12,0,12,0" x:Name="alibiPanel">
                         <!--header-->
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -238,23 +238,23 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Image Grid.RowSpan="2" Source="/Images/alibi_summary.png" Stretch="Uniform" Width="60" Margin="0,0,12,0"/>
-                            <TextBlock Grid.Column="1" Grid.Row="0" FontSize="28" Foreground="#ff404040" VerticalAlignment="Center">
-                                <Run Text="{Binding Grade}"/>
+                            <Image Grid.RowSpan="2" Source="/Images/alibi_summary.png" Stretch="Uniform" Width="48" Margin="0,0,12,0"/>
+                            <TextBlock Grid.Column="1" Grid.Row="0" FontSize="25" Foreground="#ff404040" VerticalAlignment="Center">
+                                <Run Text="{Binding Average}"/>
                                 <Run Text="分"/>
                             </TextBlock>
-                            <TextBlock Grid.Column="1" Grid.Row="1" FontSize="22"  Foreground="#ff808080" VerticalAlignment="Center">
+                            <TextBlock Grid.Column="1" Grid.Row="1" FontSize="21"  Foreground="#ff808080" VerticalAlignment="Center">
                                 <Run Text="{Binding PeopleNum}"/>
                                 <Run Text="人参与"/>
                             </TextBlock>
 
-                            <Image Grid.Column="2" Grid.RowSpan="2" Source="/Images/alibi_summary.png" Stretch="Uniform" Width="60" Margin="0,0,12,0"/>
-                            <TextBlock Grid.Column="3" Grid.Row="0" FontSize="28" Foreground="#ff404040" VerticalAlignment="Center">
-                                <Run Text="{Binding Grade}"/>
+                            <Image Grid.Column="2" Grid.RowSpan="2" Source="/Images/alibi_summary.png" Stretch="Uniform" Width="48" Margin="0,0,12,0"/>
+                            <TextBlock Grid.Column="3" Grid.Row="0" FontSize="25" Foreground="#ff404040" VerticalAlignment="Center">
+                                <Run Text="{Binding FuelConsumption}"/>
                                 <Run Text="升/百公里"/>
                             </TextBlock>
-                            <TextBlock Grid.Column="3" Grid.Row="1" FontSize="22"  Foreground="#ff808080" VerticalAlignment="Center">
-                                <Run Text="{Binding PeopleNum}"/>
+                            <TextBlock Grid.Column="3" Grid.Row="1" FontSize="21"  Foreground="#ff808080" VerticalAlignment="Center">
+                                <Run Text="{Binding OilPeopleNum}"/>
                                 <Run Text="人参与"/>
                             </TextBlock>
                         </Grid>
@@ -263,27 +263,45 @@
                             <uc:AlibiChart x:Name="alibiChart"/>
                         </Grid>
                         <!--list-->
-                        <ItemsControl x:Name="alibiListBox" Margin="0,12,0,0">
+                        <ItemsControl x:Name="koubeiListBox" Margin="0,12,0,0">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Height="270" Margin="0,0,0,12">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="90"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="80"/>
-                                            <RowDefinition Height="80"/>
-                                        </Grid.RowDefinitions>
-                                        <Image Width="80" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="/Images/close.png"/>
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock Text="User Nickname" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0"/>
-                                            <TextBlock Text="2014-07-12" FontSize="20" Foreground="#ff808080" Margin="0,0,0,0"/>
-                                        </StackPanel>
-                                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,12,0,0"
-                                                   FontSize="25" Foreground="#ff000000" TextWrapping="Wrap" 
-                                                   Text="{Binding Name}" />
-                                    </Grid>
+                                    <uc:KoubeiDataTemplateSelector Content="{Binding}" HorizontalContentAlignment="Stretch">
+                                        <uc:KoubeiDataTemplateSelector.KoubeiTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,0,0,12">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="76"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="/Images/close.png"/>
+                                                    <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" 
+                                               Source="{Binding UserPic}"/>
+
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="{Binding UserName}" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0"/>
+                                                        <TextBlock Text="{Binding PostTime}" FontSize="20" Foreground="#ff808080" Margin="0,0,0,0"/>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,0,0,0"
+                                                   FontSize="22" Foreground="#ff000000" TextWrapping="Wrap" TextTrimming="WordEllipsis"
+                                                   Text="{Binding Content}" MaxHeight="300"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </uc:KoubeiDataTemplateSelector.KoubeiTemplate>
+                                        <uc:KoubeiDataTemplateSelector.MoreButtonTemplate>
+                                            <DataTemplate>
+                                                <Border Background="LightGray" Height="60" Margin="0,0,0,12" Tap="alibiLoadMore_Tap">
+                                                    <TextBlock Foreground="Black" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Text="点击加载更多"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </uc:KoubeiDataTemplateSelector.MoreButtonTemplate>
+
+                                    </uc:KoubeiDataTemplateSelector>
+                                    
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

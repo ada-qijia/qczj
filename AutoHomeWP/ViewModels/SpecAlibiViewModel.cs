@@ -60,47 +60,72 @@ namespace ViewModels
                 }
                 else
                 {
-
                     JObject json = JObject.Parse(ee.Result);
                     JToken result = json.SelectToken("result");
                     if (result != null)
                     {
                         SpecAlibiModel model = new SpecAlibiModel();
-                        //model.Grade = (string)result.SelectToken("grade");
-                        //model.PeopleNum = (int)result.SelectToken("peoplenum");
-                        //model.HasStopSellAlibi = (int)result.SelectToken("ishasstopsellalibi");
 
-                        //var ja = (JArray)result.SelectToken("list");
-                        //if (ja != null && ja.Count > 0)
-                        //{
-                        //    var groupList = new List<CarSeriesAlibiSpecGroupModel>();
-                        //    foreach (var item in ja)
-                        //    {
-                        //        CarSeriesAlibiSpecGroupModel specGroup = new CarSeriesAlibiSpecGroupModel();
-                        //        specGroup.key = (string)item.SelectToken("name");
+                        model.Average = (string)result.SelectToken("average");
+                        model.PeopleNum = (int)result.SelectToken("peoplenum");
+                        model.FuelConsumption = (string)result.SelectToken("fuelconsumption");
+                        model.OilPeopleNum = (int)result.SelectToken("oilpeoplenum");
+                        model.LevelName = (string)result.SelectToken("levelname");
+                        model.PageIndex = (int)result.SelectToken("pageindex");
+                        model.PageCount = (int)result.SelectToken("pagecount");
+                        model.PageSize = (int)result.SelectToken("pagesize");
+                        model.Total = (int)result.SelectToken("total");
 
-                        //        var ja2 = (JArray)item.SelectToken("specs");
-                        //        if (ja2 != null && ja2.Count > 0)
-                        //        {
-                        //            var specList = new List<CarSeriesAlibiSpecModel>();
-                        //            foreach (var item2 in ja2)
-                        //            {
-                        //                CarSeriesAlibiSpecModel spec = new CarSeriesAlibiSpecModel();
-                        //                spec.ID = (int)item2.SelectToken("specid");
-                        //                spec.Name = (string)item2.SelectToken("specname");
-                        //                spec.Grade = (string)item2.SelectToken("grade");
-                        //                spec.PeopleNum = (int)item2.SelectToken("peoplenum");
-                        //                spec.FlowModeName = (string)item2.SelectToken("flowmodename");
-                        //                spec.Displacement = (double)item2.SelectToken("displacement");
-                        //                spec.EnginePower = (string)item2.SelectToken("enginepower");
-                        //                spec.Year = (string)item2.SelectToken("year");
-                        //                specGroup.Add(spec);
-                        //            }
-                        //        }
-                        //        groupList.Add(specGroup);
-                        //    }
-                        //    model.SpecGroupList = groupList;
-                        //}
+                        JArray ja = null;
+                        ja = (JArray)result.SelectToken("grades");
+                        if (ja != null && ja.Count > 0)
+                        {
+                            var gradeList = new Dictionary<string, AlibiGradeModel>();
+                            foreach (var item in ja)
+                            {
+                                AlibiGradeModel agm = new AlibiGradeModel();
+                                agm.Name = (string)item.SelectToken("name");
+                                agm.Grade = double.Parse((string)item.SelectToken("grade"));
+                                agm.LevelGrade = double.Parse((string)item.SelectToken("levelgrade"));
+                                gradeList.Add(agm.Name, agm);
+                            }
+                            model.Grades = gradeList;
+                        }
+
+                        ja = null;
+                        ja = (JArray)result.SelectToken("koubeis");
+                        if (ja != null && ja.Count > 0)
+                        {
+                            var koubeiList = new List<KoubeiModel>();
+                            foreach (var item in ja)
+                            {
+                                KoubeiModel koubei = new KoubeiModel();
+                                koubei.ID = (int)item.SelectToken("id");
+                                koubei.SpecName = (string)item.SelectToken("specname");
+
+                                //medal
+                                var mj = item.SelectToken("medals");
+                                if (mj != null)
+                                {
+                                    KoubeiMedalModel medal = new KoubeiMedalModel();
+                                    medal.Name = (string)mj.SelectToken("name");
+                                    medal.Type = (int)mj.SelectToken("type");
+                                    koubei.Medals = medal;
+                                }
+
+                                koubei.UserName = (string)item.SelectToken("username");
+                                koubei.UserID = (int)item.SelectToken("userid");
+                                koubei.IsAuth = (int)item.SelectToken("isauth");
+                                koubei.PostTime = (string)item.SelectToken("posttime");
+                                koubei.Content = (string)item.SelectToken("content");
+                                koubei.UserPic = (string)item.SelectToken("userpic");
+                                koubei.SeriesName = (string)item.SelectToken("seriesname");
+
+                                koubeiList.Add(koubei);
+                            }
+                            model.Koubeis = koubeiList;
+                        }
+
                         DataSource = model;
                     }
                 }
