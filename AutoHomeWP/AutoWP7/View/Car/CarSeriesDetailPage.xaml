@@ -33,6 +33,19 @@
             <shell:ApplicationBarIconButton x:Name="shoppingGuidBar" Click="shoppingGuidBar_Click" IconUri="Images/bar_shoppingGuid.png" Text="汽车周边"/>
         </shell:ApplicationBar>
 
+        <Style x:Key="ListItemSplitter_Horizontal_Style" TargetType="Rectangle">
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Height" Value="2"/>
+            <Setter Property="Fill">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" >
+                        <GradientStop Offset="0" Color="#ffffffff"/>
+                        <GradientStop Offset="1" Color="#ffd0d0d0" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!--头-->
         <DataTemplate x:Key="groupHeaderTemplate">
             <Grid Margin="0,10,0,0">
@@ -48,11 +61,9 @@
         </DataTemplate>
 
         <!--组-->
-        <!--Foreground="{StaticResource PhoneForegroundBrush}"-->
         <DataTemplate x:Key="jumpListItemTemplate" x:Name="itemTempLate">
-            <!--<Border Background="{Binding GroupBackgroundBrush}" Margin="0"-->
             <Grid Width="480" x:Name="carSeriesGird" Margin="0,10,0,0">
-                <Grid  Tap="carSeriesGird_Tap" Tag="{Binding Id}">
+                <Grid Tap="carSeriesGird_Tap" Tag="{Binding Id}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="50"></RowDefinition>
@@ -62,22 +73,21 @@
                         <ColumnDefinition Width="250"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="specNameTB" Text="{Binding Name}" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="0"
-                           FontFamily="{StaticResource PhoneFontFamilySemiBold}"
-                           FontSize="26"
-                           Foreground="Black"
+                    <TextBlock x:Name="specNameTB" Text="{Binding Name}" 
+                               Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="0"
+                               FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                               FontSize="26"
+                               Foreground="Black"
                                TextWrapping="Wrap"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top">
-                    </TextBlock>
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"/>
                     <TextBlock Text="{Binding Transmission}"  Margin="0,-15,0,0" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" 
-                           FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
-                           FontSize="20"                            
-                           Foreground="Gray"/>
+                               FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
+                               FontSize="20"                            
+                               Foreground="Gray"/>
                     <TextBlock Text="{Binding Price}"  Margin="0,-15,0,0"  Grid.Column="2" Grid.Row="1" 
-                           FontSize="24"
-                           Foreground="Red"
-                           />
+                               FontSize="24"
+                               Foreground="Red"/>
                 </Grid>
                 <Grid Margin="0,80,0,0">
                     <Grid.RowDefinitions>
@@ -124,14 +134,9 @@
                                    VerticalAlignment="Center"
                            />
                     </Border>
-                    <Rectangle VerticalAlignment="Bottom" Height="2" Margin="0,0,-8,0" Grid.ColumnSpan="3" Grid.Row="1" Fill="LightGray">
-                        <Rectangle.OpacityMask>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Offset="0" Color="#19FFFFFF"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
+                    <Rectangle Style="{StaticResource ListItemSplitter_Horizontal_Style}" 
+                               Margin="0,0,-8,0" Grid.ColumnSpan="3" Grid.Row="1"/>
+
                 </Grid>
             </Grid>
             <!--</Border>-->
@@ -145,12 +150,13 @@
         </DataTemplate>
         
         <DataTemplate x:Key="alibiSelectorItemTemplate" >
-            <Grid>
+            <Grid Tap="alibiItem_Tap">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding Name}" FontSize="26" Foreground="#ff000000"/>
+                <TextBlock Grid.Row="0" Text="{Binding Name}" FontSize="26" Foreground="#ff000000" TextWrapping="Wrap" FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                           Margin="0,10,0,0"/>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -165,6 +171,7 @@
                     <TextBlock Grid.Column="4" Text="{Binding PeopleNum}" FontSize="20" Foreground="#ff808080"/>
                     <TextBlock Grid.Column="5" Text="人参与" FontSize="20" Foreground="#ff808080"/>
                 </Grid>
+                <Rectangle Grid.Row="1" Margin="0,0,0,5" Style="{StaticResource ListItemSplitter_Horizontal_Style}"/>
             </Grid>
         </DataTemplate>
 
@@ -176,12 +183,18 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" x:Name="autoName" Margin="20,0,0,-10"  FontSize="32"  Foreground="#3cadeb"/>
+        
         <controls:Pivot Grid.Row="1" x:Name="piv" SelectionChanged="piv_SelectionChanged" Foreground="Black">
+            <controls:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,0,0,-24">
+                        <TextBlock Text="{Binding}" FontSize="56" Foreground="#3cadeb"/>
+                    </Grid>
+                </DataTemplate>
+            </controls:Pivot.HeaderTemplate>
+            
             <!--报价一-->
-            <controls:PivotItem Tag="quote">
-                <controls:PivotItem.Header>
-                    <TextBlock Text="车型" FontSize="56" Foreground="#3cadeb"/>
-                </controls:PivotItem.Header>
+            <controls:PivotItem Tag="quote" Header="车型">
                 <Grid>
                     <TextBlock  Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesQuotePropmt"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无经销商报价信息"/>
@@ -205,10 +218,7 @@
                 </Grid>
             </controls:PivotItem>
             <!--图片一-->
-            <controls:PivotItem Tag="image">
-                <controls:PivotItem.Header>
-                    <TextBlock Text="图片" FontSize="56" Foreground="#3cadeb"/>
-                </controls:PivotItem.Header>
+            <controls:PivotItem Tag="image" Header="图片">
                 <ScrollViewer>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -243,10 +253,7 @@
                 </ScrollViewer>
             </controls:PivotItem>
             <!--经销商一-->
-            <controls:PivotItem Tag="dealer">
-                <controls:PivotItem.Header>
-                    <TextBlock Text="经销商" FontSize="56" Foreground="#3cadeb"/>
-                </controls:PivotItem.Header>
+            <controls:PivotItem Tag="dealer" Header="经销商">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="80"></RowDefinition>
@@ -336,10 +343,7 @@
                 </Grid>
             </controls:PivotItem>
             <!--论坛一-->
-            <controls:PivotItem Tag="forum">
-                <controls:PivotItem.Header>
-                    <TextBlock Text="论坛" FontSize="56" Foreground="#3cadeb"/>
-                </controls:PivotItem.Header>
+            <controls:PivotItem Tag="forum" Header="论坛">
                 <Grid>
                     <TextBlock Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesForumsPropmt"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无相关数据~~"/>
@@ -395,10 +399,7 @@
                 </Grid>
             </controls:PivotItem>
             <!--口碑-->
-            <controls:PivotItem Tag="alibi">
-                <controls:PivotItem.Header>
-                    <TextBlock Text="口碑" FontSize="56" Foreground="#3cadeb"/>
-                </controls:PivotItem.Header>
+            <controls:PivotItem Tag="alibi" Header="口碑">
                 <Grid x:Name="alibiPanel" Margin="12,0,12,0">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -406,8 +407,28 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="{Binding Grade}" FontSize="32"  Foreground="#ff000000"/>
-                        <TextBlock Grid.Row="1" Text="{Binding PeopleNum}" FontSize="32"  Foreground="#ff000000"/>
+                        
+                        <!--alibi summary-->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Image Grid.RowSpan="2" Source="/Images/alibi_summary.png" Stretch="Uniform" Width="60" Margin="0,0,12,0"/>
+                            <TextBlock Grid.Column="1" Grid.Row="0" FontSize="28" Foreground="#ff404040" VerticalAlignment="Center">
+                                <Run Text="{Binding Grade}"/>
+                                <Run Text="分"/>
+                            </TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="1" FontSize="22"  Foreground="#ff808080" VerticalAlignment="Center">
+                                <Run Text="{Binding PeopleNum}"/>
+                                <Run Text="人参与"/>
+                            </TextBlock>
+                        </Grid>
+                        
                         <p:LongListSelector Grid.Row="2" x:Name="carSeriesAlibiListSelector"
                                             Background="Transparent" 
                                             IsGroupingEnabled="True"   
@@ -420,10 +441,7 @@
                 </Grid>
             </controls:PivotItem>
             <!--文章一-->
-            <controls:PivotItem Tag="article">
-                <controls:PivotItem.Header>
-                    <TextBlock Text="文章" FontSize="56" Foreground="#3cadeb"/>
-                </controls:PivotItem.Header>
+            <controls:PivotItem Tag="article" Header="文章">
                 <Grid>
                     <TextBlock  Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesArticlePropmt"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无相关数据~~"/>

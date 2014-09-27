@@ -170,6 +170,16 @@ namespace AutoWP7.View.Car
             this.ApplicationBar.Buttons.Add(ToVS);
             switch (this.piv.SelectedIndex)
             {
+                case 0: //经销商
+                    {
+                        UmengSDK.UmengAnalytics.onEvent("MotorcycleTypeActivity", "车型页~经销商点击量");
+                        if (!isDealerLoaded)
+                        {
+                            DealerLoadData();
+                            isDealerLoaded = true;
+                        }
+                    }
+                    break;
                 case 1: //配置参数
                     {
                         UmengSDK.UmengAnalytics.onEvent("MotorcycleTypeActivity", "车型参数配置点击量");
@@ -180,19 +190,11 @@ namespace AutoWP7.View.Car
                         }
                     }
                     break;
-                case 2: //图片
+                case 2: //口碑
                     this.ApplicationBar.IsVisible = false;
                     break;
-                case 0: //经销商
-                    {
-                        UmengSDK.UmengAnalytics.onEvent("MotorcycleTypeActivity", "车型页~经销商点击量");
-                        if (!isDealerLoaded)
-                        {
-                            DealerLoadData();
-                            isDealerLoaded = true;
-                        }
-
-                    }
+                case 3: //图片
+                    this.ApplicationBar.IsVisible = false;
                     break;
             }
 

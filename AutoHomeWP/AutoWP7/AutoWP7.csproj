@@ -460,6 +460,7 @@
     <Resource Include="Images\CallPrice.jpg" />
     <Resource Include="Images\detail1.jpg" />
     <Resource Include="Images\瓷片图标\说客.png" />
+    <Content Include="Images\alibi_summary.png" />
     <Content Include="Images\bar_all.png" />
     <Content Include="Images\bar_louzhu.png" />
     <Content Include="Images\bar_xshquanbu.png" />

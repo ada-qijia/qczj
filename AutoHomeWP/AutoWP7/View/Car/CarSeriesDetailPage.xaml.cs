@@ -458,6 +458,27 @@ namespace AutoWP7.View.Car
             }
         }
 
+        //导向车系报价页面
+        private void carSeriesGird_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            Grid gg = (Grid)sender;
+            int paramIsShow = 0;
+            bool isFind = false;
+            foreach (CarSeriesQuteGroup item in carSeriesQuteSource)
+            {
+                foreach (var ii in item)
+                    if (ii.Id == Convert.ToInt32(gg.Tag))
+                    {
+                        paramIsShow = ii.ParamIsShow;
+                        isFind = true;
+                        break;
+                    }
+                if (isFind)
+                    break;
+            }
+            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&paramisshow=" + paramIsShow, UriKind.Relative));
+        }
+
         #endregion
 
         #region 文章
@@ -764,6 +785,11 @@ namespace AutoWP7.View.Car
             }
         }
 
+        private void alibiItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
         #endregion
 
         //标识正在加载
@@ -817,27 +843,6 @@ namespace AutoWP7.View.Car
         private string CreateTopicsUrl(string bbsType, bool isRefine, int order)
         {
             return string.Format(AppUrlMgr.TopicsUrl, 0, "c", isRefine ? 1 : 0, carSeriesId, order, 1, 20);
-        }
-
-        //导向车系报价页面
-        private void carSeriesGird_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            Grid gg = (Grid)sender;
-            int paramIsShow = 0;
-            bool isFind = false;
-            foreach (CarSeriesQuteGroup item in carSeriesQuteSource)
-            {
-                foreach (var ii in item)
-                    if (ii.Id == Convert.ToInt32(gg.Tag))
-                    {
-                        paramIsShow = ii.ParamIsShow;
-                        isFind = true;
-                        break;
-                    }
-                if (isFind)
-                    break;
-            }
-            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&paramisshow=" + paramIsShow, UriKind.Relative));
         }
 
         /// <summary>

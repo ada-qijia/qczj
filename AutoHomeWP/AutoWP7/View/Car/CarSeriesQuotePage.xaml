@@ -90,11 +90,16 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" x:Name="carTypeName"  Margin="20,0,0,-10"  FontSize="32"  Foreground="#3cadeb"/>
         <controls:Pivot Grid.Row="1" Foreground="Black" x:Name="piv" SelectionChanged="piv_SelectionChanged">
+            <controls:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,0,0,-24">
+                        <TextBlock Text="{Binding}" FontSize="56" Foreground="#3cadeb"/>
+                    </Grid>
+                </DataTemplate>
+            </controls:Pivot.HeaderTemplate>
+            
             <!--经销商-->
-            <controls:PivotItem >
-                <controls:PivotItem.Header>
-                    <TextBlock Text="经销商"  FontSize="56" Foreground="#00adef"/>
-                </controls:PivotItem.Header>
+            <controls:PivotItem Header="经销商">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="80"></RowDefinition>
@@ -208,10 +213,7 @@
                 </Grid>
             </controls:PivotItem>
             <!--参数配置-->
-            <controls:PivotItem >
-                <controls:PivotItem.Header>
-                    <TextBlock Text="参数配置" FontSize="56" Foreground="#00adef"/>
-                </controls:PivotItem.Header>
+            <controls:PivotItem Header="参数配置">
                 <p:LongListSelector Margin="10,10,10,10"  
                                           x:Name="carSeriesConfigListGropus" 
                                           Background="Transparent" 
@@ -220,17 +222,18 @@
                                            LayoutMode="List"
                                           ItemTemplate="{StaticResource jumpListItemTemplate}"      
                                           GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" 
-                                         JumpListStyle="{StaticResource JumpList}">
-
-           
-                </p:LongListSelector>
+                                         JumpListStyle="{StaticResource JumpList}"/>
 
             </controls:PivotItem>
+            <!--口碑-->
+            <controls:PivotItem Header="口碑">
+                <ScrollViewer>
+                    <Grid>
+                    </Grid>
+                </ScrollViewer>
+            </controls:PivotItem>
             <!--图片-->
-            <controls:PivotItem >
-                <controls:PivotItem.Header>
-                    <TextBlock Text="图片" FontSize="56" Foreground="#00adef"/>
-                </controls:PivotItem.Header>
+            <controls:PivotItem Header="图片">
                 <ScrollViewer>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -284,7 +287,6 @@
                     </Grid>
                 </ScrollViewer>
             </controls:PivotItem>
-
 
         </controls:Pivot>
     </Grid>
