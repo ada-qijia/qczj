@@ -199,6 +199,9 @@
     <Compile Include="View\Car\TopicDetailPage.xaml.cs">
       <DependentUpon>TopicDetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Car\AlibiDetailPage.xaml.cs">
+      <DependentUpon>AlibiDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Channel\ArticlePartPageUserControl.xaml.cs">
       <DependentUpon>ArticlePartPageUserControl.xaml</DependentUpon>
     </Compile>
@@ -362,6 +365,10 @@
     <Page Include="View\Car\TopicDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\AlibiDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Channel\ArticlePartPageUserControl.xaml">
       <SubType>Designer</SubType>

@@ -280,15 +280,15 @@
                                                     </Grid.RowDefinitions>
                                                     <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="/Images/close.png"/>
                                                     <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" 
-                                               Source="{Binding UserPic}"/>
+                                                           Source="{Binding UserPic}"/>
 
                                                     <StackPanel Grid.Column="1">
                                                         <TextBlock Text="{Binding UserName}" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0"/>
                                                         <TextBlock Text="{Binding PostTime}" FontSize="20" Foreground="#ff808080" Margin="0,0,0,0"/>
                                                     </StackPanel>
                                                     <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,0,0,0"
-                                                   FontSize="22" Foreground="#ff000000" TextWrapping="Wrap" TextTrimming="WordEllipsis"
-                                                   Text="{Binding Content}" MaxHeight="300"/>
+                                                               FontSize="22" Foreground="#ff000000" TextWrapping="Wrap" TextTrimming="WordEllipsis"
+                                                               Text="{Binding Content}" MaxHeight="300"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </uc:KoubeiDataTemplateSelector.KoubeiTemplate>
