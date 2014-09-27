@@ -8,14 +8,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
-     xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:uc="clr-namespace:AutoWP7.UcControl"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
-
 
     <phone:PhoneApplicationPage.Resources>
         <!--<local:LoadMoreVisibilityConverter x:Name="loadMoreVisibility"/>-->
@@ -228,8 +225,69 @@
             <!--口碑-->
             <controls:PivotItem Header="口碑">
                 <ScrollViewer>
-                    <Grid>
-                    </Grid>
+                    <StackPanel Margin="12,0,12,0">
+                        <!--header-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Image Grid.RowSpan="2" Source="/Images/alibi_summary.png" Stretch="Uniform" Width="60" Margin="0,0,12,0"/>
+                            <TextBlock Grid.Column="1" Grid.Row="0" FontSize="28" Foreground="#ff404040" VerticalAlignment="Center">
+                                <Run Text="{Binding Grade}"/>
+                                <Run Text="分"/>
+                            </TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="1" FontSize="22"  Foreground="#ff808080" VerticalAlignment="Center">
+                                <Run Text="{Binding PeopleNum}"/>
+                                <Run Text="人参与"/>
+                            </TextBlock>
+
+                            <Image Grid.Column="2" Grid.RowSpan="2" Source="/Images/alibi_summary.png" Stretch="Uniform" Width="60" Margin="0,0,12,0"/>
+                            <TextBlock Grid.Column="3" Grid.Row="0" FontSize="28" Foreground="#ff404040" VerticalAlignment="Center">
+                                <Run Text="{Binding Grade}"/>
+                                <Run Text="升/百公里"/>
+                            </TextBlock>
+                            <TextBlock Grid.Column="3" Grid.Row="1" FontSize="22"  Foreground="#ff808080" VerticalAlignment="Center">
+                                <Run Text="{Binding PeopleNum}"/>
+                                <Run Text="人参与"/>
+                            </TextBlock>
+                        </Grid>
+                        <!--chart-->
+                        <Grid Margin="0,12,0,0">
+                            <uc:AlibiChart x:Name="alibiChart"/>
+                        </Grid>
+                        <!--list-->
+                        <ItemsControl x:Name="alibiListBox" Margin="0,12,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Height="270" Margin="0,0,0,12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="90"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="80"/>
+                                            <RowDefinition Height="80"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Width="80" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="/Images/close.png"/>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="User Nickname" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0"/>
+                                            <TextBlock Text="2014-07-12" FontSize="20" Foreground="#ff808080" Margin="0,0,0,0"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,12,0,0"
+                                                   FontSize="25" Foreground="#ff000000" TextWrapping="Wrap" 
+                                                   Text="{Binding Name}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>
             <!--图片-->

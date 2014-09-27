@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 using AutoWP7.Handler;
 using Microsoft.Phone.Controls;
@@ -114,12 +113,12 @@ namespace AutoWP7.View.Car
 
         }
 
-
         private void InitBtn()
         {
             AddVS.Click += AddVS_Click;
             ToVS.Click += ToVS_Click;
         }
+
         /// <summary>
         /// 去对比
         /// </summary>
@@ -129,6 +128,7 @@ namespace AutoWP7.View.Car
         {
             this.NavigationService.Navigate(new Uri("/View/Car/CarCompareListPage.xaml?action=0", UriKind.Relative));
         }
+
         /// <summary>
         /// 添加到对比库
         /// </summary>
@@ -201,19 +201,7 @@ namespace AutoWP7.View.Car
 
         }
 
-        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
-        {
-            base.OnBackKeyPress(e);
-
-            //int sum = NavigationService.BackStack.Count();
-            //for (int i = 3; i < sum; i++)
-            //{
-            //    NavigationService.RemoveBackEntry();
-            //}
-
-        }
-
-        #region 配置参数数据加载
+        #region 配置参数
 
         private class CarSeriesConfigGroup : List<CarSeriesConfigurationModel>
         {
@@ -290,13 +278,10 @@ namespace AutoWP7.View.Car
 
         #endregion
 
-
-        #region 经销商数据加载
+        #region 经销商
 
         DealerViewModel DealerVM = null;
-        /// <summary>
-        /// 经销商
-        /// </summary>
+        
         public void DealerLoadData()
         {
             //从服务器中获得数据
@@ -336,8 +321,6 @@ namespace AutoWP7.View.Car
                 string url = string.Format("{0}{4}/dealer/pddealers-a2-pm3-v1.4.0-sp{1}-ss{2}-c{3}-sc0-p1-s200.html", App.appUrl, carId, 0, cityId, App.versionStr);
                 DealerVM.LoadDataAysnc(url, carId, cityId);
                 DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
-
-
             }
         }
 
@@ -368,17 +351,15 @@ namespace AutoWP7.View.Car
 
                     dealerListbox.ItemsSource = dealerDataSource;
                 }
-
-
             }
         }
 
-        #endregion
+        private void qutoChooseCity_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            UmengSDK.UmengAnalytics.onEvent("MotorcycleTypeActivity", "车型页城市选择点击量");
+            this.NavigationService.Navigate(new Uri("/View/Channel/News/CityListPage.xaml?action=2", UriKind.Relative));
+        }
 
-
-        /// <summary>
-        /// 拨打电话
-        /// </summary>
         private void callDealer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "电话拨打点击量");
@@ -387,6 +368,7 @@ namespace AutoWP7.View.Car
             phoneCall.PhoneNumber = bb.Tag.ToString();
             phoneCall.Show();
         }
+        
         private void callPrice_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             if (string.IsNullOrEmpty(App.CityId)) //默认北京
@@ -401,14 +383,15 @@ namespace AutoWP7.View.Car
             this.NavigationService.Navigate(new Uri("/View/Car/AskPrice.xaml?dealerid=" + gg.Tag + "&cityID=" + cityId + "&seriesID=" + seriesID + "&specID=" + carId, UriKind.Relative));
         }
 
-        /// <summary>
-        /// 导向详情页
-        /// </summary>
         private void dealerDeatail_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             Image bb = (Image)sender;
             this.NavigationService.Navigate(new Uri("/View/Car/DealerDetailPage.xaml?id=" + bb.Tag, UriKind.Relative));
         }
+
+        #endregion
+
+        #region 图片
 
         //车身外观
         private void facadeGo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -434,13 +417,54 @@ namespace AutoWP7.View.Car
             this.NavigationService.Navigate(new Uri("/View/Car/carSeriesImagePage.xaml?carId=" + carId + "&type=2&indexId=3", UriKind.Relative));
         }
 
-        /// <summary>
-        /// 城市选择
-        /// </summary>
-        private void qutoChooseCity_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        #endregion
+
+        #region 口碑
+
+        SpecAlibiViewModel alibiVM = null;
+        SpecAlibiModel specAlibiDataSource = null;
+        public void AlibiLoadData()
         {
-            UmengSDK.UmengAnalytics.onEvent("MotorcycleTypeActivity", "车型页城市选择点击量");
-            this.NavigationService.Navigate(new Uri("/View/Channel/News/CityListPage.xaml?action=2", UriKind.Relative));
+            GlobalIndicator.Instance.Text = "正在获取中...";
+            GlobalIndicator.Instance.IsBusy = true;
+
+            if (alibiVM == null)
+            {
+                alibiVM = new SpecAlibiViewModel();
+            }
+
+            //string url = "http://app.api.autohome.com.cn/autov3.1/alibi/specsalibiinfo-a2-pm1-v3.1.0-ss364-t1.html";
+            string url = string.Format("{0}{1}/alibi/specsalibiinfo-{2}-ss{3}-t{4}.html", App.appUrl, App.versionStr, App.AppInfo, carSeriesId, alibi_param_t);
+            alibiVM.LoadDataAysnc(url);
+            alibiVM.LoadDataCompleted += alibiVM_LoadDataCompleted;
         }
+
+        void alibiVM_LoadDataCompleted(object sender, APIEventArgs<SpecAlibiModel> e)
+        {
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false;
+            if (e.Error != null)
+            {
+                Common.NetworkAvailablePrompt();
+            }
+            else
+            {
+                specAlibiDataSource = e.Result;
+                //alibiPanel.DataContext = carSeriesAlibiDataSource;
+                //var groups = new ObservableCollection<CarSeriesAlibiSpecGroupModel>();
+                //if (carSeriesAlibiDataSource.SpecGroupList != null)
+                //{
+                //    foreach (var groupList in carSeriesAlibiDataSource.SpecGroupList)
+                //    {
+                //        groups.Add(groupList);
+                //    }
+                //}
+
+                //carSeriesAlibiListSelector.ItemsSource = groups;
+            }
+        }
+
+        #endregion
+
     }
 }

@@ -79,9 +79,8 @@
                                        Text="{Binding  content}"/>
 
 
-                                <Grid Margin="30,0,60,30" Grid.Row="1"  Visibility="{Binding sourcecontent,Converter={StaticResource 
-
-loadMoreVisibility}}">
+                                <Grid Margin="30,0,60,30" Grid.Row="1" 
+                                      Visibility="{Binding sourcecontent,Converter={StaticResource loadMoreVisibility}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="25"/>
                                         <ColumnDefinition Width="*"/>
@@ -123,13 +122,9 @@ loadMoreVisibility}}">
                                HorizontalAlignment="Center"
                                Text="回复"/>
                             </Border>
-                            <TextBlock Foreground="Black"  Margin="10,10,0,17" x:Name="loadMore" Tap="loadMore_Tap" 
-
-Grid.ColumnSpan="2"
+                            <TextBlock Foreground="Black"  Margin="10,10,0,17" x:Name="loadMore" Tap="loadMore_Tap" Grid.ColumnSpan="2"
                                      Visibility="{Binding LoadMore,Converter={StaticResource loadMoreVisibility}}"
-                                      Height="45" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" 
-
-FontSize="28" Text="{Binding LoadMore}"/>
+                                      Height="45" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="28" Text="{Binding LoadMore}"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

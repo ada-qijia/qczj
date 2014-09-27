@@ -101,6 +101,7 @@
     <Compile Include="CacheVarModel.cs" />
     <Compile Include="CarBrandModel.cs" />
     <Compile Include="CarCompareModel.cs" />
+    <Compile Include="SpecAlibiModel.cs" />
     <Compile Include="CarSeriesConfigurationModel.cs" />
     <Compile Include="carSeriesAllForumModel.cs" />
     <Compile Include="CarSeriesModel.cs" />
