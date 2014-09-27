@@ -796,7 +796,8 @@ namespace AutoWP7.View.Car
 
         private void alibiItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            Grid gg = (Grid)sender;
+            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&selectedPage=" + "alibi", UriKind.Relative));
         }
 
         #endregion

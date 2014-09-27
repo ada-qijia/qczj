@@ -63,7 +63,6 @@ namespace AutoWP7.View.Car
             {
                 case System.Windows.Navigation.NavigationMode.New:
                     {
-
                         App.timerId++;
                         //将车型id存放于全局
                         App.CarTypeId = this.NavigationContext.QueryString["carId"];
@@ -82,6 +81,19 @@ namespace AutoWP7.View.Car
                             foreach (var n in name)
                             {
                                 carTypeName.Text = n;
+                            }
+                        }
+
+                        if (this.NavigationContext.QueryString.ContainsKey("selectedPage"))
+                        {
+                            string selectedPage = this.NavigationContext.QueryString["selectedPage"];
+                            switch (selectedPage)
+                            {
+                                case "alibi":
+                                    piv.SelectedIndex = 2;
+                                    break;
+                                default:
+                                    break;
                             }
                         }
                     }
@@ -108,8 +120,6 @@ namespace AutoWP7.View.Car
                                 DealerLoadData();
                             }
                         }
-
-
                     }
                     break;
 
@@ -509,8 +519,12 @@ namespace AutoWP7.View.Car
             }
         }
 
-        #endregion
+        private void koubei_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
 
+        }
+
+        #endregion
 
     }
 }
