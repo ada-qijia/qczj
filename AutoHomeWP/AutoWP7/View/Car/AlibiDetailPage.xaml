@@ -107,7 +107,8 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding smallurl}" Height="120" Stretch="Uniform" Margin="0,0,10,0"/>
+                                <Image Source="{Binding smallurl}" Height="120" Stretch="Uniform" Margin="0,0,10,0"
+                                       Tap="image_Tap"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

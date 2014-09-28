@@ -74,7 +74,6 @@ namespace AutoWP7.View.Car
                 case System.Windows.Navigation.NavigationMode.Back:
                     break;
             }
-
         }
 
         private string CreatePicUrl(int seriesid, int specid, int type)

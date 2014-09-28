@@ -203,13 +203,12 @@ namespace AutoWP7
 
         //帖子数
 
-
         #region 向服务器请求数据url地址头部
         //向服务器请求数据url地址头部
         public static string headUrl = "http://sp.autohome.com.cn";
         public static string appUrl = "http://221.192.136.99:804";// "http://app.api.autohome.com.cn";//
 
-        public static string loginUrl = "http://account.autohome.com.cn";       
+        public static string loginUrl = "http://account.autohome.com.cn";
 
         public static string replyUrl = "http://reply.autohome.com.cn";
         public static string newsPageDomain = " http://cont.app.autohome.com.cn";
@@ -249,7 +248,7 @@ namespace AutoWP7
         //文章id
         public static string newsid = string.Empty;
 
-
+        public static List<string> BigImageList { get; set; }
 
         /// <summary>
         /// 提供对电话应用程序的根框架的轻松访问。
@@ -417,8 +416,6 @@ namespace AutoWP7
             UmengSDK.UmengAnalytics.onLaunching("5056b77d5270155f88000125", ChannelId);
             UmengSDK.UmengAnalytics.update("5056b77d5270155f88000125");
         }
-
-
 
         // 激活应用程序(置于前台)时执行的代码
         // 此代码在首次启动应用程序时不执行

@@ -33,6 +33,7 @@ namespace AutoWP7.View.Car
         #region Data
 
         AlibiDetailViewModel alibiVM = null;
+        AlibiDetailModel alibiData = null;
         List<AlibiDetailPicModel> picList = new List<AlibiDetailPicModel>();
         public void LoadData()
         {
@@ -60,13 +61,13 @@ namespace AutoWP7.View.Car
             }
             else
             {
-                AlibiDetailModel data = e.Result;
-                picList = data.piclist;
-                this.LayoutRoot.DataContext = data;
+                alibiData = e.Result;
+                picList = alibiData.piclist;
+                this.LayoutRoot.DataContext = alibiData;
 
-                if (data.carinfo!=null)
+                if (alibiData.carinfo != null)
                 {
-                    var info = data.carinfo;
+                    var info = alibiData.carinfo;
                     alibiChart.SetColumns(
                         info.space,
                         info.power,
@@ -81,6 +82,22 @@ namespace AutoWP7.View.Car
         }
 
         #endregion
+
+        private void image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var img = (sender as FrameworkElement).DataContext as AlibiDetailPicModel;
+            int index = picList.IndexOf(img);
+
+            List<string> bigImageList = new List<string>();
+            foreach (var item in picList)
+            {
+                bigImageList.Add(item.bigurl);
+            }
+            App.BigImageList = bigImageList;
+
+            string url = string.Format("/View/Car/ImageViewer.xaml?pageTitle={0}&imageIndex={1}", alibiData.specname, index);
+            this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
+        }
 
     }
 }

@@ -193,6 +193,9 @@
     <Compile Include="View\Car\DealerDetailPage.xaml.cs">
       <DependentUpon>DealerDetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Car\ImageViewer.xaml.cs">
+      <DependentUpon>ImageViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Car\ShowBigImage.xaml.cs">
       <DependentUpon>ShowBigImage.xaml</DependentUpon>
     </Compile>
@@ -357,6 +360,10 @@
     <Page Include="View\Car\DealerDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Car\ImageViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Car\ShowBigImage.xaml">
       <SubType>Designer</SubType>
