@@ -10,6 +10,7 @@ using Microsoft.Phone.Tasks;
 using Model;
 using ViewModels;
 using ViewModels.Handler;
+using System.Windows;
 
 namespace AutoWP7.View.Car
 {
@@ -521,7 +522,8 @@ namespace AutoWP7.View.Car
 
         private void koubei_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            string id = (sender as FrameworkElement).Tag.ToString();
+            this.NavigationService.Navigate(new Uri("/View/Car/AlibiDetailPage.xaml?id=" + id, UriKind.Relative));
         }
 
         #endregion

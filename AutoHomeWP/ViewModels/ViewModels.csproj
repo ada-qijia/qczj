@@ -113,6 +113,7 @@
     <Compile Include="CarSeriesQuoteViewModel.cs" />
     <Compile Include="CarSeriesViewModel.cs" />
     <Compile Include="CityListViewModel.cs" />
+    <Compile Include="AlibiDetailViewModel.cs" />
     <Compile Include="VideoDetailViewModel.cs" />
     <Compile Include="DealerViewModel.cs" />
     <Compile Include="CarSeriesForumViewModel.cs" />

@@ -35,9 +35,9 @@
         <TextBlock Text="口碑详情" FontSize="56" Foreground="#3cadeb" Margin="12,12,0,0"/>
 
         <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="12,12,12,12">
+            <StackPanel Margin="24,12,24,12" x:Name="contentPanel">
 
-                <TextBlock x:Name="carTypeName" FontSize="32" Foreground="#ff000000"/>
+                <TextBlock Text="{Binding specname}" FontSize="32" Foreground="#ff000000"/>
 
                 <!--user info-->
                 <Grid Margin="0,12,0,0">
@@ -47,16 +47,16 @@
                     </Grid.ColumnDefinitions>
                     <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="/Images/close.png"/>
                     <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" 
-                           Source="{Binding UserPic}"/>
+                           Source="{Binding membericon}"/>
 
                     <StackPanel Grid.Column="1">
-                        <TextBlock Text="{Binding UserName}" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0"/>
-                        <TextBlock Text="{Binding PostTime}" FontSize="20" Foreground="#ff808080" Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding membername}" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding reportdate}" FontSize="20" Foreground="#ff808080" Margin="0,0,0,0"/>
                     </StackPanel>
                 </Grid>
                 
                 <!--car info-->
-                <Grid Margin="0,12,0,0">
+                <Grid Margin="0,12,0,0" DataContext="{Binding carinfo}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -72,21 +72,21 @@
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource Label_Style}" Text="裸车购买价格"/>
                     <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource Description_Style}">
-                        <Run Text="{Binding}"/>
+                        <Run Text="{Binding boughtprice}"/>
                         <Run Text="万"/>
                     </TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource Label_Style}" Text="购买时间"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource Description_Style}" Text=""/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource Description_Style}" Text="{Binding boughtdate}"/>
                     <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource Label_Style}" Text="购买地点"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource Description_Style}" Text=""/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource Description_Style}" Text="{Binding boughtaddress}"/>
                     <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource Label_Style}" Text="油耗"/>
                     <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource Description_Style}">
-                        <Run Text="{Binding}"/>
+                        <Run Text="{Binding actualoilcomsumption}"/>
                         <Run Text="升/百公里"/>
                     </TextBlock>
                     <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource Label_Style}" Text="目前行驶"/>
                     <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource Description_Style}">
-                        <Run Text="{Binding}"/>
+                        <Run Text="{Binding drivenkiloms}"/>
                         <Run Text="公里"/>
                     </TextBlock>
                 </Grid>
@@ -97,8 +97,9 @@
                 </Grid>
 
                 <!--image list-->
-                <ScrollViewer Height="114" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                    <ItemsControl x:Name="imageListBox" Margin="0,12,0,12">
+                <Rectangle Margin="0,0,0,0" Style="{StaticResource ListItemSplitter_Horizontal_Style}"/>
+                <ScrollViewer Height="144" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="imageListBox" Margin="0,12,0,12" ItemsSource="{Binding piclist}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"/>
@@ -106,15 +107,16 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Image Height="120" Stretch="Uniform" Margin="0,0,10,0"/>
+                                <Image Source="{Binding smallurl}" Height="120" Stretch="Uniform" Margin="0,0,10,0"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
+                <Rectangle Margin="0,0,0,0" Style="{StaticResource ListItemSplitter_Horizontal_Style}"/>
 
                 <!--content-->
                 <TextBlock Margin="0,12,0,0" FontSize="22" Foreground="#ff000000" TextWrapping="Wrap" TextTrimming="WordEllipsis"
-                           Text="{Binding Content}" />
+                           Text="{Binding content}" />
 
             </StackPanel>
 
@@ -122,11 +124,10 @@
 
     </Grid>
 
-    <phone:PhoneApplicationPage.ApplicationBar>
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" IsVisible="True" IsMenuEnabled="False">
             <shell:ApplicationBarIconButton x:Name="checkComment" Click="checkComment_Click" IconUri="Images/bar_checkComment.png" Text="查看评论"/>
         </shell:ApplicationBar>
-
-    </phone:PhoneApplicationPage.ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
 
 </phone:PhoneApplicationPage>

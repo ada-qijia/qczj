@@ -269,7 +269,7 @@
                                     <uc:KoubeiDataTemplateSelector Content="{Binding}" HorizontalContentAlignment="Stretch">
                                         <uc:KoubeiDataTemplateSelector.KoubeiTemplate>
                                             <DataTemplate>
-                                                <Grid Margin="0,0,0,12" Tap="koubei_Tap">
+                                                <Grid Margin="0,0,0,12" Tap="koubei_Tap" Tag="{Binding ID}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="76"/>
                                                         <ColumnDefinition Width="*"/>

@@ -22,6 +22,18 @@
     </Style>
 
     <!--common-->
+    <Style x:Key="ListItemSplitter_Horizontal_Style" TargetType="Rectangle">
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Height" Value="2"/>
+        <Setter Property="Fill">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" >
+                    <GradientStop Offset="0" Color="#ffffffff"/>
+                    <GradientStop Offset="1" Color="#ffd0d0d0" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
     <!--video player-->
     <Style x:Key="VideoPlayer_Time_Style" TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBase}">

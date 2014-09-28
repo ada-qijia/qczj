@@ -9,146 +9,78 @@ using Microsoft.Phone.Shell;
 using Model;
 using ViewModels;
 using Microsoft.Phone.Tasks;
+using ViewModels.Handler;
 
 namespace AutoWP7.View.Car
 {
     public partial class AlibiDetailPage : PhoneApplicationPage
     {
-        private string pageType = "3";
+        string koubeiID = string.Empty;
 
         public AlibiDetailPage()
         {
             InitializeComponent();
         }
 
-        string videoId = string.Empty;
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            videoId = NavigationContext.QueryString["videoid"];
-            //pageType = NavigationContext.QueryString["pageType"];
+            koubeiID = NavigationContext.QueryString["id"];
 
             LoadData();
-
-            var lastPage = NavigationService.BackStack.First();
-            if (lastPage.Source.ToString().Contains("VideoEndPage"))
-            {
-                NavigationService.RemoveBackEntry();
-            }
-
-            //switch (e.NavigationMode)
-            //{
-            //    case System.Windows.Navigation.NavigationMode.New:
-            //        {
-            //        }
-            //        break;
-            //    case System.Windows.Navigation.NavigationMode.Back:
-            //        {
-            //        }
-            //        break;
-            //}
         }
 
-        //protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
-        //{
-        //    if ((App.Current as App).newsPartPageMessage.IsOpen == true)
-        //    {
-        //        (App.Current as App).newsPartPageMessage.Hide();
-        //        e.Cancel = true;
-        //    }
-        //    else
-        //    {
-        //        //获得返回队列数
-        //        int sum = NavigationService.BackStack.Count();
-        //        for (int i = 2; i < sum; i++)
-        //        {
-        //            NavigationService.RemoveBackEntry();
-        //        }
-        //        base.OnBackKeyPress(e);
-        //    }
-        //}
+        #region Data
 
-        //分页集合
-
-        #region 数据加载
-
-        VideoDetailViewModel VM = null;
-        VideoDetailModel videoData = null;
-        private void LoadData()
+        AlibiDetailViewModel alibiVM = null;
+        List<AlibiDetailPicModel> picList = new List<AlibiDetailPicModel>();
+        public void LoadData()
         {
-            ProgBar.Visibility = Visibility.Visible;
+            GlobalIndicator.Instance.Text = "正在获取中...";
+            GlobalIndicator.Instance.IsBusy = true;
 
-            VM = new VideoDetailViewModel();
-
-            //http://221.192.136.99:804/wpv1.5/news/videopagejson-a2-pm3-v1.5.0-vid29509.html
-            string url = string.Format("{0}{1}/news/videopagejson-{2}-vid{3}.html", App.appUrl, App.versionStr, App.AppInfo, videoId);
-            //string url = string.Format("{0}{1}/news/videopagejson-{2}-vid{3}.html", "http://221.192.136.99:804", "/wpv1.5", App.AppInfo, videoId);
-            VM.LoadDataAysnc(url);
-            VM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<VideoDetailModel>>((ss, ee) =>
+            if (alibiVM == null)
             {
-                if (ee.Error != null)
+                alibiVM = new AlibiDetailViewModel();
+                alibiVM.LoadDataCompleted += alibiVM_LoadDataCompleted;
+            }
+
+            //string url = "http://app.api.autohome.com.cn/wpv1.4/alibi/alibiinfo-a2-pm3-v1.5.0-k257366.html";
+            string url = string.Format("{0}{1}/alibi/alibiinfo-{2}-k{3}.html", App.appUrl, App.versionStr, App.AppInfo, koubeiID);
+            alibiVM.LoadDataAysnc(url);
+        }
+
+        void alibiVM_LoadDataCompleted(object sender, APIEventArgs<AlibiDetailModel> e)
+        {
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false;
+            if (e.Error != null)
+            {
+                Common.NetworkAvailablePrompt();
+            }
+            else
+            {
+                AlibiDetailModel data = e.Result;
+                picList = data.piclist;
+                this.LayoutRoot.DataContext = data;
+
+                if (data.carinfo!=null)
                 {
-
+                    var info = data.carinfo;
+                    alibiChart.SetColumns(
+                        info.space,
+                        info.power,
+                        info.maneuverability,
+                        info.oilconsumption,
+                        info.comfortabelness,
+                        info.apperance,
+                        info.inside,
+                        info.costefficient);
                 }
-                else
-                {
-                    videoData = ee.Result;
-                    this.DataContext = videoData;
-                    videoPlayer.SetCover(videoData.PicUrl);
-                    videoPlayer.SetSource(videoData.VideoAddress);
-
-                    videoImage.DataContext = videoData.PicUrl;
-
-                    timePanel.Visibility = Visibility.Visible;
-                    if (videoData.RelationVideoList != null && videoData.RelationVideoList.Count() > 0)
-                    {
-                        relationVideoTitle.Visibility = Visibility.Visible;
-                    }
-                }
-                ProgBar.Visibility = Visibility.Collapsed;
-            });
-
+            }
         }
 
         #endregion
-
-        // 查看评论
-        private void checkComment_Click(object sender, EventArgs e)
-        {
-            UmengSDK.UmengAnalytics.onEvent("VideoEndPageActivity", "视频评论页的访问量");
-            this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsCommentListPage.xaml?newsid=" + videoId + "&pageType=" + pageType, UriKind.Relative));
-        }
-
-        //刷新
-        private void refreshButton_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            //string newsPageUrl = CreateNewsViewUrl(pageIndex);
-            //wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute));
-            ////wb.Navigate(new Uri(App.headUrl + "/news/news.aspx?newsid=" + newsId + "&pageIndex=" + pageIndex, UriKind.Absolute));
-            //refreshButton.Visibility = Visibility.Collapsed;
-            //wb.Visibility = Visibility.Visible;
-            //prompt.Visibility = Visibility.Collapsed;
-        }
-
-        private void videoPlayer_FullScreen(object sender, bool e)
-        {
-
-        }
-
-        private void videoImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            WebBrowserTask webBrowserTask = new WebBrowserTask();
-            //string url = string.Format("http://player.youku.com/embed/{0}", videoData.YoukuVideoKey);
-            string url = string.Format("http://autohometest.azurewebsites.net/3.html?vid={0}", videoData.YoukuVideoKey);
-            webBrowserTask.Uri = new Uri(url, UriKind.RelativeOrAbsolute);
-            webBrowserTask.Show();
-        }
-
-        private void relationVideo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            string vid = (sender as FrameworkElement).Tag.ToString();
-            this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + vid, UriKind.Relative));
-        }
 
     }
 }

@@ -7,10 +7,10 @@ namespace Model
     public class AlibiDetailModel
     {
         [Column]
-        public int ID { get; set; }
+        public int id { get; set; }
 
         [Column]
-        public int MemberID { get; set; }
+        public int memberid { get; set; }
 
         [Column]
         public string membername { get; set; }
@@ -43,22 +43,22 @@ namespace Model
         public int viewcount { get; set; }
 
         [Column]
-        public string Content { get; set; }
+        public string content { get; set; }
 
         [Column]
-        public IEnumerable<AlibiDetailPicModel> PicList { get; set; }
+        public List<AlibiDetailPicModel> piclist { get; set; }
 
-        public AlibiDetailCarInfoModel CarInfo { get; set; }
+        public AlibiDetailCarInfoModel carinfo { get; set; }
     }
 
     [Table]
     public class AlibiDetailPicModel
     {
         [Column]
-        public string BigURL { get; set; }
+        public string bigurl { get; set; }
 
         [Column]
-        public string SmallURL { get; set; }
+        public string smallurl { get; set; }
     }
 
     [Table]
@@ -74,7 +74,7 @@ namespace Model
         public string boughtaddress { get; set; }
 
         [Column]
-        public string oilconsumption { get; set; }
+        public double oilconsumption { get; set; }
 
         [Column]
         public string drivenkiloms { get; set; }
@@ -83,28 +83,28 @@ namespace Model
         public string purposes { get; set; }
 
         [Column]
-        public string space { get; set; }
+        public double space { get; set; }
 
         [Column]
-        public string power { get; set; }
+        public double power { get; set; }
 
         [Column]
-        public string maneuverability { get; set; }
+        public double maneuverability { get; set; }
 
         [Column]
-        public string actualoilcomsumption { get; set; }
+        public double actualoilcomsumption { get; set; }
 
         [Column]
-        public string comfortabelness { get; set; }
+        public double comfortabelness { get; set; }
 
         [Column]
-        public string apperance { get; set; }
+        public double apperance { get; set; }
 
         [Column]
-        public string inside { get; set; }
+        public double inside { get; set; }
 
         [Column]
-        public string costefficient { get; set; }
+        public double costefficient { get; set; }
     }
 
 }
