@@ -7,7 +7,7 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:handler="clr-namespace:AutoWP7.Handler"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     xmlns:local="clr-namespace:AutoWP7"
@@ -135,7 +135,14 @@
                 <TextBlock Text="{Binding key}" Margin="10,10,10,10" Foreground="Black" Style="{StaticResource PhoneTextLargeStyle}" TextAlignment="Left" VerticalAlignment="Center"/>
             </Border>
         </DataTemplate>
-        
+
+        <Style x:Name="ratingItemFillStyle" TargetType="toolkit:RatingItem">
+            <Setter Property="Background" Value="Orange" />
+        </Style>
+        <Style x:Name="ratingItemUnFillStyle" TargetType="toolkit:RatingItem">
+            <Setter Property="Background" Value="LightGray" />
+        </Style>
+
         <DataTemplate x:Key="alibiSelectorItemTemplate" >
             <Grid Tap="alibiItem_Tap" Tag="{Binding ID}">
                 <Grid.RowDefinitions>
@@ -148,15 +155,21 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="1" Text="{Binding Grade}" FontSize="20" Foreground="#ff808080"/>
-                    <TextBlock Grid.Column="2" Text="分" FontSize="20" Foreground="#ff808080"/>
-                    <TextBlock Grid.Column="4" Text="{Binding PeopleNum}" FontSize="20" Foreground="#ff808080"/>
-                    <TextBlock Grid.Column="5" Text="人参与" FontSize="20" Foreground="#ff808080"/>
+                    <toolkit:Rating Width="125" Height="25" RatingItemCount="5" Value="{Binding GradeDouble}" 
+                                    Background="Transparent" VerticalAlignment="Top" Margin="0,2,0,0" IsHitTestVisible="False"
+                                    FilledItemStyle="{StaticResource ratingItemFillStyle}"
+                                    UnfilledItemStyle="{StaticResource ratingItemUnFillStyle}" />
+                    <TextBlock Grid.Column="1" FontSize="20" Foreground="#ff808080" Margin="10,0,0,0">
+                        <Run Text="{Binding Grade}"/>
+                        <Run Text="分"/>
+                    </TextBlock>
+                    <TextBlock Grid.Column="3" FontSize="20" Foreground="#ff808080">
+                        <Run Text="{Binding PeopleNum}" />
+                        <Run Text="人参与"/>
+                    </TextBlock>
                 </Grid>
                 <Rectangle Grid.Row="1" Margin="0,0,0,5" Style="{StaticResource ListItemSplitter_Horizontal_Style}"/>
             </Grid>
@@ -456,6 +469,7 @@
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>
+
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>

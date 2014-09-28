@@ -107,7 +107,7 @@
     <Reference Include="MessageControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Maps, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="MyPhoneControls">
       <HintPath>lib\MyPhoneControls.dll</HintPath>
     </Reference>
@@ -506,6 +506,8 @@
     <Content Include="Images\瓷片图标\VideoHubTile.png" />
     <Content Include="lib\DBCS.dll" />
     <Content Include="lib\HtmlAgilityPack.dll" />
+    <Content Include="lib\Microsoft.Phone.Controls.Toolkit.pdb" />
+    <Content Include="lib\Microsoft.Phone.Controls.Toolkit.XML" />
     <Content Include="SplashScreenImage.Screen-720p.jpg" />
     <Content Include="SplashScreenImage.Screen-WVGA.jpg" />
     <Content Include="SplashScreenImage.Screen-WXGA.jpg" />

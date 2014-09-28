@@ -38,6 +38,14 @@ namespace Model
         [Column]
         public string Grade { get; set; }
 
+        public double GradeDouble
+        {
+            get
+            {
+                return double.Parse(Grade);
+            }
+        }
+
         [Column]
         public int PeopleNum { get; set; }
         

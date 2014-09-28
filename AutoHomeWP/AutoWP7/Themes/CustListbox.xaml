@@ -18,7 +18,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <my:PullDownToRefreshPanel x:Name="refreshPanel" RefreshRequested="refreshPanel_RefreshRequested" Grid.Row="0" />
-        <my:CustListBox x:Name="custListBox" Grid.Row="1"  toolkit:TiltEffect.IsTiltEnabled="True"
+        <my:CustListBox x:Name="custListBox" Grid.Row="1"  
             ItemsSource="{Binding ElementName=this, Path=ItemsSource}" 
             ItemTemplate="{Binding ElementName=this,Path=ItemTemplate}"
             SelectionChanged="CustListBox_SelectionChanged" >
