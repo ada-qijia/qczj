@@ -41,7 +41,6 @@ namespace AutoWP7.View.Channel.Newest
                         pageType = Convert.ToInt16(NavigationContext.QueryString["pageType"]);
                         newsid = int.Parse(id);
                         CommentLoadData(1, commentPageSize);
-
                     }
                     break;
                 case System.Windows.Navigation.NavigationMode.Back:
@@ -187,7 +186,6 @@ namespace AutoWP7.View.Channel.Newest
             //文章评论
             NavigateCommentPage("0");
         }
-
 
         private void NavigateCommentPage(string replyId)
         {

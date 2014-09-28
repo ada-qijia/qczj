@@ -20,7 +20,6 @@ namespace AutoWP7.View.Channel.News
             InitializeComponent();
         }
 
-        NewsCommentViewModel newsModel = null;
         int newsPageIndex = 1;
         int newsPageSize = 20;
         int pageType = 1;
@@ -37,10 +36,6 @@ namespace AutoWP7.View.Channel.News
                         string id = NavigationContext.QueryString["newsid"];
                         pageType =Convert.ToInt16( NavigationContext.QueryString["pageType"]);
                         newsid = int.Parse(id);
-                        if (newsModel == null)
-                        {
-                            newsModel = new NewsCommentViewModel();
-                        }
                         CommentLoadData(newsPageIndex, newsPageSize);
                     }
                     break;
@@ -85,7 +80,7 @@ namespace AutoWP7.View.Channel.News
             }
             else if (pageType == 3)
             {
-    //http://app.api.autohome.com.cn/wpv1.4/news/videocomments-a1-pm3-v1.5.0-vi23-o23-p1-s20.html
+                //http://app.api.autohome.com.cn/wpv1.4/news/videocomments-a1-pm3-v1.5.0-vi23-o23-p1-s20.html
                 url = string.Format("{0}{4}/news/videocomments-a2-pm3-v1.5.0-vi{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr);
             }
             newsCommentVM.LoadDataAysnc(url);

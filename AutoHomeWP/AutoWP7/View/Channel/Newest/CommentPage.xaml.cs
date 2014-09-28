@@ -78,29 +78,31 @@ namespace AutoWP7.View.Channel.Newest
             if (replyVM == null)
             {
                 replyVM = new ReplyViewModel();
+                replyVM.LoadDataCompleted += replyVM_LoadDataCompleted;
             }
             replyVM.sendData(string.Format("{0}/api/create2.ashx", App.replyUrl), model, pageType, App.UserAgent);
-            replyVM.LoadDataCompleted += new System.EventHandler<ViewModels.Handler.APIEventArgs<string>>((ss, ee) =>
+        }
+
+        void replyVM_LoadDataCompleted(object sender, ViewModels.Handler.APIEventArgs<string> e)
+        {
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false;
+            //重置标志位
+            isSend = false;
+            JObject json = JObject.Parse(e.Result);
+            int isSuccess = (int)json.SelectToken("returncode");
+            if (isSuccess == 0)
             {
-                GlobalIndicator.Instance.Text = "";
-                GlobalIndicator.Instance.IsBusy = false;
-                //重置标志位
-                isSend = false;
-                JObject json = JObject.Parse(ee.Result);
-                int isSuccess = (int)json.SelectToken("returncode");
-                if (isSuccess == 0)
-                {
-                    Common.showMsg("评论成功啦~~");
-                    //标志回复
-                    App.IsLoadTag = true;
-                    //返回
-                    this.NavigationService.GoBack();
-                }
-                else
-                {
-                    Common.showMsg("发送失败");
-                }
-            });
+                Common.showMsg("评论成功啦~~");
+                //标志回复
+                App.IsLoadTag = true;
+                //返回
+                this.NavigationService.GoBack();
+            }
+            else
+            {
+                Common.showMsg("发送失败");
+            }
         }
     }
 }

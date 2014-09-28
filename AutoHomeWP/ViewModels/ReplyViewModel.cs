@@ -19,6 +19,7 @@ namespace ViewModels
             if (wc == null)
             {
                 wc = new WebClient();
+                wc.UploadStringCompleted += wc_UploadStringCompleted;
             }
             if (pageType == 2)
             {
@@ -72,28 +73,28 @@ namespace ViewModels
             wc.Headers["User-Agent"] = UA;
 
             wc.UploadStringAsync(urlSource, "POST", strData);
-            wc.UploadStringCompleted += new UploadStringCompletedEventHandler((ss, ee) =>
+        }
+
+        void wc_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
+        {
+            APIEventArgs<string> apiArgs = new APIEventArgs<string>();
+
+            if (e.Error != null)
             {
-                APIEventArgs<string> apiArgs = new APIEventArgs<string>();
+                apiArgs.Error = e.Error;
+            }
+            else
+            {
+                //返回的json数据
+                string json = e.Result;
 
+                apiArgs.Result = json;
+            }
 
-                if (ee.Error != null)
-                {
-                    apiArgs.Error = ee.Error;
-                }
-                else
-                {
-                    //返回的json数据
-                    string json = ee.Result;
-
-                    apiArgs.Result = json;
-                }
-
-                if (LoadDataCompleted != null)
-                {
-                    LoadDataCompleted(this, apiArgs);
-                }
-            });
+            if (LoadDataCompleted != null)
+            {
+                LoadDataCompleted(this, apiArgs);
+            }
         }
 
     }
