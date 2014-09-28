@@ -98,6 +98,7 @@ namespace AutoWP7.View.Channel.News
                     videoPlayer.SetSource(videoData.VideoAddress);
 
                     videoImage.DataContext = videoData.PicUrl;
+                    playButton.Opacity = 1;
 
                     timePanel.Visibility = Visibility.Visible;
                     if (videoData.RelationVideoList != null && videoData.RelationVideoList.Count() > 0)
