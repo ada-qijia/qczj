@@ -31,7 +31,7 @@ namespace AutoWP7
         //最新新闻列表最后一条新闻的lasttime、lastid值
         public static string newsLastTime { get; set; }
         private static string _carTypeId;
-        public static string UserAgent = "WindowsPhone\t8\tautohome\t1.4.0";
+        public static string UserAgent = "WindowsPhone\t8\tautohome\t1.5.0";
         /// <summary>
         /// 车型ID
         /// </summary>
@@ -207,9 +207,13 @@ namespace AutoWP7
         //向服务器请求数据url地址头部
         public static string headUrl = "http://sp.autohome.com.cn";
 
-        public static string appUrl = "http://221.192.136.99:804";// "http://app.api.autohome.com.cn";
-        public static string topicPageDomain = "http://221.192.136.99:804";//"http://forum.app.autohome.com.cn";
-        public static string newsPageDomain = "http://221.192.136.99:804";//"http://cont.app.autohome.com.cn";
+        //public static string appUrl = "http://221.192.136.99:804";
+        //public static string topicPageDomain = "http://221.192.136.99:804";
+        //public static string newsPageDomain = "http://221.192.136.99:804";
+
+        public static string appUrl = "http://app.api.autohome.com.cn";
+        public static string topicPageDomain = "http://forum.app.autohome.com.cn";
+        public static string newsPageDomain = "http://cont.app.autohome.com.cn";
 
         public static string loginUrl = "http://account.autohome.com.cn";
 
@@ -413,6 +417,7 @@ namespace AutoWP7
             //调用全局方法，更改本地数据库数据结构
             UpdateDBHelper upHelper = new UpdateDBHelper();
             upHelper.update_14();
+            
             UmengSDK.UmengAnalytics.setDebug(true);
             UmengSDK.UmengAnalytics.onLaunching("5056b77d5270155f88000125", ChannelId);
             UmengSDK.UmengAnalytics.update("5056b77d5270155f88000125");

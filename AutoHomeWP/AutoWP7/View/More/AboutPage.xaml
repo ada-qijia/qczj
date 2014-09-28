@@ -38,7 +38,7 @@
             <TextBlock Foreground="Black" Grid.Row="0"  TextWrapping="Wrap" 
                        VerticalAlignment="Bottom"
                        Text="汽车之家Windows Phone版是一款魔图风格的应用。随时随地了解最新汽车资讯；80个大中城市一手行情触手可及；国产、德系、美系等上百品牌上万车型、百万靓图让你爽到爆；最大汽车论坛，日均上万新帖，买车用车有问题？7000万老鸟帮你轻松搞定。"/>
-            <TextBlock Foreground="Black" Grid.Row="1" Text="V 1.4.0.0" HorizontalAlignment="Right"/>
+            <TextBlock Foreground="Black" Grid.Row="1" Text="V 1.5.0.0" HorizontalAlignment="Right"/>
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <!--<TextBlock Foreground="Black" FontSize="22"  Text="Tel support："/>
                 <TextBlock Foreground="#3cadeb" x:Name="callAutohome" Height="60" Tap="callAutohome_Tap_1"  FontSize="25" Text=" +86 18618261181" Width="340" />-->

@@ -254,7 +254,7 @@ namespace AutoWP7.View.Car
             {
                 carSeriesConfigVM = new CarSeriesConfigurationViewModel();
             }
-            string url = string.Format("{0}{2}/cars/speccompare-a2-pm3-v1.4.0-t1-s{1}.html", App.appUrl, carId, App.versionStr);
+            string url = string.Format("{0}{2}/cars/speccompare-a2-pm3-v1.5.0-t1-s{1}.html", App.appUrl, carId, App.versionStr);
             carSeriesConfigVM.LoadDataAysnc(url);
             carSeriesConfigVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<Model.CarSeriesConfigurationModel>>>(carSeriesConfigVM_LoadDataCompleted);
 
@@ -339,7 +339,7 @@ namespace AutoWP7.View.Car
                 //{
 
                 DealerVM = new DealerViewModel();
-                string url = string.Format("{0}{4}/dealer/pddealers-a2-pm3-v1.4.0-sp{1}-ss{2}-c{3}-sc0-p1-s200.html", App.appUrl, carId, 0, cityId, App.versionStr);
+                string url = string.Format("{0}{4}/dealer/pddealers-a2-pm3-v1.5.0-sp{1}-ss{2}-c{3}-sc0-p1-s200.html", App.appUrl, carId, 0, cityId, App.versionStr);
                 DealerVM.LoadDataAysnc(url, carId, cityId);
                 DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
             }

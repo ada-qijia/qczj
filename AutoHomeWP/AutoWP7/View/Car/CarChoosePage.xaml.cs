@@ -172,7 +172,7 @@ namespace AutoWP7.View.Car
                 carVM = new CarBrandViewModel();
             }
             //carVM.LoadDataAysnc(App.headUrl + "/cars/APP/BrandAll.ashx");
-            string url = string.Format("{0}{2}/cars/brands-a2-pm3-v1.4.0-ts{1}.html", App.appUrl, 0, App.versionStr);
+            string url = string.Format("{0}{2}/cars/brands-a2-pm3-v1.5.0-ts{1}.html", App.appUrl, 0, App.versionStr);
             carVM.LoadDataAysnc(url);
             carVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarBrandModel>>>(carVM_LoadDataCompleted);
 
@@ -261,7 +261,7 @@ namespace AutoWP7.View.Car
             GlobalIndicator.Instance.IsBusy = true;
             carSeriesVM = new CarSeriesViewModel();
 
-            carSeriesVM.LoadDataAysnc(string.Format("{0}{2}/cars/seriesprice-a2-pm3-v1.4.0-b{1}-t2.html", App.appUrl, bid, App.versionStr));
+            carSeriesVM.LoadDataAysnc(string.Format("{0}{2}/cars/seriesprice-a2-pm3-v1.5.0-b{1}-t2.html", App.appUrl, bid, App.versionStr));
             carSeriesVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarSeriesModel>>>(carSeriesVM_LoadDataCompleted);
 
         }
@@ -350,7 +350,7 @@ namespace AutoWP7.View.Car
                 carSeriesQuoteVM = new CarSeriesQuoteViewModel();
             }
             //carSeriesQuoteVM.LoadDataAysnc(App.headUrl + "/cars/APP/SpecBySeries.ashx?seriesid=" + sid);
-            carSeriesQuoteVM.LoadDataAysnc(string.Format("{0}{2}/cars/seriessummary-a2-pm3-v1.4.0-s{1}-t0xffff-c0.html", App.appUrl, sid, App.versionStr), true);
+            carSeriesQuoteVM.LoadDataAysnc(string.Format("{0}{2}/cars/seriessummary-a2-pm3-v1.5.0-s{1}-t0xffff-c0.html", App.appUrl, sid, App.versionStr), true);
         
             carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(carSeriesQuoteVM_LoadDataCompleted);
 

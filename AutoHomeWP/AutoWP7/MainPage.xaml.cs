@@ -428,7 +428,7 @@ namespace AutoWP7
             }
             try
             {
-                string url = string.Format("{0}{2}/cars/brands-a2-pm3-v1.4.0-ts{1}.html", App.appUrl, 0, App.versionStr);
+                string url = string.Format("{0}{2}/cars/brands-a2-pm3-v1.5.0-ts{1}.html", App.appUrl, 0, App.versionStr);
                 carVM.LoadDataAysnc(url);
                 carVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarBrandModel>>>(carVM_LoadDataCompleted);
             }

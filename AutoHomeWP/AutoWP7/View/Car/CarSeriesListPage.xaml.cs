@@ -80,7 +80,7 @@ namespace AutoWP7.View.Car
             GlobalIndicator.Instance.IsBusy = true;
             carSeriesVM = new CarSeriesViewModel();
 
-            string url = string.Format("{0}{2}/cars/seriesprice-a2-pm3-v1.4.0-b{1}-t2.html", App.appUrl, strId, App.versionStr);
+            string url = string.Format("{0}{2}/cars/seriesprice-a2-pm3-v1.5.0-b{1}-t2.html", App.appUrl, strId, App.versionStr);
             carSeriesVM.LoadDataAysnc(url);
             carSeriesVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarSeriesModel>>>(carSeriesVM_LoadDataCompleted);
 

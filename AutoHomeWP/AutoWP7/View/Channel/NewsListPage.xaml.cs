@@ -52,9 +52,12 @@ namespace AutoWP7.View.Channel
         {
             base.OnNavigatedTo(e);
 
-            string tag = NavigationContext.QueryString["tag"];
-            int index = tagArray.IndexOf(tag);
-            this.piv.SelectedIndex = index;
+            if (e.NavigationMode == System.Windows.Navigation.NavigationMode.New)
+            {
+                string tag = NavigationContext.QueryString["tag"];
+                int index = tagArray.IndexOf(tag);
+                this.piv.SelectedIndex = index;
+            }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -771,7 +774,7 @@ namespace AutoWP7.View.Channel
             {
                 shuokeComm = new NewsViewModel();
             }
-            string url = string.Format("{0}{3}/news/shuokelist-a2-pm1-v1.4.0-p{1}-s{2}.html", App.appUrl, pageIndex, pageSize, App.versionStr);
+            string url = string.Format("{0}{3}/news/shuokelist-a2-pm1-v1.5.0-p{1}-s{2}.html", App.appUrl, pageIndex, pageSize, App.versionStr);
 
             shuokeComm.LoadDataAysnc(url, 2);
             shuokeComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(shuoke_LoadDataCompleted);

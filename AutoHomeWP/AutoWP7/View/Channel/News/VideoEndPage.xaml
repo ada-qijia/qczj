@@ -51,7 +51,7 @@
                 <Rectangle Fill="#ff888888"/>
                 <Image Height="270" Stretch="None" Source="/Images/bg.png"/>
                 <Image x:Name="videoImage" Height="270" Stretch="UniformToFill" Tap="videoImage_Tap" Source="{Binding}"/>
-                <Rectangle>
+                <Rectangle IsHitTestVisible="False">
                     <Rectangle.Fill>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#00000000" Offset="0"/>

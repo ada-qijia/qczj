@@ -113,7 +113,7 @@ namespace AutoWP7.View.Channel.News
             {
                 provinceVM = new CityListViewModel();
             }
-            provinceVM.LoadDataAysnc(string.Format("{0}{1}/news/province-a2-pm3-v1.4.0-ts0.html", App.appUrl, App.versionStr));
+            provinceVM.LoadDataAysnc(string.Format("{0}{1}/news/province-a2-pm3-v1.5.0-ts0.html", App.appUrl, App.versionStr));
             provinceVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.ProvinceModel>>>(provinceVM_LoadDataCompleted);
 
         }
