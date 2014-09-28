@@ -225,7 +225,7 @@
             <!--口碑-->
             <controls:PivotItem Header="口碑">
                 <ScrollViewer>
-                    <StackPanel Margin="12,0,12,0" x:Name="alibiPanel">
+                    <StackPanel Margin="12,12,12,0" x:Name="alibiPanel">
                         <!--header-->
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -238,7 +238,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Image Grid.RowSpan="2" Source="/Images/alibi_summary.png" Stretch="Uniform" Width="48" Margin="0,0,12,0"/>
+                            <Image Grid.RowSpan="2" Source="/Images/alibi_summary.png" Stretch="Uniform" Height="64" Margin="0,0,12,0"/>
                             <TextBlock Grid.Column="1" Grid.Row="0" FontSize="25" Foreground="#ff404040" VerticalAlignment="Center">
                                 <Run Text="{Binding Average}"/>
                                 <Run Text="分"/>
@@ -248,7 +248,7 @@
                                 <Run Text="人参与"/>
                             </TextBlock>
 
-                            <Image Grid.Column="2" Grid.RowSpan="2" Source="/Images/alibi_summary.png" Stretch="Uniform" Width="48" Margin="0,0,12,0"/>
+                            <Image Grid.Column="2" Grid.RowSpan="2" Source="/Images/alibi_gasstation.png" Stretch="Uniform" Height="64" Margin="0,0,12,0"/>
                             <TextBlock Grid.Column="3" Grid.Row="0" FontSize="25" Foreground="#ff404040" VerticalAlignment="Center">
                                 <Run Text="{Binding FuelConsumption}"/>
                                 <Run Text="升/百公里"/>
@@ -259,7 +259,7 @@
                             </TextBlock>
                         </Grid>
                         <!--chart-->
-                        <Grid Margin="0,12,0,0">
+                        <Grid Margin="0,0,0,0">
                             <uc:AlibiChart x:Name="alibiChart"/>
                         </Grid>
                         <!--list-->
@@ -278,7 +278,7 @@
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
-                                                    <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="/Images/close.png"/>
+                                                    <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="/Images/DefaultUserIcon.png"/>
                                                     <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" 
                                                            Source="{Binding UserPic}"/>
 
@@ -286,9 +286,15 @@
                                                         <TextBlock Text="{Binding UserName}" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0"/>
                                                         <TextBlock Text="{Binding PostTime}" FontSize="20" Foreground="#ff808080" Margin="0,0,0,0"/>
                                                     </StackPanel>
-                                                    <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,0,0,0"
+                                                    
+                                                    <Image Width="64" Height="64" Grid.Column="1" HorizontalAlignment="Right" Stretch="Uniform"
+                                                           Source="{Binding MedalImage}"/>
+                                                    
+                                                    <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,0,0,4"
                                                                FontSize="22" Foreground="#ff000000" TextWrapping="Wrap" TextTrimming="WordEllipsis"
                                                                Text="{Binding Content}" MaxHeight="300"/>
+                                                    
+                                                    <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Height="1" Fill="#ffd0d0d0" VerticalAlignment="Bottom" Margin="0,0,0,12"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </uc:KoubeiDataTemplateSelector.KoubeiTemplate>
@@ -299,9 +305,7 @@
                                                 </Border>
                                             </DataTemplate>
                                         </uc:KoubeiDataTemplateSelector.MoreButtonTemplate>
-
                                     </uc:KoubeiDataTemplateSelector>
-                                    
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

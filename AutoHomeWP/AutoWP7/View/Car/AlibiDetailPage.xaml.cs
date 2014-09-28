@@ -16,6 +16,7 @@ namespace AutoWP7.View.Car
     public partial class AlibiDetailPage : PhoneApplicationPage
     {
         string koubeiID = string.Empty;
+        string koubeiImage = string.Empty;
 
         public AlibiDetailPage()
         {
@@ -26,7 +27,7 @@ namespace AutoWP7.View.Car
         {
             base.OnNavigatedTo(e);
             koubeiID = NavigationContext.QueryString["id"];
-
+            koubeiImage = NavigationContext.QueryString["koubeiImage"];
             LoadData();
         }
 
@@ -64,6 +65,7 @@ namespace AutoWP7.View.Car
                 alibiData = e.Result;
                 picList = alibiData.piclist;
                 this.LayoutRoot.DataContext = alibiData;
+                medalImage.DataContext = koubeiImage;
 
                 if (alibiData.carinfo != null)
                 {

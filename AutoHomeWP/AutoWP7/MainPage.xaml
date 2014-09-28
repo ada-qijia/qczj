@@ -269,8 +269,8 @@
                                  Height="70" Width="150" Grid.Column="1"/>
                     </Grid>
                 </controls:PanoramaItem.Header>
-                <ScrollViewer  Margin="10,-30,-3,20">
-                    <Grid>
+                <ScrollViewer Margin="10,-30,-3,20">
+                    <Grid Margin="0,0,0,50">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="173"></RowDefinition>
                             <RowDefinition Height="173"></RowDefinition>

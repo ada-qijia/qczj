@@ -84,6 +84,8 @@ namespace AutoWP7.View.Channel.Newest
             GlobalIndicator.Instance.Text = "正在获取中......";
             GlobalIndicator.Instance.IsBusy = true;
             imageDuTuViewModel = new ImageDuTuViewModel();
+            imageDuTuViewModel.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.ImageDuTuModel>>>(imageDuTuViewModel_LoadDataCompleted);
+
             string url = string.Empty;
             if (useType == UseTypeEnum.Club)
             {
@@ -94,7 +96,6 @@ namespace AutoWP7.View.Channel.Newest
                 url = string.Format("{0}{3}/news/newsimgall-a1-pm1-v1.4.0-n{1}-h{2}.html", App.appUrl, Id, imgUrl, App.versionStr);
             }
             imageDuTuViewModel.LoadDataAysnc(url, (int)useType);
-            imageDuTuViewModel.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.ImageDuTuModel>>>(imageDuTuViewModel_LoadDataCompleted);
         }
 
         void imageDuTuViewModel_LoadDataCompleted(object sender, ViewModels.Handler.APIEventArgs<IEnumerable<Model.ImageDuTuModel>> e)

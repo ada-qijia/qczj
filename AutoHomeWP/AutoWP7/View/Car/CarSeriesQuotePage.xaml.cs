@@ -522,8 +522,11 @@ namespace AutoWP7.View.Car
 
         private void koubei_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            string id = (sender as FrameworkElement).Tag.ToString();
-            this.NavigationService.Navigate(new Uri("/View/Car/AlibiDetailPage.xaml?id=" + id, UriKind.Relative));
+            KoubeiModel koubei = (sender as FrameworkElement).DataContext as KoubeiModel;
+            if (koubei != null)
+            {
+                this.NavigationService.Navigate(new Uri(string.Format("/View/Car/AlibiDetailPage.xaml?id={0}&koubeiImage={1}", koubei.ID, koubei.MedalImage), UriKind.Relative));
+            }
         }
 
         #endregion

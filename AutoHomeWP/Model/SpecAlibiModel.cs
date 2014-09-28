@@ -64,8 +64,29 @@ namespace Model
 
         [Column]
         public KoubeiMedalModel Medals { get; set; }
-        //[Column]
-        //public int Medal { get; set; }
+
+        public string MedalImage
+        {
+            get
+            {
+                string img = string.Empty;
+                switch (Medals.Type)
+                {
+                    case 1:
+                        img = "/Images/alibi_super_highlight.png";
+                        break;
+                    case 2:
+                        img = "/Images/alibi_highlight.png";
+                        break;
+                    case 4:
+                        img = "/Images/alibi_recommendation.png";
+                        break;
+                    default:
+                        break;
+                }
+                return img;
+            }
+        }
 
         [Column]
         public string UserName { get; set; }
