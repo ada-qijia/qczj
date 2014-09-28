@@ -1005,57 +1005,58 @@ namespace AutoWP7.View.Channel
             Grid gg = (Grid)sender;
             string pageindex = "1";
             NewsModel news = null;
-            switch (piv.SelectedIndex)
+            string header = (piv.SelectedItem as PivotItem).Header.ToString();
+            switch (header)
             {
 
-                case 0: //新闻
+                case "新闻":
                     if (newsDataSource != null)
                         news = newsDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 1: //视频
+                case "视频":
                     if (videoDataSource != null)
                     {
                         news = videoDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                         this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + gg.Tag, UriKind.Relative));
                     }
                     break;
-                case 2: //评测
+                case "评测":
                     if (evalDataSource != null)
                         news = evalDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 3: //行情
+                case "行情":
                     if (qutoDataSource != null)
                         news = qutoDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 4: //导购
+                case "导购":
                     if (shoppingDataSource != null)
                         news = shoppingDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 5:  //用车
+                case "用车":
                     if (useCarDataSource != null)
                         news = useCarDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 6:  //文化
+                case "文化":
                     if (acticleDataSource != null)
                         news = acticleDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 7: //改装
+                case "改装":
                     if (changeDataSource != null)
                         news = changeDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 8: //说客
+                case "说客":
                     if (shuokeDataSource != null)
                         news = shuokeDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 9: //游记
+                case "游记":
                     if (travelsDataSoure != null)
                         news = travelsDataSoure.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 10: //技术
+                case "技术":
                     if (technologyDataSource != null)
                         news = technologyDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
-                case 11: //原创视频
+                case "原创视频":
                     if (videoDataSource != null)
                     {
                         news = videoDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();

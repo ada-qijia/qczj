@@ -9,6 +9,7 @@ namespace AutoWP7.View.Channel.Newest
 {
     public partial class CommentPage : PhoneApplicationPage
     {
+
         public CommentPage()
         {
             InitializeComponent();
@@ -22,7 +23,7 @@ namespace AutoWP7.View.Channel.Newest
         string userId = string.Empty;
         //密钥
         string authorization = string.Empty;
-        //数据类型1-文章类，2-说客
+        //数据类型1-文章类，2-说客，3-视频
         int pageType = 1;
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
@@ -80,7 +81,23 @@ namespace AutoWP7.View.Channel.Newest
                 replyVM = new ReplyViewModel();
                 replyVM.LoadDataCompleted += replyVM_LoadDataCompleted;
             }
-            replyVM.sendData(string.Format("{0}/api/create2.ashx", App.replyUrl), model, pageType, App.UserAgent);
+
+            string contentType = "1";
+            switch (pageType)
+            {
+                case 1:
+                    contentType = "1";
+                    break;
+                case 2:
+                    contentType = "7";
+                    break;
+                case 3:
+                    contentType = "4";
+                    break;
+                default:
+                    break;
+            }
+            replyVM.sendData(string.Format("{0}/api/create2.ashx", App.replyUrl), model, pageType, App.UserAgent, contentType);
         }
 
         void replyVM_LoadDataCompleted(object sender, ViewModels.Handler.APIEventArgs<string> e)

@@ -189,7 +189,8 @@ namespace AutoWP7.View.Channel.News
                     //  Button bb = (Button)sender;  replyid=0 表示评论文章  其他表示回复具体某楼
                     //回复参数  文章id  回复楼数id   评论人id
                     this.NavigationService.Navigate(new Uri("/View/Channel/Newest/CommentPage.xaml?newsid=" +
-                        newsid + "&replyid=" + replyId + "&userid=" + userInfoModel.UserName + "&authorization=" + userInfoModel.Authorization+"&pageType="+pageType, UriKind.Relative));
+                        newsid + "&replyid=" + replyId + "&userid=" + userInfoModel.UserName + "&authorization=" + userInfoModel.Authorization
+                        +"&pageType="+pageType, UriKind.Relative));
                 }
             }
             else //导向登录页

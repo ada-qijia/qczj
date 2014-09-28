@@ -15,7 +15,7 @@
     <Grid x:Name="LayoutRoot" Background="White">
         <!--<phone:WebBrowser x:Name="webBrowser" IsScriptEnabled="True" />-->
 
-        <Grid>
+        <!--<Grid>
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="videoRow" Height="Auto"/>
                 <RowDefinition x:Name="otherRow" Height="*"/>
@@ -25,7 +25,8 @@
             <Grid Grid.Row="1" x:Name="contentsOtherThanVideo">
                 <Rectangle Fill="LightBlue"/>
             </Grid>
-        </Grid>
+        </Grid>-->
+        <phone:WebBrowser x:Name="browser" IsScriptEnabled="True" ScriptNotify="browser_ScriptNotify"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

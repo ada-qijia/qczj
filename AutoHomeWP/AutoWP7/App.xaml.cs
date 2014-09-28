@@ -206,15 +206,16 @@ namespace AutoWP7
         #region 向服务器请求数据url地址头部
         //向服务器请求数据url地址头部
         public static string headUrl = "http://sp.autohome.com.cn";
-        public static string appUrl = "http://221.192.136.99:804";// "http://app.api.autohome.com.cn";//
+
+        public static string appUrl = "http://221.192.136.99:804";// "http://app.api.autohome.com.cn";
+        public static string topicPageDomain = "http://221.192.136.99:804";//"http://forum.app.autohome.com.cn";
+        public static string newsPageDomain = "http://221.192.136.99:804";//"http://cont.app.autohome.com.cn";
 
         public static string loginUrl = "http://account.autohome.com.cn";
 
         public static string replyUrl = "http://reply.autohome.com.cn";
-        public static string newsPageDomain = " http://cont.app.autohome.com.cn";
 
         public static string clubUrl = "http://club.api.autohome.com.cn";
-        public static string topicPageDomain = "http://forum.app.autohome.com.cn";
         public static string versionStr = "/wpv1.5";
 
         #endregion

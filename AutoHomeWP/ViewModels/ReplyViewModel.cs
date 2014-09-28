@@ -14,7 +14,7 @@ namespace ViewModels
         public event EventHandler<APIEventArgs<string>> LoadDataCompleted;
 
         WebClient wc = null;
-        public void sendData(string url, CommentReplyModel model,int pageType,string UA)
+        public void sendData(string url, CommentReplyModel model,int pageType,string UA, string contentType)
         {
             if (wc == null)
             {
@@ -35,8 +35,8 @@ namespace ViewModels
             //post 数据
             string strData = "authorization=" + model.Authorization
                 + "&_appid=app"
-                + "&appid=" + pageType
-                +"&objid=" + model.NewsId
+                + "&appid=" + contentType //pageType
+                + "&objid=" + model.NewsId
                 + "&txtcontent=" + model.Content
                 + "&TargetReplyId=" + model.ReplyId
                 + "&encoding=gb2312"
