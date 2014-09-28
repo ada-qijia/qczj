@@ -60,12 +60,18 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
+        <!--新闻、视频、评测、导购、行情、用车、技术、文化、改装、游记、原创视频、说客-->
         <p:Pivot x:Name="piv" SelectionChanged="piv_SelectionChanged">
+            <controls:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,0,0,0">
+                        <TextBlock Text="{Binding}" Foreground="#3cadeb"/>
+                    </Grid>
+                </DataTemplate>
+            </controls:Pivot.HeaderTemplate>
+
             <!--新闻-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="新闻" Foreground="#00adef"/>
-                </p:PivotItem.Header>
+            <p:PivotItem Header="新闻">
                 <ListBox   x:Name="newsListbox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -151,10 +157,7 @@
                 </ListBox>
             </p:PivotItem>
             <!--视频-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="视频" Foreground="#00adef"/>
-                </p:PivotItem.Header>
+            <p:PivotItem Header="视频">
                 <Grid>
                     <Button x:Name="videoFilterButton" Foreground="Gray" FontSize="18" BorderBrush="#00adef" BorderThickness="3,3,3,3" 
 						Content="全部" Height="64" Width="150" 
@@ -221,11 +224,8 @@
                 </Grid>
             </p:PivotItem>
             <!--评测-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="评测" Foreground="#00adef"/>
-                </p:PivotItem.Header>
-                <ListBox   x:Name="evaluatingListbox">
+            <p:PivotItem Header="评测">
+                <ListBox x:Name="evaluatingListbox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -314,107 +314,8 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </p:PivotItem>
-            <!--行情-->
-            <p:PivotItem>
-                <p:PivotItem.Header>
-                    <TextBlock Text="行情" Foreground="#00adef"/>
-                </p:PivotItem.Header>
-                <ListBox  x:Name="quotationsListBox">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-
-                                <Grid  Tag="{Binding id}" 
-									Grid.Row="0"
-									Tap="newsGrid_Tap"
-									Visibility="{Binding showData}"
-									x:Name="NaviGoArticleEndPage" 
-									Margin="0"
-									HorizontalAlignment="Left">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="120"/>
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="130"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image Width="120" Height="90" 
-										Grid.RowSpan="2" Grid.Row="0"
-										Source="Images/smallImage.jpg"/>
-                                    <Image Width="120" Height="90" 
-										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
-
-
-                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-                                        <!--标题-->
-                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
-											Margin="0,10,0,0" 
-											TextWrapping="Wrap"
-											TextTrimming="WordEllipsis"
-											Text="{Binding title}" 
-											FontSize="22"/>
-
-                                    </StackPanel>
-
-                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-                                        <!--详情-->
-                                        <!--<TextBlock  Text="{Binding indexdetail}"  
-                                                HorizontalAlignment="Left"
-                                                TextWrapping="Wrap"    
-                                                Margin="0,-55,0,0"
-                                                FontSize="16"
-                                                Foreground="Gray"/>-->
-                                        <!--时间-->
-                                        <TextBlock   FontSize="16"   
-											Margin="0,-33,15,0"
-											HorizontalAlignment="Left"
-											Foreground="Gray"
-											Text="{Binding time}"/>
-                                        <!--回复数-->
-
-                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
-											FontSize="17"
-											Margin="35,-33"
-											Foreground="Gray"
-											Text="{Binding replycount}"/>
-                                        <TextBlock Grid.Row="2" Grid.Column="1" 
-											HorizontalAlignment="Right"
-											FontSize="17"
-											Margin="40,-33,2,0"
-											Foreground="Gray" Text="评论"/>
-                                        <!--<Image  Margin="40,-31,2,0" 
-                                                HorizontalAlignment="Right" 
-                                                VerticalAlignment="Top"
-                                                Height="25" Width="25" 
-                                                Source="Images/article_comment.png"/>-->
-
-                                    </StackPanel>
-
-                                </Grid>
-
-                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"    Tap="btnQutoLoadMore_Tap"                                              Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
-									Background="LightGray" Height="60" Width="440">
-                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
-										VerticalAlignment="Center"
-										FontSize="28" Text="{Binding loadMore}"/>
-                                </Border>
-
-                            </Grid>
-                        </DataTemplate>
-
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </p:PivotItem>
             <!--导购-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="导购" Foreground="#00adef"/>
-                </p:PivotItem.Header>
+            <p:PivotItem Header="导购">
                 <ListBox  x:Name="shoppingGuidListBox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -506,11 +407,101 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </p:PivotItem>
+            <!--行情-->
+            <p:PivotItem Header="行情">
+                <ListBox  x:Name="quotationsListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid  Tag="{Binding id}" 
+									Grid.Row="0"
+									Tap="newsGrid_Tap"
+									Visibility="{Binding showData}"
+									x:Name="NaviGoArticleEndPage" 
+									Margin="0"
+									HorizontalAlignment="Left">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
+										Grid.RowSpan="2" Grid.Row="0"
+										Source="Images/smallImage.jpg"/>
+                                    <Image Width="120" Height="90" 
+										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
+
+
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+											Margin="0,10,0,0" 
+											TextWrapping="Wrap"
+											TextTrimming="WordEllipsis"
+											Text="{Binding title}" 
+											FontSize="22"/>
+
+                                    </StackPanel>
+
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
+                                                HorizontalAlignment="Left"
+                                                TextWrapping="Wrap"    
+                                                Margin="0,-55,0,0"
+                                                FontSize="16"
+                                                Foreground="Gray"/>-->
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
+											Margin="0,-33,15,0"
+											HorizontalAlignment="Left"
+											Foreground="Gray"
+											Text="{Binding time}"/>
+                                        <!--回复数-->
+
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+											FontSize="17"
+											Margin="35,-33"
+											Foreground="Gray"
+											Text="{Binding replycount}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
+											HorizontalAlignment="Right"
+											FontSize="17"
+											Margin="40,-33,2,0"
+											Foreground="Gray" Text="评论"/>
+                                        <!--<Image  Margin="40,-31,2,0" 
+                                                HorizontalAlignment="Right" 
+                                                VerticalAlignment="Top"
+                                                Height="25" Width="25" 
+                                                Source="Images/article_comment.png"/>-->
+
+                                    </StackPanel>
+
+                                </Grid>
+
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"    Tap="btnQutoLoadMore_Tap"                                              Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
+									Background="LightGray" Height="60" Width="440">
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
+										VerticalAlignment="Center"
+										FontSize="28" Text="{Binding loadMore}"/>
+                                </Border>
+
+                            </Grid>
+                        </DataTemplate>
+
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
             <!--用车-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="用车" Foreground="#00adef"/>
-                </p:PivotItem.Header>
+            <p:PivotItem Header="用车">
                 <ListBox  x:Name="userCarListBox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -601,11 +592,101 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </p:PivotItem>
+            <!--技术-->
+            <p:PivotItem Header="技术">
+                <ListBox  x:Name="technologyListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid  Tag="{Binding id}" 
+									Grid.Row="0"
+									Tap="newsGrid_Tap"
+									Visibility="{Binding showData}"
+									x:Name="NaviGoArticleEndPage" 
+									Margin="0"
+									HorizontalAlignment="Left">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
+										Grid.RowSpan="2" Grid.Row="0"
+										Source="Images/smallImage.jpg"/>
+                                    <Image Width="120" Height="90" 
+										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
+
+
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
+											Margin="0,10,0,0" 
+											TextWrapping="Wrap"
+											TextTrimming="WordEllipsis"
+											Text="{Binding title}" 
+											FontSize="22" />
+
+                                    </StackPanel>
+
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--详情-->
+                                        <!--<TextBlock  Text="{Binding indexdetail}"  
+                                                HorizontalAlignment="Left"
+                                                TextWrapping="Wrap"    
+                                                Margin="0,-55,0,0"
+                                                FontSize="16"
+                                                Foreground="Gray"/>-->
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
+											Margin="0,-33,15,0"
+											HorizontalAlignment="Left"
+											Foreground="Gray"
+											Text="{Binding time}"/>
+                                        <!--回复数-->
+
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+											FontSize="17"
+											Margin="35,-33"
+											Foreground="Gray"
+											Text="{Binding replycount}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
+											HorizontalAlignment="Right"
+											FontSize="17"
+											Margin="40,-33,2,0"
+											Foreground="Gray" Text="评论"/>
+                                        <!--<Image  Margin="40,-31,2,0" 
+                                                HorizontalAlignment="Right" 
+                                                VerticalAlignment="Top"
+                                                Height="25" Width="25" 
+                                                Source="Images/article_comment.png"/>-->
+
+                                    </StackPanel>
+
+                                </Grid>
+
+
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                 Tap="technologyLoadMore_Tap"
+									Background="LightGray" Height="60" Width="440">
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
+										VerticalAlignment="Center"
+										FontSize="28" Text="{Binding loadMore}"/>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
             <!--文化-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="文化" Foreground="#00adef"/>
-                </p:PivotItem.Header>
+            <p:PivotItem Header="文化">
                 <ListBox  x:Name="cultureListBox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -697,10 +778,7 @@
                 </ListBox>
             </p:PivotItem>
             <!--改装-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="改装" Foreground="#00adef"/>
-                </p:PivotItem.Header>
+            <p:PivotItem Header="改装">
                 <ListBox  x:Name="changeListBox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -793,110 +871,8 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </p:PivotItem>
-            <!--说客-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="说客" Foreground="#00adef"/>
-                </p:PivotItem.Header>
-                <ListBox  x:Name="shuokeCommListBox">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-
-                                <Grid  Tag="{Binding id}" 
-									Grid.Row="0"
-									Tap="newsGrid_Tap"
-									Visibility="{Binding showData}"
-									x:Name="NaviGoArticleEndPage" 
-									Margin="0"
-									HorizontalAlignment="Left">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="120"/>
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="130"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image Width="120" Height="90" 
-										Grid.RowSpan="2" Grid.Row="0"
-										Source="Images/smallImage.jpg"/>
-                                    <Image Width="120" Height="90" 
-										Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
-
-
-                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-                                        <!--标题-->
-                                        <TextBlock   HorizontalAlignment="Left"                                                                   Foreground="Black" 
-											Margin="0,10,0,0" 
-											TextWrapping="Wrap"
-											TextTrimming="WordEllipsis"
-											Text="{Binding title}" 
-											FontSize="22" />
-
-                                    </StackPanel>
-
-                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-                                        <!--详情-->
-                                        <!--<TextBlock  Text="{Binding indexdetail}"  
-                                                HorizontalAlignment="Left"
-                                                TextWrapping="Wrap"    
-                                                Margin="0,-55,0,0"
-                                                FontSize="16"
-                                                Foreground="Gray"/>-->
-                                        <!--时间-->
-                                        <TextBlock   FontSize="16"   
-											Margin="0,-33,15,0"
-											HorizontalAlignment="Left"
-											Foreground="Gray"
-											Text="{Binding time}"/>
-                                        <!--回复数-->
-
-                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     
-											HorizontalAlignment="Right"
-											FontSize="17"
-											Margin="35,-33"
-											Foreground="Gray"
-											Text="{Binding replycount}"/>
-                                        <TextBlock Grid.Row="2" Grid.Column="1" 
-											HorizontalAlignment="Right"
-											FontSize="17"
-											Margin="40,-33,2,0"
-											Foreground="Gray" Text="评论"/>
-                                        <!--<Image  Margin="40,-31,2,0" 
-                                                HorizontalAlignment="Right" 
-                                                VerticalAlignment="Top"
-                                                Height="25" Width="25" 
-                                                Source="Images/article_comment.png"/>-->
-
-                                    </StackPanel>
-
-                                </Grid>
-
-
-                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                
-									Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                 
-									Tap="shuokeLoadMore_Tap"
-									Background="LightGray" Height="60" Width="440">
-                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
-										VerticalAlignment="Center"
-										FontSize="28" Text="{Binding loadMore}"/>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </p:PivotItem>
             <!--游记-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="游记" Foreground="#00adef"/>
-                </p:PivotItem.Header>
+            <p:PivotItem Header="游记">
                 <ListBox  x:Name="travelsListBox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -988,12 +964,70 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </p:PivotItem>
-            <!--技术-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="技术" Foreground="#00adef"/>
-                </p:PivotItem.Header>
-                <ListBox  x:Name="technologyListBox">
+            <!--原创视频-->
+            <p:PivotItem Header="原创视频">
+                <ListBox x:Name="originalVideoListbox" Margin="0,0,0,0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid Tag="{Binding id}" Tap="newsGrid_Tap"
+										Visibility="{Binding showData}" HorizontalAlignment="Left">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="120"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="120" Height="90" 
+											Grid.RowSpan="2" Grid.Row="0"
+											Source="Images/smallImage.jpg"/>
+                                    <Image Width="120" Height="90" 
+											Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
+                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
+                                        <!--标题-->
+                                        <TextBlock HorizontalAlignment="Left" Foreground="Black" Margin="0,10,0,0" 
+												FontSize="22" TextWrapping="Wrap" TextTrimming="WordEllipsis"
+												Text="{Binding title}" />
+                                    </StackPanel>
+                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
+                                        <!--时间-->
+                                        <TextBlock   FontSize="16"   
+												Margin="0,-33,15,0"
+												HorizontalAlignment="Left"
+												Foreground="Gray"
+												Text="{Binding time}"/>
+                                        <!--回复数-->
+                                        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"
+												FontSize="17" Foreground="Gray" Margin="35,-33"
+												Text="{Binding replycount}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" 
+												HorizontalAlignment="Right"
+												FontSize="17"
+												Margin="40,-33,2,0"
+												Foreground="Gray" Text="评论"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Border Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"  Tap="videoLoadMore_Tap"
+                                            Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
+										Background="LightGray" Height="60" Width="440">
+                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
+											VerticalAlignment="Center"
+											FontSize="28" Text="{Binding loadMore}"/>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </p:PivotItem>
+            <!--说客-->
+            <p:PivotItem Header="说客">
+                <ListBox  x:Name="shuokeCommListBox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -1051,7 +1085,8 @@
 											Text="{Binding time}"/>
                                         <!--回复数-->
 
-                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     HorizontalAlignment="Right"
+                                        <TextBlock Grid.Row="2" Grid.Column="1"                                                                                     
+											HorizontalAlignment="Right"
 											FontSize="17"
 											Margin="35,-33"
 											Foreground="Gray"
@@ -1072,7 +1107,9 @@
                                 </Grid>
 
 
-                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                 Tap="technologyLoadMore_Tap"
+                                <Border  Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"                                                
+									Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}"                                                 
+									Tap="shuokeLoadMore_Tap"
 									Background="LightGray" Height="60" Width="440">
                                     <TextBlock Foreground="Black" HorizontalAlignment="Center" 
 										VerticalAlignment="Center"
@@ -1081,70 +1118,6 @@
                             </Grid>
                         </DataTemplate>
 
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </p:PivotItem>
-            <!--原创视频-->
-            <p:PivotItem >
-                <p:PivotItem.Header>
-                    <TextBlock Text="原创视频" Foreground="#00adef"/>
-                </p:PivotItem.Header>
-                <ListBox x:Name="originalVideoListbox" Margin="0,0,0,0">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Grid Tag="{Binding id}" Tap="newsGrid_Tap"
-										Visibility="{Binding showData}" HorizontalAlignment="Left">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="120"/>
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="130"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image Width="120" Height="90" 
-											Grid.RowSpan="2" Grid.Row="0"
-											Source="Images/smallImage.jpg"/>
-                                    <Image Width="120" Height="90" 
-											Grid.RowSpan="2" Grid.Row="0"                                                              Source="{Binding bitmap}"/>
-                                    <StackPanel  Width="320" Grid.Column="1" Grid.Row="0">
-                                        <!--标题-->
-                                        <TextBlock HorizontalAlignment="Left" Foreground="Black" Margin="0,10,0,0" 
-												FontSize="22" TextWrapping="Wrap" TextTrimming="WordEllipsis"
-												Text="{Binding title}" />
-                                    </StackPanel>
-                                    <StackPanel Width="320"  Grid.Column="1"  Grid.Row="2" >
-                                        <!--时间-->
-                                        <TextBlock   FontSize="16"   
-												Margin="0,-33,15,0"
-												HorizontalAlignment="Left"
-												Foreground="Gray"
-												Text="{Binding time}"/>
-                                        <!--回复数-->
-                                        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"
-												FontSize="17" Foreground="Gray" Margin="35,-33"
-												Text="{Binding replycount}"/>
-                                        <TextBlock Grid.Row="2" Grid.Column="1" 
-												HorizontalAlignment="Right"
-												FontSize="17"
-												Margin="40,-33,2,0"
-												Foreground="Gray" Text="评论"/>
-                                    </StackPanel>
-                                </Grid>
-                                <Border Margin="5,10,0,17" Grid.Row="1"  x:Name="loadMore"  Tap="videoLoadMore_Tap"
-                                            Visibility="{Binding loadMore, Converter={StaticResource loadMoreVisibility}}" 
-										Background="LightGray" Height="60" Width="440">
-                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" 
-											VerticalAlignment="Center"
-											FontSize="28" Text="{Binding loadMore}"/>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </p:PivotItem>

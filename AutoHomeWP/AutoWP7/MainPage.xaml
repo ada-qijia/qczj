@@ -283,58 +283,60 @@
                             <ColumnDefinition Width="173"></ColumnDefinition>
                             <ColumnDefinition Width="173"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <toolkit:HubTile x:Name="newsHub" Tap="newsHub_Tap" Title="新闻 "
-                                        Source="Images/瓷片图标/新闻.png"
-                                         IsTabStop="True"
-                                         VerticalContentAlignment="Bottom"
-                                         VerticalAlignment="Top" 
-                                         Background="#3cadeb"
-                                         Margin="5" Grid.Column="0" Grid.Row="0" IsFrozen="True">
 
-                        </toolkit:HubTile>
-                        <toolkit:HubTile x:Name="evaluatingHub" Tap="evaluatingHub_Tap" Title="评测"  
-                                         Source="Images/瓷片图标/评测.png"
+                        <!--新闻、视频、评测、导购、行情、用车、技术、文化、改装、游记、原创视频、说客-->
+                        <toolkit:HubTile x:Name="newsHub" Tap="ChannelTile_Tap" Title="新闻 "
+                                         Source="Images/瓷片图标/新闻.png"
+                                         Background="#3cadeb"
+                                         Margin="5" Grid.Column="0" Grid.Row="0" IsFrozen="True"/>
+                        <toolkit:HubTile x:Name="videoHub" Tap="ChannelTile_Tap" Title="视频"  
+                                         Source="Images/瓷片图标/VideoHubTile.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="1" Grid.Row="0" IsFrozen="True"/>
-                        <toolkit:HubTile x:Name="quotationsHub" Tap="quotationsHub_Tap" Title="行情" 
-                                         Source="Images/瓷片图标/行情.png"
+                        
+                        <toolkit:HubTile x:Name="evaluatingHub" Tap="ChannelTile_Tap" Title="评测"  
+                                         Source="Images/瓷片图标/评测.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="0" Grid.Row="1" IsFrozen="True"/>
-                        <toolkit:HubTile x:Name="shoppingGuidHub" Tap="shoppingGuidHub_Tap" Title="导购" 
+                        <toolkit:HubTile x:Name="shoppingGuidHub" Tap="ChannelTile_Tap" Title="导购" 
                                          Source="Images/瓷片图标/导购.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="1" Grid.Row="1" IsFrozen="True"/>
-                        <toolkit:HubTile x:Name="useCarHub" Tap="useCarHub_Tap" Title="用车" 
-                                         Source="Images/瓷片图标/用车.png"
+
+                        <toolkit:HubTile x:Name="quotationsHub" Tap="ChannelTile_Tap" Title="行情" 
+                                         Source="Images/瓷片图标/行情.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="0" Grid.Row="2" IsFrozen="True"/>
-                        <toolkit:HubTile x:Name="technologyhub" Tap="technologyhub_Tap" Title="技术" 
-                                         Source="Images/瓷片图标/技术.png"
+                        <toolkit:HubTile x:Name="useCarHub" Tap="ChannelTile_Tap" Title="用车" 
+                                         Source="Images/瓷片图标/用车.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="1" Grid.Row="2" IsFrozen="True"/>
-                        <toolkit:HubTile x:Name="cultureHub" Tap="cultureHub_Tap" Title="文化" 
-                                         Source="Images/瓷片图标/文化.png"
+                        
+                        <toolkit:HubTile x:Name="technologyhub" Tap="ChannelTile_Tap" Title="技术" 
+                                         Source="Images/瓷片图标/技术.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="0" Grid.Row="3" IsFrozen="True"/>
-                        <toolkit:HubTile x:Name="changeHub" Tap="changeHub_Tap" Title="改装" 
+                        <toolkit:HubTile x:Name="cultureHub" Tap="ChannelTile_Tap" Title="文化" 
+                                         Source="Images/瓷片图标/文化.png"
+                                         Background="#3cadeb"
+                                         Margin="5" Grid.Column="1" Grid.Row="3" IsFrozen="True"/>
+                        
+                        <toolkit:HubTile x:Name="changeHub" Tap="ChannelTile_Tap" Title="改装" 
                                          Background="#3cadeb"
                                          Source="Images/瓷片图标/改装.png"
-                                         Margin="5" Grid.Column="1" Grid.Row="3" IsFrozen="True"/>
-                        <toolkit:HubTile x:Name="travelsHub" Tap="travelsHub_Tap" Title="游记" 
+                                         Margin="5" Grid.Column="0" Grid.Row="4" IsFrozen="True"/>
+                        <toolkit:HubTile x:Name="travelsHub" Tap="ChannelTile_Tap" Title="游记" 
                                          Background="#3cadeb"
                                          Source="Images/瓷片图标/游记.png"
-                                         Margin="5" Grid.Column="0" Grid.Row="4" IsFrozen="True"/>
-                        <toolkit:HubTile x:Name="competitionHub" Tap="competitionHub_Tap" Title="说客" 
-                                         Background="#3cadeb"
-                                         Source="Images/瓷片图标/说客.png"
                                          Margin="5" Grid.Column="1" Grid.Row="4" IsFrozen="True"/>
-                        <toolkit:HubTile x:Name="videoHub" Tap="videoHub_Tap" Title="视频"  
-                                         Source="Images/瓷片图标/VideoHubTile.png"
-                                         Background="#3cadeb"
-                                         Margin="5" Grid.Column="0" Grid.Row="5" IsFrozen="True"/>
-                        <toolkit:HubTile x:Name="originalVideoHub" Tap="originalVideoHub_Tap" Title="原创视频"  
+
+                        <toolkit:HubTile x:Name="originalVideoHub" Tap="ChannelTile_Tap" Title="原创视频"  
                                          Source="Images/瓷片图标/HubTileOriginalVideo.png"
                                          Background="#3cadeb"
+                                         Margin="5" Grid.Column="0" Grid.Row="5" IsFrozen="True"/>
+                        <toolkit:HubTile x:Name="competitionHub" Tap="ChannelTile_Tap" Title="说客" 
+                                         Background="#3cadeb"
+                                         Source="Images/瓷片图标/说客.png"
                                          Margin="5" Grid.Column="1" Grid.Row="5" IsFrozen="True"/>
                     </Grid>
                 </ScrollViewer>

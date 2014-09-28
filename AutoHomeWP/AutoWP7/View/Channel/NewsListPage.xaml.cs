@@ -37,6 +37,8 @@ namespace AutoWP7.View.Channel
 
         bool isFilterShown = false;
 
+        List<string> tagArray = new List<string>(new string[] { "新闻", "视频", "评测", "导购", "行情", "用车", "技术", "文化", "改装", "游记", "原创视频", "说客" });
+
         #endregion
 
         #region Lifecycle
@@ -49,14 +51,10 @@ namespace AutoWP7.View.Channel
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            switch (e.NavigationMode)
-            {
-                case System.Windows.Navigation.NavigationMode.New:
-                    {
-                        this.piv.SelectedIndex = int.Parse(NavigationContext.QueryString["index"]);
-                    }
-                    break;
-            }
+
+            string tag = NavigationContext.QueryString["tag"];
+            int index = tagArray.IndexOf(tag);
+            this.piv.SelectedIndex = index;
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -76,10 +74,10 @@ namespace AutoWP7.View.Channel
 
         private void piv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (piv.SelectedIndex)
+            string header = (piv.SelectedItem as PivotItem).Header.ToString();
+            switch (header)
             {
-
-                case 0: //新闻
+                case "新闻":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "新闻点击量");
                         pageType = 1;
@@ -91,7 +89,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 1: //视频
+                case "视频":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "视频点击量");
                         pageType = 3;
@@ -102,7 +100,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 2: //评测
+                case "评测":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "评测点击量");
                         pageType = 1;
@@ -113,7 +111,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 3: //行情
+                case "行情":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "行情点击量");
                         pageType = 1;
@@ -132,7 +130,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 4: //导购
+                case "导购":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "导购点击量");
                         pageType = 1;
@@ -143,7 +141,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 5:  //用车
+                case "用车":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "用车点击量");
                         pageType = 1;
@@ -154,7 +152,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 6:  //文化
+                case "文化":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "文化点击量");
                         pageType = 1;
@@ -165,7 +163,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 7: //改装
+                case "改装":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "改装点击量");
                         pageType = 1;
@@ -176,7 +174,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 8: //说客
+                case "说客":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "说客点击量");
                         pageType = 2;
@@ -187,7 +185,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 9: //游记
+                case "游记":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "游记点击量");
                         pageType = 1;
@@ -198,7 +196,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 10: //技术
+                case "技术":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "技术点击量");
                         pageType = 1;
@@ -209,7 +207,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-                case 11: //原创视频
+                case "原创视频":
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "原创视频点击量");
                         pageType = 3;

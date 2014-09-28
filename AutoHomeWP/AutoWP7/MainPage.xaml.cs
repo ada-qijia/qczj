@@ -482,80 +482,88 @@ namespace AutoWP7
         }
         #endregion
 
-        #region  频 道
-        
-        // 新闻
-        private void newsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(0));
-        }
+        #region  频道
 
-        // 视频
-        private void videoHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        // for all
+        private void ChannelTile_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            this.NavigationService.Navigate(CreateChannelUrl(1));
+            string tag = (sender as MyPhoneControls.HubTile).Title;
+            this.NavigationService.Navigate(CreateChannelUrl(tag));
         }
         
-        // 评测
-        private void evaluatingHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(1));
-        }
-        
-        // 行情
-        private void quotationsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(2));
-        }
+        //// 新闻
+        //private void newsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    string tag = (sender as HubTile).Title;
+        //    this.NavigationService.Navigate(CreateChannelUrl(tag));
+        //}
 
-        // 导购
-        private void shoppingGuidHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(3));
-        }
+        //// 视频
+        //private void videoHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(1));
+        //}
+        
+        //// 评测
+        //private void evaluatingHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(1));
+        //}
+        
+        //// 行情
+        //private void quotationsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(2));
+        //}
 
-        // 用车
-        private void useCarHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(4));
-        }
-        
-        // 文化
-        private void cultureHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(5));
-        }
-        
-        // 改装
-        private void changeHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(6));
-        }
-        
-        // 说客
-        private void competitionHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(7));
-        }
-        
-        // 游记
-        private void travelsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(8));
+        //// 导购
+        //private void shoppingGuidHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(3));
+        //}
 
-        }
+        //// 用车
+        //private void useCarHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(4));
+        //}
         
-        // 技术
-        private void technologyhub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(9));
-        }
+        //// 文化
+        //private void cultureHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(5));
+        //}
+        
+        //// 改装
+        //private void changeHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(6));
+        //}
+        
+        //// 说客
+        //private void competitionHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(7));
+        //}
+        
+        //// 游记
+        //private void travelsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(8));
 
-        //原创视频
-        private void originalVideoHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.NavigationService.Navigate(CreateChannelUrl(11));
-        }
+        //}
+        
+        //// 技术
+        //private void technologyhub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(9));
+        //}
+
+        ////原创视频
+        //private void originalVideoHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    this.NavigationService.Navigate(CreateChannelUrl(11));
+        //}
 
         #endregion
 
@@ -673,9 +681,9 @@ namespace AutoWP7
         }
         
         // 新闻频道页
-        private Uri CreateChannelUrl(int index)
+        private Uri CreateChannelUrl(string tag)
         {
-            return new Uri(string.Format("/View/Channel/NewsListPage.xaml?index={0}", index), UriKind.Relative);
+            return new Uri(string.Format("/View/Channel/NewsListPage.xaml?tag={0}", tag), UriKind.Relative);
         }
 
     }
