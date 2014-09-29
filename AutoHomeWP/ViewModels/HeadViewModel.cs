@@ -85,7 +85,7 @@ namespace ViewModels
 
                 wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
                 wc.Headers["Accept-Charset"] = "utf-8";
-                Uri urlSource = new Uri(url+"&" + Guid.NewGuid().ToString(), UriKind.Absolute);
+                Uri urlSource = new Uri(url + "&" + Guid.NewGuid().ToString(), UriKind.Absolute);
                 wc.DownloadStringAsync(urlSource);
                 wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
                 {
@@ -111,99 +111,101 @@ namespace ViewModels
                             JObject json = JObject.Parse(ee.Result);
                             if (json != null)
                             {
-
-                            
-                                    
-                                    int headLineFlag = 0;
-                                    if (isFirstLoad)
+                                int headLineFlag = 0;
+                                if (isFirstLoad)
+                                {
+                                    JArray topJosn = (JArray)json.SelectToken("result").SelectToken("focusimg");
+                                    if (topJosn != null)
                                     {
-                                        JArray topJosn = (JArray)json.SelectToken("result").SelectToken("focusimg");
-                                        if (topJosn != null)
-                                        {
-                                            //焦点图
-                                            model = new NewsModel();
-                                            model.id = (int)topJosn[0].SelectToken("id");
-                                            model.imgurl = (string)topJosn[0].SelectToken("imgurl");
-                                            model.showData = "Collapsed";
-                                            model.pageIndex = topJosn[0].SelectToken("pageindex").ToString();
-                                            newestDataSource.Add(model);
-                                            ldc.newestModels.InsertOnSubmit(model);
-                                        }
-                                        
-                                        //头条资讯
-                                        JToken headJosn = json.SelectToken("result").SelectToken("headlineinfo");
-                                        if (headJosn != null)
-                                        {
-                                            model = new NewsModel();
-                                            model.id = (int)headJosn.SelectToken("id");
-                                            model.title = (string)headJosn.SelectToken("title");
-                                            model.time = (string)headJosn.SelectToken("time");
-                                            model.type = "头条";
-                                            //(string)headJosn.SelectToken("type");
-                                            model.smallpic = (string)headJosn.SelectToken("smallpic");
-                                            model.replycount = headJosn.SelectToken("replycount").ToString();
-                                            model.pagecount = headJosn.SelectToken("pagecount").ToString();
-                                            model.indexdetail = (string)headJosn.SelectToken("indexdetail");
+                                        //焦点图
+                                        model = new NewsModel();
+                                        model.id = (int)topJosn[0].SelectToken("id");
+                                        model.imgurl = (string)topJosn[0].SelectToken("imgurl");
+                                        model.showData = "Collapsed";
+                                        model.pageIndex = topJosn[0].SelectToken("pageindex").ToString();
+                                        model.mediatype = (int)topJosn[0].SelectToken("mediatype");
+                                        newestDataSource.Add(model);
+                                        ldc.newestModels.InsertOnSubmit(model);
+                                    }
 
+                                    //头条资讯
+                                    JToken headJosn = json.SelectToken("result").SelectToken("headlineinfo");
+                                    if (headJosn != null)
+                                    {
+                                        model = new NewsModel();
+                                        model.id = (int)headJosn.SelectToken("id");
+                                        model.title = (string)headJosn.SelectToken("title");
+                                        model.time = (string)headJosn.SelectToken("time");
+                                        model.type = "头条";
+                                        //(string)headJosn.SelectToken("type");
+                                        model.smallpic = (string)headJosn.SelectToken("smallpic");
+                                        model.replycount = headJosn.SelectToken("replycount").ToString();
+                                        model.pagecount = headJosn.SelectToken("pagecount").ToString();
+                                        model.indexdetail = (string)headJosn.SelectToken("indexdetail");
+                                        model.pageIndex = headJosn.SelectToken("jumppage").ToString();
+                                        model.mediatype = (int)headJosn.SelectToken("mediatype");
+
+                                        model.showData = "Visible";
+
+                                        headLineFlag = model.id;
+
+                                        newestDataSource.Add(model);
+                                        ldc.newestModels.InsertOnSubmit(model);
+                                    }
+                                }
+
+
+                                if (headLineFlag == 0 && pageIndex == 2)
+                                {
+                                    //访问第二页时，记录下头条的ID
+                                    JToken headJosn = json.SelectToken("result").SelectToken("headlineinfo");
+                                    if (headJosn.ToString() != "{}")
+                                    {
+                                        headLineFlag = (int)headJosn.SelectToken("id");
+                                    }
+                                }
+
+                                //新闻列表
+                                JArray newestJson = (JArray)json.SelectToken("result").SelectToken("newslist");
+                                if (newestJson != null)
+                                {
+                                    for (int i = 0; i < newestJson.Count; i++)
+                                    {
+                                        //头条可能存在于第一页或第二页，需要根据ID，过滤掉新闻列表中ID相同的新闻
+                                        if ((int)newestJson[i].SelectToken("id") != headLineFlag)
+                                        {
+                                            model = new NewsModel();
+                                            model.id = (int)newestJson[i].SelectToken("id");
+                                            model.title = (string)newestJson[i].SelectToken("title");
+                                            model.time = (string)newestJson[i].SelectToken("time");
+                                            string newsType = (string)newestJson[i].SelectToken("type");
+                                            model.type = newsType.Equals("说客") ? "说客" : "";
+                                            model.smallpic = (string)newestJson[i].SelectToken("smallpic");
+                                            model.replycount = newestJson[i].SelectToken("replycount").ToString();
+                                            model.pagecount = newestJson[i].SelectToken("pagecount").ToString();
+                                            model.pageIndex = newestJson[i].SelectToken("jumppage").ToString();
+                                            model.indexdetail = (string)newestJson[i].SelectToken("indexdetail");
                                             model.showData = "Visible";
-
-                                            headLineFlag = model.id;
+                                            model.lasttimeandid = (string)newestJson[i].SelectToken("intacttime");
+                                            model.mediatype = (int)newestJson[i].SelectToken("mediatype");
 
                                             newestDataSource.Add(model);
-                                            ldc.newestModels.InsertOnSubmit(model);
+
                                         }
-                                    }
-
-
-                                    if (headLineFlag == 0 && pageIndex == 2)
-                                    {
-                                        //访问第二页时，记录下头条的ID
-                                        JToken headJosn = json.SelectToken("result").SelectToken("headlineinfo");
-                                        if (headJosn.ToString() != "{}")
+                                        if (isFirstLoad)
                                         {
-                                            headLineFlag = (int)headJosn.SelectToken("id");
-                                        }
-                                    }
-
-                                    //新闻列表
-                                    JArray newestJson = (JArray)json.SelectToken("result").SelectToken("newslist");
-                                    if (newestJson != null)
-                                    {
-                                        for (int i = 0; i < newestJson.Count; i++)
-                                        {
-                                            //头条可能存在于第一页或第二页，需要根据ID，过滤掉新闻列表中ID相同的新闻
-                                            if ((int)newestJson[i].SelectToken("id") != headLineFlag)
+                                            try
                                             {
-                                                model = new NewsModel();
-                                                model.id = (int)newestJson[i].SelectToken("id");
-                                                model.title = (string)newestJson[i].SelectToken("title");
-                                                model.time = (string)newestJson[i].SelectToken("time");
-                                                string newsType = (string)newestJson[i].SelectToken("type");
-                                                model.type = newsType.Equals("说客") ? "说客" : "";
-                                                model.smallpic = (string)newestJson[i].SelectToken("smallpic");
-                                                model.replycount = newestJson[i].SelectToken("replycount").ToString();
-                                                model.pagecount = newestJson[i].SelectToken("pagecount").ToString();
-                                                model.indexdetail = (string)newestJson[i].SelectToken("indexdetail");
-                                                model.showData = "Visible";
-                                                model.lasttimeandid = (string)newestJson[i].SelectToken("intacttime");
-
-                                                newestDataSource.Add(model);
+                                                ldc.newestModels.InsertOnSubmit(model);
+                                            }
+                                            catch (Exception ex)
+                                            {
 
                                             }
-                                            if (isFirstLoad)
-                                            {
-                                                try
-                                                {
-                                                    ldc.newestModels.InsertOnSubmit(model);
-                                                }
-                                                catch (Exception ex)
-                                                {
-
-                                                }
-                                            }
+                                        }
 
 
-                                        
+
                                     }
 
                                     model = new NewsModel();

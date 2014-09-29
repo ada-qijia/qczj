@@ -21,8 +21,6 @@ namespace Model
     [Table]
     public class NewsModel : INotifyPropertyChanged, INotifyPropertyChanging
     {
-
-
         private int _localID;
         //自动编号，不可为空，自动增长
         [Column(IsPrimaryKey = true, IsDbGenerated = true, CanBeNull = false)]
@@ -42,7 +40,6 @@ namespace Model
                 }
             }
         }
-
 
         //是否显示数据
         private string _showData;
@@ -244,7 +241,6 @@ namespace Model
                 }
             }
         }
-       
 
         //时间
         private string _time;
@@ -266,7 +262,6 @@ namespace Model
             }
         }
 
-
         //详情
         private string _indexdetail;
         [Column]
@@ -286,8 +281,6 @@ namespace Model
                 }
             }
         }
-
-
 
         //图片url
         private string _smallpic;
@@ -309,7 +302,6 @@ namespace Model
             }
         }
 
-
         ///回复数
         private string _replycount;
         [Column]
@@ -329,8 +321,6 @@ namespace Model
                 }
             }
         }
-
-
 
         //页数
         private string _pagecount;
@@ -371,6 +361,9 @@ namespace Model
                 }
             }
         }
+
+        [Column]
+        public int mediatype { get; set; }
 
         //属性更改完毕事件
         public event PropertyChangedEventHandler PropertyChanged;

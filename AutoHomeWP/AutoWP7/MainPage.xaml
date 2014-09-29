@@ -151,12 +151,12 @@
                                 </Image>
 
                                 <Grid  Grid.Row="1"
-                                           Visibility="{Binding showData}"
-                                      Tag="{Binding id}" 
+                                       Visibility="{Binding showData}"
+                                       Tag="{Binding id}" 
                                        Tap="NaviGoArticleEndPage_Tap"
-                                      x:Name="NaviGoArticleEndPage" 
+                                       x:Name="NaviGoArticleEndPage" 
                                        Margin="-10,1"
-                                      HorizontalAlignment="Left">
+                                       HorizontalAlignment="Left">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="120"></RowDefinition>
                                         <RowDefinition ></RowDefinition>

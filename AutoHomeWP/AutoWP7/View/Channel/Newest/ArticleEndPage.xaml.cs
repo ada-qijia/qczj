@@ -15,8 +15,6 @@ namespace AutoWP7.View.Channel.Newest
 {
     public partial class ArticleEndPage : PhoneApplicationPage
     {
-
-
         public ArticleEndPage()
         {
             InitializeComponent();
@@ -84,7 +82,6 @@ namespace AutoWP7.View.Channel.Newest
 
         }
 
-
         //文章内的链接
         void wb_ScriptNotify(object sender, NotifyEventArgs e)
         {
@@ -127,10 +124,8 @@ namespace AutoWP7.View.Channel.Newest
 
         }
 
-
         //分页集合
         public static ObservableCollection<NewsDetailModel> newsDataSource = new ObservableCollection<NewsDetailModel>();
-
 
         #region 分页数据加载
 
@@ -183,7 +178,6 @@ namespace AutoWP7.View.Channel.Newest
             wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute));
         }
         #endregion
-
 
         //退出页面
         protected override void OnBackKeyPress(CancelEventArgs e)

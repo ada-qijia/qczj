@@ -19,7 +19,7 @@ using Microsoft.Phone.Data.Linq;
 namespace AutoWP7
 {
 
-    
+
     // 主界面
     // </summary>
     public partial class MainPage : PhoneApplicationPage
@@ -239,7 +239,7 @@ namespace AutoWP7
 
         HeadViewModel HeadVM = null;
         int headPageIndex = 1; //页码
-        
+
         // 网络加载
         // </summary>
         public void SetNetWorkNewestLoadData(int pageIndex, int pageSize, string lastTime, bool isFirstLoad)
@@ -264,13 +264,13 @@ namespace AutoWP7
             if (HeadVM == null)
             {
                 HeadVM = new HeadViewModel();
+                HeadVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(comm_LoadDataCompleted);
             }
             string url = string.Format(AppUrlMgr.NewsListUrl, 0, 0, pageIndex, pageSize, lastTime);
             HeadVM.LoadDataAysnc(url, pageIndex, isFirstLoad);
-            HeadVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(comm_LoadDataCompleted);
         }
 
-        
+
         // 分页加载
         // </summary>
         private void btnLoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -283,8 +283,6 @@ namespace AutoWP7
             SetNetWorkNewestLoadData(headPageIndex, loadPageSize, App.newsLastTime, false);
         }
 
-
-        
         // 头条—数据加载完成
         // </summary>
         void comm_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<NewsModel>> e)
@@ -417,7 +415,7 @@ namespace AutoWP7
 
         //汽车品牌网络加载
         CarBrandViewModel carVM = null;
-        
+
         // 品牌找车
         // </summary>
         public void SetWebCarBrandLoadData()
@@ -490,7 +488,7 @@ namespace AutoWP7
             string tag = (sender as MyPhoneControls.HubTile).Title;
             this.NavigationService.Navigate(CreateChannelUrl(tag));
         }
-        
+
         //// 新闻
         //private void newsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         //{
@@ -503,13 +501,13 @@ namespace AutoWP7
         //{
         //    this.NavigationService.Navigate(CreateChannelUrl(1));
         //}
-        
+
         //// 评测
         //private void evaluatingHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         //{
         //    this.NavigationService.Navigate(CreateChannelUrl(1));
         //}
-        
+
         //// 行情
         //private void quotationsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         //{
@@ -527,32 +525,32 @@ namespace AutoWP7
         //{
         //    this.NavigationService.Navigate(CreateChannelUrl(4));
         //}
-        
+
         //// 文化
         //private void cultureHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         //{
         //    this.NavigationService.Navigate(CreateChannelUrl(5));
         //}
-        
+
         //// 改装
         //private void changeHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         //{
         //    this.NavigationService.Navigate(CreateChannelUrl(6));
         //}
-        
+
         //// 说客
         //private void competitionHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         //{
         //    this.NavigationService.Navigate(CreateChannelUrl(7));
         //}
-        
+
         //// 游记
         //private void travelsHub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         //{
         //    this.NavigationService.Navigate(CreateChannelUrl(8));
 
         //}
-        
+
         //// 技术
         //private void technologyhub_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         //{
@@ -570,6 +568,25 @@ namespace AutoWP7
         // 文章最终页
         private void NaviGoArticleEndPage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            var news = (sender as FrameworkElement).DataContext as NewsModel;
+            if (news != null)
+            {
+                string pageindex = "1";
+                int mediatype = news.mediatype;
+                if (mediatype == 1 || mediatype == 2)
+                {
+                    pageindex = news.pageIndex;
+                    this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + pageindex + "&pageType=" + mediatype, UriKind.Relative));
+                }
+                else if (mediatype == 3)
+                {
+                    this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + news.id, UriKind.Relative));
+                }
+            }
+            return;
+
+            /**************************************
+             
             Grid gg = (Grid)sender;
             var news = ldc.newestModels.Where(o => o.id == (int)gg.Tag).FirstOrDefault();
             string pageIndex = "1";
@@ -581,6 +598,8 @@ namespace AutoWP7
                 pageIndex = news.pageIndex;
             }
             this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=" + pageIndex + "&newsType=" + newstype, UriKind.Relative));
+        
+             **************************************/
         }
 
         // 焦点图
@@ -679,7 +698,7 @@ namespace AutoWP7
             UmengSDK.UmengAnalytics.onEvent("MoreActivity", "更多页点击量");
             this.NavigationService.Navigate(new Uri("/View/More/MorePage.xaml", UriKind.Relative));
         }
-        
+
         // 新闻频道页
         private Uri CreateChannelUrl(string tag)
         {
