@@ -293,8 +293,11 @@
                                                     <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,0,0,4"
                                                                FontSize="22" Foreground="#ff000000" TextWrapping="Wrap" TextTrimming="WordEllipsis"
                                                                Text="{Binding Content}" MaxHeight="300"/>
-                                                    
-                                                    <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Height="1" Fill="#ffd0d0d0" VerticalAlignment="Bottom" Margin="0,0,0,12"/>
+
+                                                    <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,4"
+                                                               FontSize="22" Foreground="#ff3cadeb" Text="详情>" />
+
+                                                    <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Height="1" Fill="#ffd0d0d0" VerticalAlignment="Bottom" Margin="0,0,0,4"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </uc:KoubeiDataTemplateSelector.KoubeiTemplate>
