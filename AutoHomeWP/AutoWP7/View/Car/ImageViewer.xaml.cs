@@ -37,7 +37,7 @@ namespace AutoWP7.View.Car
 
             pageTitle = this.NavigationContext.QueryString["pageTitle"];
             carName.Text = pageTitle;
-            
+
             pageSize.Text = App.BigImageList.Count.ToString();
 
             LoadImage();
@@ -208,7 +208,7 @@ namespace AutoWP7.View.Car
         //加载图片
         public void LoadImage()
         {
-            pageIndex.Text = imageIndex.ToString();
+            pageIndex.Text = (imageIndex + 1).ToString();
             string url = App.BigImageList[imageIndex];
             bigImg.DataContext = url;
         }
