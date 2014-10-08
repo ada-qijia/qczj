@@ -605,9 +605,20 @@ namespace AutoWP7
         // 焦点图
         private void topImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            Image img = (Image)sender;
-
-            this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + img.Tag + "&pageIndex=" + focusImagePageIndex + "&newsType=", UriKind.Relative));
+            var news = (sender as FrameworkElement).DataContext as NewsModel;
+            if (news != null)
+            {
+                int mediatype = news.mediatype;
+                if (mediatype == 1 || mediatype == 2)
+                {
+                    this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + focusImagePageIndex + "&pageType=" + mediatype, UriKind.Relative));
+                }
+                else if (mediatype == 3)
+                {
+                    this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + news.id, UriKind.Relative));
+                }
+            }
+            //this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + img.Tag + "&pageIndex=" + focusImagePageIndex + "&newsType=", UriKind.Relative));
         }
 
         //刷新状态
