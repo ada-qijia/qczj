@@ -232,22 +232,22 @@
                         <toolkit:HubTile x:Name="facade" Tap="facade_Tap"                                                                           IsTabStop="True" IsFrozen="True"
                                          Grid.Column="0" Grid.Row="0" 
                                          Background="#3cadeb"                                         
-                                          Source="/AutoWP7;component/Images/瓷片图标/车身外观.png"
+                                          Source="/AutoWP7;component/Images/Tiles/CheShenWaiGuan.png"
                                          Margin="0,-50,0,0" Title="车身外观" />
                         <toolkit:HubTile x:Name="wheel" Tap="wheel_Tap" IsTabStop="True"
                                          Grid.Column="1" Grid.Row="0" IsFrozen="True"
                                            Background="#3cadeb"
-                                         Source="/AutoWP7;component/Images/瓷片图标/中控方向盘.png"
+                                         Source="/AutoWP7;component/Images/Tiles/ZhongKongFangXiangPan.png"
                                          Margin="0,-50,60,0" Title="中控方向盘"/>
                         <toolkit:HubTile x:Name="carCompartment" Tap="carCompartment_Tap"
                                          Grid.Column="0" Grid.Row="1" IsTabStop="True" IsFrozen="True"
                                            Background="#3cadeb"
-                                         Source="/AutoWP7;component/Images/瓷片图标/车厢座椅.png"                                        
+                                         Source="/AutoWP7;component/Images/Tiles/CheXiangZuoYi.png"                                        
                                          Margin="0,-250,0,0" Title="车厢座椅"/>
                         <toolkit:HubTile x:Name="elseDetail" Tap="elseDetail_Tap"
                                          Grid.Column="1" Grid.Row="1" IsTabStop="True" IsFrozen="True"
                                            Background="#3cadeb"
-                                         Source="/AutoWP7;component/Images/瓷片图标/其他细节.png"
+                                         Source="/AutoWP7;component/Images/Tiles/QiTaXiJie.png"
                                          Margin="0,-250,60,0" Title="其他细节"/>
                     </Grid>
                 </ScrollViewer>
