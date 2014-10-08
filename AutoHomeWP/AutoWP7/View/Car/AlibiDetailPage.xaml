@@ -122,6 +122,8 @@
                 <TextBlock Margin="0,12,0,0" FontSize="22" Foreground="#ff000000" TextWrapping="Wrap" TextTrimming="WordEllipsis"
                            Text="{Binding content}" />
 
+                <TextBlock Margin="0,24,0,0" FontSize="20" Foreground="#ffa0a0a0" TextWrapping="Wrap" TextTrimming="WordEllipsis"
+                           Text="声明：上述内容的版权归发帖人和汽车之家所有，未经允许不得使用、转载" />
             </StackPanel>
 
         </ScrollViewer>

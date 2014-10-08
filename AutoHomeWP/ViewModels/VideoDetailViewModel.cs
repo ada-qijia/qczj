@@ -84,11 +84,21 @@ namespace ViewModels
                             model.CommentNum = (int)result.SelectToken("commentnum");
                             model.InputTime = (string)result.SelectToken("inputtime");
                             model.CategoryName = (string)result.SelectToken("categoryname");
-                            model.Description = (string)result.SelectToken("description");
+                            //model.Description = (string)result.SelectToken("description");
                             model.NickName = (string)result.SelectToken("nickName");
                             model.VideoAddress = (string)result.SelectToken("videoaddress");
                             model.YoukuVideoKey = (string)result.SelectToken("youkuvideokey");
 
+                            //description
+                            string descStr = (string)result.SelectToken("description");
+                            descStr = descStr.Replace("<div>", "").Replace("<DIV>", "").Replace("<Div>", "").Replace("</div>", "").Replace("</DIV>", "").Replace("</Div>", "")
+                            .Replace("&nbsp;", "")
+                            .Replace("<br />", "").Replace("<br/>", "").Replace("<BR />", "").Replace("<BR/>", "").Replace("<Br />", "").Replace("<Br/>", "")
+                            .Replace("<br>", "").Replace("<br >", "").Replace("<BR>", "").Replace("<BR >", "").Replace("<Br>", "").Replace("<Br >", "");
+                            descStr = descStr.Trim(' ');
+                            model.Description = descStr;
+
+                            //relation list
                             var ja = (JArray)result.SelectToken("relationvideolist");
                             if (ja != null && ja.Count > 0)
                             {

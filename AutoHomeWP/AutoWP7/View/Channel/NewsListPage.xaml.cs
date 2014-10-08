@@ -1060,9 +1060,9 @@ namespace AutoWP7.View.Channel
                         news = technologyDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                     break;
                 case "原创视频":
-                    if (videoDataSource != null)
+                    if (originalVideoDataSource != null)
                     {
-                        news = videoDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
+                        news = originalVideoDataSource.Where(w => w.id == (int)gg.Tag).FirstOrDefault();
                         this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + gg.Tag, UriKind.Relative));
                     }
                     break;
