@@ -129,7 +129,8 @@ namespace AutoWP7.View.Car
 
                         ////更新城市id
                         cityId = App.CityId;
-                        if (piv.SelectedIndex == 3)
+                        var tag = (piv.SelectedItem as PivotItem).Tag.ToString();
+                        if(tag == "dealer")// (piv.SelectedIndex == 3)
                         {
                             //更新城市id
                             if (!string.IsNullOrEmpty(App.CityId))
@@ -139,7 +140,7 @@ namespace AutoWP7.View.Car
                                 DealerLoadData();
                             }
                         }
-                        if (piv.SelectedIndex == 0)
+                        if (tag == "quote")//(piv.SelectedIndex == 0)
                             InitSeriesSpecsInfo();
                     }
                     break;
