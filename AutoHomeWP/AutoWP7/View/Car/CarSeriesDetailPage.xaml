@@ -176,14 +176,14 @@
         </DataTemplate>
 
     </phone:PhoneApplicationPage.Resources>
-    
+
     <Grid x:Name="LayoutRoot" Background="White" Margin="0,0,0,75">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" x:Name="autoName" Margin="20,0,0,-10"  FontSize="32"  Foreground="#3cadeb"/>
-        
+
         <controls:Pivot Grid.Row="1" x:Name="piv" SelectionChanged="piv_SelectionChanged" Foreground="Black">
             <controls:Pivot.HeaderTemplate>
                 <DataTemplate>
@@ -192,7 +192,7 @@
                     </Grid>
                 </DataTemplate>
             </controls:Pivot.HeaderTemplate>
-            
+
             <!--报价一-->
             <controls:PivotItem Tag="quote" Header="车型">
                 <Grid>
@@ -206,7 +206,7 @@
                                            LayoutMode="List"
                                           ItemTemplate="{StaticResource jumpListItemTemplate}" 
                                         GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" >
-                        
+
                         <!--GroupItemTemplate="{StaticResource groupItemTemplate}"-->
                         <!--<toolkit:LongListSelector.GroupItemsPanel>
                         <ItemsPanelTemplate>
@@ -347,7 +347,7 @@
                 <Grid>
                     <TextBlock Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesForumsPropmt"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无相关数据~~"/>
-                    <ListBox x:Name="forumListbox" Height="570" VerticalAlignment="Top">
+                    <ListBox x:Name="forumListbox">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="0,20,0,10" >
@@ -364,12 +364,9 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-
                                         <TextBlock Grid.Row="0"  Foreground="Red" FontSize="26" Margin="5,-40,0,0" Text="{Binding TopicType}"  />
                                         <TextBlock Grid.Row="0" Foreground="Black"  FontSize="22" Margin="35,-40,0,0"
                                                TextWrapping="Wrap" Text="{Binding Title}"/>
-
-
 
                                         <TextBlock  FontSize="16" Foreground="Gray"  Grid.Row="1" Margin="35,10,0,0"   
                                                 Text="{Binding PostUserName}"/>
@@ -382,8 +379,8 @@
 
                                         <!--下划线-->
                                         <Border Grid.Row="2" Visibility="{Binding ShowData}"  
-                                    Grid.Column="0" Height="1" Width="465" 
-                   BorderBrush="Gray" BorderThickness="1" Opacity="1" Margin="5,20"/>
+                                                Grid.Column="0" Height="1" Width="465" 
+                                                BorderBrush="Gray" BorderThickness="1" Opacity="1" Margin="5,20"/>
                                     </Grid>
 
                                     <TextBlock Grid.Row="1" Margin="120,0,0,0" FontSize="28" VerticalAlignment="Center"
@@ -407,7 +404,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        
+
                         <!--alibi summary-->
                         <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
@@ -428,7 +425,7 @@
                                 <Run Text="人参与"/>
                             </TextBlock>
                         </Grid>
-                        
+
                         <p:LongListSelector Grid.Row="2" x:Name="carSeriesAlibiListSelector"
                                             Background="Transparent" 
                                             IsGroupingEnabled="True"   
@@ -445,7 +442,7 @@
                 <Grid>
                     <TextBlock  Visibility="Collapsed" Grid.Row="1" FontFamily="微软雅黑"  Foreground="LightGray"  FontSize="30" x:Name="notCarseriesArticlePropmt"
                                HorizontalAlignment="Center" VerticalAlignment="Center" Text="暂无相关数据~~"/>
-                    <ListBox x:Name="carSeriesActicleListbox" Height="590" VerticalAlignment="Top">
+                    <ListBox x:Name="carSeriesActicleListbox">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <!--<Grid Tap="{Binding id}" Margin="0,15">
