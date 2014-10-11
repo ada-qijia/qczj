@@ -339,7 +339,7 @@ namespace AutoWP7.View.Car
                 //{
 
                 DealerVM = new DealerViewModel();
-                string url = string.Format("{0}{4}/dealer/pddealers-a2-pm3-v1.5.0-sp{1}-ss{2}-c{3}-sc0-p1-s200.html", App.appUrl, carId, 0, cityId, App.versionStr);
+                string url = string.Format("{0}{4}/dealer/pddealers-a2-pm3-v1.5.0-sp{1}-ss{2}-c{3}-sc0-p1-s20.html", App.appUrl, carId, 0, cityId, App.versionStr);
                 DealerVM.LoadDataAysnc(url, carId, cityId);
                 DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
             }

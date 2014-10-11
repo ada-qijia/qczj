@@ -96,7 +96,6 @@ namespace ViewModels
                 {
                     try
                     {
-
                         //返回的json数据
                         JObject json = JObject.Parse(ee.Result);
                         JArray forumJson = (JArray)json.SelectToken("result").SelectToken("list");
@@ -123,7 +122,6 @@ namespace ViewModels
                             ForumCarSeriesDataSource.Add(model);
                         }
 
-
                         model = new ForumModel();
                         model.TotalCount = (int)json.SelectToken("result").SelectToken("rowcount");
                         model.ShowData = "Collapsed";
@@ -139,10 +137,7 @@ namespace ViewModels
 
                     //注意
                     apiArgs.Result = ForumCarSeriesDataSource;
-
-
                 }
-
 
                 if (LoadDataCompleted != null)
                 {
@@ -150,7 +145,6 @@ namespace ViewModels
                 }
 
             });
-
 
         }
 

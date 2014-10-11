@@ -47,7 +47,7 @@ namespace AutoWP7.View.Car
         private ObservableCollection<DealerModel> dealerDataSource = new ObservableCollection<DealerModel>();
 
         //论坛数据集合
-        private ObservableCollection<ForumModel> ForumDataSource = new ObservableCollection<ForumModel>();
+        private ObservableCollection<ForumModel> ForumDataSource = null;// new ObservableCollection<ForumModel>();
 
         //车系文章数据集合
         public ObservableCollection<NewsModel> acticleDataSource = new ObservableCollection<NewsModel>();
@@ -606,7 +606,7 @@ namespace AutoWP7.View.Car
                             DealerVM = new DealerViewModel();
                             DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
                         }
-                        string url = string.Format("{0}{3}/dealer/pddealers-a2-pm1-v1.5.0-sp0-ss{1}-c{2}-sc0-p1-s200.html", App.appUrl, carSeriesId, cityId, App.versionStr);
+                        string url = string.Format("{0}{3}/dealer/pddealers-a2-pm1-v1.5.0-sp0-ss{1}-c{2}-sc0-p1-s20.html", App.appUrl, carSeriesId, cityId, App.versionStr);
                         DealerVM.LoadDataAysnc(url, carSeriesId, cityId);
                         //DealerVM.LoadDataAysnc(App.headUrl + "/dealers/Profile/Getlist.ashx?action=0x45b5&cityid=" + cityId + "&seriesid=" + carSeriesId, carSeriesId, cityId);
                     }
@@ -666,7 +666,6 @@ namespace AutoWP7.View.Car
         // 
         public void ForumLoadData(string url, bool isFirst)
         {
-
             GlobalIndicator.Instance.Text = "正在获取中......";
             GlobalIndicator.Instance.IsBusy = true;
             if (isFirst)    //第一次加载
@@ -714,17 +713,19 @@ namespace AutoWP7.View.Car
                         {
                             notCarseriesForumsPropmt.Visibility = Visibility.Collapsed;
                             forumListbox.Visibility = Visibility.Visible;
-                            foreach (ForumModel model in e.Result)
+
+                            ForumDataSource = (ObservableCollection<ForumModel>)e.Result;
+                            if (ForumDataSource.Count>0)
                             {
-                                bbsId = model.bbsId;
-                                bbsType = model.bbsType;
-                                ForumDataSource.Add(model);
+                                bbsId = ForumDataSource[0].bbsId;
+                                bbsType = ForumDataSource[0].bbsType;
                             }
 
                             if (ForumDataSource.Count < 20)
                             {
                                 ForumDataSource.RemoveAt(ForumDataSource.Count - 1);
                             }
+
                             forumListbox.ItemsSource = ForumDataSource;
                         }
                     }
