@@ -565,6 +565,9 @@ namespace AutoWP7
 
         #endregion
 
+        /* 焦点图和头条 mediatype：1文章；2视频 ；3说客；
+         * 最新新闻列表 mediatype：1-文章2-说客 3-视频 */
+
         // 文章最终页
         private void NaviGoArticleEndPage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -609,11 +612,11 @@ namespace AutoWP7
             if (news != null)
             {
                 int mediatype = news.mediatype;
-                if (mediatype == 1 || mediatype == 2)
+                if (mediatype == 1 || mediatype == 3)
                 {
                     this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + focusImagePageIndex + "&pageType=" + mediatype, UriKind.Relative));
                 }
-                else if (mediatype == 3)
+                else if (mediatype == 2)
                 {
                     this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + news.id, UriKind.Relative));
                 }
