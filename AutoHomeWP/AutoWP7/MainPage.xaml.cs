@@ -98,30 +98,42 @@ namespace AutoWP7
         // 更新本地城市
         public void UpdateLocalCity()
         {
-            try
-            {
-                var setting = IsolatedStorageSettings.ApplicationSettings;
-                string key = "cityId";
-                if (setting.Contains(key))
-                {
-                    using (LocalDataContext ldc = new LocalDataContext())
-                    {
-                        var result = from s in ldc.provinces where s.Id == int.Parse(setting[key].ToString()) select s.Name;
-                        foreach (var name in result)
-                        {
-                            System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
-                            {
-                                chooseCity.Content = name;
-                            });
-                        }
-                    }
-                    App.CityId = setting[key].ToString();
-                }
-            }
-            catch (Exception ex)
-            {
+            var setting = IsolatedStorageSettings.ApplicationSettings;
 
+            if (setting.Contains(Global.SettingKey_CityID))
+            {
+                App.CityId = setting[Global.SettingKey_CityID].ToString();
             }
+            if (setting.Contains(Global.SettingKey_CityName))
+            {
+                App.CityName = setting[Global.SettingKey_CityName].ToString();
+                chooseCity.Content = App.CityName;
+            }
+
+            //try
+            //{
+            //    var setting = IsolatedStorageSettings.ApplicationSettings;
+            //    string key = "cityId";
+            //    if (setting.Contains(key))
+            //    {
+            //        using (LocalDataContext ldc = new LocalDataContext())
+            //        {
+            //            var result = from s in ldc.provinces where s.Id == int.Parse(setting[key].ToString()) select s.Name;
+            //            foreach (var name in result)
+            //            {
+            //                System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
+            //                {
+            //                        chooseCity.Content = name;
+            //                });
+            //            }
+            //        }
+            //        App.CityId = setting[key].ToString();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
         }
 
         //标识找车字母索引是否打开
@@ -142,9 +154,9 @@ namespace AutoWP7
                 if (MessageBox.Show("你真的要离开吗？", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
                     Common.DeleteDirectory("CachedImages");
-                    Thread thread = new Thread(DeletCached);
-                    thread.IsBackground = true;
-                    thread.Start();
+                    //Thread thread = new Thread(DeletCached);
+                    //thread.IsBackground = true;
+                    //thread.Start();
                 }
                 else
                 {
@@ -155,26 +167,26 @@ namespace AutoWP7
         }
 
         // 清除缓存
-        public void DeletCached()
-        {
+        //public void DeletCached()
+        //{
 
-            using (LocalDataContext ldc = new LocalDataContext())
-            {
-                //经销商
-                var deleteAllItem = from d in ldc.dealerModels where d.id > 0 select d;
-                ldc.dealerModels.DeleteAllOnSubmit(deleteAllItem);
-                //车系
-                var deletecarSeries = from d in ldc.carSeries where d.Id > 0 select d;
-                ldc.carSeries.DeleteAllOnSubmit(deletecarSeries);
-                //报价
-                var deleteCarQuto = from d in ldc.carQuotes where d.Id > 0 select d;
-                ldc.carQuotes.DeleteAllOnSubmit(deleteCarQuto);
+        //    using (LocalDataContext ldc = new LocalDataContext())
+        //    {
+        //        //经销商
+        //        var deleteAllItem = from d in ldc.dealerModels where d.id > 0 select d;
+        //        ldc.dealerModels.DeleteAllOnSubmit(deleteAllItem);
+        //        //车系
+        //        var deletecarSeries = from d in ldc.carSeries where d.Id > 0 select d;
+        //        ldc.carSeries.DeleteAllOnSubmit(deletecarSeries);
+        //        //报价
+        //        var deleteCarQuto = from d in ldc.carQuotes where d.Id > 0 select d;
+        //        ldc.carQuotes.DeleteAllOnSubmit(deleteCarQuto);
 
-                ldc.SubmitChanges();
-            }
-            //清除缓存
+        //        ldc.SubmitChanges();
+        //    }
+        //    //清除缓存
 
-        }
+        //}
 
         #region 头条数据加载
 
@@ -182,60 +194,63 @@ namespace AutoWP7
         DispatcherTimer timer;
         public void NewestLoadData()
         {
-            try
-            {
-                //如果为true,更新本地数据
-                if (SetLocalLoadData())
-                {
-                    System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        timer = new DispatcherTimer();
-                        timer.Interval = TimeSpan.FromSeconds(2);
-                        timer.Tick += new EventHandler(timer_Tick);
-                        timer.Start();
-                    });
-
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-        //更新本地数据
-        void timer_Tick(object sender, EventArgs e)
-        {
             SetNetWorkNewestLoadData(1, loadPageSize, "0", true);
-            timer.Stop();
+            
+            //try
+            //{
+            //    //如果为true,更新本地数据
+            //    if (SetLocalLoadData())
+            //    {
+            //        System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
+            //        {
+            //            timer = new DispatcherTimer();
+            //            timer.Interval = TimeSpan.FromSeconds(2);
+            //            timer.Tick += new EventHandler(timer_Tick);
+            //            timer.Start();
+            //        });
+
+
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
         }
 
-        //本地加载
-        LocalDataContext ldc;
-        public bool SetLocalLoadData()
-        {
-            ldc = new LocalDataContext();
-            var item = from s in ldc.newestModels where s.LocalID > 0 select s;
-            if (item.Count() > 0) //本地加载
-            {
-                System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    //绑定到前台
-                    acticleListbox.ItemsSource = item;
+        ////更新本地数据
+        //void timer_Tick(object sender, EventArgs e)
+        //{
+        //    SetNetWorkNewestLoadData(1, loadPageSize, "0", true);
+        //    timer.Stop();
+        //}
 
-                    GlobalIndicator.Instance.Text = "";
-                    GlobalIndicator.Instance.IsBusy = false;
+        ////本地加载
+        //LocalDataContext ldc;
+        //public bool SetLocalLoadData()
+        //{
+        //    ldc = new LocalDataContext();
+        //    var item = from s in ldc.newestModels where s.LocalID > 0 select s;
+        //    if (item.Count() > 0) //本地加载
+        //    {
+        //        System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
+        //        {
+        //            //绑定到前台
+        //            acticleListbox.ItemsSource = item;
 
-                });
+        //            GlobalIndicator.Instance.Text = "";
+        //            GlobalIndicator.Instance.IsBusy = false;
 
-                return true;
-            }
-            else //网络加载
-            {
-                SetNetWorkNewestLoadData(1, loadPageSize, "0", true);
-                return false;
-            }
-        }
+        //        });
+
+        //        return true;
+        //    }
+        //    else //网络加载
+        //    {
+        //        SetNetWorkNewestLoadData(1, loadPageSize, "0", true);
+        //        return false;
+        //    }
+        //}
 
         HeadViewModel HeadVM = null;
         int headPageIndex = 1; //页码
@@ -253,13 +268,13 @@ namespace AutoWP7
             {
                 //重置页码
                 headPageIndex = 1;
-                //清除旧数据
-                using (LocalDataContext ldc = new LocalDataContext())
-                {
-                    var item = from s in ldc.newestModels where s.LocalID > 0 select s;
-                    ldc.newestModels.DeleteAllOnSubmit(item);
-                    ldc.SubmitChanges();
-                }
+                ////清除旧数据
+                //using (LocalDataContext ldc = new LocalDataContext())
+                //{
+                //    var item = from s in ldc.newestModels where s.LocalID > 0 select s;
+                //    ldc.newestModels.DeleteAllOnSubmit(item);
+                //    ldc.SubmitChanges();
+                //}
             }
             if (HeadVM == null)
             {
@@ -352,66 +367,63 @@ namespace AutoWP7
 
         public void carBrandLoadData()
         {
+            SetWebCarBrandLoadData();
+            
+            //System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
+            //{
+            //    GlobalIndicator.Instance.Text = "正在获取中...";
+            //    GlobalIndicator.Instance.IsBusy = true;
+            //});
+            //if (ldc == null)
+            //{
+            //    ldc = new LocalDataContext();
+            //}
+            //var queryResult = from s in ldc.carBrandModels select s;
+            ////上次更新时间
+            //DateTime lastUpdateTime = DateTime.Now;
+            //foreach (CarBrandModel model in queryResult)
+            //{
+            //    lastUpdateTime = model.CurrentTime;
+            //}
+            ////如果数据库中有数据，并其上次更新的时间和当前的时间差在一周内  本地数据库读取
+            //if (queryResult.Count() > 0 && (DateTime.Now - lastUpdateTime).Days < 7)
+            //{
+            //    System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
+            //    {
+            //        var groupBy = from car in queryResult
+            //                      group car by car.Letter into c
+            //                      orderby c.Key
+            //                      select new Group<CarBrandModel>(c.Key, c);
 
-            System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                GlobalIndicator.Instance.Text = "正在获取中...";
-                GlobalIndicator.Instance.IsBusy = true;
-            });
-            if (ldc == null)
-            {
-                ldc = new LocalDataContext();
-            }
-            var queryResult = from s in ldc.carBrandModels select s;
-            //上次更新时间
-            DateTime lastUpdateTime = DateTime.Now;
-            foreach (CarBrandModel model in queryResult)
-            {
-                lastUpdateTime = model.CurrentTime;
-            }
-            //如果数据库中有数据，并其上次更新的时间和当前的时间差在一周内  本地数据库读取
-            if (queryResult.Count() > 0 && (DateTime.Now - lastUpdateTime).Days < 7)
-            {
-                System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    var groupBy = from car in queryResult
-                                  group car by car.Letter into c
-                                  orderby c.Key
-                                  select new Group<CarBrandModel>(c.Key, c);
+            //        foreach (var entity in groupBy)
+            //        {
+            //            CarBrandGroup group = new CarBrandGroup(entity.key);
 
-                    foreach (var entity in groupBy)
-                    {
-                        CarBrandGroup group = new CarBrandGroup(entity.key);
+            //            foreach (var item in entity)
+            //            {
+            //                group.Add(item);
+            //            }
+            //            carBrandSource.Add(group);
+            //        }
+            //        carBrandListGropus.ItemsSource = carBrandSource;
 
-                        foreach (var item in entity)
-                        {
-                            group.Add(item);
-                        }
-                        carBrandSource.Add(group);
-                    }
-                    carBrandListGropus.ItemsSource = carBrandSource;
+            //        GlobalIndicator.Instance.Text = "";
+            //        GlobalIndicator.Instance.IsBusy = false;
+            //    });
 
-                    GlobalIndicator.Instance.Text = "";
-                    GlobalIndicator.Instance.IsBusy = false;
-                });
+            //}
+            //else  //网络加载
+            //{
 
-            }
-            else  //网络加载
-            {
+            //    //清除旧数据
+            //    var deleteResult = from s in ldc.carBrandModels select s;
+            //    ldc.carBrandModels.DeleteAllOnSubmit(deleteResult);
+            //    ldc.SubmitChanges();
+            //    Common.DeleteDirectory("CycleCachedImages");
 
-                //清除旧数据
-                var deleteResult = from s in ldc.carBrandModels select s;
-                ldc.carBrandModels.DeleteAllOnSubmit(deleteResult);
-                ldc.SubmitChanges();
-                Common.DeleteDirectory("CycleCachedImages");
-
-                SetWebCarBrandLoadData();
-            }
-
+            //    SetWebCarBrandLoadData();
+            //}
         }
-
-
-
 
         //汽车品牌网络加载
         CarBrandViewModel carVM = null;
@@ -423,12 +435,17 @@ namespace AutoWP7
             if (carVM == null)
             {
                 carVM = new CarBrandViewModel();
+                carVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarBrandModel>>>(carVM_LoadDataCompleted);
             }
             try
             {
+                System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    GlobalIndicator.Instance.Text = "正在获取中...";
+                    GlobalIndicator.Instance.IsBusy = true;
+                });
                 string url = string.Format("{0}{2}/cars/brands-a2-pm3-v1.5.0-ts{1}.html", App.appUrl, 0, App.versionStr);
                 carVM.LoadDataAysnc(url);
-                carVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarBrandModel>>>(carVM_LoadDataCompleted);
             }
             catch (Exception ex)
             {
@@ -440,6 +457,9 @@ namespace AutoWP7
         {
             System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
+                GlobalIndicator.Instance.Text = "";
+                GlobalIndicator.Instance.IsBusy = false;
+
                 if (e.Error != null)
                 {
                     Common.NetworkAvailablePrompt();

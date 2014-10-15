@@ -70,7 +70,7 @@ namespace AutoWP7.View.Channel.News
 
             //本地数据库获取
             var queryProvince = from s in ldc.provinces where s.Id > 0 select s;
-            if (queryProvince.Count() > 0)    
+            if (queryProvince.Count() > 0)
             {
                 var groupBy = from p in queryProvince
                               group p by p.FatherName into c
@@ -136,23 +136,34 @@ namespace AutoWP7.View.Channel.News
 
         private void cityNameStack_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            TextBlock ss = (TextBlock)sender;
+            TextBlock textBlock = (TextBlock)sender;
 
 
             //独立存储城市id
             var setting = IsolatedStorageSettings.ApplicationSettings;
-            string key = "cityId";
 
+            string key = "cityId";
             if (setting.Contains(key))
             {
-                setting[key] = ss.Tag.ToString();
+                setting[key] = textBlock.Tag.ToString();
             }
             else
             {
-                setting.Add(key, ss.Tag.ToString());
+                setting.Add(key, textBlock.Tag.ToString());
             }
+
+            key = "cityName";
+            if (setting.Contains(key))
+            {
+                setting[key] = textBlock.Text;
+            }
+            else
+            {
+                setting.Add(key, textBlock.Text);
+            }
+
             setting.Save();
-            App.CityId = ss.Tag.ToString();
+            App.CityId = textBlock.Tag.ToString();
             this.NavigationService.GoBack();
         }
     }

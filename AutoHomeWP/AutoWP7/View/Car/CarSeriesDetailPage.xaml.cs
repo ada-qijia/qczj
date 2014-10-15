@@ -339,19 +339,28 @@ namespace AutoWP7.View.Car
         private void UpdateLocalCity()
         {
             var setting = IsolatedStorageSettings.ApplicationSettings;
-            string key = "cityId";
-            if (setting.Contains(key))
+            if (setting.Contains(Global.SettingKey_CityID))
             {
-                using (LocalDataContext ldc = new LocalDataContext())
-                {
-                    var result = from s in ldc.provinces where s.Id == int.Parse(setting[key].ToString()) select s.Name;
-                    foreach (var name in result)
-                    {
-                        detailChooseCity.Content = name;
-                    }
-                }
-                App.CityId = setting[key].ToString();
+                App.CityId = setting[Global.SettingKey_CityID].ToString();
             }
+            if (setting.Contains(Global.SettingKey_CityName))
+            {
+                detailChooseCity.Content = setting[Global.SettingKey_CityName].ToString();
+            }
+
+            //string key = "cityId";
+            //if (setting.Contains(key))
+            //{
+            //    using (LocalDataContext ldc = new LocalDataContext())
+            //    {
+            //        var result = from s in ldc.provinces where s.Id == int.Parse(setting[key].ToString()) select s.Name;
+            //        foreach (var name in result)
+            //        {
+            //            detailChooseCity.Content = name;
+            //        }
+            //    }
+            //    App.CityId = setting[key].ToString();
+            //}
         }
 
         #region 报价

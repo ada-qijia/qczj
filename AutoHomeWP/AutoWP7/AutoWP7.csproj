@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Global.cs" />
     <Compile Include="Handler\AppUrlMgr.cs" />
     <Compile Include="Handler\Common.cs" />
     <Compile Include="Handler\GlobalIndicator.cs" />

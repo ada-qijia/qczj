@@ -110,6 +110,25 @@ namespace AutoWP7
             }
         }
 
+        private static string _cityName;
+        /// <summary>
+        /// 城市 Name
+        /// </summary>
+        public static string CityName
+        {
+            get
+            {
+                return _cityName;
+            }
+            set
+            {
+                if (value != _cityName)
+                {
+                    _cityName = value;
+                }
+            }
+        }
+
         /// <summary>
         /// 图片总数
         /// </summary>
