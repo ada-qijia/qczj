@@ -25,6 +25,8 @@ namespace AutoWP7.View.Car
         string cityID = string.Empty;
         string seriesID = string.Empty;
         string specID = string.Empty;
+        string specName = string.Empty;
+
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -35,6 +37,7 @@ namespace AutoWP7.View.Car
             cityID = this.NavigationContext.QueryString["cityID"];
             seriesID = this.NavigationContext.QueryString["seriesID"];
             specID = this.NavigationContext.QueryString["specID"];
+            specName = this.NavigationContext.QueryString["specName"];
 
             if (!string.IsNullOrEmpty(App.AskName))
             {
@@ -48,53 +51,57 @@ namespace AutoWP7.View.Car
             {
                 specID = App.AskSpec;
             }
+            if (!string.IsNullOrEmpty(specName))
+            {
+                this.ispec.Text = specName;
+            }
 
             if (seriesID != App.CarSeriesId)
                 CarSeriesQuoteLoadData();
-            else
-            {
-                using (LocalDataContext ldc = new LocalDataContext())
-                {
-                    var groupBy = from car in ldc.carQuotes
-                                  orderby car.GroupOrder ascending, car.COrder ascending
-                                  group car by new { N = car.GroupName, O = car.GroupOrder } into c
-                                  orderby c.Key.O ascending
-                                  select new Group<CarSeriesQuoteModel>(c.Key.N, c);
-                    bool isFind = false;
-                    string specname = "";
-                    int specid = 0;
-                    foreach (var entity in groupBy)
-                    {
-                        var entity1 = from c in entity orderby c.COrder ascending select c;
-                        foreach (var item in entity1)
-                        {
-                            if (string.IsNullOrEmpty(specname)) //赋首个车型名称
-                            {
-                                specname = item.Name;
-                                specid = item.Id;
-                            }
-                            if (item != null && item.Id == Convert.ToInt32(specID))
-                            {
-                                this.ispec.Text = item.Name;
-                                isFind = true;
-                                break;
-                            }
-                            else
-                            { }
-                        }
-                        if (isFind)
-                            break;
+            //else
+            //{
+            //    using (LocalDataContext ldc = new LocalDataContext())
+            //    {
+            //        var groupBy = from car in ldc.carQuotes
+            //                      orderby car.GroupOrder ascending, car.COrder ascending
+            //                      group car by new { N = car.GroupName, O = car.GroupOrder } into c
+            //                      orderby c.Key.O ascending
+            //                      select new Group<CarSeriesQuoteModel>(c.Key.N, c);
+            //        bool isFind = false;
+            //        string specname = "";
+            //        int specid = 0;
+            //        foreach (var entity in groupBy)
+            //        {
+            //            var entity1 = from c in entity orderby c.COrder ascending select c;
+            //            foreach (var item in entity1)
+            //            {
+            //                if (string.IsNullOrEmpty(specname)) //赋首个车型名称
+            //                {
+            //                    specname = item.Name;
+            //                    specid = item.Id;
+            //                }
+            //                if (item != null && item.Id == Convert.ToInt32(specID))
+            //                {
+            //                    this.ispec.Text = item.Name;
+            //                    isFind = true;
+            //                    break;
+            //                }
+            //                else
+            //                { }
+            //            }
+            //            if (isFind)
+            //                break;
 
-                    }
-                    if (!isFind) //没有匹配的车型或车型id==0时，默认显示车系的第一款车型
-                    {
-                        this.ispec.Text = specname;
-                        specID = specid.ToString();
-                    }
-                }
-            }
+            //        }
+            //        if (!isFind) //没有匹配的车型或车型id==0时，默认显示车系的第一款车型
+            //        {
+            //            this.ispec.Text = specname;
+            //            specID = specid.ToString();
+            //        }
+            //    }
+            //}
 
-            // this.askSubmit.IsEnabled = false;
+            //// this.askSubmit.IsEnabled = false;
         }
 
         private void InitSpecList()
@@ -213,24 +220,23 @@ namespace AutoWP7.View.Car
             GlobalIndicator.Instance.Text = "正在获取中...";
             GlobalIndicator.Instance.IsBusy = true;
 
-            //清除表中以前的数据
-            using (ViewModels.Handler.LocalDataContext ldc = new ViewModels.Handler.LocalDataContext())
-            {
-                var item = from s in ldc.carQuotes where s.Id > 0 select s;
-                ldc.carQuotes.DeleteAllOnSubmit(item);
-                ldc.SubmitChanges();
-            }
+            ////清除表中以前的数据
+            //using (ViewModels.Handler.LocalDataContext ldc = new ViewModels.Handler.LocalDataContext())
+            //{
+            //    var item = from s in ldc.carQuotes where s.Id > 0 select s;
+            //    ldc.carQuotes.DeleteAllOnSubmit(item);
+            //    ldc.SubmitChanges();
+            //}
 
             if (carSeriesQuoteVM == null)
             {
                 carSeriesQuoteVM = new CarSeriesQuoteViewModel();
+                carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(CarSeriesQuote_LoadDataCompleted);
             }
             string url = string.Format("{0}{2}/cars/specslist-a2-pm3-v1.5.0-t0x000c-ss{1}.html", App.appUrl, seriesID, App.versionStr);
             carSeriesQuoteVM.LoadDataAysnc(url);
-
-            carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(CarSeriesQuote_LoadDataCompleted);
-
         }
+
         void CarSeriesQuote_LoadDataCompleted(object sender, ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>> e)
         {
             GlobalIndicator.Instance.Text = "";
@@ -244,11 +250,13 @@ namespace AutoWP7.View.Car
                                select car;
                     var nam = iCar.FirstOrDefault();
                     this.ispec.Text = nam.Name;
+                    specID = nam.Id.ToString();
                 }
                 else if (specID == "0")
                 {
                     var nam = e.Result.ToList().FirstOrDefault();
                     this.ispec.Text = nam.Name;
+                    specID = nam.Id.ToString();
                 }
             }
 
@@ -257,12 +265,7 @@ namespace AutoWP7.View.Car
         private void ispec_GotFocus(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("/View/Car/ChooseSpec.xaml?dealerid=" + dealerid + "&cityID=" + cityID + "&seriesID=" + seriesID + "&specID=" + specID, UriKind.Relative));
-
         }
-
-
-
-
 
     }
 }

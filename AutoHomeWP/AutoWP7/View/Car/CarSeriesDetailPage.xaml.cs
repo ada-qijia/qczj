@@ -130,7 +130,7 @@ namespace AutoWP7.View.Car
                         ////更新城市id
                         cityId = App.CityId;
                         var tag = (piv.SelectedItem as PivotItem).Tag.ToString();
-                        if(tag == "dealer")// (piv.SelectedIndex == 3)
+                        if (tag == "dealer")// (piv.SelectedIndex == 3)
                         {
                             //更新城市id
                             if (!string.IsNullOrEmpty(App.CityId))
@@ -365,6 +365,10 @@ namespace AutoWP7.View.Car
 
         #region 报价
 
+        string firstSpecID = string.Empty;
+        string firstSpecName = string.Empty;
+        bool firstSpecSet = false;
+
         public class CarSeriesQuteGroup : List<CarSeriesQuoteModel>
         {
             public CarSeriesQuteGroup()
@@ -390,13 +394,13 @@ namespace AutoWP7.View.Car
         {
             GlobalIndicator.Instance.Text = "正在获取中...";
             GlobalIndicator.Instance.IsBusy = true;
-            //清除表中以前的数据
-            using (LocalDataContext ldc = new LocalDataContext())
-            {
-                var item = from s in ldc.carQuotes where s.Id > 0 select s;
-                ldc.carQuotes.DeleteAllOnSubmit(item);
-                ldc.SubmitChanges();
-            }
+            ////清除表中以前的数据
+            //using (LocalDataContext ldc = new LocalDataContext())
+            //{
+            //    var item = from s in ldc.carQuotes where s.Id > 0 select s;
+            //    ldc.carQuotes.DeleteAllOnSubmit(item);
+            //    ldc.SubmitChanges();
+            //}
 
             if (carSeriesQuoteVM == null)
             {
@@ -438,6 +442,13 @@ namespace AutoWP7.View.Car
                         CarSeriesQuteGroup groupitem = new CarSeriesQuteGroup(entity.key);
                         foreach (var item in entity)
                         {
+                            if (!firstSpecSet)
+                            {
+                                firstSpecID = item.Id.ToString();
+                                firstSpecName = item.Name;
+                                firstSpecSet = true;
+                            }
+
                             //蓝色，可以添加对比
                             item.Compare = "#3CACEB";
                             item.CompareText = "添加对比";
@@ -486,7 +497,8 @@ namespace AutoWP7.View.Car
                 if (isFind)
                     break;
             }
-            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&paramisshow=" + paramIsShow, UriKind.Relative));
+            string specName = ((Model.CarSeriesQuoteModel)gg.DataContext).Name;
+            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&specName=" + specName + "&paramisshow=" + paramIsShow, UriKind.Relative));
         }
 
         #endregion
@@ -506,7 +518,7 @@ namespace AutoWP7.View.Car
             }
             GlobalIndicator.Instance.Text = "正在获取中......";
             GlobalIndicator.Instance.IsBusy = true;
-            if (carSeriesArticleVM==null)
+            if (carSeriesArticleVM == null)
             {
                 carSeriesArticleVM = new CarSeriesActicleViewModel();
                 carSeriesArticleVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(comm_LoadDataCompleted);
@@ -590,27 +602,27 @@ namespace AutoWP7.View.Car
         {
             try
             {
-                using (LocalDataContext ldc = new LocalDataContext())
-                {
-                    //先从本地数据库中获得数据
-                    var queryResult = from d in ldc.dealerModels where d.CarId == int.Parse(carSeriesId) && d.CityId == int.Parse(cityId) select d;
+                //using (LocalDataContext ldc = new LocalDataContext())
+                //{
+                    ////先从本地数据库中获得数据
+                    //var queryResult = from d in ldc.dealerModels where d.CarId == int.Parse(carSeriesId) && d.CityId == int.Parse(cityId) select d;
 
-                    if (queryResult.Count() > 0)
-                    {
-                        dealerListbox.ItemsSource = queryResult;
-                    }
-                    else
-                    {
-                        //清除数据库中的数据
-                        var deleteAllItem = from d in ldc.dealerModels where d.id > 0 select d;
-                        ldc.dealerModels.DeleteAllOnSubmit(deleteAllItem);
-                        ldc.SubmitChanges();
+                    //if (queryResult.Count() > 0)
+                    //{
+                    //    dealerListbox.ItemsSource = queryResult;
+                    //}
+                    //else
+                    //{
+                        ////清除数据库中的数据
+                        //var deleteAllItem = from d in ldc.dealerModels where d.id > 0 select d;
+                        //ldc.dealerModels.DeleteAllOnSubmit(deleteAllItem);
+                        //ldc.SubmitChanges();
 
                         //从服务器中获得数据
                         GlobalIndicator.Instance.Text = "正在获取中...";
                         GlobalIndicator.Instance.IsBusy = true;
 
-                        if (DealerVM==null)
+                        if (DealerVM == null)
                         {
                             DealerVM = new DealerViewModel();
                             DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
@@ -618,8 +630,8 @@ namespace AutoWP7.View.Car
                         string url = string.Format("{0}{3}/dealer/pddealers-a2-pm1-v1.5.0-sp0-ss{1}-c{2}-sc0-p1-s20.html", App.appUrl, carSeriesId, cityId, App.versionStr);
                         DealerVM.LoadDataAysnc(url, carSeriesId, cityId);
                         //DealerVM.LoadDataAysnc(App.headUrl + "/dealers/Profile/Getlist.ashx?action=0x45b5&cityid=" + cityId + "&seriesid=" + carSeriesId, carSeriesId, cityId);
-                    }
-                }
+                    //}
+                //}
             }
             catch (Exception ex)
             {
@@ -681,7 +693,7 @@ namespace AutoWP7.View.Car
             {
                 forumPageIndex = 1;
             }
-            if (forumVM==null)
+            if (forumVM == null)
             {
                 forumVM = new CarSeriesForumViewModel();
                 forumVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<ForumModel>>>(forumVM_LoadDataCompleted);
@@ -724,7 +736,7 @@ namespace AutoWP7.View.Car
                             forumListbox.Visibility = Visibility.Visible;
 
                             ForumDataSource = (ObservableCollection<ForumModel>)e.Result;
-                            if (ForumDataSource.Count>0)
+                            if (ForumDataSource.Count > 0)
                             {
                                 bbsId = ForumDataSource[0].bbsId;
                                 bbsType = ForumDataSource[0].bbsType;
@@ -793,14 +805,14 @@ namespace AutoWP7.View.Car
                 carSeriesAlibiDataSource = e.Result;
                 alibiPanel.DataContext = carSeriesAlibiDataSource;
                 var groups = new ObservableCollection<CarSeriesAlibiSpecGroupModel>();
-                if (carSeriesAlibiDataSource.SpecGroupList!=null)
+                if (carSeriesAlibiDataSource.SpecGroupList != null)
                 {
                     foreach (var groupList in carSeriesAlibiDataSource.SpecGroupList)
                     {
                         groups.Add(groupList);
                     }
                 }
-                
+
                 carSeriesAlibiListSelector.ItemsSource = groups;
             }
         }
@@ -808,7 +820,8 @@ namespace AutoWP7.View.Car
         private void alibiItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             Grid gg = (Grid)sender;
-            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&selectedPage=" + "alibi", UriKind.Relative));
+            string specName = ((Model.CarSeriesQuoteModel)gg.DataContext).Name;
+            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&specName=" + specName + "&selectedPage=" + "alibi", UriKind.Relative));
         }
 
         #endregion
@@ -939,7 +952,7 @@ namespace AutoWP7.View.Car
             phoneCall.PhoneNumber = bb.Tag.ToString();
             phoneCall.Show();
         }
-        // 车系经销商询价
+        // 车型询价
         private void callPriceSeries_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             if (string.IsNullOrEmpty(App.CityId)) //默认北京
@@ -951,9 +964,12 @@ namespace AutoWP7.View.Car
                 cityId = App.CityId;
             }
             Border gg = (Border)sender;
-            this.NavigationService.Navigate(new Uri("/View/Car/AskPrice.xaml?dealerid=0&cityID=" + cityId + "&seriesID=" + carSeriesId + "&specID=" + gg.Tag, UriKind.Relative));
+            string specID = ((Model.CarSeriesQuoteModel)gg.DataContext).Id.ToString();
+            string specName = ((Model.CarSeriesQuoteModel)gg.DataContext).Name;
+            this.NavigationService.Navigate(new Uri("/View/Car/AskPrice.xaml?dealerid=0&cityID=" + cityId + "&seriesID=" + carSeriesId + "&specID=" + specID + "&specName=" + specName, UriKind.Relative));
         }
-        //车系询价
+
+        //车系经销商询价
         private void callPrice_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             if (string.IsNullOrEmpty(App.CityId)) //默认北京
@@ -965,7 +981,7 @@ namespace AutoWP7.View.Car
                 cityId = App.CityId;
             }
             Image gg = (Image)sender;
-            this.NavigationService.Navigate(new Uri("/View/Car/AskPrice.xaml?dealerid=" + gg.Tag + "&cityID=" + cityId + "&seriesID=" + carSeriesId + "&specID=" + 0, UriKind.Relative));
+            this.NavigationService.Navigate(new Uri("/View/Car/AskPrice.xaml?dealerid=" + gg.Tag + "&cityID=" + cityId + "&seriesID=" + carSeriesId + "&specID=" + firstSpecID + "&specName=" + firstSpecName, UriKind.Relative));
         }
         // 导向经销商详情页面
         private void dealerDeatail_Tap(object sender, System.Windows.Input.GestureEventArgs e)

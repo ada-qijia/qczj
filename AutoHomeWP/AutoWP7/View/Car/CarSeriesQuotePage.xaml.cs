@@ -28,6 +28,8 @@ namespace AutoWP7.View.Car
         string seriesID = string.Empty;
         //车型id
         string carId = string.Empty;
+        string specName = string.Empty;
+
         //城市id
         string cityId = string.Empty;
 
@@ -68,6 +70,8 @@ namespace AutoWP7.View.Car
                         //将车型id存放于全局
                         App.CarTypeId = this.NavigationContext.QueryString["carId"];
                         carId = App.CarTypeId;
+                        App.SpecName = this.NavigationContext.QueryString["specName"];
+                        specName = App.SpecName;
                         seriesID = App.CarSeriesId;
                         if (string.IsNullOrEmpty(App.CityId))
                         {
@@ -401,7 +405,7 @@ namespace AutoWP7.View.Car
                 cityId = App.CityId;
             }
             Image gg = (Image)sender;
-            this.NavigationService.Navigate(new Uri("/View/Car/AskPrice.xaml?dealerid=" + gg.Tag + "&cityID=" + cityId + "&seriesID=" + seriesID + "&specID=" + carId, UriKind.Relative));
+            this.NavigationService.Navigate(new Uri("/View/Car/AskPrice.xaml?dealerid=" + gg.Tag + "&cityID=" + cityId + "&seriesID=" + seriesID + "&specID=" + carId + "&specName=" + specName, UriKind.Relative));
         }
 
         private void dealerDeatail_Tap(object sender, System.Windows.Input.GestureEventArgs e)

@@ -50,6 +50,22 @@ namespace AutoWP7
             }
         }
 
+        private static string _SpecName;
+        public static string SpecName
+        {
+            get
+            {
+                return _SpecName;
+            }
+            set
+            {
+                if (value != _SpecName)
+                {
+                    _SpecName = value;
+                }
+            }
+        }
+
         private static string _carSeriesId;
         /// <summary>
         ///车系ID
