@@ -8,13 +8,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-       xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
     xmlns:local="clr-namespace:AutoWP7"
- 
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    xmlns:uc="clr-namespace:AutoWP7.UcControl"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
 
@@ -104,7 +101,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot">
-        
+
         <controls:Panorama x:Name="pano" Background="WhiteSmoke"  SelectionChanged="pano_SelectionChanged" Foreground="Black" Margin="0,0,0,-20" >
 
             <controls:Panorama.Title>
@@ -116,7 +113,6 @@
             </controls:Panorama.Background>-->
             <!--最新-->
             <controls:PanoramaItem >
-
                 <controls:PanoramaItem.Header>
                     <StackPanel  Orientation="Horizontal" Width="460">
                         <TextBlock FontSize="72" VerticalAlignment="Bottom" Foreground="#3cadeb" Text="最新"/>
@@ -129,81 +125,81 @@
 
                     </StackPanel>
                 </controls:PanoramaItem.Header>
-
-                <ListBox x:Name="acticleListbox" Margin="10,-30,0,17"  Width="auto" >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Image Grid.Row="0" Margin="0,0"
+                <Grid>
+                    <ListBox x:Name="acticleListbox" Margin="10,-30,0,17"  Width="auto" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Row="0" Margin="0,0"
                                        Visibility="{Binding imgurl,Converter={StaticResource loadMoreVisibility}}"
                                        Source="Images/topImage.jpg"
                                        VerticalAlignment="Top"/>
-                                <Image Grid.Row="0" Tag="{Binding id}" 
+                                    <Image Grid.Row="0" Tag="{Binding id}" 
                                        Tap="topImage_Tap"
                                        Margin="0,0"
                                        Source="{Binding imgurl,Converter={StaticResource  ImageConverter}}"
                                        Visibility="{Binding imgurl,Converter={StaticResource loadMoreVisibility}}"                      
                                        VerticalAlignment="Top">
-                                </Image>
+                                    </Image>
 
-                                <Grid  Grid.Row="1"
+                                    <Grid  Grid.Row="1"
                                        Visibility="{Binding showData}"
                                        Tag="{Binding id}" 
                                        Tap="NaviGoArticleEndPage_Tap"
                                        x:Name="NaviGoArticleEndPage" 
                                        Margin="-10,1"
                                        HorizontalAlignment="Left">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="120"></RowDefinition>
-                                        <RowDefinition ></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="130"></ColumnDefinition>
-                                        <ColumnDefinition Width="auto"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="120"></RowDefinition>
+                                            <RowDefinition ></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="130"></ColumnDefinition>
+                                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
 
-                                    <Image Grid.RowSpan="2" Grid.Row="0"
+                                        <Image Grid.RowSpan="2" Grid.Row="0"
                                            Visibility="{Binding smallpic,Converter={StaticResource loadMoreVisibility}}"
                                            Height="90" Width="120"
                                            Source="Images/smallImage.jpg"/>
-                                    <Image Grid.RowSpan="2" Grid.Row="0" 
+                                        <Image Grid.RowSpan="2" Grid.Row="0" 
                                            Source="{Binding smallpic,Converter={StaticResource ImageConverter}}"
                                            Visibility="{Binding smallpic,Converter={StaticResource loadMoreVisibility}}"
                                            Height="90" Width="120">
 
-                                    </Image>
-                                    <!--标题-->
-                                    <StackPanel  Width="290" Grid.Column="1" Grid.Row="0">
-                                        <TextBlock   HorizontalAlignment="Left"                                                                       Foreground="Black" 
+                                        </Image>
+                                        <!--标题-->
+                                        <StackPanel  Width="290" Grid.Column="1" Grid.Row="0">
+                                            <TextBlock   HorizontalAlignment="Left"                                                                       Foreground="Black" 
                                                  Margin="0,9,0,0" 
                                                  TextWrapping="Wrap"
                                                  TextTrimming="WordEllipsis"
                                                  Text="{Binding title}" 
                                                  FontSize="22" />
-                                        <!--<Image  Margin="40,-30,2,0"
+                                            <!--<Image  Margin="40,-30,2,0"
                                                 HorizontalAlignment="Right" 
                                                 VerticalAlignment="Top"
                                                 Height="25" Width="25" 
                                                 Source="Images/article_comment.png"/>-->
 
-                                    </StackPanel>
+                                        </StackPanel>
 
-                                    <!--头条 or 说客 图标-->
-                                    <StackPanel Width="290"  Grid.Column="1"  Grid.Row="2" >
-                                        <Rectangle Visibility="{Binding type,Converter={StaticResource NewsestShuoKeImgConverter}}"
+                                        <!--头条 or 说客 图标-->
+                                        <StackPanel Width="290"  Grid.Column="1"  Grid.Row="2" >
+                                            <Rectangle Visibility="{Binding type,Converter={StaticResource NewsestShuoKeImgConverter}}"
                                                    Margin="40,-85,2,0" Fill="#FFEB6C05" Height="25" Width="50"  HorizontalAlignment="Right"  ></Rectangle>
-                                        <TextBlock   HorizontalAlignment="Right"  Foreground="White"  
+                                            <TextBlock   HorizontalAlignment="Right"  Foreground="White"  
                                                  Margin="40,-55,8,0" 
                                                  Text="说客" 
                                                  FontSize="18" FontWeight="Bold"
                                                       Visibility="{Binding type,Converter={StaticResource NewsestShuoKeImgConverter}}"/>
-                                        <Rectangle Visibility="{Binding type,Converter={StaticResource NewsestHeadImgConverter}}"
+                                            <Rectangle Visibility="{Binding type,Converter={StaticResource NewsestHeadImgConverter}}"
                                                    Margin="40,-85,2,0" Fill="#3cadeb " Height="25" Width="50"  HorizontalAlignment="Right"  ></Rectangle>
-                                        <TextBlock   HorizontalAlignment="Right"  Foreground="White"  
+                                            <TextBlock   HorizontalAlignment="Right"  Foreground="White"  
                                                  Margin="40,-55,8,0" 
                                                  Text="头条" 
                                                  FontSize="18" FontWeight="Bold"
@@ -211,37 +207,38 @@
 
 
 
-                                        <!--时间-->
-                                        <TextBlock   
+                                            <!--时间-->
+                                            <TextBlock   
                                                   FontSize="16"   
                                                  Margin="0,-33,2,0"
                                                  HorizontalAlignment="Left"
                                                   Foreground="Gray"
                                                  Text="{Binding time}"/>
-                                        <!--回复数-->
-                                        <TextBlock Grid.Row="2" Grid.Column="1" 
+                                            <!--回复数-->
+                                            <TextBlock Grid.Row="2" Grid.Column="1" 
                                                HorizontalAlignment="Right"
                                                FontSize="17"
                                                Margin="35,-33"
                                                Foreground="Gray"
                                                Text="{Binding replycount}"/>
-                                        <TextBlock Grid.Row="2" Grid.Column="1" 
+                                            <TextBlock Grid.Row="2" Grid.Column="1" 
                                                HorizontalAlignment="Right"
                                                FontSize="17"
                                                Margin="40,-33,2,0"
                                                Foreground="Gray" Text="评论"></TextBlock>
 
-                                    </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Border  Margin="0,10,0,17" x:Name="loadMore" Tap="btnLoadMore_Tap" Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}" Background="LightGray" Height="60" Width="440">
+                                        <TextBlock Foreground="Black" HorizontalAlignment="Center" FontSize="28" VerticalAlignment="Center" Text="{Binding loadMore}"/>
+                                    </Border>
                                 </Grid>
-
-                                <Border  Margin="0,10,0,17" x:Name="loadMore" Tap="btnLoadMore_Tap" Visibility="{Binding loadMore,Converter={StaticResource loadMoreVisibility}}" Background="LightGray" Height="60" Width="440">
-                                    <TextBlock Foreground="Black" HorizontalAlignment="Center" FontSize="28" VerticalAlignment="Center" Text="{Binding loadMore}"/>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <uc:ReloadButton x:Name="articleReloadButton" Visibility="Collapsed" Tap="articleReloadButton_Click"/>
+                </Grid>
             </controls:PanoramaItem>
             <!--频道-->
             <controls:PanoramaItem >
@@ -293,7 +290,7 @@
                                          Source="Images/Tiles/VideoHubTile.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="1" Grid.Row="0" IsFrozen="True"/>
-                        
+
                         <toolkit:HubTile x:Name="evaluatingHub" Tap="ChannelTile_Tap" Title="评测"  
                                          Source="Images/Tiles/PingCe.png"
                                          Background="#3cadeb"
@@ -311,7 +308,7 @@
                                          Source="Images/Tiles/YongChe.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="1" Grid.Row="2" IsFrozen="True"/>
-                        
+
                         <toolkit:HubTile x:Name="technologyhub" Tap="ChannelTile_Tap" Title="技术" 
                                          Source="Images/Tiles/JiShu.png"
                                          Background="#3cadeb"
@@ -320,7 +317,7 @@
                                          Source="Images/Tiles/WenHua.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="1" Grid.Row="3" IsFrozen="True"/>
-                        
+
                         <toolkit:HubTile x:Name="changeHub" Tap="ChannelTile_Tap" Title="改装" 
                                          Background="#3cadeb"
                                          Source="Images/Tiles/GaiZhuang.png"
@@ -344,17 +341,19 @@
             <!--找车-->
             <controls:PanoramaItem Foreground="#3cadeb" Header="找车">
 
-                <p:LongListSelector Margin="10,-30,10,10" 
+                <Grid>
+                    <p:LongListSelector Margin="10,-30,10,10" 
                                           ItemsSource="{Binding}"
                                           x:Name="carBrandListGropus" 
-                                          
                                           IsGroupingEnabled="True"   
                                           HideEmptyGroups="True" 
                                            LayoutMode="List"
                                           ItemTemplate="{StaticResource jumpListItemTemplate}" 
                                           GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" 
                                           JumpListStyle="{StaticResource JumpList}" >
-                </p:LongListSelector>
+                    </p:LongListSelector>
+                    <uc:ReloadButton x:Name="carListReloadButton" Visibility="Collapsed" Tap="carListReloadButton_Click"/>
+                </Grid>
 
             </controls:PanoramaItem>
             <!--论坛-->
