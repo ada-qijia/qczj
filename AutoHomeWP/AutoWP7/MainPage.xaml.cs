@@ -18,6 +18,8 @@ using Microsoft.Phone.Data.Linq;
 
 namespace AutoWP7
 {
+
+
     // 主界面
     // </summary>
     public partial class MainPage : PhoneApplicationPage
@@ -283,6 +285,7 @@ namespace AutoWP7
             HeadVM.LoadDataAysnc(url, pageIndex, isFirstLoad);
         }
 
+
         // 分页加载
         // </summary>
         private void btnLoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -311,7 +314,6 @@ namespace AutoWP7
                     if (e.Error != null)
                     {
                         Common.NetworkAvailablePrompt();
-                        articleReloadButton.Visibility = Visibility.Visible;
                     }
                     else
                     {
@@ -339,40 +341,10 @@ namespace AutoWP7
             });
         }
 
-        private void RefreshArticles()
-        {
-            if (isRefreshing == false)
-            {
-                isRefreshing = true;
-
-                //刷新点击统计
-                UmengSDK.UmengAnalytics.onEvent("refresh", "刷新点击量");
-
-                if (NewsDataSource.Count() > 0)
-                {
-                    NewsDataSource.Clear();
-                }
-                //隐藏刷新按钮
-                // refreshImg.Visibility = Visibility.Collapsed;
-
-                //刷新数据
-                SetNetWorkNewestLoadData(1, loadPageSize, "0", true);
-            }
-        }
-
-        private void articleReloadButton_Click(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            articleReloadButton.Visibility = Visibility.Collapsed;
-            RefreshArticles();
-        }
-
         #endregion
 
         #region  品牌找车数据加载
 
-        //汽车品牌网络加载
-        CarBrandViewModel carVM = null;
-        Dictionary<string, IList<CarBrandModel>> dic = new Dictionary<string, IList<CarBrandModel>>();
 
         private class CarBrandGroup : List<CarBrandModel>
         {
@@ -391,6 +363,7 @@ namespace AutoWP7
         }
 
         CarBrandSource carBrandSource = new CarBrandSource();
+
 
         public void carBrandLoadData()
         {
@@ -452,6 +425,11 @@ namespace AutoWP7
             //}
         }
 
+        //汽车品牌网络加载
+        CarBrandViewModel carVM = null;
+
+        // 品牌找车
+        // </summary>
         public void SetWebCarBrandLoadData()
         {
             if (carVM == null)
@@ -474,7 +452,7 @@ namespace AutoWP7
 
             }
         }
-
+        Dictionary<string, IList<CarBrandModel>> dic = new Dictionary<string, IList<CarBrandModel>>();
         void carVM_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<CarBrandModel>> e)
         {
             System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -485,7 +463,6 @@ namespace AutoWP7
                 if (e.Error != null)
                 {
                     Common.NetworkAvailablePrompt();
-                    carListReloadButton.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -521,13 +498,6 @@ namespace AutoWP7
 
             });
         }
-
-        private void carListReloadButton_Click(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            carListReloadButton.Visibility = Visibility.Collapsed;
-            carBrandLoadData();
-        }
-
         #endregion
 
         #region  频道
@@ -679,7 +649,24 @@ namespace AutoWP7
         //刷新
         private void refresh_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            RefreshArticles();
+            if (isRefreshing == false)
+            {
+                isRefreshing = true;
+
+                //刷新点击统计
+                UmengSDK.UmengAnalytics.onEvent("refresh", "刷新点击量");
+
+                if (NewsDataSource.Count() > 0)
+                {
+                    NewsDataSource.Clear();
+                }
+                //隐藏刷新按钮
+                // refreshImg.Visibility = Visibility.Collapsed;
+
+                //刷新数据
+                SetNetWorkNewestLoadData(1, loadPageSize, "0", true);
+            }
+
         }
 
         // 导向车系列表页
@@ -751,8 +738,6 @@ namespace AutoWP7
         {
             return new Uri(string.Format("/View/Channel/NewsListPage.xaml?tag={0}", tag), UriKind.Relative);
         }
-
-
 
     }
 }

@@ -156,9 +156,6 @@
     </Compile>
     <Compile Include="UcControl\DataTemplateSelector.cs" />
     <Compile Include="UcControl\KoubeiDataTemplateSelector.cs" />
-    <Compile Include="UcControl\ReloadButton.xaml.cs">
-      <DependentUpon>ReloadButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UcControl\UcMediaElement\MediaElementUc.xaml.cs">
       <DependentUpon>MediaElementUc.xaml</DependentUpon>
     </Compile>
@@ -308,10 +305,6 @@
     <Page Include="UcControl\AlibiChart.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UcControl\ReloadButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UcControl\UcMediaElement\MediaElementUc.xaml">
       <SubType>Designer</SubType>
