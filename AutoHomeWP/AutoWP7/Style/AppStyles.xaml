@@ -5,7 +5,7 @@
     >
 
     <!--colors-->
-    <SolidColorBrush x:Key="App_Theme_Color" Color="#ff0056a6"/>
+    <SolidColorBrush x:Key="App_Theme_Color" Color="#ff3cadeb"/>
     <!--converters-->
 
     <!--base Styles-->

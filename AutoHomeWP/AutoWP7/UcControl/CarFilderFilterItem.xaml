@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="AutoWP7.UcControl.CarFilderFilterItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="64" d:DesignWidth="480">
+    
+    <Grid x:Name="LayoutRoot" >
+        <Rectangle Style="{StaticResource ListItemSplitter_Horizontal_Style}"/>
+        <TextBlock x:Name="filterNameTextBlock" Text="Brand" FontSize="28" Foreground="#ff000000" VerticalAlignment="Center"/>
+        <TextBlock x:Name="notSetTextBlock" Text="不限" FontSize="28" Foreground="#ff808080" 
+                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                   Margin="0,0,48,0"/>
+        <TextBlock x:Name="filterValueTextBlock" Text="" FontSize="28" Foreground="{StaticResource App_Theme_Color}" 
+                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                   Margin="0,0,48,0" Visibility="Collapsed"/>
+        <Image Source="/Images/ArrowR.png" Stretch="None" HorizontalAlignment="Right" Margin="0,0,12,0"/>
+    </Grid>
+</UserControl>

@@ -18,8 +18,6 @@ using Microsoft.Phone.Data.Linq;
 
 namespace AutoWP7
 {
-
-
     // 主界面
     // </summary>
     public partial class MainPage : PhoneApplicationPage

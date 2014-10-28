@@ -153,6 +153,9 @@
     <Compile Include="UcControl\AlibiChart.xaml.cs">
       <DependentUpon>AlibiChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UcControl\CarFilderFilterItem.xaml.cs">
+      <DependentUpon>CarFilderFilterItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UcControl\DataTemplateSelector.cs" />
     <Compile Include="UcControl\KoubeiDataTemplateSelector.cs" />
     <Compile Include="UcControl\UcMediaElement\MediaElementUc.xaml.cs">
@@ -304,6 +307,10 @@
     <Page Include="UcControl\AlibiChart.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UcControl\CarFilderFilterItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UcControl\UcMediaElement\MediaElementUc.xaml">
       <SubType>Designer</SubType>
@@ -477,6 +484,7 @@
     <Resource Include="Images\detail1.jpg" />
     <Resource Include="Images\Tiles\ShuoKe.png" />
     <Content Include="Images\alibi_summary.png" />
+    <Content Include="Images\ArrowR.png" />
     <Content Include="Images\bar_all.png" />
     <Content Include="Images\bar_louzhu.png" />
     <Content Include="Images\bar_xshquanbu.png" />

@@ -8,13 +8,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-       xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
     xmlns:local="clr-namespace:AutoWP7"
- 
-    Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
 
@@ -104,7 +100,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot">
-        
+
         <controls:Panorama x:Name="pano" Background="WhiteSmoke"  SelectionChanged="pano_SelectionChanged" Foreground="Black" Margin="0,0,0,-20" >
 
             <controls:Panorama.Title>
@@ -293,7 +289,7 @@
                                          Source="Images/Tiles/VideoHubTile.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="1" Grid.Row="0" IsFrozen="True"/>
-                        
+
                         <toolkit:HubTile x:Name="evaluatingHub" Tap="ChannelTile_Tap" Title="评测"  
                                          Source="Images/Tiles/PingCe.png"
                                          Background="#3cadeb"
@@ -311,7 +307,7 @@
                                          Source="Images/Tiles/YongChe.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="1" Grid.Row="2" IsFrozen="True"/>
-                        
+
                         <toolkit:HubTile x:Name="technologyhub" Tap="ChannelTile_Tap" Title="技术" 
                                          Source="Images/Tiles/JiShu.png"
                                          Background="#3cadeb"
@@ -320,7 +316,7 @@
                                          Source="Images/Tiles/WenHua.png"
                                          Background="#3cadeb"
                                          Margin="5" Grid.Column="1" Grid.Row="3" IsFrozen="True"/>
-                        
+
                         <toolkit:HubTile x:Name="changeHub" Tap="ChannelTile_Tap" Title="改装" 
                                          Background="#3cadeb"
                                          Source="Images/Tiles/GaiZhuang.png"
@@ -344,17 +340,23 @@
             <!--找车-->
             <controls:PanoramaItem Foreground="#3cadeb" Header="找车">
 
-                <p:LongListSelector Margin="10,-30,10,10" 
-                                          ItemsSource="{Binding}"
-                                          x:Name="carBrandListGropus" 
-                                          
-                                          IsGroupingEnabled="True"   
-                                          HideEmptyGroups="True" 
-                                           LayoutMode="List"
-                                          ItemTemplate="{StaticResource jumpListItemTemplate}" 
-                                          GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" 
-                                          JumpListStyle="{StaticResource JumpList}" >
-                </p:LongListSelector>
+                <Grid>
+                    <p:LongListSelector x:Name="carBrandListGropus" Margin="10,-30,10,10" 
+                                        ItemsSource="{Binding}"
+                                        IsGroupingEnabled="True"   
+                                        HideEmptyGroups="True" 
+                                        LayoutMode="List"
+                                        ItemTemplate="{StaticResource jumpListItemTemplate}" 
+                                        GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" 
+                                        JumpListStyle="{StaticResource JumpList}" />
+                    <Grid x:Name="carFinderFilterPanel">
+                        <ScrollViewer>
+                            <StackPanel>
+                                
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
 
             </controls:PanoramaItem>
             <!--论坛-->
