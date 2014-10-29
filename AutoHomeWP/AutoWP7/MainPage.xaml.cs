@@ -717,5 +717,17 @@ namespace AutoWP7
             return new Uri(string.Format("/View/Channel/NewsListPage.xaml?tag={0}", tag), UriKind.Relative);
         }
 
+        private void carBrandListButton_Click(object sender, RoutedEventArgs e)
+        {
+            carFinderFilterPanel.Visibility = Visibility.Collapsed;
+            carBrandListGropus.Visibility = Visibility.Visible;
+        }
+
+        private void carFinderFiltersButton_Click(object sender, RoutedEventArgs e)
+        {
+            carFinderFilterPanel.Visibility = Visibility.Visible;
+            carBrandListGropus.Visibility = Visibility.Collapsed;
+        }
+
     }
 }

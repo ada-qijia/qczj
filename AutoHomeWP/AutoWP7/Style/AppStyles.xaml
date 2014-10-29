@@ -2,6 +2,7 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:System="clr-namespace:System;assembly=mscorlib" 
+    xmlns:uc="clr-namespace:AutoWP7.UcControl"
     >
 
     <!--colors-->
@@ -22,6 +23,12 @@
     </Style>
 
     <!--common-->
+    <Style x:Key="SplitBar_Horizontal_Style" TargetType="Rectangle">
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Height" Value="1"/>
+        <Setter Property="Fill" Value="#ffd0d0d0"/>
+    </Style>
+
     <Style x:Key="ListItemSplitter_Horizontal_Style" TargetType="Rectangle">
         <Setter Property="VerticalAlignment" Value="Bottom"/>
         <Setter Property="Height" Value="2"/>
@@ -34,7 +41,54 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <Style TargetType="uc:ImageToggleButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="uc:ImageToggleButton">
+                    <Grid Background="#00000000">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="TapStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="0.95" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="content" />
+                                        <DoubleAnimation Duration="0" To="0.95" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="content" />
+                                        <DoubleAnimation Duration="0" To="0.8" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="content"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.2"/>
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="UnChecked"/>
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="unCheckedBackground" />
+                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="checkedBackground" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Grid x:Name="content" Background="#00000000" RenderTransformOrigin="0.5,0.5" >
+                            <Grid.RenderTransform>
+                                <CompositeTransform/>
+                            </Grid.RenderTransform>
+                            <Image x:Name="checkedBackground" Source="{TemplateBinding CheckedBackground}" Stretch="None" Margin="{TemplateBinding Padding}" Opacity="0"/>
+                            <Image x:Name="unCheckedBackground" Source="{TemplateBinding UnCheckedBackground}" Stretch="None" Margin="{TemplateBinding Padding}"/>
+                        </Grid>
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--video player-->
     <Style x:Key="VideoPlayer_Time_Style" TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBase}">
         <Setter Property="FontSize" Value="16"/>

@@ -7,10 +7,11 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
     xmlns:local="clr-namespace:AutoWP7"
+    xmlns:uc="clr-namespace:AutoWP7.UcControl"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
 
@@ -340,8 +341,20 @@
             <!--找车-->
             <controls:PanoramaItem Foreground="#3cadeb" Header="找车">
 
-                <Grid>
-                    <p:LongListSelector x:Name="carBrandListGropus" Margin="10,-30,10,10" 
+                <Grid Margin="10,-30,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" x:Name="carBrandListButton" Content="品牌找车" Click="carBrandListButton_Click"/>
+                        <Button Grid.Column="1" x:Name="carFinderFiltersButton" Content="条件筛选" Click="carFinderFiltersButton_Click"/>
+                    </Grid>
+                    <p:LongListSelector x:Name="carBrandListGropus" Grid.Row="1"
                                         ItemsSource="{Binding}"
                                         IsGroupingEnabled="True"   
                                         HideEmptyGroups="True" 
@@ -349,10 +362,12 @@
                                         ItemTemplate="{StaticResource jumpListItemTemplate}" 
                                         GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" 
                                         JumpListStyle="{StaticResource JumpList}" />
-                    <Grid x:Name="carFinderFilterPanel">
+                    <Grid x:Name="carFinderFilterPanel" Grid.Row="1" Visibility="Collapsed">
                         <ScrollViewer>
                             <StackPanel>
-                                
+                                <uc:CarFilderFilterItem FilterName="品牌"/>
+                                <uc:CarFilderFilterItem FilterName="价格"/>
+                                <uc:CarFilderFilterItem FilterName="级别"/>
                             </StackPanel>
                         </ScrollViewer>
                     </Grid>

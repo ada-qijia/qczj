@@ -157,6 +157,7 @@
       <DependentUpon>CarFilderFilterItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="UcControl\DataTemplateSelector.cs" />
+    <Compile Include="UcControl\ImageToggleButton.cs" />
     <Compile Include="UcControl\KoubeiDataTemplateSelector.cs" />
     <Compile Include="UcControl\UcMediaElement\MediaElementUc.xaml.cs">
       <DependentUpon>MediaElementUc.xaml</DependentUpon>
