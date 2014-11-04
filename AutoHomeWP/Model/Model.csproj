@@ -96,6 +96,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="SaleItemModel.cs" />
     <Compile Include="AreaForumModel.cs" />
     <Compile Include="BaseModel.cs" />
     <Compile Include="CacheVarModel.cs" />

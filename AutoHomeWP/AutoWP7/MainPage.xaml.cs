@@ -483,6 +483,21 @@ namespace AutoWP7
 
         }
 
+        private void saleItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void saleItem_CallDealer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void saleItem_CallPrice_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
         #endregion
 
         #region  频道
@@ -735,6 +750,8 @@ namespace AutoWP7
             carFinderFilterPanel.Visibility = Visibility.Visible;
             carBrandListGropus.Visibility = Visibility.Collapsed;
         }
+
+        
 
 
     }
