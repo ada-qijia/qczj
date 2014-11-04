@@ -18,8 +18,6 @@ using Microsoft.Phone.Data.Linq;
 
 namespace AutoWP7
 {
-    // 主界面
-    // </summary>
     public partial class MainPage : PhoneApplicationPage
     {
         public MainPage()
@@ -478,6 +476,15 @@ namespace AutoWP7
         }
         #endregion
 
+        #region 降价
+
+        private void saleFilterButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        #endregion
+
         #region  频道
 
         // for all
@@ -728,6 +735,7 @@ namespace AutoWP7
             carFinderFilterPanel.Visibility = Visibility.Visible;
             carBrandListGropus.Visibility = Visibility.Collapsed;
         }
+
 
     }
 }
