@@ -15,6 +15,8 @@ using ViewModels.Handler;
 using System.Windows.Media.Animation;
 using System.Windows.Media;
 using Microsoft.Phone.Data.Linq;
+using Microsoft.Phone.Shell;
+using AutoWP7.Utils;
 
 namespace AutoWP7
 {
@@ -57,6 +59,8 @@ namespace AutoWP7
                         worker1.Start();
 
                         //  UpdateLocalCity();
+                        //设置AppBar搜索按钮可见
+                        setAppBarSearchButtonVisible(true);
 
                     }
                     break;
@@ -85,10 +89,14 @@ namespace AutoWP7
                             workerCar.Start();
                             isLoaded = true;
                         }
-
+                        setAppBarSearchButtonVisible(false);
                     }
                     break;
             }
+
+            //为最新和论坛设置AppBar搜索按钮
+            bool searchButtonVisible = pano.SelectedIndex == 0 || pano.SelectedIndex == 4;
+            setAppBarSearchButtonVisible(searchButtonVisible);
         }
 
         // 更新本地城市
@@ -751,8 +759,49 @@ namespace AutoWP7
             carBrandListGropus.Visibility = Visibility.Collapsed;
         }
 
-        
+        #region 设置AppBar搜索按钮
 
+        private void setAppBarSearchButtonVisible(bool isVisible)
+        {
+            if (isVisible)
+            {
+                if (ApplicationBar.Buttons.Count == 0)
+                {
+                    ApplicationBarIconButton searchButton = new ApplicationBarIconButton();
+                    searchButton.IconUri = new Uri("/Images/bar_search.png", UriKind.Relative);
+                    searchButton.Text = "搜索";
+                    searchButton.Click += searchButton_Click;
+                    ApplicationBar.Buttons.Add(searchButton);
+                    ApplicationBar.Mode = ApplicationBarMode.Default;
+                }
+            }
+            else
+            {
+                if (ApplicationBar.Buttons.Count == 1)
+                {
+                    ApplicationBar.Buttons.RemoveAt(0);
+                    ApplicationBar.Mode = ApplicationBarMode.Minimized;
+                }
+            }
+        }
+
+        //导航到搜索页面
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            //最新搜索为综合，否则为论坛搜索
+            SearchType type = pano.SelectedIndex == 0 ? SearchType.General : SearchType.Forum;
+            string searchPageUrl = SearchHelper.GetSearchPageUrlWithParams(type);
+            this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
+        }
+
+        //找车搜索
+        private void search_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            string searchPageUrl = SearchHelper.GetSearchPageUrlWithParams(SearchType.Cars);
+            this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
+        }
+
+        #endregion
 
     }
 }

@@ -339,8 +339,16 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
             <!--找车-->
-            <controls:PanoramaItem Foreground="#3cadeb" Header="找车">
-
+            <controls:PanoramaItem Foreground="#3cadeb">
+                <controls:PanoramaItem.Header>
+                    <StackPanel  Orientation="Horizontal" Width="460">
+                        <TextBlock Text="找车"/>
+                        <Image Margin="210,10,0,0" Tap="search_Tap"
+                               Source="/AutoWP7;component/Images/bar_search.png">
+                        </Image>
+                    </StackPanel>    
+                </controls:PanoramaItem.Header>
+                
                 <Grid Margin="10,-30,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

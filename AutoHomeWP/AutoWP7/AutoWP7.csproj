@@ -164,6 +164,7 @@
     </Compile>
     <Compile Include="UcControl\UcListBox\ListBoxUc.cs" />
     <Compile Include="Utils\DateTimerHelper.cs" />
+    <Compile Include="Utils\SearchHelper.cs" />
     <Compile Include="View\Car\AskPrice.xaml.cs">
       <DependentUpon>AskPrice.xaml</DependentUpon>
     </Compile>
@@ -274,6 +275,9 @@
     </Compile>
     <Compile Include="View\More\MorePage.xaml.cs">
       <DependentUpon>MorePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Search\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -473,6 +477,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Search\SearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
@@ -488,6 +496,7 @@
     <Content Include="Images\ArrowR.png" />
     <Content Include="Images\bar_all.png" />
     <Content Include="Images\bar_louzhu.png" />
+    <Content Include="Images\bar_search.png" />
     <Content Include="Images\bar_xshquanbu.png" />
     <Content Include="Images\bg.png" />
     <Content Include="Images\car_addcomspec.png" />
