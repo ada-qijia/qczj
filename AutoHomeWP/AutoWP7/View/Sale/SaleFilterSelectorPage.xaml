@@ -1,0 +1,47 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="AutoWP7.View.Channel.News.SaleFilterSelectorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:AutoWP7.UcControl"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+
+        <Style x:Key="SaleItemText_Style" TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBase}">
+            <Setter Property="Foreground" Value="#ff000000"/>
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="TextTrimming" Value="WordEllipsis"/>
+        </Style>
+
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="pageTitle" FontSize="56" Foreground="{StaticResource App_Theme_Color}" Margin="24,24,0,0"/>
+        <ScrollViewer Grid.Row="1" Margin="0,10,0,0">
+            <ItemsControl  x:Name="filterListBox" Margin="0,0,0,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Tap="filterItem_Tap" Margin="24,0,24,0" >
+                            <TextBlock Grid.Row="0" Style="{StaticResource SaleItemText_Style}" Text="{Binding name}" />
+                            <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <ProgressBar Grid.Row="1" Foreground="Blue" x:Name="ProgBar" Visibility="Collapsed" IsIndeterminate="True" Height="4" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />
+
+    </Grid>
+
+</phone:PhoneApplicationPage>

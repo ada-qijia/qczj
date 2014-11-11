@@ -125,6 +125,13 @@ namespace AutoWP7
         //退出程序
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
+            if (isSaleFilterShown)
+            {
+                e.Cancel = true;
+                HideSaleFilter();
+                return;
+            }
+
             base.OnBackKeyPress(e);
 
             if (isOpened)
@@ -478,9 +485,10 @@ namespace AutoWP7
 
         #region 降价
 
+        bool isSaleFilterShown = false;
         private void saleFilterButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            ShowSaleFilter();
         }
 
         private void saleItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -496,6 +504,24 @@ namespace AutoWP7
         private void saleItem_CallPrice_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
 
+        }
+
+        protected void ShowSaleFilter()
+        {
+            VisualStateManager.GoToState(this, "VSSaleFilterShown", true);
+            isSaleFilterShown = true;
+        }
+        protected void HideSaleFilter()
+        {
+            VisualStateManager.GoToState(this, "VSSaleFilterHidden", true);
+            isSaleFilterShown = false;
+        }
+
+        private void SaleFilter_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            string tag = ((FrameworkElement)sender).Tag.ToString();
+            HideSaleFilter();
+            this.NavigationService.Navigate(new Uri("/View/Sale/SaleFilterSelectorPage.xaml?filterType=" + tag, UriKind.Relative));
         }
 
         #endregion

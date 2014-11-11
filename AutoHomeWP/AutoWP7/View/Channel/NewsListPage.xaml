@@ -13,7 +13,6 @@
     x:Class="AutoWP7.View.Channel.NewsListPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-
     shell:SystemTray.IsVisible="False">
 
     <p:PhoneApplicationPage.Resources>

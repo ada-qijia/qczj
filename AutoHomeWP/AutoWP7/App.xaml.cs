@@ -232,7 +232,7 @@ namespace AutoWP7
         //平台id
         public static int platForm = 3;
         //当前版本号
-        public static string version = "1.5.0";
+        public static string version = "1.6.0";
         //app相关信息
         public static string AppInfo
         {
