@@ -512,6 +512,7 @@
     <Content Include="Images\More\VS.png" />
     <Content Include="Images\alibi_recommendation.png" />
     <Content Include="Images\ReloadButton.png" />
+    <Content Include="Images\search.png" />
     <Content Include="Images\selectall.png" />
     <Content Include="Images\alibi_super_highlight.png" />
     <Content Include="Images\VideoPlayer\fast_forward.png" />

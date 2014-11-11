@@ -344,7 +344,7 @@
                     <StackPanel  Orientation="Horizontal" Width="460">
                         <TextBlock Text="找车"/>
                         <Image Margin="210,10,0,0" Tap="search_Tap"
-                               Source="/AutoWP7;component/Images/bar_search.png">
+                               Source="/AutoWP7;component/Images/search.png">
                         </Image>
                     </StackPanel>    
                 </controls:PanoramaItem.Header>

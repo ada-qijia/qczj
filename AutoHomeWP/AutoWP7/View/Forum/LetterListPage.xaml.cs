@@ -8,6 +8,7 @@ using Microsoft.Phone.Controls;
 using Model;
 using ViewModels;
 using ViewModels.Handler;
+using AutoWP7.Utils;
 
 namespace AutoWP7.View.Forum
 {
@@ -210,6 +211,12 @@ namespace AutoWP7.View.Forum
             this.NavigationService.Navigate(new Uri("/View/Forum/SendLetterPage.xaml?title=" + title + "&bbsId=" + bbsId + "&bbsType=" + bbsType, UriKind.Relative));
         }
 
+        //进入搜索页
+        private void search_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            string searchPageUrl = SearchHelper.GetSearchPageUrlWithParams(SearchType.Forum);
+            this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
+        }
 
     }
 }

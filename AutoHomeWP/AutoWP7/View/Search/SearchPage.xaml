@@ -6,12 +6,18 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:utils="clr-namespace:AutoWP7.Utils"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+    
+    <phone:PhoneApplicationPage.Resources>
+        <utils:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -20,15 +26,52 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+        <!--顶部搜索框-->
+        <Grid Margin="0 12 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <toolkit:ListPicker x:Name="searchTypeListPicker" ItemsSource="{Binding}" Width="100" Margin="12 6 0 0" BorderThickness="1" SelectionChanged="searchTypeListPicker_SelectionChanged">
+                <toolkit:ListPicker.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+                            <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}"/>
+                        </Grid>
+                    </DataTemplate>
+                </toolkit:ListPicker.ItemTemplate>
+            </toolkit:ListPicker>
+            
+            <toolkit:PhoneTextBox x:Name="keywordTextBox" Grid.Column="1" Hint="搜索关键词" Margin="-12 0" Loaded="keywordTB_Loaded" TextChanged="keyboardTB_TextChanged"/>
+            <Image Grid.Column="1" HorizontalAlignment="Right" Source="/AutoWP7;component/Images/search.png" Height="40" Tap="search_Tap"/>
+            <TextBlock Grid.Column="2" Text="取消" VerticalAlignment="Center" Margin="24 12 12 12" Tap="cancel_Tap"/>
+        </Grid>
+        
+        <!--搜索历史-->
+        <Grid x:Name="historyGrid" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Grid Height="60" VerticalAlignment="Top" Background="Gray">
+                <TextBlock Text="搜索历史" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12 6"/>
+                <StackPanel x:Name="cleanStackPanel" Orientation="Horizontal" HorizontalAlignment="Right" Tap="cleanHistory_Tap">
+                <TextBlock Text="清空搜索历史" VerticalAlignment="Center"  Margin="12 6 32 6"/>
+                <Image Source="/AutoWP7;component/Images/close.png" VerticalAlignment="Center" Width="20"/>
+                </StackPanel>
+            </Grid>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
+            <ListBox x:Name="historyListBox" ItemsSource="{Binding}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Tap="historyItem_Tap"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 
