@@ -93,7 +93,7 @@ namespace AutoWP7
                     {
                         if (!saleLoaded)
                         {
-                            SaleLoadData();
+                            SaleLoadData(false);
                         }
                     }
                     break;
@@ -498,13 +498,16 @@ namespace AutoWP7
         string sale_param_b = "0";
         string sale_param_ss = "0";
         string sale_param_sp = "0";
-        int sale_page_index = 1;//page_index
-        int sale_page_size = 20;//page_size
         string sale_param_l = "0";
         string sale_param_minp = "0";
         string sale_param_maxp = "0";
 
-        private void SaleLoadData()
+        private void SaleReloadData()
+        {
+            SaleLoadData(true);
+        }
+
+        private void SaleLoadData(bool reload)
         {
             GlobalIndicator.Instance.Text = "正在获取中...";
             GlobalIndicator.Instance.IsBusy = true;
@@ -516,11 +519,13 @@ namespace AutoWP7
                 saleListbox.ItemsSource = saleVM.DataSource;
             }
 
+            int page_index = reload ? 1 : saleVM.PageIndex + 1;
+
             //http://221.192.136.99:804/wpv1.6/dealer/pdspecs-a2-pm3-v1.6.0-pi0-c0-o0-b0-ss0-sp0-p1-s20-l0-minp10-maxp20.html
             string format = App.appUrl + App.versionStr + "/dealer/pdspecs-" + App.AppInfo + "-pi{0}-c{1}-o{2}-b{3}-ss{4}-sp{5}-p{6}-s{7}-l{8}-minp{9}-maxp{10}.html";
             string url = string.Format(format, sale_param_pi, sale_param_c, sale_param_o, sale_param_b,
-                sale_param_ss, sale_param_sp, sale_page_index, sale_page_size, sale_param_l, sale_param_minp, sale_param_maxp);
-            saleVM.LoadDataAysnc(url);
+                sale_param_ss, sale_param_sp, page_index, saleVM.PageSize, sale_param_l, sale_param_minp, sale_param_maxp);
+            saleVM.LoadDataAysnc(url, reload);
         }
 
         void SaleVM_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<SaleItemModel>> e)
@@ -540,15 +545,19 @@ namespace AutoWP7
                 }
                 else
                 {
+                    if (isSaleFilterShown)
+                    {
+                        HideSaleFilter();
+                    }
                 }
             }
         }
 
         private void saleLoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            sale_page_index++;
-            SaleLoadData();
+            SaleLoadData(false);
         }
+
 
         /************** Filter ****************/
         bool isSaleFilterShown = false;
@@ -602,26 +611,46 @@ namespace AutoWP7
                 return;
             }
 
-            Button buttonToUpdate = null;
             switch (App.SaleFilterSelector_FilterType)
             {
                 case "price":
-                    buttonToUpdate = SaleFilter3;
+                    var strArray = App.SaleFilterSelector_SelectedValue.Split('|');
+                    sale_param_minp = strArray[0];
+                    sale_param_maxp = strArray[1];
+                    if (App.SaleFilterSelector_SelectedValue == "0|0")
+                    {
+                        SaleFilter3.Content = "价格";
+                    }
+                    else
+                    {
+                        SaleFilter3.Content = App.SaleFilterSelector_SelectedName;
+                    }
                     break;
                 case "level":
-                    buttonToUpdate = SaleFilter4;
+                    if (App.SaleFilterSelector_SelectedValue == "0")
+                    {
+                        SaleFilter4.Content = "级别";
+                    }
+                    else
+                    {
+                        SaleFilter4.Content = App.SaleFilterSelector_SelectedName;
+                    }
                     break;
                 case "buyorder":
-                    buttonToUpdate = SaleFilter5;
+                    if (App.SaleFilterSelector_SelectedValue == "0")
+                    {
+                        SaleFilter5.Content = "排序";
+                    }
+                    else
+                    {
+                        SaleFilter5.Content = App.SaleFilterSelector_SelectedName;
+                    }
                     break;
                 default:
                     break;
             }
-
-            if (buttonToUpdate!=null)
-            {
-                buttonToUpdate.Content = App.SaleFilterSelector_SelectedName;
-            }
+            SaleLoadData(true);
+            App.SaleFilterSelector_FilterType = string.Empty;
         }
 
         #endregion
@@ -877,7 +906,7 @@ namespace AutoWP7
             carBrandListGropus.Visibility = Visibility.Collapsed;
         }
 
-        
+
 
 
     }

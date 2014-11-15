@@ -415,7 +415,7 @@
                 <controls:PanoramaItem.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="240"/>
+                            <ColumnDefinition Width="270"/>
                             <ColumnDefinition Width="150"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="降价" Foreground="#3cadeb" Grid.Column="0"/>
@@ -465,7 +465,7 @@
                                                     <TextBlock Text="{Binding dealerprice_display}" 
                                                                Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"
                                                                FontSize="20" Foreground="#ffe84f3c"/>
-                                                    <Grid Grid.Column="1" Grid.Row="2" Background="LightBlue">
+                                                    <Grid Grid.Column="1" Grid.Row="2">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="Auto"/>

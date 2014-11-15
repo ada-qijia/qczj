@@ -23,6 +23,8 @@ namespace ViewModels
     {
         public SaleViewModel()
         {
+            PageIndex = 0;
+            PageSize = 20;
         }
 
         private ObservableCollection<SaleItemModel> _DataSource = new ObservableCollection<SaleItemModel>();
@@ -44,8 +46,11 @@ namespace ViewModels
 
         SaleItemModel LoadMoreButtonItem = new SaleItemModel() { IsLoadMore = true };
 
-        private int PageCount { get; set; }
-        private int PageIndex { get; set; }
+        public int PageSize { get; set; }
+
+        public int PageCount { get; set; }
+
+        public int PageIndex { get; set; }
 
         public bool IsEndPage
         {
@@ -66,7 +71,7 @@ namespace ViewModels
 
         public event EventHandler<APIEventArgs<IEnumerable<SaleItemModel>>> LoadDataCompleted;
 
-        public void LoadDataAysnc(string url)
+        public void LoadDataAysnc(string url, bool reload)
         {
             WebClient wc = new WebClient();
             if (wc.IsBusy != false)
@@ -78,72 +83,78 @@ namespace ViewModels
             wc.Headers["Accept-Charset"] = "utf-8";
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
             Uri urlSource = new Uri(url + "&" + Guid.NewGuid().ToString(), UriKind.Absolute);
-            wc.DownloadStringAsync(urlSource);
-            wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
+            wc.DownloadStringCompleted += wc_DownloadStringCompleted;
+            if (reload)
             {
-                APIEventArgs<IEnumerable<SaleItemModel>> apiArgs = new APIEventArgs<IEnumerable<SaleItemModel>>();
-                if (ee.Error != null)
+                PageIndex = 1;
+                PageCount = 1;
+                DataSource.Clear();
+            }
+            wc.DownloadStringAsync(urlSource);
+        }
+
+        void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            APIEventArgs<IEnumerable<SaleItemModel>> apiArgs = new APIEventArgs<IEnumerable<SaleItemModel>>();
+            if (e.Error != null)
+            {
+                apiArgs.Error = e.Error;
+            }
+            else
+            {
+                try
                 {
-                    apiArgs.Error = ee.Error;
-                }
-                else
-                {
-                    try
+                    TryRemoveMoreButton();
+
+                    JObject json = JObject.Parse(e.Result);
+                    JArray ja = (JArray)json.SelectToken("result").SelectToken("carlist");
+
+                    SaleItemModel model = null;
+                    for (int i = 0; i < ja.Count; i++)
                     {
-                        TryRemoveMoreButton();
+                        model = new SaleItemModel();
+                        model.seriesid = (int)ja[i].SelectToken("seriesid");
+                        model.seriesname = (string)ja[i].SelectToken("seriesname");
+                        model.specid = (int)ja[i].SelectToken("specid");
+                        model.specname = (string)ja[i].SelectToken("specname");
+                        model.specpic = (string)ja[i].SelectToken("specpic");
+                        model.inventorystate = (int)ja[i].SelectToken("inventorystate");
+                        model.dealerprice = (string)ja[i].SelectToken("dealerprice");
+                        model.fctprice = (string)ja[i].SelectToken("fctprice");
 
-                        JObject json = JObject.Parse(ee.Result);
-                        JArray ja = (JArray)json.SelectToken("result").SelectToken("carlist");
-
-                        SaleItemModel model = null;
-                        for (int i = 0; i < ja.Count; i++)
+                        //dealer
+                        var jo = ja[i].SelectToken("dealer");
+                        if (jo != null)
                         {
-                            model = new SaleItemModel();
-                            model.seriesid = (int)ja[i].SelectToken("seriesid");
-                            model.seriesname = (string)ja[i].SelectToken("seriesname");
-                            model.specid = (int)ja[i].SelectToken("specid");
-                            model.specname = (string)ja[i].SelectToken("specname");
-                            model.specpic = (string)ja[i].SelectToken("specpic");
-                            model.inventorystate = (int)ja[i].SelectToken("inventorystate");
-                            model.dealerprice = (string)ja[i].SelectToken("dealerprice");
-                            model.fctprice = (string)ja[i].SelectToken("fctprice");
-                            
-                            //dealer
-                            var jo = ja[i].SelectToken("dealer");
-                            if (jo!=null)
-                            {
-                                SaleDealer dealer = new SaleDealer();
-                                dealer.id = (int)jo.SelectToken("id");
-                                dealer.name = (string)jo.SelectToken("name");
-                                dealer.shortname = (string)jo.SelectToken("shortname");
-                                dealer.city = (string)jo.SelectToken("city");
-                                dealer.phone = (string)jo.SelectToken("phone");
-                                model.dealer = dealer;
-                            }
-                            
-                            DataSource.Add(model);
+                            SaleDealer dealer = new SaleDealer();
+                            dealer.id = (int)jo.SelectToken("id");
+                            dealer.name = (string)jo.SelectToken("name");
+                            dealer.shortname = (string)jo.SelectToken("shortname");
+                            dealer.city = (string)jo.SelectToken("city");
+                            dealer.phone = (string)jo.SelectToken("phone");
+                            model.dealer = dealer;
                         }
 
-                        this.PageCount = (int)json.SelectToken("result").SelectToken("pagecount");
-                        this.PageIndex = (int)json.SelectToken("result").SelectToken("pageindex");
-
-                        EnsureMoreButton();
+                        DataSource.Add(model);
                     }
-                    catch (Exception ex)
-                    {
 
-                    }
+                    this.PageCount = (int)json.SelectToken("result").SelectToken("pagecount");
+                    this.PageIndex = (int)json.SelectToken("result").SelectToken("pageindex");
+
+                    EnsureMoreButton();
                 }
-
-                apiArgs.Result = DataSource;
-
-                if (LoadDataCompleted != null)
+                catch (Exception ex)
                 {
-                    LoadDataCompleted(this, apiArgs);
+
                 }
-            });
+            }
 
+            apiArgs.Result = DataSource;
 
+            if (LoadDataCompleted != null)
+            {
+                LoadDataCompleted(this, apiArgs);
+            }
         }
 
         private void EnsureMoreButton()
