@@ -96,6 +96,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Search\ArticleSearchResultModel.cs" />
+    <Compile Include="Search\CarSeriesSearchResultModel.cs" />
+    <Compile Include="Search\ForumSearchResultModel.cs" />
+    <Compile Include="Search\GeneralSearchResultModel.cs" />
     <Compile Include="SaleItemModel.cs" />
     <Compile Include="AreaForumModel.cs" />
     <Compile Include="BaseModel.cs" />
@@ -125,6 +129,7 @@
     <Compile Include="ReplyModel.cs" />
     <Compile Include="SubjectForumModel.cs" />
     <Compile Include="MyForumModel.cs" />
+    <Compile Include="Search\VideoSearchResultModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

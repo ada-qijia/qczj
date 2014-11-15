@@ -195,7 +195,7 @@ namespace AutoWP7.View.Forum
         /// <returns></returns>
         private string CreateTopicsUrl(bool isRefine, int order)
         {
-            return string.Format(AppUrlMgr.TopicsUrl, bbsId, bbsType, isRefine ? 1 : 0, 0, order, 1, 20);           
+            return string.Format(AppUrlMgr.TopicsUrl, bbsId, bbsType, isRefine ? 1 : 0, 0, order, 1, 20);
         }
 
         // 导向帖子详情页
@@ -214,7 +214,7 @@ namespace AutoWP7.View.Forum
         //进入搜索页
         private void search_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            string searchPageUrl = SearchHelper.GetSearchPageUrlWithParams(SearchType.Forum);
+            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(SearchType.Forum);
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 

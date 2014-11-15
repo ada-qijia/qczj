@@ -790,14 +790,14 @@ namespace AutoWP7
         {
             //最新搜索为综合，否则为论坛搜索
             SearchType type = pano.SelectedIndex == 0 ? SearchType.General : SearchType.Forum;
-            string searchPageUrl = SearchHelper.GetSearchPageUrlWithParams(type);
+            string searchPageUrl =View.Search.SearchPage.GetSearchPageUrlWithParams(type);
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 
         //找车搜索
         private void search_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            string searchPageUrl = SearchHelper.GetSearchPageUrlWithParams(SearchType.Cars);
+            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(SearchType.CarSeries);
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 

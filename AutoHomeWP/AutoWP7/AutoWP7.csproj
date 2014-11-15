@@ -159,6 +159,9 @@
     <Compile Include="UcControl\DataTemplateSelector.cs" />
     <Compile Include="UcControl\ImageToggleButton.cs" />
     <Compile Include="UcControl\KoubeiDataTemplateSelector.cs" />
+    <Compile Include="UcControl\SearchResult\ForumSearchResult.xaml.cs">
+      <DependentUpon>ForumSearchResult.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UcControl\UcMediaElement\MediaElementUc.xaml.cs">
       <DependentUpon>MediaElementUc.xaml</DependentUpon>
     </Compile>
@@ -314,6 +317,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UcControl\CarFilderFilterItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\SearchResult\ForumSearchResult.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -512,7 +519,7 @@
     <Content Include="Images\More\VS.png" />
     <Content Include="Images\alibi_recommendation.png" />
     <Content Include="Images\ReloadButton.png" />
-    <Content Include="Images\search.png" />
+    <Resource Include="Images\search.png" />
     <Content Include="Images\selectall.png" />
     <Content Include="Images\alibi_super_highlight.png" />
     <Content Include="Images\VideoPlayer\fast_forward.png" />

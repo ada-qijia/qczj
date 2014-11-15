@@ -515,7 +515,7 @@ namespace AutoWP7.View.Forum
         //导航到搜索页面
         private void searchButton_Click(object sender, EventArgs e)
         {
-            string searchPageUrl = SearchHelper.GetSearchPageUrlWithParams(SearchType.Forum);
+            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(SearchType.Forum);
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 

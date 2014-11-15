@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonLayer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -25,7 +26,14 @@ namespace AutoWP7.Utils
         Forum,
         //车系
         [Description("车系")]
-        Cars,
+        CarSeries,
+    }
+
+    public enum SuggestWordType
+    {
+        Video = 1,
+        Forum = 2,
+        Cars = 3,
     }
 
     //converter
@@ -64,20 +72,20 @@ namespace AutoWP7.Utils
 
     public class SearchHelper
     {
-        public static string GetSearchPageUrlWithParams(SearchType type)
+        private const string SearchHistoryFileName = "SearchHistory.json";
+
+        public static bool UpdateSearchHistory(IEnumerable<string> history)
         {
-            return string.Format("/View/Search/SearchPage.xaml?type={0}", (int)type);
+            string content = history == null ? null : JsonHelper.Serialize(history);
+            bool result = IsolatedStorageFileHelper.WriteIsoFile(SearchHistoryFileName, content, System.IO.FileMode.OpenOrCreate);
+            return result;
         }
 
-        public static bool UpdateSearchHistory(List<string> history)
-        {
-            throw new NotImplementedException();
-        }
-
-        //will always return a List<string>, never null.
         public static List<string> GetSearchHistory()
         {
-            throw new NotImplementedException();
+            string content = IsolatedStorageFileHelper.ReadIsoFile(SearchHistoryFileName);
+            List<string> result = JsonHelper.DeserializeOrDefault<List<string>>(content);
+            return result;
         }
     }
 }

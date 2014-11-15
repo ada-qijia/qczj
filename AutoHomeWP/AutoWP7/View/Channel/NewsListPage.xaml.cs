@@ -1106,7 +1106,7 @@ namespace AutoWP7.View.Channel
             string header = (piv.SelectedItem as PivotItem).Header.ToString();
             //新闻为综合搜索，视频为视频搜索
             SearchType type = header=="新闻" ? SearchType.General : SearchType.Video;
-            string searchPageUrl = SearchHelper.GetSearchPageUrlWithParams(type);           
+            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(type);           
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 
