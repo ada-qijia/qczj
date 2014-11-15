@@ -106,6 +106,7 @@
     <Compile Include="CarBrandViewModel.cs" />
     <Compile Include="CarCompareViewModel.cs" />
     <Compile Include="CarSeriesActicleViewModel.cs" />
+    <Compile Include="SaleViewModel.cs" />
     <Compile Include="SpecAlibiViewModel.cs" />
     <Compile Include="CarSeriesConfigurationViewModel.cs" />
     <Compile Include="CarSeriesAllForumViewModel.cs" />

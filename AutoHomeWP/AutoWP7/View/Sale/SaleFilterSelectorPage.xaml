@@ -15,7 +15,7 @@
 
         <Style x:Key="SaleItemText_Style" TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyleBase}">
             <Setter Property="Foreground" Value="#ff000000"/>
-            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontSize" Value="32"/>
             <Setter Property="TextTrimming" Value="WordEllipsis"/>
         </Style>
 
@@ -31,9 +31,10 @@
             <ItemsControl  x:Name="filterListBox" Margin="0,0,0,0">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid Tap="filterItem_Tap" Margin="24,0,24,0" >
-                            <TextBlock Grid.Row="0" Style="{StaticResource SaleItemText_Style}" Text="{Binding name}" />
-                            <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}"/>
+                        <Grid Tap="filterItem_Tap" Margin="24,0,24,0" Background="#00000000">
+                            <TextBlock Grid.Row="0" Style="{StaticResource SaleItemText_Style}" 
+                                       Text="{Binding name}" Margin="0,0,0,12"/>
+                            <!--<Rectangle Style="{StaticResource SplitBar_Horizontal_Style}"/>-->
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

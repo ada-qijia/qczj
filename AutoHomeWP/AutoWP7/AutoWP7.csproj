@@ -163,7 +163,10 @@
       <DependentUpon>MediaElementUc.xaml</DependentUpon>
     </Compile>
     <Compile Include="UcControl\UcListBox\ListBoxUc.cs" />
+    <Compile Include="Utils\DataContextGetter.cs" />
+    <Compile Include="Utils\DataTemplateSelector.cs" />
     <Compile Include="Utils\DateTimerHelper.cs" />
+    <Compile Include="Utils\LoadMoreDataTemplateSelector.cs" />
     <Compile Include="View\Car\AskPrice.xaml.cs">
       <DependentUpon>AskPrice.xaml</DependentUpon>
     </Compile>

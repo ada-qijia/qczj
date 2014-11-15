@@ -12,6 +12,7 @@
     xmlns:local="clr-namespace:AutoWP7"
     xmlns:System="clr-namespace:System;assembly=mscorlib" 
     xmlns:uc="clr-namespace:AutoWP7.UcControl"
+    xmlns:util="clr-namespace:AutoWP7.Utils"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
@@ -409,7 +410,6 @@
                 </Grid>
 
             </controls:PanoramaItem>
-
             <!--降价-->
             <controls:PanoramaItem Foreground="#3cadeb">
                 <controls:PanoramaItem.Header>
@@ -428,80 +428,85 @@
                     </Grid>
                 </controls:PanoramaItem.Header>
                 <Grid Margin="10,-30,0,17">
-                    <!--<Button BorderBrush="#00adef" BorderThickness="3,3,3,3"   
-                            x:Name="saleFilterButton" Tap="saleFilterButton_Tap"
-                            Content="筛选" Foreground="Gray"
-                            VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0"
-                            Height="70" Width="150" />-->
-
                     <ListBox x:Name="saleListbox">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="0,10,0,0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
+                                <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
+                                    <util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,0,0,24" Width="410">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
 
-                                    <Grid Tap="saleItem_Tap" Background="#00000000">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                                                <Grid Tap="saleItem_Tap" Background="#00000000">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="130"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
 
-                                        <Image Height="100" Width="100" 
-                                               Source="{Binding ImgUrl}"/>
+                                                    <Image Grid.RowSpan="3" Width="120" Height="90" Source="{Binding specpic}" 
+                                                           VerticalAlignment="Top" HorizontalAlignment="Left" Stretch="UniformToFill"/>
 
-                                        <TextBlock Text="{Binding series_spec_name}" 
-                                                   Grid.Column="1" Grid.Row="0"
-                                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}"
-                                                   FontSize="26" Foreground="Black" 
-                                                   TextWrapping="Wrap" TextTrimming="WordEllipsis"/>
+                                                    <TextBlock Text="{Binding series_spec_name}" 
+                                                               Grid.Column="1" Grid.Row="0"
+                                                               FontSize="25" Foreground="Black" Margin="0,-5,0,0"
+                                                               TextWrapping="Wrap" TextTrimming="WordEllipsis"/>
 
-                                        <TextBlock Text="{Binding inventorystate}" 
-                                                   Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left"
-                                                   FontSize="20" Foreground="Gray"/>
-                                        <TextBlock Text="{Binding dealerprice}" 
-                                                   Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"
-                                                   FontSize="20" Foreground="Red"/>
-                                        <TextBlock Text="{Binding city_dealer_name}" 
-                                                   Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"
-                                                   FontSize="20" Foreground="Gray"/>
-                                        <TextBlock Text="{Binding cutprice}" 
-                                                   Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"
-                                                   FontSize="20" Foreground="Gray"/>
+                                                    <TextBlock Text="{Binding inventorystate_name}" 
+                                                               Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left"
+                                                               FontSize="20" Foreground="#ffa0a0a0"/>
+                                                    <TextBlock Text="{Binding dealerprice_display}" 
+                                                               Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"
+                                                               FontSize="20" Foreground="#ffe84f3c"/>
+                                                    <Grid Grid.Column="1" Grid.Row="2" Background="LightBlue">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Text="{Binding city_dealer_name}" 
+                                                                   Grid.Column="0" TextTrimming="WordEllipsis"
+                                                                   FontSize="20" Foreground="#ffa0a0a0"/>
+                                                        <TextBlock Text="{Binding discount_price}" 
+                                                                   Grid.Column="1" FontSize="20" Foreground="#ff808080"/>
+                                                    </Grid>
 
-                                    </Grid>
+                                                </Grid>
 
-                                    <!--buttons-->
-                                    <!--拨打电话-->
-                                    <Image  Tap="saleItem_CallDealer_Tap" 
-                                            Grid.Row="1" 
-                                            Height="80" Width="150"
-                                            HorizontalAlignment="Left"
-                                            Source="/AutoWP7;component/Images/CallPhone.jpg"/>
-                                    <!-- 询价-->
-                                    <Image  Tap="saleItem_CallPrice_Tap" 
-                                            Tag="{Binding id}"
-                                            Grid.Row="1" 
-                                            Height="80" Width="150"
-                                            HorizontalAlignment="Right"
-                                            Source="/AutoWP7;component/Images/CallPrice.jpg"/>
-
-                                </Grid>
+                                                <!--拨打电话-->
+                                                <Image  Tap="saleItem_CallDealer_Tap" 
+                                                        Grid.Row="1" Height="80" Width="150"
+                                                        HorizontalAlignment="Left" Source="/AutoWP7;component/Images/CallPhone.jpg"/>
+                                                <!-- 询价-->
+                                                <Image  Tap="saleItem_CallPrice_Tap" Tag="{Binding id}"
+                                                        Grid.Row="1" Height="80" Width="150"
+                                                        HorizontalAlignment="Right" Source="/AutoWP7;component/Images/CallPrice.jpg"/>
+                                                <Rectangle Grid.Row="1" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0,0,0,-10"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                    <util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border  Margin="0,10,0,16" Tap="saleLoadMore_Tap" 
+                                                     Background="LightGray" Height="60" Width="410">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </util:LoadMoreDataTemplateSelector>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-
                 </Grid>
-
             </controls:PanoramaItem>
-
             <!--论坛-->
             <controls:PanoramaItem Foreground="#3cadeb" Header="论坛">
                 <ScrollViewer Margin="0,-30,0,0">
@@ -550,7 +555,6 @@
             </controls:PanoramaItem>
         </controls:Panorama>
 
-
         <!--sale filter-->
         <Grid x:Name="SaleFilter" Background="#CC000000" IsHitTestVisible="False" Opacity="0">
             <Grid.RowDefinitions>
@@ -593,7 +597,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar Opacity="0.8" BackgroundColor="Black"  ForegroundColor="White"  Mode="Minimized" IsMenuEnabled="True">
+        <shell:ApplicationBar BackgroundColor="Black"  ForegroundColor="White"  Mode="Minimized" IsMenuEnabled="True">
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="moreIconButton" Click="moreIconButton_Click" Text="更多"/>
             </shell:ApplicationBar.MenuItems>

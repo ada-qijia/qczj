@@ -207,20 +207,20 @@ namespace AutoWP7
         //向服务器请求数据url地址头部
         public static string headUrl = "http://sp.autohome.com.cn";
 
-        //public static string appUrl = "http://221.192.136.99:804";
-        //public static string topicPageDomain = "http://221.192.136.99:804";
-        //public static string newsPageDomain = "http://221.192.136.99:804";
+        public static string appUrl = "http://221.192.136.99:804";
+        public static string topicPageDomain = "http://221.192.136.99:804";
+        public static string newsPageDomain = "http://221.192.136.99:804";
 
-        public static string appUrl = "http://app.api.autohome.com.cn";
-        public static string topicPageDomain = "http://forum.app.autohome.com.cn";
-        public static string newsPageDomain = "http://cont.app.autohome.com.cn";
+        //public static string appUrl = "http://app.api.autohome.com.cn";
+        //public static string topicPageDomain = "http://forum.app.autohome.com.cn";
+        //public static string newsPageDomain = "http://cont.app.autohome.com.cn";
 
         public static string loginUrl = "http://account.autohome.com.cn";
 
         public static string replyUrl = "http://reply.autohome.com.cn";
 
         public static string clubUrl = "http://club.api.autohome.com.cn";
-        public static string versionStr = "/wpv1.5";
+        public static string versionStr = "/wpv1.6";
 
         #endregion
         /// <summary>
@@ -254,6 +254,12 @@ namespace AutoWP7
         public static string newsid = string.Empty;
 
         public static List<string> BigImageList { get; set; }
+
+        //降价模块
+        public static string SaleFilterSelector_FilterType { get; set; }
+        public static string SaleFilterSelector_SelectedValue { get; set; }
+        public static string SaleFilterSelector_SelectedName { get; set; }
+
 
         /// <summary>
         /// 提供对电话应用程序的根框架的轻松访问。
@@ -417,7 +423,7 @@ namespace AutoWP7
             //调用全局方法，更改本地数据库数据结构
             UpdateDBHelper upHelper = new UpdateDBHelper();
             upHelper.update_14();
-            
+
             UmengSDK.UmengAnalytics.setDebug(true);
             UmengSDK.UmengAnalytics.onLaunching("5056b77d5270155f88000125", ChannelId);
             UmengSDK.UmengAnalytics.update("5056b77d5270155f88000125");

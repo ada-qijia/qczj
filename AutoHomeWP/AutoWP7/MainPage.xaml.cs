@@ -15,6 +15,7 @@ using ViewModels.Handler;
 using System.Windows.Media.Animation;
 using System.Windows.Media;
 using Microsoft.Phone.Data.Linq;
+using System.ComponentModel;
 
 namespace AutoWP7
 {
@@ -57,13 +58,14 @@ namespace AutoWP7
                         worker1.Start();
 
                         //  UpdateLocalCity();
-
                     }
                     break;
                 case System.Windows.Navigation.NavigationMode.Back:
                     {
                         //更新本地城市
                         UpdateLocalCity();
+
+                        HandleSaleFilterSelection();
                     }
                     break;
             }
@@ -85,7 +87,14 @@ namespace AutoWP7
                             workerCar.Start();
                             isLoaded = true;
                         }
-
+                    }
+                    break;
+                case 3:
+                    {
+                        if (!saleLoaded)
+                        {
+                            SaleLoadData();
+                        }
                     }
                     break;
             }
@@ -123,7 +132,7 @@ namespace AutoWP7
         //标识找车字母索引是否打开
         bool isOpened = false;
         //退出程序
-        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        protected override void OnBackKeyPress(CancelEventArgs e)
         {
             if (isSaleFilterShown)
             {
@@ -131,8 +140,6 @@ namespace AutoWP7
                 HideSaleFilter();
                 return;
             }
-
-            base.OnBackKeyPress(e);
 
             if (isOpened)
             {
@@ -153,8 +160,9 @@ namespace AutoWP7
                 {
                     e.Cancel = true;
                 }
-
             }
+
+            base.OnBackKeyPress(e);
         }
 
         // 清除缓存
@@ -333,7 +341,6 @@ namespace AutoWP7
 
         #region  品牌找车数据加载
 
-
         private class CarBrandGroup : List<CarBrandModel>
         {
             public CarBrandGroup(string category)
@@ -351,7 +358,6 @@ namespace AutoWP7
         }
 
         CarBrandSource carBrandSource = new CarBrandSource();
-
 
         public void carBrandLoadData()
         {
@@ -412,9 +418,6 @@ namespace AutoWP7
             }
 
         }
-
-
-
 
         //汽车品牌网络加载
         CarBrandViewModel carVM = null;
@@ -485,7 +488,71 @@ namespace AutoWP7
 
         #region 降价
 
+        bool saleLoaded = false;
+
+        SaleViewModel saleVM = null;
+
+        string sale_param_pi = "0";
+        string sale_param_c = "0";
+        string sale_param_o = "0";
+        string sale_param_b = "0";
+        string sale_param_ss = "0";
+        string sale_param_sp = "0";
+        int sale_page_index = 1;//page_index
+        int sale_page_size = 20;//page_size
+        string sale_param_l = "0";
+        string sale_param_minp = "0";
+        string sale_param_maxp = "0";
+
+        private void SaleLoadData()
+        {
+            GlobalIndicator.Instance.Text = "正在获取中...";
+            GlobalIndicator.Instance.IsBusy = true;
+
+            if (saleVM == null)
+            {
+                saleVM = new SaleViewModel();
+                saleVM.LoadDataCompleted += SaleVM_LoadDataCompleted;
+                saleListbox.ItemsSource = saleVM.DataSource;
+            }
+
+            //http://221.192.136.99:804/wpv1.6/dealer/pdspecs-a2-pm3-v1.6.0-pi0-c0-o0-b0-ss0-sp0-p1-s20-l0-minp10-maxp20.html
+            string format = App.appUrl + App.versionStr + "/dealer/pdspecs-" + App.AppInfo + "-pi{0}-c{1}-o{2}-b{3}-ss{4}-sp{5}-p{6}-s{7}-l{8}-minp{9}-maxp{10}.html";
+            string url = string.Format(format, sale_param_pi, sale_param_c, sale_param_o, sale_param_b,
+                sale_param_ss, sale_param_sp, sale_page_index, sale_page_size, sale_param_l, sale_param_minp, sale_param_maxp);
+            saleVM.LoadDataAysnc(url);
+        }
+
+        void SaleVM_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<SaleItemModel>> e)
+        {
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false;
+            if (e.Error != null)
+            {
+                Common.NetworkAvailablePrompt();
+            }
+            else
+            {
+                saleLoaded = true;
+                if (saleVM.IsEndPage)
+                {
+                    Common.showMsg("已经是最后一页了");
+                }
+                else
+                {
+                }
+            }
+        }
+
+        private void saleLoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            sale_page_index++;
+            SaleLoadData();
+        }
+
+        /************** Filter ****************/
         bool isSaleFilterShown = false;
+
         private void saleFilterButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             ShowSaleFilter();
@@ -511,6 +578,7 @@ namespace AutoWP7
             VisualStateManager.GoToState(this, "VSSaleFilterShown", true);
             isSaleFilterShown = true;
         }
+
         protected void HideSaleFilter()
         {
             VisualStateManager.GoToState(this, "VSSaleFilterHidden", true);
@@ -520,8 +588,40 @@ namespace AutoWP7
         private void SaleFilter_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             string tag = ((FrameworkElement)sender).Tag.ToString();
-            HideSaleFilter();
+            //HideSaleFilter();
+
+            //reset the key, and if user press backbutton without any selection, this page knows and ignores it
+            App.SaleFilterSelector_FilterType = string.Empty;
             this.NavigationService.Navigate(new Uri("/View/Sale/SaleFilterSelectorPage.xaml?filterType=" + tag, UriKind.Relative));
+        }
+
+        private void HandleSaleFilterSelection()
+        {
+            if (string.IsNullOrEmpty(App.SaleFilterSelector_FilterType))
+            {
+                return;
+            }
+
+            Button buttonToUpdate = null;
+            switch (App.SaleFilterSelector_FilterType)
+            {
+                case "price":
+                    buttonToUpdate = SaleFilter3;
+                    break;
+                case "level":
+                    buttonToUpdate = SaleFilter4;
+                    break;
+                case "buyorder":
+                    buttonToUpdate = SaleFilter5;
+                    break;
+                default:
+                    break;
+            }
+
+            if (buttonToUpdate!=null)
+            {
+                buttonToUpdate.Content = App.SaleFilterSelector_SelectedName;
+            }
         }
 
         #endregion

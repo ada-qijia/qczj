@@ -9,6 +9,7 @@ using Microsoft.Phone.Shell;
 using Model;
 using ViewModels;
 using Microsoft.Phone.Tasks;
+using AutoWP7.Utils;
 
 namespace AutoWP7.View.Channel.News
 {
@@ -24,11 +25,20 @@ namespace AutoWP7.View.Channel.News
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            
+
             filterType = NavigationContext.QueryString["filterType"];
             switch (filterType)
             {
                 case "price":
                     pageTitle.Text = "选择价格";
+                    break;
+                case "level":
+                    pageTitle.Text = "选择级别";
+                    break;
+                case "buyorder":
+                    pageTitle.Text = "选择排序";
                     break;
                 default:
                     break;
@@ -72,7 +82,14 @@ namespace AutoWP7.View.Channel.News
 
         private void filterItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            App.SaleFilterSelector_FilterType = filterType;
+            App.SaleFilterSelector_SelectedValue = sender.GetDataContext<SaleFilterItemModel>().value;
+            App.SaleFilterSelector_SelectedName = sender.GetDataContext<SaleFilterItemModel>().name;
 
+            if (NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
         }
 
     }
