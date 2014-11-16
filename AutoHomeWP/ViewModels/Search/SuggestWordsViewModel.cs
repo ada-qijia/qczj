@@ -1,31 +1,26 @@
-﻿using CommonLayer;
-using Model.Search;
+﻿using Model;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.ComponentModel;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using ViewModels.Handler;
 
 namespace ViewModels.Search
 {
-    public class ArticleSearchResultViewModel : SearchResultViewModelBase, ISearchViewModel
+    public class SuggestWordsViewModel:SearchResultViewModelBase, ISearchViewModel
     {
-        public ArticleSearchResultViewModel()
+        public SuggestWordsViewModel()
         {
-            this.ArticleList = new ObservableCollection<ArticleModel>();
+            this.SuggestWordsList = new ObservableCollection<string>();
         }
 
-        #region properties
-
-        public ObservableCollection<ArticleModel> ArticleList { get; private set; }
-
-        #endregion
-
-        #region interface implementation
+        /// <summary>
+        /// 返回的数据集合
+        /// </summary>
+        public ObservableCollection<string> SuggestWordsList
+        { get; private set; }
 
         public event EventHandler LoadDataCompleted;
 
@@ -51,18 +46,18 @@ namespace ViewModels.Search
                             this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
                             this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
 
-                            //文章列表
-                            JArray blockToken = (JArray)resultToken.SelectToken("hits");
-                            foreach(JToken itemToken in blockToken)
+                            //视频列表
+                            this.SuggestWordsList.Clear();
+                            JArray blockToken = (JArray)resultToken.SelectToken("wordlist");
+                            if (blockToken != null)
+                            {
+                                for (int i = 0; i < blockToken.Count; i++)
                                 {
-                                    string data = itemToken.SelectToken("data").ToString();
-                                    var model= JsonHelper.DeserializeOrDefault<ArticleModel>(data);
-                                    if(model!=null)
-                                    {
-                                        this.ArticleList.Add(model);
-                                    }
+                                    string word = blockToken[i].SelectToken("name").ToString();
+                                    SuggestWordsList.Add(word);
                                 }
-                               
+                            }
+
                             #endregion
                         }
                         catch
@@ -71,6 +66,7 @@ namespace ViewModels.Search
                     }
 
                     isLoading = false;
+
                     //触发完成事件
                     if (LoadDataCompleted != null)
                     {
@@ -85,10 +81,7 @@ namespace ViewModels.Search
 
         public void ClearData()
         {
-            this.RowCount = 0;
-            this.ArticleList.Clear();
+            this.SuggestWordsList.Clear();
         }
-
-        #endregion
     }
 }

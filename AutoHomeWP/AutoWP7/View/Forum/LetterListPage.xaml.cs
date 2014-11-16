@@ -214,7 +214,7 @@ namespace AutoWP7.View.Forum
         //进入搜索页
         private void search_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(SearchType.Forum);
+            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(SearchType.Forum,bbsId,title);
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 

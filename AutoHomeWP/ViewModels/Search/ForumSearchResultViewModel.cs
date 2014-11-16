@@ -12,21 +12,35 @@ using ViewModels.Handler;
 
 namespace ViewModels.Search
 {
-    public class ForumSearchResultViewModel :SearchResultViewModelBase, ISearchViewModel
+    public class ForumSearchResultViewModel : SearchResultViewModelBase, ISearchViewModel
     {
         public ForumSearchResultViewModel()
         {
+            this.RelatedBBSList = new ObservableCollection<RelatedBBSModel>();
             this.BBSList = new ObservableCollection<BBSModel>();
             this.TopicList = new ObservableCollection<TopicModel>();
         }
 
         #region properties
 
-        public int BBSCount { get; set; }
+        private RelatedBBSModel _defaultRelatedBBS;
+        public RelatedBBSModel DefaultRelatedBBS
+        {
+            get { return this._defaultRelatedBBS; }
+            set
+            {
+                this._defaultRelatedBBS = value;
+                var equalItem = this.RelatedBBSList.FirstOrDefault(item => item.ID == value.ID);
+                if (equalItem == null)
+                {
+                    this.RelatedBBSList.Insert(0, value);
+                }
+            }
+        }
+
+        public ObservableCollection<RelatedBBSModel> RelatedBBSList { get; private set; }
 
         public ObservableCollection<BBSModel> BBSList { get; private set; }
-
-        public int TopicCount { get; set; }
 
         public ObservableCollection<TopicModel> TopicList { get; private set; }
 
@@ -55,7 +69,30 @@ namespace ViewModels.Search
 
                             #region 用返回结果填充每个版块
 
+                            this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
+                            this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
+
                             JToken blockToken;
+
+                            //相关论坛列表
+                            blockToken = resultToken.SelectToken("relatedclubs");
+                            this.RelatedBBSList.Clear();
+                            if (blockToken.HasValues)
+                            {
+                                var relatedClubList = JsonHelper.DeserializeOrDefault<List<RelatedBBSModel>>(blockToken.ToString());
+                                if (relatedClubList != null)
+                                {
+                                    foreach (var model in relatedClubList)
+                                    {
+                                        this.RelatedBBSList.Add(model);
+                                    }
+                                }
+                            }
+                            else if(this.DefaultRelatedBBS!=null)
+                            {
+                                this.RelatedBBSList.Add(DefaultRelatedBBS);
+                            }
+
                             //论坛列表
                             blockToken = resultToken.SelectToken("clublist");
                             if (blockToken.HasValues)
@@ -107,8 +144,22 @@ namespace ViewModels.Search
 
         public void ClearData()
         {
-            this.BBSCount = 0;
-            this.TopicCount = 0;
+            this.RowCount = 0;
+            if (this.DefaultRelatedBBS != null)
+            {
+                foreach (var relatedBBS in this.RelatedBBSList)
+                {
+                    if (relatedBBS.ID != this.DefaultRelatedBBS.ID)
+                    {
+                        this.RelatedBBSList.Remove(relatedBBS);
+                    }
+                }
+            }
+            else
+            {
+                this.RelatedBBSList.Clear();
+            }
+
             this.BBSList.Clear();
             this.TopicList.Clear();
         }

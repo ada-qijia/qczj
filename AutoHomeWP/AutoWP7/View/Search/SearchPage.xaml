@@ -13,7 +13,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="False">
     
     <phone:PhoneApplicationPage.Resources>
         <utils:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
@@ -45,7 +45,7 @@
                 </toolkit:ListPicker.ItemTemplate>
             </toolkit:ListPicker>
 
-            <toolkit:PhoneTextBox x:Name="keywordTextBox" Grid.Column="1" Hint="搜索关键词" Margin="-12 0" Loaded="keywordTB_Loaded" TextInputUpdate="keyboardTB_TextInputUpdate" TextChanged="keyboardTB_TextChanged"/>
+            <toolkit:PhoneTextBox x:Name="keywordTextBox" Grid.Column="1" Hint="搜索关键词" Margin="-12 0" Loaded="keywordTB_Loaded" TextChanged="keyboardTB_TextChanged"/>
             <Image Grid.Column="1" HorizontalAlignment="Right" Source="/AutoWP7;component/Images/search.png" Height="40" Tap="search_Tap"/>
             <TextBlock Grid.Column="2" Text="取消" VerticalAlignment="Center" Margin="24 12 12 12" Tap="cancel_Tap"/>
         </Grid>
@@ -65,22 +65,31 @@
                 </StackPanel>
             </Grid>
 
-            <ListBox x:Name="historyListBox" ItemsSource="{Binding}" ManipulationStarted="historyListBox_ManipulationStarted">
+            <ListBox x:Name="historyListBox" Grid.Row="1" ItemsSource="{Binding}" ManipulationStarted="historyListBox_ManipulationStarted">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" Tap="historyItem_Tap"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-
-            <ListBox x:Name="suggestWordsListBox" ItemsSource="{Binding WordsDataSource}" ManipulationStarted="suggestWordsListBox_ManipulationStarted">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" Tap="suggestItem_Tap"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
         </Grid>
+
+        <!--推荐联想词-->
+        <ListBox x:Name="suggestWordsListBox" Grid.Row="1" ItemsSource="{Binding SuggestWordsList}" Visibility="Collapsed"
+                 ManipulationStarted="suggestWordsListBox_ManipulationStarted">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Tap="suggestItem_Tap"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+        <!--搜索结果-->
+        <Grid x:Name="ResultGrid" Grid.Row="1" Visibility="Collapsed">
+
+        </Grid>
+
     </Grid>
 
 </phone:PhoneApplicationPage>

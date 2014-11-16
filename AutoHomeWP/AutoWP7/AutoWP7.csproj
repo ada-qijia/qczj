@@ -159,14 +159,24 @@
     <Compile Include="UcControl\DataTemplateSelector.cs" />
     <Compile Include="UcControl\ImageToggleButton.cs" />
     <Compile Include="UcControl\KoubeiDataTemplateSelector.cs" />
+    <Compile Include="UcControl\SearchResult\ArticleSearchResult.xaml.cs">
+      <DependentUpon>ArticleSearchResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcControl\SearchResult\CarSeriesSearchResult.xaml.cs">
+      <DependentUpon>CarSeriesSearchResult.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UcControl\SearchResult\ForumSearchResult.xaml.cs">
       <DependentUpon>ForumSearchResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcControl\SearchResult\VideoSearchResult.xaml.cs">
+      <DependentUpon>VideoSearchResult.xaml</DependentUpon>
     </Compile>
     <Compile Include="UcControl\UcMediaElement\MediaElementUc.xaml.cs">
       <DependentUpon>MediaElementUc.xaml</DependentUpon>
     </Compile>
     <Compile Include="UcControl\UcListBox\ListBoxUc.cs" />
     <Compile Include="Utils\DateTimerHelper.cs" />
+    <Compile Include="Utils\SearchConverters.cs" />
     <Compile Include="Utils\SearchHelper.cs" />
     <Compile Include="View\Car\AskPrice.xaml.cs">
       <DependentUpon>AskPrice.xaml</DependentUpon>
@@ -320,7 +330,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UcControl\SearchResult\ArticleSearchResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\SearchResult\CarSeriesSearchResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UcControl\SearchResult\ForumSearchResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\SearchResult\VideoSearchResult.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

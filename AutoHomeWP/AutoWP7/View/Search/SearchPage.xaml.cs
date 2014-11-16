@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using ViewModels;
 using ViewModels.Handler;
+using ViewModels.Search;
 
 namespace AutoWP7.View.Search
 {
@@ -21,32 +22,71 @@ namespace AutoWP7.View.Search
 
         private ObservableCollection<string> searchHistory;
 
+        private string lastKeywordText;
+
+        //论坛参数
+        private int bbsID;
+        private string bbsName;
+
         public SearchPage()
         {
             InitializeComponent();
 
             this.searchTypeListPicker.DataContext = Enum.GetValues(typeof(SearchType));
+
+            this.searchHistory = new ObservableCollection<string>();
+            this.historyListBox.DataContext = this.searchHistory;
+
             LoadSearchHistory();
         }
 
-        public static string GetSearchPageUrlWithParams(SearchType type)
+        /// <summary>
+        /// 获取带参数的URl
+        /// </summary>
+        /// <param name="type">搜索类型</param>
+        /// <param name="param1">论坛内搜索时为论坛ID</param>
+        /// <param name="param2">论坛内搜索时为论坛名称</param>
+        /// <returns></returns>
+        public static string GetSearchPageUrlWithParams(SearchType type, string param1 = null, string param2 = null)
         {
-            return string.Format("/View/Search/SearchPage.xaml?type={0}", (int)type);
+            string param1Part = string.IsNullOrEmpty(param1) ? string.Empty : "&param1=" + param1;
+            string param2Part = string.IsNullOrEmpty(param2) ? string.Empty : "&param2=" + param2;
+            return string.Format("/View/Search/SearchPage.xaml?type={0}{1}{2}", (int)type, param1Part, param2Part);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             //set the selected search type.
-            if (NavigationContext.QueryString.ContainsKey("type"))
+            if (e.NavigationMode == System.Windows.Navigation.NavigationMode.New)
             {
-                int typeIndex;
-                if (int.TryParse(NavigationContext.QueryString["type"], out typeIndex))
+                if (NavigationContext.QueryString.ContainsKey("type"))
                 {
-                    this.searchTypeListPicker.SelectedIndex = typeIndex;
+                    int typeIndex;
+                    if (int.TryParse(NavigationContext.QueryString["type"], out typeIndex))
+                    {
+                        this.searchTypeListPicker.SelectedIndex = typeIndex;
+                    }
+
+                    //论坛
+                    if (typeIndex == 3)
+                    {
+                        if (NavigationContext.QueryString.ContainsKey("param1"))
+                        {
+                            int.TryParse(NavigationContext.QueryString["param1"], out bbsID);
+                        }
+                        else
+                        {
+                            bbsID = 0;
+                        }
+
+                        bbsName = NavigationContext.QueryString.ContainsKey("param2") ? NavigationContext.QueryString["param2"] : string.Empty;
+                    }
                 }
             }
         }
+
+        #region UI交互
 
         //激活搜索框
         private void keywordTB_Loaded(object sender, RoutedEventArgs e)
@@ -54,16 +94,22 @@ namespace AutoWP7.View.Search
             this.keywordTextBox.Focus();
         }
 
-        //显示或隐藏搜索历史
-        private void keyboardTB_TextInputUpdate(object sender, TextCompositionEventArgs e)
-        {
-            this.historyGrid.Visibility = string.IsNullOrEmpty(this.keywordTextBox.Text) ? Visibility.Visible : Visibility.Collapsed;
-        }
-
         //列出最多10个推荐联想词
         private void keyboardTB_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(this.keywordTextBox.Text))
+            if(this.keywordTextBox.Text==lastKeywordText)
+            {
+                return;
+            }
+
+            lastKeywordText = this.keywordTextBox.Text;
+            //如果输入为空，显示历史记录
+            if (string.IsNullOrWhiteSpace(this.keywordTextBox.Text))
+            {
+                this.historyGrid.Visibility = Visibility.Visible;
+                this.suggestWordsListBox.Visibility = Visibility.Collapsed;
+            }
+            else
             {
                 SuggestWordType suggestType = SuggestWordType.Cars;
                 switch (this.searchTypeListPicker.SelectedIndex)
@@ -100,7 +146,7 @@ namespace AutoWP7.View.Search
 
         private void cancel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.keywordTextBox.Text = string.Empty;
         }
 
         //更新搜索输入框提示内容
@@ -118,7 +164,7 @@ namespace AutoWP7.View.Search
                     this.keywordTextBox.Hint = "搜索视频标题";
                     break;
                 case 3:
-                    this.keywordTextBox.Hint = "搜索论坛或帖子标题";
+                    this.keywordTextBox.Hint = bbsID == 0 ? "搜索论坛或帖子标题" : "搜索帖子标题";
                     break;
                 case 4:
                     this.keywordTextBox.Hint = "搜索车系";
@@ -142,8 +188,7 @@ namespace AutoWP7.View.Search
         private void historyItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             string keyword = ((TextBlock)sender).Text;
-            this.keywordTextBox.Text = keyword;
-            this.LoadSearchResult(keyword);
+            this.selectKeyword(keyword);
         }
 
         //滑动列表时隐藏键盘
@@ -155,14 +200,23 @@ namespace AutoWP7.View.Search
         private void suggestItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             string keyword = ((TextBlock)sender).Text;
+            this.selectKeyword(keyword);
+        }
+
+        private void selectKeyword(string keyword)
+        {
+            this.keywordTextBox.TextChanged -= this.keyboardTB_TextChanged;
             this.keywordTextBox.Text = keyword;
+            this.keywordTextBox.TextChanged += this.keyboardTB_TextChanged;
+            this.AddSearchHistory(keyword);
             this.LoadSearchResult(keyword);
         }
+
+        #endregion
 
         #region 历史记录
         private void LoadSearchHistory()
         {
-            this.searchHistory = new ObservableCollection<string>();
             List<string> historyList = SearchHelper.GetSearchHistory();
             if (historyList != null)
             {
@@ -171,19 +225,27 @@ namespace AutoWP7.View.Search
                     this.searchHistory.Add(item);
                 }
             }
-            this.historyListBox.DataContext = this.searchHistory;
         }
 
         //如果不存在， 添加一条记录，最多10条，时间逆序
         private void AddSearchHistory(string keyword)
         {
-            if (!string.IsNullOrEmpty(keyword) && this.searchHistory.Contains(keyword.Trim()))
+            if (!string.IsNullOrEmpty(keyword))
             {
-                this.searchHistory.Insert(0, keyword.Trim());
-                if (this.searchHistory.Count > MaxHistoryCnt)
+                int oldIndex=this.searchHistory.IndexOf(keyword.Trim());
+                if (oldIndex >= 0)
                 {
-                    this.searchHistory.RemoveAt(MaxHistoryCnt - 1);
+                    this.searchHistory.Move(oldIndex, 0);
                 }
+                else
+                {
+                    this.searchHistory.Insert(0, keyword.Trim());
+                    if (this.searchHistory.Count > MaxHistoryCnt)
+                    {
+                        this.searchHistory.RemoveAt(MaxHistoryCnt - 1);
+                    }
+                }
+
                 SearchHelper.UpdateSearchHistory(this.searchHistory);
             }
         }
@@ -206,23 +268,18 @@ namespace AutoWP7.View.Search
             {
                 suggestWordsVM = new SuggestWordsViewModel();
                 suggestWordsVM.LoadDataCompleted += suggestWordsVM_LoadDataCompleted;
+                this.suggestWordsListBox.DataContext = suggestWordsVM;
             }
 
-            //清空原有数据
-            suggestWordsVM.WordsDataSource.Clear();
-
-            //string url = "http://221.192.136.99:804/wpv1.6/sou/suggestwords.ashx?a=2&pm=3&v=1.6.0&k=bmw&t=1";
-            string url = string.Format("{0}{1}/sou/suggestwords.ashx?a={2}&pm={3}&v={4}&k={5}&t={6}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, (int)type);
+            string url = "http://221.192.136.99:804/wpv1.6/sou/suggestwords.ashx?a=2&pm=3&v=1.6.0&k=bmw&t=1";
+            //string url = string.Format("{0}{1}/sou/suggestwords.ashx?a={2}&pm={3}&v={4}&k={5}&t={6}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, (int)type);
             suggestWordsVM.LoadDataAysnc(url);
         }
 
-        private void suggestWordsVM_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<string>> e)
+        void suggestWordsVM_LoadDataCompleted(object sender, EventArgs e)
         {
-            //set suggestwords as datasource
-            if (this.suggestWordsListBox.DataContext == null)
-            {
-                this.suggestWordsListBox.DataContext = suggestWordsVM;
-            }
+            this.suggestWordsListBox.Visibility = Visibility.Visible;
+            this.historyGrid.Visibility = Visibility.Collapsed;
         }
 
         #endregion
@@ -235,6 +292,59 @@ namespace AutoWP7.View.Search
             this.AddSearchHistory(keyword);
 
             //load data
+            switch (this.searchTypeListPicker.SelectedIndex)
+            {
+                //综合
+                case 0:
+                    break;
+                //文章
+                case 1:
+                    var articleSearchResultUC = new UcControl.SearchResult.ArticleSearchResult(keyword);
+
+                    this.ResultGrid.Children.Clear();
+                    this.ResultGrid.Children.Add(articleSearchResultUC);
+                    this.ResultGrid.Visibility = Visibility.Visible;
+
+                    articleSearchResultUC.LoadMore(true);
+                    break;
+                //视频
+                case 2:
+                    var videoSearchResultUC = new UcControl.SearchResult.VideoSearchResult(keyword);
+
+                    this.ResultGrid.Children.Clear();
+                    this.ResultGrid.Children.Add(videoSearchResultUC);
+                    this.ResultGrid.Visibility = Visibility.Visible;
+
+                    videoSearchResultUC.LoadMore(true);
+                    break;
+                //论坛
+                case 3:
+                    Model.Search.RelatedBBSModel relatedBBSModel = null;
+                    if (bbsID != 0 && !string.IsNullOrEmpty(bbsName))
+                    {
+                        relatedBBSModel = new Model.Search.RelatedBBSModel() { ID = bbsID, Name = bbsName };
+                    }
+                    var forumSearchResultUC = new UcControl.SearchResult.ForumSearchResult(keyword, relatedBBSModel);
+
+                    this.ResultGrid.Children.Clear();
+                    this.ResultGrid.Children.Add(forumSearchResultUC);
+                    this.ResultGrid.Visibility = Visibility.Visible;
+
+                    forumSearchResultUC.LoadMore(true);
+                    break;
+                //车系
+                case 4:
+                    var carSeriesSearchResultUC = new UcControl.SearchResult.CarSeriesSearchResult(keyword);
+
+                    this.ResultGrid.Children.Clear();
+                    this.ResultGrid.Children.Add(carSeriesSearchResultUC);
+                    this.ResultGrid.Visibility = Visibility.Visible;
+
+                    carSeriesSearchResultUC.ReLoad();
+                    break;
+                default:
+                    break;
+            }
         }
 
         #endregion

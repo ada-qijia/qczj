@@ -121,7 +121,7 @@
     <Compile Include="CarSeriesViewModel.cs" />
     <Compile Include="CityListViewModel.cs" />
     <Compile Include="AlibiDetailViewModel.cs" />
-    <Compile Include="SuggestWordsViewModel.cs" />
+    <Compile Include="Search\SuggestWordsViewModel.cs" />
     <Compile Include="VideoDetailViewModel.cs" />
     <Compile Include="DealerViewModel.cs" />
     <Compile Include="CarSeriesForumViewModel.cs" />

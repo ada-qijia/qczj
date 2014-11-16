@@ -21,8 +21,6 @@ namespace ViewModels.Search
 
         #region properties
 
-        public int VideoCount { get; set; }
-
         public ObservableCollection<VideoSearchModel> VideoList { get; private set; }
 
         #endregion
@@ -50,7 +48,8 @@ namespace ViewModels.Search
 
                             #region 用返回结果填充每个版块
 
-                            this.VideoCount = resultToken.SelectToken("rowcount").Value<int>();
+                            this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
+                            this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
 
                             JToken blockToken;
                             //视频列表
@@ -90,7 +89,7 @@ namespace ViewModels.Search
 
         public void ClearData()
         {
-            this.VideoCount = 0;
+            this.RowCount = 0;
             this.VideoList.Clear();
         }
 

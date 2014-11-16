@@ -15,8 +15,8 @@ namespace Model.Search
         [DataMember(Name = "content")]
         public string Content { get; set; }
 
-        [DataMember(Name = "kind")]
-        public ArticleType Type { get; set; }
+        [DataMember(Name = "newstype")]
+        public string Type { get; set; }
 
         [DataMember(Name = "date")]
         public string Date { get; set; }

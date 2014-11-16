@@ -21,8 +21,6 @@ namespace ViewModels.Search
 
         #region properties
 
-        public int CarSeriesCount { get; set; }
-
         public ObservableCollection<CarSeriesSearchModel> CarSeriesList { get; private set; }
 
         #endregion
@@ -50,7 +48,8 @@ namespace ViewModels.Search
 
                             #region 用返回结果填充每个版块
 
-                            this.CarSeriesCount = resultToken.SelectToken("rowcount").Value<int>();
+                            this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
+                            //this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
 
                             JToken blockToken;
                             //车系列表
@@ -90,7 +89,7 @@ namespace ViewModels.Search
 
         public void ClearData()
         {
-            this.CarSeriesCount = 0;
+            this.RowCount = 0;
             this.CarSeriesList.Clear();
         }
 

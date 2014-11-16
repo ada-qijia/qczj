@@ -7,20 +7,30 @@ using System.Threading.Tasks;
 
 namespace ViewModels.Search
 {
-    public abstract class SearchResultViewModelBase
+    public abstract class SearchResultViewModelBase : Model.BindableBase
     {
         protected event DownloadStringCompletedEventHandler DownloadStringCompleted;
-        
-        public void DownloadStringAsync(string url)
+
+        private int _rowCount;
+        public int RowCount
+        {
+            get { return _rowCount; }
+            set
+            { SetProperty<int>(ref _rowCount, value); }
+        }
+
+        public int PageIndex { get; set; }
+
+        protected void DownloadStringAsync(string url)
         {
             WebClient wc = new WebClient();
 
             wc.Encoding = System.Text.Encoding.UTF8;
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
-  
-            wc.DownloadStringCompleted+= new DownloadStringCompletedEventHandler((obj, e) =>
-            { 
-                if(this.DownloadStringCompleted!=null)
+
+            wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((obj, e) =>
+            {
+                if (this.DownloadStringCompleted != null)
                 {
                     this.DownloadStringCompleted(this, e);
                 }
