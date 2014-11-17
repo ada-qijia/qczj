@@ -539,16 +539,18 @@ namespace AutoWP7
             else
             {
                 saleLoaded = true;
-                if (saleVM.IsEndPage)
+                if (saleVM.DataSource.Count == 0)
+                {
+                    Common.showMsg("暂无降价活动");
+                }
+                else if (saleVM.IsEndPage)
                 {
                     Common.showMsg("已经是最后一页了");
                 }
-                else
+                
+                if (isSaleFilterShown)
                 {
-                    if (isSaleFilterShown)
-                    {
-                        HideSaleFilter();
-                    }
+                    HideSaleFilter();
                 }
             }
         }
@@ -627,6 +629,7 @@ namespace AutoWP7
                     }
                     break;
                 case "level":
+                    sale_param_l = App.SaleFilterSelector_SelectedValue;
                     if (App.SaleFilterSelector_SelectedValue == "0")
                     {
                         SaleFilter4.Content = "级别";
@@ -637,6 +640,7 @@ namespace AutoWP7
                     }
                     break;
                 case "buyorder":
+                    sale_param_o = App.SaleFilterSelector_SelectedValue;
                     if (App.SaleFilterSelector_SelectedValue == "0")
                     {
                         SaleFilter5.Content = "排序";

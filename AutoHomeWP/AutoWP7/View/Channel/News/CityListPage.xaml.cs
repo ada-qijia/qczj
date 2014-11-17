@@ -138,7 +138,6 @@ namespace AutoWP7.View.Channel.News
         {
             TextBlock ss = (TextBlock)sender;
 
-
             //独立存储城市id
             var setting = IsolatedStorageSettings.ApplicationSettings;
             string key = "cityId";
