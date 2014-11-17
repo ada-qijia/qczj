@@ -72,12 +72,17 @@ namespace AutoWP7.Utils
         {
             if (value != null)
             {
-                var enumValue = value as IEnumerable<object>;
-                if (enumValue == null)
+                //for int type
+                if (value is int)
                 {
-                    return Visibility.Visible;
+                    return (int)value == 0 ? Visibility.Collapsed : Visibility.Visible;
                 }
-                else if (enumValue.Count() > 0)
+                //for Ienumerable type
+                else if (value is IEnumerable<object>)
+                {
+                    return ((IEnumerable<object>)value).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
+                }
+                else
                 {
                     return Visibility.Visible;
                 }

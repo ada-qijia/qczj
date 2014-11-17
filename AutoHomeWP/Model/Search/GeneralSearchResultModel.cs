@@ -11,6 +11,7 @@ namespace Model.Search
         CarType = 4,
         FindCars = 5,
         Forum = 6,
+        Others
     }
 
     /// <summary>
@@ -25,6 +26,7 @@ namespace Model.Search
         /// <summary>
         /// 是否显示车系结果模块，true为是，false否
         /// </summary>
+        [DataMember(Name = "isshowmodel")]
         public bool IsShowModel { get; set; }
 
         [DataMember(Name = "name")]
@@ -93,16 +95,6 @@ namespace Model.Search
     /// 车系/车型图片
     /// </summary>
     [DataContract]
-    public class ImgsModel
-    {
-        [DataMember(Name = "imgcount")]
-        public int ImgCount { get; set; }
-
-        [DataMember(Name = "imglist")]
-        public List<ImgModel> ImgList { get; set; }
-    }
-
-    [DataContract]
     public class ImgModel
     {
         [DataMember(Name = "id")]
@@ -147,6 +139,7 @@ namespace Model.Search
         public string Tel { get; set; }
     }
 
+    /*
     /// <summary>
     /// 找车结果
     /// </summary>
@@ -159,6 +152,7 @@ namespace Model.Search
         [DataMember(Name="findserieslist")]
         public List<FindSeriesModel> FindSeriesList { get; set; }
     }
+    */
 
     [DataContract]
     public class FindCarCondition
@@ -187,6 +181,9 @@ namespace Model.Search
         Gearbox = 8,
     }
 
+    /// <summary>
+    /// 找车列表
+    /// </summary>
     [DataContract]
     public class FindSeriesModel
     {
@@ -218,8 +215,8 @@ namespace Model.Search
         [DataMember(Name="title")]
         public string Title { get; set; }
 
-        [DataMember(Name = "lastreplydate")]
-        public string LastReplyDate { get; set; }
+        //[DataMember(Name = "lastreplydate")]
+        //public string LastReplyDate { get; set; }
 
         [DataMember(Name="smallpic")]
         public string SmallImg { get; set; }

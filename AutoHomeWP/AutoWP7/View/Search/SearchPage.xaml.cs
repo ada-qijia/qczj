@@ -97,7 +97,7 @@ namespace AutoWP7.View.Search
         //列出最多10个推荐联想词
         private void keyboardTB_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(this.keywordTextBox.Text==lastKeywordText)
+            if (this.keywordTextBox.Text == lastKeywordText)
             {
                 return;
             }
@@ -232,10 +232,11 @@ namespace AutoWP7.View.Search
         {
             if (!string.IsNullOrEmpty(keyword))
             {
-                int oldIndex=this.searchHistory.IndexOf(keyword.Trim());
-                if (oldIndex >= 0)
+                keyword = keyword.Trim();
+                if (this.searchHistory.Contains(keyword))
                 {
-                    this.searchHistory.Move(oldIndex, 0);
+                    this.searchHistory.Remove(keyword);
+                    this.searchHistory.Insert(0, keyword);
                 }
                 else
                 {
@@ -296,6 +297,13 @@ namespace AutoWP7.View.Search
             {
                 //综合
                 case 0:
+                    var generalSearchResultUC = new UcControl.SearchResult.GeneralSearchResult(keyword);
+
+                    this.ResultGrid.Children.Clear();
+                    this.ResultGrid.Children.Add(generalSearchResultUC);
+                    this.ResultGrid.Visibility = Visibility.Visible;
+
+                    generalSearchResultUC.LoadMore(true);
                     break;
                 //文章
                 case 1:
