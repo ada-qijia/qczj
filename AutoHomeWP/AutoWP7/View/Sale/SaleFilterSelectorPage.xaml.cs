@@ -11,7 +11,7 @@ using ViewModels;
 using Microsoft.Phone.Tasks;
 using AutoWP7.Utils;
 
-namespace AutoWP7.View.Channel.News
+namespace AutoWP7.View.Sale
 {
     public partial class SaleFilterSelectorPage : PhoneApplicationPage
     {

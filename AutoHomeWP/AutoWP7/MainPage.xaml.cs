@@ -432,7 +432,7 @@ namespace AutoWP7
             }
             try
             {
-                string url = string.Format("{0}{2}/cars/brands-a2-pm3-v1.5.0-ts{1}.html", App.appUrl, 0, App.versionStr);
+                string url = string.Format("{0}{1}/cars/brands-{2}-ts{3}.html", App.appUrl, App.versionStr, App.AppInfo, 0);
                 carVM.LoadDataAysnc(url);
                 carVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarBrandModel>>>(carVM_LoadDataCompleted);
             }
@@ -532,6 +532,7 @@ namespace AutoWP7
         {
             GlobalIndicator.Instance.Text = "";
             GlobalIndicator.Instance.IsBusy = false;
+
             if (e.Error != null)
             {
                 Common.NetworkAvailablePrompt();
@@ -547,7 +548,7 @@ namespace AutoWP7
                 {
                     Common.showMsg("已经是最后一页了");
                 }
-                
+
                 if (isSaleFilterShown)
                 {
                     HideSaleFilter();
@@ -598,12 +599,23 @@ namespace AutoWP7
 
         private void SaleFilter_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            string tag = ((FrameworkElement)sender).Tag.ToString();
-            //HideSaleFilter();
-
             //reset the key, and if user press backbutton without any selection, this page knows and ignores it
             App.SaleFilterSelector_FilterType = string.Empty;
-            this.NavigationService.Navigate(new Uri("/View/Sale/SaleFilterSelectorPage.xaml?filterType=" + tag, UriKind.Relative));
+
+            string tag = ((FrameworkElement)sender).Tag.ToString();
+            //HideSaleFilter();
+            if (tag == "brand")
+            {
+                this.NavigationService.Navigate(new Uri("/View/Sale/SaleBrandFilterPage.xaml", UriKind.Relative));
+            }
+            else if (tag == "area")
+            {
+                this.NavigationService.Navigate(new Uri("/View/Sale/SaleBrandFilterPage.xaml", UriKind.Relative));
+            }
+            else
+            {
+                this.NavigationService.Navigate(new Uri("/View/Sale/SaleFilterSelectorPage.xaml?filterType=" + tag, UriKind.Relative));
+            }
         }
 
         private void HandleSaleFilterSelection()

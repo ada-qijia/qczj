@@ -239,6 +239,9 @@
     <Compile Include="View\Channel\News\CityListPage.xaml.cs">
       <DependentUpon>CityListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sale\SaleBrandFilterPage.xaml.cs">
+      <DependentUpon>SaleBrandFilterPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sale\SaleFilterSelectorPage.xaml.cs">
       <DependentUpon>SaleFilterSelectorPage.xaml</DependentUpon>
     </Compile>
@@ -426,6 +429,10 @@
     <Page Include="View\Channel\News\CityListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sale\SaleBrandFilterPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Sale\SaleFilterSelectorPage.xaml">
       <Generator>MSBuild:Compile</Generator>

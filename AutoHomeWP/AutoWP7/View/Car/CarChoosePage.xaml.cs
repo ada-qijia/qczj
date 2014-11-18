@@ -32,7 +32,6 @@ namespace AutoWP7.View.Car
         /// </summary>
         public ShowListTypeEnum CurType = 0;
 
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -52,7 +51,6 @@ namespace AutoWP7.View.Car
             this.proptyNoSpecGrid.Visibility = System.Windows.Visibility.Collapsed;
             carBrandLoadData();
         }
-
 
         /// <summary>
         /// 获取第一个符合类型的控件
@@ -172,7 +170,7 @@ namespace AutoWP7.View.Car
                 carVM = new CarBrandViewModel();
             }
             //carVM.LoadDataAysnc(App.headUrl + "/cars/APP/BrandAll.ashx");
-            string url = string.Format("{0}{2}/cars/brands-a2-pm3-v1.5.0-ts{1}.html", App.appUrl, 0, App.versionStr);
+            string url = string.Format("{0}{1}/cars/brands-{2}-ts{3}.html", App.appUrl, App.versionStr,App.AppInfo, 0);
             carVM.LoadDataAysnc(url);
             carVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarBrandModel>>>(carVM_LoadDataCompleted);
 
@@ -242,7 +240,6 @@ namespace AutoWP7.View.Car
 
         CarSeriesSource carSeriesSource = new CarSeriesSource();
 
-
         CarSeriesViewModel carSeriesVM = null;
         /// <summary>
         /// 车系
@@ -305,9 +302,6 @@ namespace AutoWP7.View.Car
 
             }
         }
-
-
-
 
         #endregion
 
