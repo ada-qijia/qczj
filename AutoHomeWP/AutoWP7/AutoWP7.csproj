@@ -171,6 +171,10 @@
     <Compile Include="UcControl\SearchResult\GeneralSearchResult.xaml.cs">
       <DependentUpon>GeneralSearchResult.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UcControl\SearchResult\NatureResultDataTemplateSelector.cs" />
+    <Compile Include="UcControl\SearchResult\NoResultView.xaml.cs">
+      <DependentUpon>NoResultView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UcControl\SearchResult\VideoSearchResult.xaml.cs">
       <DependentUpon>VideoSearchResult.xaml</DependentUpon>
     </Compile>
@@ -346,6 +350,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UcControl\SearchResult\GeneralSearchResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\SearchResult\NoResultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

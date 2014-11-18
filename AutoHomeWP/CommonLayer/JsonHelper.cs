@@ -11,24 +11,22 @@ namespace CommonLayer
             if (objectToSerialize == null)
                 return null;
 
-            using (MemoryStream ms = new MemoryStream())
+            try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(objectToSerialize.GetType());
-                serializer.WriteObject(ms, objectToSerialize);
-                ms.Position = 0;
-                using (StreamReader reader = new StreamReader(ms))
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    return reader.ReadToEnd();
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(objectToSerialize.GetType());
+                    serializer.WriteObject(ms, objectToSerialize);
+                    ms.Position = 0;
+                    using (StreamReader reader = new StreamReader(ms))
+                    {
+                        return reader.ReadToEnd();
+                    }
                 }
             }
-        }
-
-        public static T Deserialize<T>(string jsonString)
-        {
-            using (MemoryStream ms = new MemoryStream(System.Text.Encoding.Unicode.GetBytes(jsonString)))
+            catch
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
-                return (T)serializer.ReadObject(ms);
+                return null;
             }
         }
 
@@ -37,7 +35,11 @@ namespace CommonLayer
             T ret;
             try
             {
-                ret = Deserialize<T>(jsonString);
+                using (MemoryStream ms = new MemoryStream(System.Text.Encoding.Unicode.GetBytes(jsonString)))
+                {
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+                    ret = (T)serializer.ReadObject(ms);
+                }
             }
             catch
             {

@@ -4,6 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:utils="clr-namespace:AutoWP7.Utils"
+    xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -12,10 +13,102 @@
 
     <UserControl.Resources>
         <utils:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
+
+        <DataTemplate x:Key="NaturalResultArticleDataTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail}"/>
+
+                <TextBlock Grid.Row="2" Text="{Binding Type}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}"/>
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评论'}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NaturalResultTopicDataTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}"/>
+
+                <TextBlock Grid.Row="1" Text="{Binding IndexDetail}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Time}"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回帖'}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NaturalResultVideoDataTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.RowSpan="2" Source="{Binding SmallImg}" Width="100" Height="80"/>
+
+                <TextBlock Grid.ColumnSpan="2" Text="{Binding Title}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Time}"/>
+                <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+                    <Image Source="/Images/alibi_recommendation.png"/>
+                    <TextBlock Text="{Binding ReplyCount,StringFormat='\{0}播放'}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="NaturalResultLobbyistDataTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail}"/>
+
+                <TextBlock Grid.Row="2" Text="{Binding Type}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}"/>
+                <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
+                    <Image Source="/Images/ArrowR.png"/>
+                    <TextBlock Text="{Binding ReplyCount,StringFormat='\{0}评论'}"/>
+                </StackPanel>
+            </Grid>
+
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
-        <ScrollViewer>
+        <ScrollViewer x:Name="ResultPanel">
             <StackPanel x:Name="BlocksStackPanel">
                 <!--车系-->
                 <ContentPresenter  x:Name="CarSeriesPresenter" Content="{Binding Series}" Visibility="{Binding Series, Converter={StaticResource EmptyToVisibilityConverter}}">
@@ -213,10 +306,20 @@
                     </ItemsControl>
                 </StackPanel>
                 <!--自然结果-->
-                <StackPanel x:Name="NaturalStackPanel">
-
+                <StackPanel x:Name="NaturalStackPanel" Visibility="{Binding NaturalResultList.Count,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <TextBlock Text="{Binding RowCount,StringFormat='找到{0}条相关结果'}"/>
+                    <ItemsControl ItemsSource="{Binding NaturalResultList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ucSearchResult:NatureResultDataTemplateSelector Content="{Binding}"
+                                    ArticleTemplate="{StaticResource NaturalResultArticleDataTemplate}" TopicTemplate="{StaticResource NaturalResultTopicDataTemplate}" VideoTemplate="{StaticResource NaturalResultVideoDataTemplate}" LobbyistTemplate="{StaticResource NaturalResultLobbyistDataTemplate}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
+        
+        <ucSearchResult:NoResultView x:Name="NoResultUC" Visibility="Collapsed"/>
     </Grid>
 </UserControl>

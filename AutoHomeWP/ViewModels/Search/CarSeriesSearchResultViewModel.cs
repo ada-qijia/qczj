@@ -30,6 +30,10 @@ namespace ViewModels.Search
         public event EventHandler LoadDataCompleted;
 
         private bool isLoading = false;
+        /// <summary>
+        /// 不分页
+        /// </summary>
+        /// <param name="url"></param>
         public void LoadDataAysnc(string url)
         {
             if (!isLoading)
@@ -49,7 +53,6 @@ namespace ViewModels.Search
                             #region 用返回结果填充每个版块
 
                             this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
-                            //this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
 
                             JToken blockToken;
                             //车系列表

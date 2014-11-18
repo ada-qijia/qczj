@@ -25,7 +25,20 @@ namespace AutoWP7.UcControl.SearchResult
             this.keyword = keyword;
             this.SearchResultVM = new GeneralSearchResultViewModel();
             //this.SearchResultVM.PropertyChanged += SearchResultVM_PropertyChanged;
+            this.SearchResultVM.LoadDataCompleted += SearchResultVM_LoadDataCompleted;
             this.DataContext = this.SearchResultVM;
+        }
+
+        //如果结果为空，显示没有结果提示
+        void SearchResultVM_LoadDataCompleted(object sender, EventArgs e)
+        {
+            bool noResult=this.SearchResultVM.RowCount==0;
+            if(noResult)
+            {
+                this.NoResultUC.SetContent(keyword, "内容");                
+            }
+            this.NoResultUC.Visibility = noResult ? Visibility.Visible : Visibility.Collapsed;
+            this.ResultPanel.Visibility = noResult ? Visibility.Collapsed : Visibility.Visible;
         }
 
         #region set blocks visibility of different match type 

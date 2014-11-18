@@ -50,10 +50,15 @@ namespace Model.Search
         [DataMember(Name = "postdate")]
         public string PostDate { get; set; }
 
+        [DataMember(Name = "topictype")]
+        public string TopicType { get; set; }
+
         [DataMember(Name = "title")]
         public string Title { get; set; }
 
         [DataMember(Name = "ispic")]
         public bool IsPic { get; set; }
+
+        public bool IsJinghua { get { return this.TopicType == "精"; } }
     }
 }

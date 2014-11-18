@@ -21,6 +21,12 @@ namespace ViewModels.Search
 
         #region properties
 
+        private List<ArticleFilterModel> _articleFilterList;
+        public List<ArticleFilterModel> ArticleFilterList {
+            get { return _articleFilterList; }
+            set { SetProperty<List<ArticleFilterModel>>(ref _articleFilterList, value); }
+        }
+
         public ObservableCollection<ArticleModel> ArticleList { get; private set; }
 
         #endregion
@@ -50,6 +56,13 @@ namespace ViewModels.Search
 
                             this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
                             this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
+
+                            //文章类别列表
+                            JToken sortsToken = resultToken.SelectToken("facets.sorts");
+                            if(sortsToken!=null)
+                            {
+                                this.ArticleFilterList = JsonHelper.DeserializeOrDefault<List<ArticleFilterModel>>(sortsToken.ToString());
+                            }
 
                             //文章列表
                             JArray blockToken = (JArray)resultToken.SelectToken("hits");

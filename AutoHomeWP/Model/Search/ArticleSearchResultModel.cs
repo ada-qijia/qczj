@@ -4,6 +4,19 @@ using System.Runtime.Serialization;
 namespace Model.Search
 {
     [DataContract]
+    public class ArticleFilterModel
+    {
+        [DataMember(Name="type")]
+        public string Type { get; set; }
+
+        [DataMember(Name="num")]
+        public int Num { get; set; }
+
+        [DataMember(Name="name")]
+        public string Name { get; set; }
+    }
+
+    [DataContract]
     public class ArticleModel
     {
         [DataMember(Name = "id")]

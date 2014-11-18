@@ -24,7 +24,19 @@ namespace AutoWP7.UcControl.SearchResult
             this.keyword = keyword;
 
             this.SearchResultVM = new CarSeriesSearchResultViewModel();
+            this.SearchResultVM.LoadDataCompleted += SearchResultVM_LoadDataCompleted;
             this.DataContext = this.SearchResultVM;
+        }
+
+        void SearchResultVM_LoadDataCompleted(object sender, EventArgs e)
+        {
+            bool noResult = this.SearchResultVM.RowCount == 0;
+            if (noResult)
+            {
+                this.NoResultUC.SetContent(keyword, "车系");
+            }
+            this.NoResultUC.Visibility = noResult ? Visibility.Visible : Visibility.Collapsed;
+            this.ResultPanel.Visibility = noResult ? Visibility.Collapsed : Visibility.Visible;
         }
 
         #region public methods

@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -10,43 +11,46 @@
     d:DesignHeight="480" d:DesignWidth="480">
 
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+        <Grid x:Name="ResultPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding CarSeriesList.Count,StringFormat='找到{0}个相关车系'}"/>
-        <ListBox x:Name="CarSeriesListBox" Grid.Row="1" ItemsSource="{Binding CarSeriesList}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Background="Transparent" Margin="0 12" Width="456">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+            <TextBlock Text="{Binding CarSeriesList.Count,StringFormat='找到{0}个相关车系'}"/>
+            <ListBox x:Name="CarSeriesListBox" Grid.Row="1" ItemsSource="{Binding CarSeriesList}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="Transparent" Margin="0 12" Width="456">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-                        <Image Grid.RowSpan="2" Height="60" Width="80" Source="Images/smallImage.jpg" Margin="12"/>
-                        <Image Grid.RowSpan="2" Height="60" Width="80" Source="{Binding Img}" Margin="12"/>
+                            <Image Grid.RowSpan="2" Height="60" Width="80" Source="Images/smallImage.jpg" Margin="12"/>
+                            <Image Grid.RowSpan="2" Height="60" Width="80" Source="{Binding Img}" Margin="12"/>
 
-                        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
-                            <TextBlock Text="{Binding FactoryName}"/>
-                            <TextBlock Text="{Binding Name,StringFormat=' - {0}'}"/>
-                        </StackPanel>
+                            <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                <TextBlock Text="{Binding FactoryName}"/>
+                                <TextBlock Text="{Binding Name,StringFormat=' - {0}'}"/>
+                            </StackPanel>
 
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Level}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PriceBetween}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Level}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PriceBetween}"/>
 
-                        <Image Grid.RowSpan="2" Grid.Column="3" Source="/Images/ArrowR.png"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-     
+                            <Image Grid.RowSpan="2" Grid.Column="3" Source="/Images/ArrowR.png"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <ucSearchResult:NoResultView x:Name="NoResultUC" Visibility="Collapsed"/>
     </Grid>
 </UserControl>

@@ -106,8 +106,7 @@ namespace AutoWP7.View.Search
             //如果输入为空，显示历史记录
             if (string.IsNullOrWhiteSpace(this.keywordTextBox.Text))
             {
-                this.historyGrid.Visibility = Visibility.Visible;
-                this.suggestWordsListBox.Visibility = Visibility.Collapsed;
+                this.ShowKeywords(true);
             }
             else
             {
@@ -212,6 +211,14 @@ namespace AutoWP7.View.Search
             this.LoadSearchResult(keyword);
         }
 
+        private void ShowKeywords(bool historyThanSuggested)
+        {
+            this.KeywordsGrid.Visibility = Visibility.Visible;
+            this.ResultGrid.Visibility = Visibility.Collapsed;
+            this.historyGrid.Visibility = historyThanSuggested ? Visibility.Visible : Visibility.Collapsed;
+            this.suggestWordsListBox.Visibility = historyThanSuggested ? Visibility.Collapsed : Visibility.Visible;
+        }
+
         #endregion
 
         #region 历史记录
@@ -279,8 +286,7 @@ namespace AutoWP7.View.Search
 
         void suggestWordsVM_LoadDataCompleted(object sender, EventArgs e)
         {
-            this.suggestWordsListBox.Visibility = Visibility.Visible;
-            this.historyGrid.Visibility = Visibility.Collapsed;
+            this.ShowKeywords(false);
         }
 
         #endregion
@@ -298,31 +304,19 @@ namespace AutoWP7.View.Search
                 //综合
                 case 0:
                     var generalSearchResultUC = new UcControl.SearchResult.GeneralSearchResult(keyword);
-
-                    this.ResultGrid.Children.Clear();
-                    this.ResultGrid.Children.Add(generalSearchResultUC);
-                    this.ResultGrid.Visibility = Visibility.Visible;
-
+                    this.ShowResultUC(generalSearchResultUC);
                     generalSearchResultUC.LoadMore(true);
                     break;
                 //文章
                 case 1:
                     var articleSearchResultUC = new UcControl.SearchResult.ArticleSearchResult(keyword);
-
-                    this.ResultGrid.Children.Clear();
-                    this.ResultGrid.Children.Add(articleSearchResultUC);
-                    this.ResultGrid.Visibility = Visibility.Visible;
-
+                    this.ShowResultUC(articleSearchResultUC);
                     articleSearchResultUC.LoadMore(true);
                     break;
                 //视频
                 case 2:
                     var videoSearchResultUC = new UcControl.SearchResult.VideoSearchResult(keyword);
-
-                    this.ResultGrid.Children.Clear();
-                    this.ResultGrid.Children.Add(videoSearchResultUC);
-                    this.ResultGrid.Visibility = Visibility.Visible;
-
+                    this.ShowResultUC(videoSearchResultUC);
                     videoSearchResultUC.LoadMore(true);
                     break;
                 //论坛
@@ -333,25 +327,28 @@ namespace AutoWP7.View.Search
                         relatedBBSModel = new Model.Search.RelatedBBSModel() { ID = bbsID, Name = bbsName };
                     }
                     var forumSearchResultUC = new UcControl.SearchResult.ForumSearchResult(keyword, relatedBBSModel);
-
-                    this.ResultGrid.Children.Clear();
-                    this.ResultGrid.Children.Add(forumSearchResultUC);
-                    this.ResultGrid.Visibility = Visibility.Visible;
-
+                    this.ShowResultUC(forumSearchResultUC);
                     forumSearchResultUC.LoadMore(true);
                     break;
                 //车系
                 case 4:
                     var carSeriesSearchResultUC = new UcControl.SearchResult.CarSeriesSearchResult(keyword);
-
-                    this.ResultGrid.Children.Clear();
-                    this.ResultGrid.Children.Add(carSeriesSearchResultUC);
-                    this.ResultGrid.Visibility = Visibility.Visible;
-
+                    this.ShowResultUC(carSeriesSearchResultUC);
                     carSeriesSearchResultUC.ReLoad();
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void ShowResultUC(UIElement child)
+        {
+            if (child != null)
+            {
+                this.ResultGrid.Children.Clear();
+                this.ResultGrid.Children.Add(child);
+                this.KeywordsGrid.Visibility = Visibility.Collapsed;
+                this.ResultGrid.Visibility = Visibility.Visible;
             }
         }
 

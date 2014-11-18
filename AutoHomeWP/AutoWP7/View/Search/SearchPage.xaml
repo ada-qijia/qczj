@@ -14,7 +14,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
-    
+
     <phone:PhoneApplicationPage.Resources>
         <utils:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
     </phone:PhoneApplicationPage.Resources>
@@ -33,7 +33,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            
+
             <toolkit:ListPicker x:Name="searchTypeListPicker" ItemsSource="{Binding}" Width="100" Margin="12 6 0 0" BorderThickness="1" SelectionChanged="searchTypeListPicker_SelectionChanged">
                 <toolkit:ListPicker.ItemTemplate>
                     <DataTemplate>
@@ -49,47 +49,45 @@
             <Image Grid.Column="1" HorizontalAlignment="Right" Source="/AutoWP7;component/Images/search.png" Height="40" Tap="search_Tap"/>
             <TextBlock Grid.Column="2" Text="取消" VerticalAlignment="Center" Margin="24 12 12 12" Tap="cancel_Tap"/>
         </Grid>
-        
-        <!--搜索历史-->
-        <Grid x:Name="historyGrid" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            
-            <Grid Height="60" VerticalAlignment="Top" Background="Gray">
-                <TextBlock Text="搜索历史" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12 6"/>
-                <StackPanel x:Name="cleanStackPanel" Orientation="Horizontal" HorizontalAlignment="Right" Tap="cleanHistory_Tap">
-                <TextBlock Text="清空搜索历史" VerticalAlignment="Center"  Margin="12 6 32 6"/>
-                <Image Source="/AutoWP7;component/Images/close.png" VerticalAlignment="Center" Width="20"/>
-                </StackPanel>
+
+        <Grid x:Name="KeywordsGrid" Grid.Row="1">
+            <!--搜索历史-->
+            <Grid x:Name="historyGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid Height="60" VerticalAlignment="Top" Background="Gray">
+                    <TextBlock Text="搜索历史" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12 6"/>
+                    <StackPanel x:Name="cleanStackPanel" Orientation="Horizontal" HorizontalAlignment="Right" Tap="cleanHistory_Tap">
+                        <TextBlock Text="清空搜索历史" VerticalAlignment="Center"  Margin="12 6 32 6"/>
+                        <Image Source="/AutoWP7;component/Images/close.png" VerticalAlignment="Center" Width="20"/>
+                    </StackPanel>
+                </Grid>
+
+                <ListBox x:Name="historyListBox" Grid.Row="1" ItemsSource="{Binding}" ManipulationStarted="historyListBox_ManipulationStarted">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Tap="historyItem_Tap"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
 
-            <ListBox x:Name="historyListBox" Grid.Row="1" ItemsSource="{Binding}" ManipulationStarted="historyListBox_ManipulationStarted">
+            <!--推荐联想词-->
+            <ListBox x:Name="suggestWordsListBox" ItemsSource="{Binding SuggestWordsList}" Visibility="Collapsed"
+                 ManipulationStarted="suggestWordsListBox_ManipulationStarted">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" Tap="historyItem_Tap"/>
+                        <TextBlock Text="{Binding}" Tap="suggestItem_Tap"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
 
-        <!--推荐联想词-->
-        <ListBox x:Name="suggestWordsListBox" Grid.Row="1" ItemsSource="{Binding SuggestWordsList}" Visibility="Collapsed"
-                 ManipulationStarted="suggestWordsListBox_ManipulationStarted">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}" Tap="suggestItem_Tap"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
-
         <!--搜索结果-->
-        <Grid x:Name="ResultGrid" Grid.Row="1" Visibility="Collapsed">
-
-        </Grid>
-
+        <Grid x:Name="ResultGrid" Grid.Row="1" Visibility="Collapsed"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

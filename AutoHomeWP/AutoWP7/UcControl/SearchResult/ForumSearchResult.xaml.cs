@@ -27,9 +27,21 @@ namespace AutoWP7.UcControl.SearchResult
 
             this.SearchResultVM = new ForumSearchResultViewModel();
             this.SearchResultVM.DefaultRelatedBBS = defaultRangeItem;
+            this.SearchResultVM.LoadDataCompleted+=SearchResultVM_LoadDataCompleted;
             this.DataContext = this.SearchResultVM;
 
             InitializeSortTimeFilters();
+        }
+
+        void SearchResultVM_LoadDataCompleted(object sender, EventArgs e)
+        {
+            bool noResult = this.SearchResultVM.RowCount == 0;
+            if (noResult)
+            {
+                this.NoResultUC.SetContent(keyword, "内容");
+            }
+            this.NoResultUC.Visibility = noResult ? Visibility.Visible : Visibility.Collapsed;
+            this.ResultPanel.Visibility = noResult ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void InitializeSortTimeFilters()

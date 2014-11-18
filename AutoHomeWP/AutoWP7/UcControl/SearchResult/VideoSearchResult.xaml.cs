@@ -24,7 +24,19 @@ namespace AutoWP7.UcControl.SearchResult
             this.keyword = keyword;
 
             this.SearchResultVM = new VideoSearchResultViewModel();
+            this.SearchResultVM.LoadDataCompleted += SearchResultVM_LoadDataCompleted;
             this.DataContext = this.SearchResultVM;
+        }
+
+        void SearchResultVM_LoadDataCompleted(object sender, EventArgs e)
+        {
+            bool noResult = this.SearchResultVM.RowCount == 0;
+            if (noResult)
+            {
+                this.NoResultUC.SetContent(keyword, "视频");
+            }
+            this.NoResultUC.Visibility = noResult ? Visibility.Visible : Visibility.Collapsed;
+            this.ResultPanel.Visibility = noResult ? Visibility.Collapsed : Visibility.Visible;
         }
 
         #region public methods
@@ -43,7 +55,7 @@ namespace AutoWP7.UcControl.SearchResult
             //string url = "http://221.192.136.99:804/wpv1.6/sou/video.ashx?a=2&pm=3&v=1.6.0&q=bmw&p=1&s=10";
             string url = string.Format("{0}{1}/sou/video.ashx?a={2}&pm={3}&v={4}&q={5}&p={6}&s={7}", "http://221.192.136.99:804/wpv1.6", "", App.appId, App.platForm, "1.6.0", keyword, nextPageIndex, pageSize);
             //string url = string.Format("{0}{1}/sou/video.ashx?a={2}&pm={3}&v={4}&q={5}&p={6}&s={7}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, nextPageIndex, pageSize);
-            
+
             this.SearchResultVM.LoadDataAysnc(url);
         }
 
