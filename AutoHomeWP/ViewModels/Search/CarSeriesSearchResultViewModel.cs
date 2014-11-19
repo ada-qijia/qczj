@@ -52,13 +52,13 @@ namespace ViewModels.Search
 
                             #region 用返回结果填充每个版块
 
-                            this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
-
-                            JToken blockToken;
+                            JArray blockToken;
                             //车系列表
-                            blockToken = resultToken.SelectToken("list");
+                            blockToken = (JArray)resultToken.SelectToken("list");
                             if (blockToken.HasValues)
                             {
+                                this.RowCount = blockToken.Count;
+
                                 var modelList = JsonHelper.DeserializeOrDefault<List<CarSeriesSearchModel>>(blockToken.ToString());
                                 if (modelList != null)
                                 {

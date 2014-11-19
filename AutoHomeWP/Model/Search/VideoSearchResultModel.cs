@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Model.Search
 {
     [DataContract]
-    public class VideoSearchModel
+    public class VideoSearchModel:LoadMoreItem
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }

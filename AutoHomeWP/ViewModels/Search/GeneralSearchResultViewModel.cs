@@ -12,7 +12,7 @@ namespace ViewModels.Search
     {
         public GeneralSearchResultViewModel()
         {
-            //只有精选和自然结果会有多页
+            //只有论坛精选和自然结果会有多页
             this.JingxuanList = new ObservableCollection<JingxuanModel>();
             this.NaturalResultList = new ObservableCollection<NaturalModel>();
         }
@@ -23,7 +23,27 @@ namespace ViewModels.Search
         public GeneralSearchResultMatchType MatchType
         {
             get { return _matchType; }
-            set { SetProperty<GeneralSearchResultMatchType>(ref _matchType, value); }
+            set
+            {
+                //set the LoadMoreButtonItem
+                if (value != _matchType)
+                {
+                    if (value == GeneralSearchResultMatchType.Forum)
+                    {
+                        this.LoadMoreButtonItem = new JingxuanModel() { IsLoadMore = true };
+                    }
+                    else if(value == GeneralSearchResultMatchType.Others)
+                    {
+                        this.LoadMoreButtonItem = null;
+                    }
+                    else
+                    {
+                        this.LoadMoreButtonItem = new NaturalModel() { IsLoadMore = true };
+                    }
+                }
+
+                SetProperty<GeneralSearchResultMatchType>(ref _matchType, value);
+            }
         }
 
         private HotSeriesModel _series;
@@ -132,14 +152,17 @@ namespace ViewModels.Search
                     {
                         try
                         {
+                            this.TryRemoveMoreButton();
+
                             //返回的json数据
                             JObject json = JObject.Parse(ee.Result);
-                            JToken resultToken = json.SelectToken("result");                           
+                            JToken resultToken = json.SelectToken("result");
 
                             #region 用返回结果填充每个版块
 
                             this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
                             this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
+                            this.PageCount = resultToken.SelectToken("pagecount").Value<int>();
 
                             int type = resultToken.SelectToken("matchtype").Value<int>();
                             if (Enum.IsDefined(typeof(GeneralSearchResultMatchType), type))
@@ -155,7 +178,7 @@ namespace ViewModels.Search
                                 var seriesModel = JsonHelper.DeserializeOrDefault<HotSeriesModel>(blockToken.ToString());
                                 if (seriesModel != null && seriesModel.IsShowModel)
                                 {
-                                    this.Series = seriesModel; 
+                                    this.Series = seriesModel;
                                 }
                             }
 
@@ -231,6 +254,8 @@ namespace ViewModels.Search
                             }
 
                             #endregion
+
+                            this.EnsureMoreButton();
                         }
                         catch
                         {
@@ -253,6 +278,10 @@ namespace ViewModels.Search
 
         public void ClearData()
         {
+            this.RowCount = 0;
+            this.PageCount = 0;
+            this.PageIndex = 0;
+
             this.MatchType = GeneralSearchResultMatchType.Others;
             this.Series = null;
             this.SpecList = null;
@@ -264,6 +293,52 @@ namespace ViewModels.Search
             this.FindSeriesList = null;
             this.JingxuanList.Clear();
             this.NaturalResultList.Clear();
+        }
+
+        #endregion
+
+        #region base class override
+        protected override void EnsureMoreButton()
+        {
+            if (!this.IsEndPage)
+            {
+                JingxuanModel jingxuan = this.LoadMoreButtonItem as JingxuanModel;
+                if (jingxuan != null)
+                {
+                    if (!this.JingxuanList.Contains(jingxuan))
+                    {
+                        this.JingxuanList.Add(jingxuan);
+                    }
+                }
+                else
+                {
+                    NaturalModel natural = this.LoadMoreButtonItem as NaturalModel;
+                    if (natural != null && !this.NaturalResultList.Contains(natural))
+                    {
+                        this.NaturalResultList.Add(natural);
+                    }
+                }
+            }
+        }
+
+        protected override void TryRemoveMoreButton()
+        {
+            JingxuanModel jingxuan = this.LoadMoreButtonItem as JingxuanModel;
+            if (jingxuan != null)
+            {
+                if (this.JingxuanList.Contains(jingxuan))
+                {
+                    this.JingxuanList.Remove(jingxuan);
+                }
+            }
+            else
+            {
+                NaturalModel natural = this.LoadMoreButtonItem as NaturalModel;
+                if (this.NaturalResultList.Contains(natural))
+                {
+                    this.NaturalResultList.Remove(natural);
+                }
+            }
         }
 
         #endregion

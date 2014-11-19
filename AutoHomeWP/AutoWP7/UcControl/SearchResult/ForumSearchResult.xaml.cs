@@ -35,6 +35,9 @@ namespace AutoWP7.UcControl.SearchResult
 
         void SearchResultVM_LoadDataCompleted(object sender, EventArgs e)
         {
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false;
+
             bool noResult = this.SearchResultVM.RowCount == 0;
             if (noResult)
             {
@@ -57,7 +60,10 @@ namespace AutoWP7.UcControl.SearchResult
 
         public void LoadMore(bool restart)
         {
-            int nextPageIndex = this.SearchResultVM.PageIndex++;
+            GlobalIndicator.Instance.Text = "正在获取中...";
+            GlobalIndicator.Instance.IsBusy = true;
+
+            int nextPageIndex = this.SearchResultVM.PageIndex+1;
             if (restart)
             {
                 this.SearchResultVM.ClearData();
@@ -74,6 +80,15 @@ namespace AutoWP7.UcControl.SearchResult
             string url = string.Format("{0}{1}/sou/club.ashx?a={2}&pm={3}&v={4}&k={5}&o={6}&b={7}&r={8}&p={9}&s={10}&bn={11}","http://221.192.136.99:804/wpv1.6", "", App.appId, App.platForm, "1.6.0", keyword, sort, bbsID, timeRange, nextPageIndex, pageSize, bbsName);
             //string url = string.Format("{0}{1}/sou/club.ashx?a={2}&pm={3}&v={4}&k={5}&o={6}&b={7}&r={8}&p={9}&s={10}&bn={11}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, sort, bbsID, timeRange, nextPageIndex, pageSize, bbsName);
             this.SearchResultVM.LoadDataAysnc(url);
+        }
+
+        #endregion
+
+        #region UI interaction
+
+        private void LoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.LoadMore(false);
         }
 
         #endregion

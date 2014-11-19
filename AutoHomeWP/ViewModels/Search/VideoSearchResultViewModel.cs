@@ -17,6 +17,7 @@ namespace ViewModels.Search
         public VideoSearchResultViewModel()
         {
             this.VideoList = new ObservableCollection<VideoSearchModel>();
+            this.LoadMoreButtonItem = new VideoSearchModel() { IsLoadMore = true };
         }
 
         #region properties
@@ -42,6 +43,8 @@ namespace ViewModels.Search
                     {
                         try
                         {
+                            this.TryRemoveMoreButton();
+
                             //返回的json数据
                             JObject json = JObject.Parse(ee.Result);
                             JToken resultToken = json.SelectToken("result");
@@ -50,6 +53,7 @@ namespace ViewModels.Search
 
                             this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
                             this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
+                            this.PageCount = resultToken.SelectToken("pagecount").Value<int>();
 
                             JToken blockToken;
                             //视频列表
@@ -67,6 +71,8 @@ namespace ViewModels.Search
                             }
 
                             #endregion
+
+                            this.EnsureMoreButton();
                         }
                         catch
                         {
@@ -90,9 +96,29 @@ namespace ViewModels.Search
         public void ClearData()
         {
             this.RowCount = 0;
+            this.PageCount = 0;
+            this.PageIndex = 0;
             this.VideoList.Clear();
         }
 
+        #endregion
+
+        #region base class override
+        protected override void EnsureMoreButton()
+        {
+            if (!this.IsEndPage && !this.VideoList.Contains(this.LoadMoreButtonItem))
+            {
+                this.VideoList.Add((VideoSearchModel)this.LoadMoreButtonItem);
+            }
+        }
+
+        protected override void TryRemoveMoreButton()
+        {
+            if (this.VideoList.Contains(this.LoadMoreButtonItem))
+            {
+                this.VideoList.Remove((VideoSearchModel)this.LoadMoreButtonItem);
+            }
+        }
         #endregion
     }
 }

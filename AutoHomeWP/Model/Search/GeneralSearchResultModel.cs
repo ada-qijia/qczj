@@ -207,7 +207,7 @@ namespace Model.Search
     /// 论坛精选日报类别
     /// </summary>
     [DataContract]
-    public class JingxuanModel
+    public class JingxuanModel:LoadMoreItem
     {
         [DataMember(Name="topicid")]
         public long TopicID { get; set; }
@@ -235,7 +235,7 @@ namespace Model.Search
     /// 其他自然搜索结果
     /// </summary>
     [DataContract]
-    public class NaturalModel
+    public class NaturalModel:LoadMoreItem
     {
         [DataMember(Name="id")]
         public int ID { get; set; }

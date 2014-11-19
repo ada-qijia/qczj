@@ -17,7 +17,7 @@ namespace Model.Search
     }
 
     [DataContract]
-    public class ArticleModel
+    public class ArticleModel:LoadMoreItem
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }

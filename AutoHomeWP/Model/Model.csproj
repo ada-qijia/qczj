@@ -96,6 +96,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Base\LoadMoreItem.cs" />
     <Compile Include="Search\ArticleSearchResultModel.cs" />
     <Compile Include="Search\CarSeriesSearchResultModel.cs" />
     <Compile Include="Search\ForumSearchResultModel.cs" />

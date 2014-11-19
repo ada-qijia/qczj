@@ -30,13 +30,21 @@ namespace AutoWP7.UcControl.SearchResult
 
         void SearchResultVM_LoadDataCompleted(object sender, EventArgs e)
         {
-            bool noResult = this.SearchResultVM.RowCount == 0;
-            if (noResult)
+            //只有一条记录时导航到找车-车系车型页
+            if (this.SearchResultVM.RowCount == 1)
             {
-                this.NoResultUC.SetContent(keyword, "车系");
+                throw new NotImplementedException();
             }
-            this.NoResultUC.Visibility = noResult ? Visibility.Visible : Visibility.Collapsed;
-            this.ResultPanel.Visibility = noResult ? Visibility.Collapsed : Visibility.Visible;
+            else
+            {
+                bool noResult = this.SearchResultVM.RowCount == 0;
+                if (noResult)
+                {
+                    this.NoResultUC.SetContent(keyword, "车系");
+                }
+                this.NoResultUC.Visibility = noResult ? Visibility.Visible : Visibility.Collapsed;
+                this.ResultPanel.Visibility = noResult ? Visibility.Collapsed : Visibility.Visible;
+            }
         }
 
         #region public methods
@@ -50,5 +58,18 @@ namespace AutoWP7.UcControl.SearchResult
         }
 
         #endregion
+
+        //导航到多条时车系综述/只一条时找车-车系车型页
+        private void CarSeries_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (this.SearchResultVM.RowCount == 1)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
     }
 }

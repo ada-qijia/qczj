@@ -19,6 +19,8 @@ namespace ViewModels.Search
             this.RelatedBBSList = new ObservableCollection<RelatedBBSModel>();
             this.BBSList = new ObservableCollection<BBSModel>();
             this.TopicList = new ObservableCollection<TopicModel>();
+
+            this.LoadMoreButtonItem = new TopicModel() { IsLoadMore = true };
         }
 
         #region properties
@@ -63,6 +65,8 @@ namespace ViewModels.Search
                     {
                         try
                         {
+                            this.TryRemoveMoreButton();
+
                             //返回的json数据
                             JObject json = JObject.Parse(ee.Result);
                             JToken resultToken = json.SelectToken("result");
@@ -71,6 +75,7 @@ namespace ViewModels.Search
 
                             this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
                             this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
+                            this.PageCount = resultToken.SelectToken("pagecount").Value<int>();
 
                             JToken blockToken;
 
@@ -122,6 +127,8 @@ namespace ViewModels.Search
                             }
 
                             #endregion
+
+                            this.EnsureMoreButton();
                         }
                         catch
                         {
@@ -145,6 +152,8 @@ namespace ViewModels.Search
         public void ClearData()
         {
             this.RowCount = 0;
+            this.PageIndex = 0;
+            this.PageCount = 0;
             if (this.DefaultRelatedBBS != null)
             {
                 foreach (var relatedBBS in this.RelatedBBSList)
@@ -165,5 +174,24 @@ namespace ViewModels.Search
         }
 
         #endregion
+
+        #region base class override
+        protected override void EnsureMoreButton()
+        {
+            if (!this.IsEndPage && !this.TopicList.Contains(this.LoadMoreButtonItem))
+            {
+                this.TopicList.Add((TopicModel)this.LoadMoreButtonItem);
+            }
+        }
+
+        protected override void TryRemoveMoreButton()
+        {
+            if (this.TopicList.Contains(this.LoadMoreButtonItem))
+            {
+                this.TopicList.Remove((TopicModel)this.LoadMoreButtonItem);
+            }
+        }
+        #endregion
+
     }
 }

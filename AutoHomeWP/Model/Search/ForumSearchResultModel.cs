@@ -33,7 +33,7 @@ namespace Model.Search
     }
 
     [DataContract]
-    public class TopicModel
+    public class TopicModel:LoadMoreItem
     {
         [DataMember(Name = "topicid")]
         public int ID { get; set; }

@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
+    xmlns:util="clr-namespace:AutoWP7.Utils"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -29,32 +30,53 @@
             </Grid.RowDefinitions>
 
             <!--筛选选项-->
-            <toolkit:ListPicker x:Name="typeListPicker" HorizontalAlignment="Left" Width="180" ItemsSource="{Binding ArticleFilterList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}"/>
+            <toolkit:ListPicker x:Name="typeListPicker" HorizontalAlignment="Left" Width="180" ItemsSource="{Binding ArticleFilterList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}">
+                <toolkit:ListPicker.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </toolkit:ListPicker.ItemTemplate>
+            </toolkit:ListPicker>
 
             <TextBlock Grid.Row="1" Text="{Binding RowCount, StringFormat='找到{0}篇相关文章'}"/>
 
             <ListBox x:Name="ArticleListBox" Grid.Row="2" ItemsSource="{Binding ArticleList}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Background="Transparent" Width="480" Height="120">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
+                            <util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="Transparent" Width="480" Height="120">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.ColumnSpan="2" Text="{Binding Title}"/>
-                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Content}"/>
+                                        <TextBlock Grid.ColumnSpan="2" Text="{Binding Title}"/>
+                                        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Content}"/>
 
-                            <TextBlock Grid.Row="2" Text="{Binding Type}"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Date}"/>
-                            <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评论'}"/>
-                        </Grid>
+                                        <TextBlock Grid.Row="2" Text="{Binding Type}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Date}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评论'}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </util:LoadMoreDataTemplateSelector.ItemTemplate>
+                            <util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="410" Tap="LoadMore_Tap">
+                                        <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                    </Border>
+                                </DataTemplate>
+                            </util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                        </util:LoadMoreDataTemplateSelector>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

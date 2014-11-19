@@ -44,7 +44,6 @@ namespace ViewModels.Search
                             #region 用返回结果填充每个版块
 
                             this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
-                            this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
 
                             //视频列表
                             this.SuggestWordsList.Clear();

@@ -4,6 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
+    xmlns:util="clr-namespace:AutoWP7.Utils"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -21,25 +22,41 @@
             <ListBox x:Name="VideoListBox" Grid.Row="1" ItemsSource="{Binding VideoList}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Background="Transparent" Margin="0 12" Width="456">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                        <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
+                            <util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="Transparent" Margin="0 12" Width="456">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
 
-                            <Image Grid.RowSpan="2" Height="60" Width="80" Source="Images/smallImage.jpg" Margin="12"/>
-                            <Image Grid.RowSpan="2" Height="60" Width="80" Source="{Binding SmallImg}" Margin="12"/>
+                                        <Image Grid.RowSpan="2" Height="60" Width="80" Source="Images/smallImage.jpg" Margin="12"/>
+                                        <Image Grid.RowSpan="2" Height="60" Width="80" Source="{Binding SmallImg}" Margin="12"/>
 
-                            <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title}"/>
+                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title}"/>
 
-                            <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding Time}"/>
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PlayCount,StringFormat='\{0}播放'}"/>
-                        </Grid>
+                                        <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding Time}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PlayCount,StringFormat='\{0}播放'}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </util:LoadMoreDataTemplateSelector.ItemTemplate>
+
+                            <util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="410" Tap="LoadMore_Tap">
+                                        <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                    </Border>
+                                </DataTemplate>
+                            </util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                        </util:LoadMoreDataTemplateSelector>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

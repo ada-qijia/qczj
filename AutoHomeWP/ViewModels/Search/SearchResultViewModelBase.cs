@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -19,7 +20,32 @@ namespace ViewModels.Search
             { SetProperty<int>(ref _rowCount, value); }
         }
 
+        #region 多页分批加载
+
         public int PageIndex { get; set; }
+
+        public int PageCount { get; set; }
+
+        public bool IsEndPage
+        {
+            get { return PageIndex >= PageCount; }
+        }
+
+        public LoadMoreItem LoadMoreButtonItem { get; set; }
+
+        /// <summary>
+        /// Nothing was done here. Override it with your custom logic.
+        /// </summary>
+        protected virtual void EnsureMoreButton()
+        { }
+
+        /// <summary>
+        /// Nothing was done here. Override it with your custom logic.
+        /// </summary>
+        protected virtual void TryRemoveMoreButton()
+        { }
+
+        #endregion
 
         protected void DownloadStringAsync(string url)
         {

@@ -13,28 +13,38 @@ namespace AutoWP7.UcControl.SearchResult
 
         public DataTemplate LobbyistTemplate { get; set; }
 
+        public DataTemplate LoadMoreTemplate { get; set; }
+
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             NaturalModel model = item as NaturalModel;
             if (model != null)
             {
-                switch (model.MediaType)
+                if (model.IsLoadMore)
                 {
-                    //文章
-                    case 1:
-                        return this.ArticleTemplate;
-                    //帖子
-                    case 5:
-                        return this.TopicTemplate;
-                    //视频
-                    case 3:
-                        return this.VideoTemplate;
-                    //说客
-                    case 2:
-                        return this.LobbyistTemplate;
+                    return LoadMoreTemplate;
+                }
+                else
+                {
+                    switch (model.MediaType)
+                    {
+                        //文章
+                        case 1:
+                            return this.ArticleTemplate;
+                        //帖子
+                        case 5:
+                            return this.TopicTemplate;
+                        //视频
+                        case 3:
+                            return this.VideoTemplate;
+                        //说客
+                        case 2:
+                            return this.LobbyistTemplate;
+                    }
                 }
             }
-            return null;
+
+            return base.SelectTemplate(item,container);
         }
     }
 }

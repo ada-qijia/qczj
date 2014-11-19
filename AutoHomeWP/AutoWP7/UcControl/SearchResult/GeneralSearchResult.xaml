@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:utils="clr-namespace:AutoWP7.Utils"
+    xmlns:util="clr-namespace:AutoWP7.Utils"
     xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -12,7 +12,7 @@
     d:DesignHeight="480" d:DesignWidth="480">
 
     <UserControl.Resources>
-        <utils:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
+        <util:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
 
         <DataTemplate x:Key="NaturalResultArticleDataTemplate">
             <Grid>
@@ -79,7 +79,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="NaturalResultLobbyistDataTemplate">
             <Grid>
                 <Grid.RowDefinitions>
@@ -105,6 +105,14 @@
             </Grid>
 
         </DataTemplate>
+
+        <DataTemplate x:Key="LoadMoreDataTemplate">
+            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="410" Tap="LoadMore_Tap">
+                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+            </Border>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
@@ -114,7 +122,7 @@
                 <ContentPresenter  x:Name="CarSeriesPresenter" Content="{Binding Series}" Visibility="{Binding Series, Converter={StaticResource EmptyToVisibilityConverter}}">
                     <ContentPresenter.ContentTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid Tap="CarSeries_Tap">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -140,10 +148,10 @@
                                 <Image Grid.RowSpan="3" Grid.Column="2" Source="/Images/ArrowR.png"/>
 
                                 <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal">
-                                    <TextBlock Text="参数配置"/>
-                                    <TextBlock Text="论坛" />
+                                    <TextBlock Text="参数配置" Tap="CarSeriesConfig_Tap"/>
+                                    <TextBlock Text="论坛" Tap="CarSeriesBBS_Tap"/>
                                     <!--Visibility="{Binding BBSID}"-->
-                                    <TextBlock Text="口碑" />
+                                    <TextBlock Text="口碑" Tap="CarSeriesKoubei_Tap"/>
                                     <!--Visibility="{Binding IsShowKoubei}"-->
                                 </StackPanel>
                             </Grid>
@@ -155,7 +163,7 @@
                     <ItemsControl x:Name="CarModelItemsControl" ItemsSource="{Binding SpecList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid Tap="CarModel_Tap">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="100"/>
@@ -169,13 +177,13 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <TextBlock Text="查看更多速腾车型"/>
+                    <TextBlock Text="查看更多速腾车型" Tap="CarModelMore_Tap"/>
                 </StackPanel>
                 <!--品牌/厂商-->
                 <ItemsControl x:Name="BrandItemsControl" ItemsSource="{Binding SeriesList}" Visibility="{Binding SeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid Tap="Brand_Tap">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition Width="100"/>
@@ -200,11 +208,11 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding Img}"/>
+                                <Image Source="{Binding Img}" Tap="Img_Tap"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <TextBlock Text="{Binding ImgCount, StringFormat='查看所有{0}张照片'}"/>
+                    <TextBlock Text="{Binding ImgCount, StringFormat='查看所有{0}张照片'}" Tap="ImgMore_Tap"/>
                 </StackPanel>
                 <!--相关车系-->
                 <ItemsControl x:Name="RelatedSeriesItemsControl" ItemsSource="{Binding RelatedSeriesList}" Visibility="{Binding RelatedSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
@@ -215,7 +223,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
+                            <StackPanel Tap="RelatedSeries_Tap">
                                 <Image Source="{Binding Img}"/>
                                 <TextBlock Text="{Binding Name}"/>
                                 <TextBlock Text="{Binding LowPrice}"/>
@@ -257,7 +265,7 @@
                 <ItemsControl x:Name="FindSeriesItemsControl" ItemsSource="{Binding FindSeriesList}" Visibility="{Binding FindSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid Tap="FindSeries_Tap">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -285,22 +293,28 @@
                     <ItemsControl x:Name="JingxuanItemsControl" ItemsSource="{Binding JingxuanList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="Auto" MaxWidth="100"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                                <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}">
+                                    <util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                        <DataTemplate>
+                                         <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="Auto" MaxWidth="100"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
 
-                                    <Image Grid.RowSpan="2" Source="{Binding SmallImg}" Width="100" Height="80"/>
-                                    <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title}"/>
-                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BBSName}"/>
-                                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回'}"/>
-                                </Grid>
+                                                <Image Grid.RowSpan="2" Source="{Binding SmallImg}" Width="100" Height="80"/>
+                                                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BBSName}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回'}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                </util:LoadMoreDataTemplateSelector>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -312,14 +326,16 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <ucSearchResult:NatureResultDataTemplateSelector Content="{Binding}"
-                                    ArticleTemplate="{StaticResource NaturalResultArticleDataTemplate}" TopicTemplate="{StaticResource NaturalResultTopicDataTemplate}" VideoTemplate="{StaticResource NaturalResultVideoDataTemplate}" LobbyistTemplate="{StaticResource NaturalResultLobbyistDataTemplate}"/>
+                                    ArticleTemplate="{StaticResource NaturalResultArticleDataTemplate}" TopicTemplate="{StaticResource NaturalResultTopicDataTemplate}"
+                                    VideoTemplate="{StaticResource NaturalResultVideoDataTemplate}" LobbyistTemplate="{StaticResource NaturalResultLobbyistDataTemplate}"
+                                    LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
-        
+
         <ucSearchResult:NoResultView x:Name="NoResultUC" Visibility="Collapsed"/>
     </Grid>
 </UserControl>

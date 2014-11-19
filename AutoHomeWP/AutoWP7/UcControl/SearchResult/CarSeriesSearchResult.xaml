@@ -21,7 +21,7 @@
             <ListBox x:Name="CarSeriesListBox" Grid.Row="1" ItemsSource="{Binding CarSeriesList}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Background="Transparent" Margin="0 12" Width="456">
+                        <Grid Background="Transparent" Margin="0 12" Width="456" Tap="CarSeries_Tap">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
