@@ -40,6 +40,26 @@
         </DataTemplate>
 
         <!--组-->
+        <DataTemplate x:Key="brandListItemTemplate" >
+            <Grid Width="480" x:Name="carSeriesGird" Tap="carSeriesGird_Tap" Margin="0,10,0,0"  Tag="{Binding Id}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!--<Image Grid.RowSpan="2" Grid.Column="0" Height="100" Width="100"
+                       Source="Images/smallImage.jpg"/>-->
+                <Image Grid.Column="0" Height="64" Width="64" Source="{Binding ImgUrl}"/>
+                <TextBlock Text="{Binding Name}" Grid.Column="1" 
+                           FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
+                           FontSize="26" 
+                           Margin="10,0,0,0"
+                           Foreground="Black"
+                           VerticalAlignment="Center"/>
+            </Grid>
+        </DataTemplate>
+        <!--组-->
+        
+        <!--组-->
         <DataTemplate x:Key="jumpListItemTemplate" >
             <Grid Width="480" x:Name="carSeriesGird" Tap="carSeriesGird_Tap" Margin="0,10,0,0"  Tag="{Binding Id}">
                 <Grid.RowDefinitions>
@@ -47,8 +67,8 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <!--<Image Grid.RowSpan="2" Grid.Column="0" Height="100" Width="100"
                        Source="Images/smallImage.jpg"/>-->
@@ -118,7 +138,7 @@
                                 IsGroupingEnabled="True"   
                                 HideEmptyGroups="True" 
                                 LayoutMode="List"
-                                ItemTemplate="{StaticResource jumpListItemTemplate}" 
+                                ItemTemplate="{StaticResource brandListItemTemplate}" 
                                 GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
                                 JumpListStyle="{StaticResource BrandJumpList}"
                                 >

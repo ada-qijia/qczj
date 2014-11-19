@@ -82,17 +82,16 @@ namespace AutoWP7.View.Sale
             }
             else
             {
-                foreach (CarBrandModel model in e.Result)
-                {
-                    if (!string.IsNullOrEmpty(model.ImgUrl))
-                    {
-                        model.bitmap = new StorageCachedImage(new Uri(model.ImgUrl, UriKind.Absolute), 1);
-                    }
-                }
                 var groupBy = from car in e.Result
                               group car by car.Letter into c
                               orderby c.Key
                               select new Group<CarBrandModel>(c.Key, c);
+
+                //add special item
+                CarBrandGroup allBrandGroup = new CarBrandGroup("#");
+                CarBrandModel allBrandItem = new CarBrandModel() { Id = 0, Name = "全部品牌" };
+                allBrandGroup.Add(allBrandItem);
+                carBrandSource.Add(allBrandGroup);
 
                 foreach (var entity in groupBy)
                 {
@@ -169,6 +168,13 @@ namespace AutoWP7.View.Sale
                     var groupBy = from car in e.Result
                                   group car by car.FctName into c
                                   select new Group<CarSeriesModel>(c.Key, c);
+
+                    //add special item
+                    CarSeriesGroup allSeriesGroup = new CarSeriesGroup("#");
+                    CarSeriesModel allSeriesItem = new CarSeriesModel() { Id = 0, Name = "全部车系" };
+                    allSeriesGroup.Add(allSeriesItem);
+                    carSeriesSource.Add(allSeriesGroup);
+
                     foreach (var entity in groupBy)
                     {
                         string temKey = entity.key;
@@ -211,7 +217,7 @@ namespace AutoWP7.View.Sale
         }
 
         CarSeriesQuteSource carSeriesQuteSource = new CarSeriesQuteSource();
-        CarSeriesQuoteViewModel carSeriesQuoteVM = null;
+        SaleCarSpecListViewModel carSeriesQuoteVM = null;
 
         public void CarSpecLoadData(string sid)
         {
@@ -220,13 +226,13 @@ namespace AutoWP7.View.Sale
 
             if (carSeriesQuoteVM == null)
             {
-                carSeriesQuoteVM = new CarSeriesQuoteViewModel();
+                carSeriesQuoteVM = new SaleCarSpecListViewModel();
                 carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(carSeriesQuoteVM_LoadDataCompleted);
             }
 
             //http://221.192.136.99:804/wpv1.6/cars/specslist-a2-pm3-v1.6.0-t0x000c-ss18.html
-            string url = string.Format("{0}{1}/cars/specslist-{2}-t0xffff-ss{3}.html", App.appUrl, App.versionStr, App.AppInfo, sid);
-            carSeriesQuoteVM.LoadDataAysnc(url, true);
+            string url = string.Format("{0}{1}/cars/specslist-{2}-t0x000c-ss{3}.html", App.appUrl, App.versionStr, App.AppInfo, sid);
+            carSeriesQuoteVM.LoadDataAysnc(url, false);
         }
 
         void carSeriesQuoteVM_LoadDataCompleted(object sender, ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>> e)
@@ -244,22 +250,24 @@ namespace AutoWP7.View.Sale
                 }
                 else
                 {
-                    CarCompareViewModel carCompareVM = new CarCompareViewModel();
-                    var compareSpceList = carCompareVM.GetCompareSpec();
                     var groupBy = from car in e.Result
                                   group car by car.GroupName into c
                                   select new Group<CarSeriesQuoteModel>(c.Key, c);
+
+                    //add special item
+                    CarSeriesQuteGroup allSpecGroup = new CarSeriesQuteGroup("#");
+                    CarSeriesQuoteModel allSpecItem = new CarSeriesQuoteModel() { Id = 0, Name = "全部车型" };
+                    allSpecGroup.Add(allSpecItem);
+                    carSeriesQuteSource.Add(allSpecGroup);
+
                     foreach (var entity in groupBy)
                     {
                         CarSeriesQuteGroup group = new CarSeriesQuteGroup(entity.key);
                         foreach (var item in entity)
-                            if (item.Id > 1000000 || item.ParamIsShow == 0 || compareSpceList.Count(c => c.SpecId == item.Id) > 0)
-                            { //不能添加对比的车型：1、商用车id>1000000；2、不显示参数配置的paramisshow=0;3、已经在对比列表的车型
-                            }
-                            else
-                                group.Add(item);
-                        if (group.Count > 0)
-                            carSeriesQuteSource.Add(group);
+                        {
+                            group.Add(item);
+                        }
+                        carSeriesQuteSource.Add(group);
                     }
                     carSpecListGropus.ItemsSource = carSeriesQuteSource;
                 }
@@ -303,7 +311,7 @@ namespace AutoWP7.View.Sale
             //TextBlock tb = CommonLayer.CommonHelper.FindFirstElementInVisualTree<TextBlock>(gg);
             //if (tb != null)
             //    specName = tb.Text;
-            
+
             //int resultCode = carCompareVM.AddCompareSpec(carCompareVM);
             //if (resultCode == 0) //添加成功
             //{

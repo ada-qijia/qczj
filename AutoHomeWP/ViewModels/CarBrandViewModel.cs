@@ -106,8 +106,8 @@ namespace ViewModels
                     JArray carBrandJson = (JArray)json.SelectToken("result").SelectToken("brandlist");
 
 
-                    using (LocalDataContext ldc = new LocalDataContext())
-                    {
+                    //using (LocalDataContext ldc = new LocalDataContext())
+                    //{
                         CarBrandModel model = null;
                         for (int i = 0; i < carBrandJson.Count; i++)
                         {
@@ -121,14 +121,14 @@ namespace ViewModels
                                 model.Name = (string)carItemJson[j].SelectToken("name");
                                 model.ImgUrl = (string)carItemJson[j].SelectToken("imgurl");
                                 model.CurrentTime = DateTime.Now;
-                                ldc.carBrandModels.InsertOnSubmit(model);
+                                //ldc.carBrandModels.InsertOnSubmit(model);
                                 CarBrandDataSource.Add(model);
                             }
 
                         }
-                        //存入本地数据库
-                        ldc.SubmitChanges();
-                    }
+                    //    //存入本地数据库
+                    //    ldc.SubmitChanges();
+                    //}
 
                   //  //加载图片
                     //for (int i = 1; i < CarBrandDataSource.Count; i++)

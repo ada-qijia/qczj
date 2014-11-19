@@ -105,9 +105,8 @@ namespace ViewModels
 
                     JArray carSeriedJson = (JArray)json.SelectToken("result").SelectToken("fctlist");
 
-                    using (LocalDataContext ldc = new LocalDataContext())
-                    {
-                        
+                    //using (LocalDataContext ldc = new LocalDataContext())
+                    //{
                         CarSeriesModel model = null;
                         for (int i = 0; i < carSeriedJson.Count; i++)
                         {
@@ -121,12 +120,12 @@ namespace ViewModels
                                 model.Name = (string)carItemJson[j].SelectToken("name");
                                 model.ImgUrl = (string)carItemJson[j].SelectToken("imgurl");
                                 model.PriceBetween = (string)carItemJson[j].SelectToken("price");
-                                ldc.carSeries.InsertOnSubmit(model);
+                                //ldc.carSeries.InsertOnSubmit(model);
                                 CarSeriesDataSource.Add(model);
                             }
-                            ldc.SubmitChanges();
+                            //ldc.SubmitChanges();
                         }
-                    }
+                    //}
                  
                     //加载图片
                     for (int i = 0; i < CarSeriesDataSource.Count; i++)

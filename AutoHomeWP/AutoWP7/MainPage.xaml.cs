@@ -339,7 +339,7 @@ namespace AutoWP7
 
         #endregion
 
-        #region  品牌找车数据加载
+        #region  找车
 
         private class CarBrandGroup : List<CarBrandModel>
         {
@@ -484,6 +484,19 @@ namespace AutoWP7
 
             });
         }
+
+        private void carBrandListButton_Click(object sender, RoutedEventArgs e)
+        {
+            carFinderFilterPanel.Visibility = Visibility.Collapsed;
+            carBrandListGropus.Visibility = Visibility.Visible;
+        }
+
+        private void carFinderFiltersButton_Click(object sender, RoutedEventArgs e)
+        {
+            carFinderFilterPanel.Visibility = Visibility.Visible;
+            carBrandListGropus.Visibility = Visibility.Collapsed;
+        }
+
         #endregion
 
         #region 降价
@@ -910,17 +923,7 @@ namespace AutoWP7
             return new Uri(string.Format("/View/Channel/NewsListPage.xaml?tag={0}", tag), UriKind.Relative);
         }
 
-        private void carBrandListButton_Click(object sender, RoutedEventArgs e)
-        {
-            carFinderFilterPanel.Visibility = Visibility.Collapsed;
-            carBrandListGropus.Visibility = Visibility.Visible;
-        }
-
-        private void carFinderFiltersButton_Click(object sender, RoutedEventArgs e)
-        {
-            carFinderFilterPanel.Visibility = Visibility.Visible;
-            carBrandListGropus.Visibility = Visibility.Collapsed;
-        }
+        
 
 
 

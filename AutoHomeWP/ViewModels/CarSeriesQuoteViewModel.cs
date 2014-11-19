@@ -88,7 +88,8 @@ namespace ViewModels
             // wc.Encoding = new Gb2312Encoding();
             wc.Headers["Accept-Charset"] = "utf-8";
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
-            Uri urlSource = new Uri(url + "&a=" + Guid.NewGuid().ToString(), UriKind.Absolute);
+            url = url + "&a=" + Guid.NewGuid().ToString();
+            Uri urlSource = new Uri(url, UriKind.Absolute);
             wc.DownloadStringAsync(urlSource);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
             {
@@ -107,8 +108,8 @@ namespace ViewModels
                     {
                         JArray carJson = (JArray)json.SelectToken("result").SelectToken("enginelist");
 
-                        using (LocalDataContext ldc = new LocalDataContext())
-                        {
+                        //using (LocalDataContext ldc = new LocalDataContext())
+                        //{
                             //读取数据
                             CarSeriesQuoteModel model = null;
                             for (int i = 0; i < carJson.Count; i++)
@@ -129,20 +130,20 @@ namespace ViewModels
                                     model.GroupOrder = i + 1;
                                     model.Compare = "";
                                     model.CompareText = "";
-                                    ldc.carQuotes.InsertOnSubmit(model);
+                                    //ldc.carQuotes.InsertOnSubmit(model);
                                     CarSeriesQuoteDataSource.Add(model);
                                 }
                             }
-                            ldc.SubmitChanges();
-                        }
+                        //    ldc.SubmitChanges();
+                        //}
 
                     }
                     else
                     {
                         JArray carJson = (JArray)json.SelectToken("result").SelectToken("list");
 
-                        using (LocalDataContext ldc = new LocalDataContext())
-                        {
+                        //using (LocalDataContext ldc = new LocalDataContext())
+                        //{
                             //读取数据
                             CarSeriesQuoteModel model = null;
 
@@ -157,12 +158,12 @@ namespace ViewModels
                                     model.Id = (int)carItemJson[j].SelectToken("id");
                                     model.Name = (string)carItemJson[j].SelectToken("name");
 
-                                    ldc.carQuotes.InsertOnSubmit(model);
+                                    //ldc.carQuotes.InsertOnSubmit(model);
                                     CarSeriesQuoteDataSource.Add(model);
                                 }
                             }
-                            ldc.SubmitChanges();
-                        }
+                        //    ldc.SubmitChanges();
+                        //}
                     }
 
 
