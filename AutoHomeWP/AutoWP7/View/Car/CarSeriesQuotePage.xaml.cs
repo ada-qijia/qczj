@@ -93,6 +93,12 @@ namespace AutoWP7.View.Car
                                 case "alibi":
                                     piv.SelectedIndex = 2;
                                     break;
+                                case "spec":
+                                    piv.SelectedIndex = 1;
+                                    break;
+                                case "dealer":
+                                    piv.SelectedIndex = 0;
+                                    break;
                                 default:
                                     break;
                             }

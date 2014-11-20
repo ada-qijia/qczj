@@ -798,7 +798,7 @@ namespace AutoWP7
             {
                 string pageindex = "1";
                 int mediatype = news.mediatype;
-                if (mediatype == 1 || mediatype == 2)
+                if (mediatype == 1 || mediatype == 2)//文章 和 说客 按同一种类型处理
                 {
                     pageindex = news.pageIndex;
                     this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + pageindex + "&pageType=" + mediatype, UriKind.Relative));
@@ -834,7 +834,7 @@ namespace AutoWP7
             if (news != null)
             {
                 int mediatype = news.mediatype;
-                if (mediatype == 1 || mediatype == 3)
+                if (mediatype == 1 || mediatype == 3)//文章 和 说客 按同一种类型处理
                 {
                     this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + focusImagePageIndex + "&pageType=" + mediatype, UriKind.Relative));
                 }
