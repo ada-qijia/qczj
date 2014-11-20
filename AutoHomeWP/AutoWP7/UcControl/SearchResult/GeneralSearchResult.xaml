@@ -27,8 +27,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail}"/>
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}"/>
 
                 <TextBlock Grid.Row="2" Text="{Binding Type}"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}"/>
@@ -48,9 +48,9 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}"/>
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}"/>
 
-                <TextBlock Grid.Row="1" Text="{Binding IndexDetail}"/>
+                <TextBlock Grid.Row="1" Text="{Binding IndexDetail, Converter={StaticResource HtmlStringToNormalConverter}}"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Time}"/>
                 <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回帖'}"/>
             </Grid>
@@ -70,7 +70,7 @@
 
                 <Image Grid.RowSpan="2" Source="{Binding SmallImg}" Width="100" Height="80"/>
 
-                <TextBlock Grid.ColumnSpan="2" Text="{Binding Title}"/>
+                <TextBlock Grid.ColumnSpan="2" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Time}"/>
                 <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
@@ -93,8 +93,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail}"/>
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}"/>
 
                 <TextBlock Grid.Row="2" Text="{Binding Type}"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}"/>
@@ -308,8 +308,8 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <Image Grid.RowSpan="2" Source="{Binding SmallImg}" Width="100" Height="80"/>
-                                                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title}"/>
-                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BBSName}"/>
+                                                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}"/>
                                                 <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回'}"/>
                                             </Grid>
                                         </DataTemplate>

@@ -20,6 +20,7 @@ using System.IO.IsolatedStorage;
 using System.Reflection;
 using ViewModels;
 using AutoWP7.Handler;
+using ViewModels.Handler;
 namespace AutoWP7
 {
     public partial class App : Application
@@ -106,9 +107,23 @@ namespace AutoWP7
                 if (value != _cityId)
                 {
                     _cityId = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        using (LocalDataContext ldc = new LocalDataContext())
+                        {
+                            var result = from s in ldc.provinces where s.Id == int.Parse(App.CityId) select s.Name;
+                            if (result!=null && result.Count() > 0)
+                            {
+                                CityName = result.First();
+                            }
+                        }
+                    }
                 }
             }
         }
+
+        public static string CityName { get; private set; }
 
         /// <summary>
         /// 图片总数
@@ -211,7 +226,12 @@ namespace AutoWP7
         //public static string topicPageDomain = "http://221.192.136.99:804";
         //public static string newsPageDomain = "http://221.192.136.99:804";
 
+#if DEBUG
+        public static string appUrl = "http://221.192.136.99:804";
+#else
         public static string appUrl = "http://app.api.autohome.com.cn";
+#endif
+
         public static string topicPageDomain = "http://forum.app.autohome.com.cn";
         public static string newsPageDomain = "http://cont.app.autohome.com.cn";
 
@@ -220,7 +240,7 @@ namespace AutoWP7
         public static string replyUrl = "http://reply.autohome.com.cn";
 
         public static string clubUrl = "http://club.api.autohome.com.cn";
-        public static string versionStr = "/wpv1.5";
+        public static string versionStr = "/wpv1.6";
 
         #endregion
         /// <summary>
@@ -232,7 +252,7 @@ namespace AutoWP7
         //平台id
         public static int platForm = 3;
         //当前版本号
-        public static string version = "1.5.0";
+        public static string version = "1.6.0";
         //app相关信息
         public static string AppInfo
         {
@@ -417,7 +437,7 @@ namespace AutoWP7
             //调用全局方法，更改本地数据库数据结构
             UpdateDBHelper upHelper = new UpdateDBHelper();
             upHelper.update_14();
-            
+
             UmengSDK.UmengAnalytics.setDebug(true);
             UmengSDK.UmengAnalytics.onLaunching("5056b77d5270155f88000125", ChannelId);
             UmengSDK.UmengAnalytics.update("5056b77d5270155f88000125");

@@ -96,4 +96,27 @@ namespace AutoWP7.Utils
             throw new NotImplementedException();
         }
     }
+
+    /// <summary>
+    /// Remove highligh tag B.
+    /// </summary>
+    public class HtmlStringToNormalConverter:IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            string htmlContent = value as string;
+            if (!string.IsNullOrWhiteSpace(htmlContent))
+            {
+                htmlContent = htmlContent.Replace(@"<B>", "").Replace(@"</B>", "");
+                return htmlContent;
+            }
+
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

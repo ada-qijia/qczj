@@ -57,10 +57,7 @@ namespace AutoWP7.UcControl.SearchResult
             }
 
             int pageSize = 20;
-
-            //string url = "http://221.192.136.99:804/wpv1.6/sou/video.ashx?a=2&pm=3&v=1.6.0&q=bmw&p=1&s=10";
-            string url = string.Format("{0}{1}/sou/video.ashx?a={2}&pm={3}&v={4}&q={5}&p={6}&s={7}", "http://221.192.136.99:804/wpv1.6", "", App.appId, App.platForm, "1.6.0", keyword, nextPageIndex, pageSize);
-            //string url = string.Format("{0}{1}/sou/video.ashx?a={2}&pm={3}&v={4}&q={5}&p={6}&s={7}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, nextPageIndex, pageSize);
+            string url = string.Format("{0}{1}/sou/video.ashx?a={2}&pm={3}&v={4}&q={5}&p={6}&s={7}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, nextPageIndex, pageSize);
 
             this.SearchResultVM.LoadDataAysnc(url);
         }

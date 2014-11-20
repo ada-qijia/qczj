@@ -60,10 +60,9 @@ namespace AutoWP7.UcControl.SearchResult
             string classId = filterModel == null ? "0" : filterModel.Type;
             int summarySize = 30;
             int pageSize = 20;
+ 
+            string url = string.Format("{0}{1}/sou/news.ashx?app={2}&platform={3}&version={4}&entry=&sort=&classId={5}&contentsize={6}&q={7}&pagestart={8}&pagesize={9}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, classId, summarySize, keyword, nextPageIndex, pageSize);
 
-            //string url = "http://221.192.136.99:804/wpv1.6/sou/news.ashx?app=2&platform=3&version=1.6.0&entry=&sort=&classId=0&contentsize=200&q=4&pagestart=1&pagesize=20";
-            string url = string.Format("{0}{1}/sou/news.ashx?app={2}&platform={3}&version={4}&entry=&sort=&classId={5}&contentsize={6}&q={7}&pagestart={8}&pagesize={9}", "http://221.192.136.99:804/wpv1.6", "", App.appId, App.platForm, "1.6.0", classId, summarySize, keyword, nextPageIndex, pageSize);
-            //string url = string.Format("{0}{1}/sou/news.ashx?app={2}&platform={3}&version={4}&entry={5}&sort={6}&classId={7}&contentsize={8}&q={9}&pagestart={10}&pagesize={11}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, entry, sort, classId, summarySize, keyword, nextPageIndex, pageSize);
             this.SearchResultVM.LoadDataAysnc(url);
         }
 

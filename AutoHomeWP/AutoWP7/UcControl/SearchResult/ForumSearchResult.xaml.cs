@@ -76,9 +76,7 @@ namespace AutoWP7.UcControl.SearchResult
             string bbsName = selectedBBS.Name;
             int timeRange = this.timeListPicker.SelectedIndex;
             int pageSize = 20;
-            //string url = "http://221.192.136.99:804/wpv1.6/sou/club.ashx?a=2&pm=3&v=1.6.0&k=bmw&o=1&b=0&r=0&p=1&s=10&bn=";
-            string url = string.Format("{0}{1}/sou/club.ashx?a={2}&pm={3}&v={4}&k={5}&o={6}&b={7}&r={8}&p={9}&s={10}&bn={11}","http://221.192.136.99:804/wpv1.6", "", App.appId, App.platForm, "1.6.0", keyword, sort, bbsID, timeRange, nextPageIndex, pageSize, bbsName);
-            //string url = string.Format("{0}{1}/sou/club.ashx?a={2}&pm={3}&v={4}&k={5}&o={6}&b={7}&r={8}&p={9}&s={10}&bn={11}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, sort, bbsID, timeRange, nextPageIndex, pageSize, bbsName);
+            string url = string.Format("{0}{1}/sou/club.ashx?a={2}&pm={3}&v={4}&k={5}&o={6}&b={7}&r={8}&p={9}&s={10}&bn={11}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, sort, bbsID, timeRange, nextPageIndex, pageSize, bbsName);
             this.SearchResultVM.LoadDataAysnc(url);
         }
 

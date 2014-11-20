@@ -52,8 +52,7 @@ namespace AutoWP7.UcControl.SearchResult
         public void ReLoad()
         {
             this.SearchResultVM.ClearData();
-            string url = "http://221.192.136.99:804/wpv1.6/sou/series.ashx?app=2&platform=3&version=1.6.0&kw=5";
-            //string url = string.Format("{0}{1}/sou/series.ashx?app={2}&platform={3}&version={4}&kw={5}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword);
+            string url = string.Format("{0}{1}/sou/series.ashx?app={2}&platform={3}&version={4}&kw={5}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword);
             this.SearchResultVM.LoadDataAysnc(url);
         }
 

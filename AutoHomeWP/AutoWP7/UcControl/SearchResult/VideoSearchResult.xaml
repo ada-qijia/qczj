@@ -39,7 +39,7 @@
                                         <Image Grid.RowSpan="2" Height="60" Width="80" Source="Images/smallImage.jpg" Margin="12"/>
                                         <Image Grid.RowSpan="2" Height="60" Width="80" Source="{Binding SmallImg}" Margin="12"/>
 
-                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title}"/>
+                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}"/>
 
                                         <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding Time}"/>
                                         <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PlayCount,StringFormat='\{0}播放'}"/>

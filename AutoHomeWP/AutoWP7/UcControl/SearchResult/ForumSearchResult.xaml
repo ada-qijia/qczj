@@ -80,7 +80,7 @@
                                     <Image Height="90" Width="120" Source="Images/smallImage.jpg" Margin="12"/>
                                     <Image Height="90" Width="120" Source="{Binding Img}" Margin="12"/>
 
-                                    <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{StaticResource TitleTextblockStyle}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Name, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleTextblockStyle}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding TopicCount}" VerticalAlignment="Bottom" MaxHeight="50" Style="{StaticResource FooterTextBlockStyle}"/>
 
                                     <Image Grid.Column="2" Source="Images/ArrowR.png" Margin="12"/>
@@ -110,12 +110,12 @@
                                                     <ColumnDefinition/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}" Style="{StaticResource TitleTextblockStyle}"/>
+                                                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleTextblockStyle}"/>
                                                 <Image Visibility="{Binding IsJinghua,Converter={StaticResource BoolToVisibleConverter}}" Source="/Images/alibi_recommendation.png"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding PostDate}" Style="{StaticResource FooterTextBlockStyle}"/>
 
                                                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding BBSName}" Style="{StaticResource FooterTextBlockStyle}"/>
+                                                    <TextBlock Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterTextBlockStyle}"/>
                                                     <Image Source="Images/ArrowR.png" Visibility="{Binding IsPic, Converter={StaticResource BoolToVisibleConverter}}" Stretch="None"/>
                                                 </StackPanel>
 

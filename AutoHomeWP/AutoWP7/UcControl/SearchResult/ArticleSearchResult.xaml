@@ -58,8 +58,8 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.ColumnSpan="2" Text="{Binding Title}"/>
-                                        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Content}"/>
+                                        <TextBlock Grid.ColumnSpan="2" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}"/>
+                                        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Content, Converter={StaticResource HtmlStringToNormalConverter}}"/>
 
                                         <TextBlock Grid.Row="2" Text="{Binding Type}"/>
                                         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Date}"/>

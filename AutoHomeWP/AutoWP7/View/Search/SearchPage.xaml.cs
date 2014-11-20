@@ -280,8 +280,7 @@ namespace AutoWP7.View.Search
             }
 
             suggestWordsVM.ClearData();
-            string url = "http://221.192.136.99:804/wpv1.6/sou/suggestwords.ashx?a=2&pm=3&v=1.6.0&k=bmw&t=1";
-            //string url = string.Format("{0}{1}/sou/suggestwords.ashx?a={2}&pm={3}&v={4}&k={5}&t={6}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, (int)type);
+            string url = string.Format("{0}{1}/sou/suggestwords.ashx?a={2}&pm={3}&v={4}&k={5}&t={6}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, (int)type);
             suggestWordsVM.LoadDataAysnc(url);
         }
 

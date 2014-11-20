@@ -97,7 +97,7 @@ namespace AutoWP7.UcControl.SearchResult
             GlobalIndicator.Instance.Text = "正在获取中...";
             GlobalIndicator.Instance.IsBusy = true;
 
-            int nextPageIndex = this.SearchResultVM.PageIndex+1;
+            int nextPageIndex = this.SearchResultVM.PageIndex + 1;
             if (restart)
             {
                 this.SearchResultVM.ClearData();
@@ -106,21 +106,8 @@ namespace AutoWP7.UcControl.SearchResult
 
             int pageSize = 20;
 
-            string cityName = string.Empty;
-            if (!string.IsNullOrEmpty(App.CityId))
-            {
-                using (LocalDataContext ldc = new LocalDataContext())
-                {
-                    var result = from s in ldc.provinces where s.Id == int.Parse(App.CityId) select s.Name;
-                    if(result.Count()>0)
-                    {
-                        cityName = result.First();
-                    }
-                }
-            }
-
-            string url = string.Format("http://221.192.136.99:804/wpv1.6/sou/search.ashx?a=2&pm=3&v=1.6.0&q={0}&p=1&s=10", keyword);
-            //string url = string.Format("{0}{1}/sou/search.ashx?a={2}&pm={3}&v={4}&q={5}&p={6}&s={7}&c={8}&cn={9}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, nextPageIndex, pageSize, App.CityId,cityName);
+            string cityName = App.CityName?? string.Empty;
+            string url = string.Format("{0}{1}/sou/search.ashx?a={2}&pm={3}&v={4}&q={5}&p={6}&s={7}&c={8}&cn={9}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, nextPageIndex, pageSize, App.CityId, cityName);
 
             this.SearchResultVM.LoadDataAysnc(url);
         }
