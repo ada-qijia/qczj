@@ -17,33 +17,30 @@ using Newtonsoft.Json.Linq;
 
 namespace ViewModels
 {
-    /// <summary>
-    /// 省市viewmodel
-    /// </summary>
-    public class ProvinceViewModel : INotifyPropertyChanged, INotifyPropertyChanging
+    public class SaleCityListViewModel : INotifyPropertyChanged, INotifyPropertyChanging
     {
-        public ProvinceViewModel()
+        public SaleCityListViewModel()
         {
-            _provinceDataSource = new ObservableCollection<ProvinceModel>();
+            _cityListDataSource = new ObservableCollection<ProvinceModel>();
         }
 
         /// <summary>
         /// 返回的数据集合
         /// </summary>
-        private ObservableCollection<ProvinceModel> _provinceDataSource;
-        public ObservableCollection<ProvinceModel> ProvinceDataSource
+        private ObservableCollection<ProvinceModel> _cityListDataSource;
+        public ObservableCollection<ProvinceModel> CityListDataSource
         {
             get
             {
-                return _provinceDataSource;
+                return _cityListDataSource;
             }
             set
             {
-                if (value != _provinceDataSource)
+                if (value != _cityListDataSource)
                 {
-                    OnPropertyChanging("ProvinceDataSource");
-                    _provinceDataSource = value;
-                    OnPropertyChanged("ProvinceDataSource");
+                    OnPropertyChanging("CityListDataSource");
+                    _cityListDataSource = value;
+                    OnPropertyChanged("CityListDataSource");
                 }
             }
         }
@@ -87,7 +84,7 @@ namespace ViewModels
                 return;
             }
 
-            // wc.Encoding = new Gb2312Encoding();
+           // wc.Encoding = new Gb2312Encoding();
             wc.Headers["Accept-Charset"] = "utf-8";
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
             Uri urlSource = new Uri(url, UriKind.Absolute);
@@ -101,38 +98,49 @@ namespace ViewModels
                 }
                 else
                 {
+
                     //返回的json数据
                     JObject json = JObject.Parse(ee.Result);
-                    JArray carJson = (JArray)json.SelectToken("body").SelectToken("provinces");
-
-                    ProvinceModel model = null;
-                    for (int i = 0; i < carJson.Count; i++)
+                    if (json != null)
                     {
-                        model = new ProvinceModel();
-                        model.Father = 0;
-                        model.Id = (int)carJson[i].SelectToken("Id");
-                        model.Name = (string)carJson[i].SelectToken("Name");
-                        model.FirstLetter = (string)carJson[i].SelectToken("FirstLetter");
 
-                        ProvinceDataSource.Add(model);
-                        JArray items = (JArray)carJson[i].SelectToken("Citys");
-                        for (int k = 0; k < items.Count; k++)
-                        {
-                            model = new ProvinceModel();
-                            model.Father = (int)carJson[i].SelectToken("Id");
+                            JArray dataJson = (JArray)json.SelectToken("result").SelectToken("provinces");
+                            if (dataJson != null)
+                            {
+                                using (LocalDataContext ldc = new LocalDataContext())
+                                {
+                                    ProvinceModel model = null;
+                                    for (int i = 0; i < dataJson.Count; i++)
+                                    {
 
-                            model.Id = (int)items[k].SelectToken("Id");
-                            model.FirstLetter = (string)items[k].SelectToken("FirstLetter");
-                            model.Name = (string)items[k].SelectToken("Name");
-                            ProvinceDataSource.Add(model);
-                        }
+                                        JArray items = (JArray)dataJson[i].SelectToken("citys");
+                                        if (items != null)
+                                        {
+                                            for (int k = 0; k < items.Count; k++)
+                                            {
+                                                model = new ProvinceModel();
+                                                model.Id = (int)items[k].SelectToken("id");
+                                                model.FirstLetter = (string)items[k].SelectToken("firstletter");
+                                                model.FatherName = (string)dataJson[i].SelectToken("name");
+                                                model.Name = (string)items[k].SelectToken("name");
+                                                //放入本地数据库
+                                                ldc.provinces.InsertOnSubmit(model);
+                                                CityListDataSource.Add(model);
+                                            }
+                                        }
+                                    }
+                                    //提交到本地数据库
+                                    ldc.SubmitChanges();
 
-                        ProvinceDataSource.Add(model);
+                                }
+                            }
+                        
                     }
+
                 }
 
                 //注意
-                apiArgs.Result = ProvinceDataSource;
+                apiArgs.Result = CityListDataSource;
 
                 if (LoadDataCompleted != null)
                 {
@@ -146,3 +154,4 @@ namespace ViewModels
 
     }
 }
+

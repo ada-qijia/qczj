@@ -623,7 +623,7 @@ namespace AutoWP7
             }
             else if (tag == "area")
             {
-                this.NavigationService.Navigate(new Uri("/View/Sale/SaleBrandFilterPage.xaml", UriKind.Relative));
+                this.NavigationService.Navigate(new Uri("/View/Sale/SaleCityFilterPage.xaml", UriKind.Relative));
             }
             else
             {

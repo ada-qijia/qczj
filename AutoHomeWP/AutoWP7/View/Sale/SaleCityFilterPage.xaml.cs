@@ -9,11 +9,11 @@ using Model;
 using ViewModels;
 using ViewModels.Handler;
 
-namespace AutoWP7.View.Channel.News
+namespace AutoWP7.View.Sale
 {
-    public partial class CityListPage : PhoneApplicationPage
+    public partial class SaleCityFilterPage : PhoneApplicationPage
     {
-        public CityListPage()
+        public SaleCityFilterPage()
         {
             InitializeComponent();
         }
@@ -21,27 +21,10 @@ namespace AutoWP7.View.Channel.News
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            switch (e.NavigationMode)
-            {
-                case System.Windows.Navigation.NavigationMode.New:
-                    {
-
-                        LoadData();
-                    }
-                    break;
-            }
+            LoadData();
         }
-
-        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
-        {
-            base.OnBackKeyPress(e);
-
-        }
-
 
         #region 省市数据获取
-
-
 
         private class ProvinceGroup : List<ProvinceModel>
         {
@@ -62,21 +45,16 @@ namespace AutoWP7.View.Channel.News
         ProvinceSource provinceSource = new ProvinceSource();
 
         LocalDataContext ldc = new LocalDataContext();
-        /// <summary>
-        /// 省市数据加载
-        /// </summary>
         public void LoadData()
         {
-
             //本地数据库获取
             var queryProvince = from s in ldc.provinces where s.Id > 0 select s;
-            if (queryProvince.Count() > 0)    
+            if (queryProvince.Count() > 0)
             {
                 var groupBy = from p in queryProvince
                               group p by p.FatherName into c
                               orderby c.Key
                               select new Group<ProvinceModel>(c.Key, c);
-                //cityListGroups.ItemsSource = groupBy;
 
                 foreach (var entity in groupBy)
                 {
@@ -88,7 +66,7 @@ namespace AutoWP7.View.Channel.News
                     }
                     provinceSource.Add(group);
                 }
-                cityListGroups.ItemsSource = provinceSource;
+                provinceListGroups.ItemsSource = provinceSource;
             }
             else //服务器获取
             {
@@ -102,9 +80,6 @@ namespace AutoWP7.View.Channel.News
         #region  省市数据网络获取
 
         CityListViewModel provinceVM = null;
-        /// <summary>
-        /// 省市数据
-        /// </summary>
         public void ProvinceLoadData()
         {
             GlobalIndicator.Instance.Text = "正在获取中...";
@@ -115,7 +90,6 @@ namespace AutoWP7.View.Channel.News
             }
             provinceVM.LoadDataAysnc(string.Format("{0}{1}/news/province-{2}-ts0.html", App.appUrl, App.versionStr, App.AppInfo));
             provinceVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.ProvinceModel>>>(provinceVM_LoadDataCompleted);
-
         }
 
         void provinceVM_LoadDataCompleted(object sender, ViewModels.Handler.APIEventArgs<IEnumerable<Model.ProvinceModel>> e)
