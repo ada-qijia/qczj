@@ -260,6 +260,13 @@ namespace AutoWP7
         public static string SaleFilterSelector_SelectedValue { get; set; }
         public static string SaleFilterSelector_SelectedName { get; set; }
 
+        public static string SaleFilterSelector_SelectedCarBrandID { get; set; }
+        //public static string SaleFilterSelector_SelectedCarBrandName { get; set; }
+        public static string SaleFilterSelector_SelectedCarSeriesID { get; set; }
+        //public static string SaleFilterSelector_SelectedCarSeriesName { get; set; }
+        public static string SaleFilterSelector_SelectedCarSpecID { get; set; }
+        //public static string SaleFilterSelector_SelectedCarSpecName { get; set; }
+
 
         /// <summary>
         /// 提供对电话应用程序的根框架的轻松访问。

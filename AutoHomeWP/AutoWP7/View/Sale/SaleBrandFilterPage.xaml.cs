@@ -18,15 +18,18 @@ namespace AutoWP7.View.Sale
 {
     public partial class SaleBrandFilterPage : PhoneApplicationPage
     {
+        #region Properties
+
+        public int BrandId = 0;
+
+        #endregion
+
+        #region Lifecycle
+
         public SaleBrandFilterPage()
         {
             InitializeComponent();
         }
-
-        public int BrandId = 0;
-        public int SeriesId = 0;
-        public string SeriesName = string.Empty;
-        public ShowListTypeEnum CurType = ShowListTypeEnum.BrandList;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -39,7 +42,9 @@ namespace AutoWP7.View.Sale
             carBrandLoadData();
         }
 
-        #region  品牌数据加载
+        #endregion
+
+        #region  品牌
 
         private class CarBrandGroup : List<CarBrandModel>
         {
@@ -112,7 +117,7 @@ namespace AutoWP7.View.Sale
 
         #endregion
 
-        #region 车系数据加载
+        #region 车系
 
         private class CarSeriesGroup : List<CarSeriesModel>
         {
@@ -199,7 +204,7 @@ namespace AutoWP7.View.Sale
 
         #endregion
 
-        #region 车型数据加载
+        #region 车型
 
         private class CarSeriesQuteGroup : List<CarSeriesQuoteModel>
         {
@@ -276,68 +281,65 @@ namespace AutoWP7.View.Sale
 
         #endregion
 
-        private void carSeriesGird_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        #region Item Tap
+
+        private void carBrand_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             Grid gg = (Grid)sender;
             string id = gg.Tag.ToString();
-            if (CurType == ShowListTypeEnum.BrandList)
+
+            if (id == "0")
+            {
+                App.SaleFilterSelector_SelectedCarBrandID = id;
+                GoBack();
+            }
+            else
             {
                 this.carSeriesListGropus.Visibility = System.Windows.Visibility.Visible;
                 this.carListGropus.Visibility = System.Windows.Visibility.Collapsed;
                 this.carSpecListGropus.Visibility = System.Windows.Visibility.Collapsed;
-                CurType = ShowListTypeEnum.SeriesList;
                 CarSeriesLoadData(id);
             }
-            else if (CurType == ShowListTypeEnum.SeriesList)
+        }
+
+        private void carSeriesGird_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            Grid gg = (Grid)sender;
+            string id = gg.Tag.ToString();
+
+            if (id == "0")
             {
-                SeriesId = Convert.ToInt32(id);
-                TextBlock tb = CommonLayer.CommonHelper.FindFirstElementInVisualTree<TextBlock>(gg) as TextBlock;
-                if (tb != null)
-                    SeriesName = tb.Text;
+                App.SaleFilterSelector_SelectedCarSeriesID = id;
+                GoBack();
+            }
+            else
+            {
                 this.carSeriesListGropus.Visibility = System.Windows.Visibility.Collapsed;
                 this.carListGropus.Visibility = System.Windows.Visibility.Collapsed;
                 this.carSpecListGropus.Visibility = System.Windows.Visibility.Visible;
-                CurType = ShowListTypeEnum.SpecList;
                 CarSpecLoadData(id);
             }
         }
 
         private void carSpecGird_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            ////获取车系id 添加到对比列表           
-            //Grid gg = (Grid)sender;
-            //int specId = Convert.ToInt32(gg.Tag);
-            //string specName = string.Empty;
-            //TextBlock tb = CommonLayer.CommonHelper.FindFirstElementInVisualTree<TextBlock>(gg);
-            //if (tb != null)
-            //    specName = tb.Text;
+            Grid gg = (Grid)sender;
+            string id = gg.Tag.ToString();
 
-            //int resultCode = carCompareVM.AddCompareSpec(carCompareVM);
-            //if (resultCode == 0) //添加成功
-            //{
-            //    if (Action == CarChooseTypeEnum.CarCompare)
-            //        this.NavigationService.Navigate(new Uri("/View/Car/CarComparePage.xaml", UriKind.Relative));
-            //    else if (Action == CarChooseTypeEnum.CarCompareList)
-            //        this.NavigationService.Navigate(new Uri("/View/Car/CarCompareListPage.xaml", UriKind.Relative));
-            //    else
-            //        MessageBox.Show("此车型添加对比成功");
-            //    //跳转到对比页
-            //}
-            //else if (resultCode == 1)
-            //{
-            //    MessageBox.Show("添加对比车型到对比库");
-            //}
-            //else
-            //{
-            //    MessageBox.Show("抱歉，最多可添加9款车型");
-            //}
+            App.SaleFilterSelector_SelectedCarSeriesID = id;
+            GoBack();
         }
+
+        private void GoBack()
+        {
+            if (NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
+        }
+
+        #endregion
+
     }
 
-    public enum ShowListTypeEnum
-    {
-        BrandList = 0,
-        SeriesList = 1,
-        SpecList = 2
-    }
 }

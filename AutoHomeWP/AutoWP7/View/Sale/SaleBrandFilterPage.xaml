@@ -41,7 +41,7 @@
 
         <!--组-->
         <DataTemplate x:Key="brandListItemTemplate" >
-            <Grid Width="480" x:Name="carSeriesGird" Tap="carSeriesGird_Tap" Margin="0,10,0,0"  Tag="{Binding Id}">
+            <Grid Width="480" x:Name="carSeriesGird" Tap="carBrand_Tap" Margin="0,10,0,0"  Tag="{Binding Id}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="*"/>
