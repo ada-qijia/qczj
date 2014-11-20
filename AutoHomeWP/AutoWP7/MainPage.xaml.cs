@@ -675,6 +675,24 @@ namespace AutoWP7
                         SaleFilter5.Content = App.SaleFilterSelector_SelectedName;
                     }
                     break;
+                case "b":
+                    sale_param_b = App.SaleFilterSelector_SelectedValue;
+                    sale_param_ss = "0";
+                    sale_param_sp = "0";
+                    SaleFilter2.Content = App.SaleFilterSelector_SelectedName;
+                    break;
+                case "ss":
+                    sale_param_b = "0";
+                    sale_param_ss = App.SaleFilterSelector_SelectedValue;
+                    sale_param_sp = "0";
+                    SaleFilter2.Content = App.SaleFilterSelector_SelectedName;
+                    break;
+                case "sp":
+                    sale_param_b = "0";
+                    sale_param_ss = "0";
+                    sale_param_sp = App.SaleFilterSelector_SelectedValue;
+                    SaleFilter2.Content = App.SaleFilterSelector_SelectedName;
+                    break;
                 default:
                     break;
             }
@@ -923,7 +941,7 @@ namespace AutoWP7
             return new Uri(string.Format("/View/Channel/NewsListPage.xaml?tag={0}", tag), UriKind.Relative);
         }
 
-        
+
 
 
 

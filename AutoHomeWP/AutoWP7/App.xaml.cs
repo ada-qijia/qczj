@@ -256,16 +256,16 @@ namespace AutoWP7
         public static List<string> BigImageList { get; set; }
 
         //降价模块
-        public static string SaleFilterSelector_FilterType { get; set; }
+        public static string SaleFilterSelector_FilterType { get; set; } // possible values: price, level, buyorder, b(car brand), ss(car series), sp(car spec)
         public static string SaleFilterSelector_SelectedValue { get; set; }
         public static string SaleFilterSelector_SelectedName { get; set; }
 
-        public static string SaleFilterSelector_SelectedCarBrandID { get; set; }
+        //public static string SaleFilterSelector_SelectedCarBrandID { get; set; }
         //public static string SaleFilterSelector_SelectedCarBrandName { get; set; }
-        public static string SaleFilterSelector_SelectedCarSeriesID { get; set; }
-        //public static string SaleFilterSelector_SelectedCarSeriesName { get; set; }
-        public static string SaleFilterSelector_SelectedCarSpecID { get; set; }
-        //public static string SaleFilterSelector_SelectedCarSpecName { get; set; }
+        //public static string SaleFilterSelector_SelectedCarSeriesID { get; set; }
+        ////public static string SaleFilterSelector_SelectedCarSeriesName { get; set; }
+        //public static string SaleFilterSelector_SelectedCarSpecID { get; set; }
+        ////public static string SaleFilterSelector_SelectedCarSpecName { get; set; }
 
 
         /// <summary>

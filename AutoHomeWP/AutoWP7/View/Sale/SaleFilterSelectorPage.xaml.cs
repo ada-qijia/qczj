@@ -26,8 +26,6 @@ namespace AutoWP7.View.Sale
         {
             base.OnNavigatedTo(e);
 
-            
-
             filterType = NavigationContext.QueryString["filterType"];
             switch (filterType)
             {

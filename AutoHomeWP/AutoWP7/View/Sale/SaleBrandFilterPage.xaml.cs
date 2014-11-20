@@ -13,6 +13,7 @@ using Model;
 using ViewModels;
 using ViewModels.Handler;
 using CommonLayer;
+using AutoWP7.Utils;
 
 namespace AutoWP7.View.Sale
 {
@@ -20,7 +21,10 @@ namespace AutoWP7.View.Sale
     {
         #region Properties
 
-        public int BrandId = 0;
+        private string BrandID = string.Empty;
+        private string BrandName = string.Empty;
+        private string SeriesID = string.Empty;
+        private string SeriesName = string.Empty;
 
         #endregion
 
@@ -285,12 +289,17 @@ namespace AutoWP7.View.Sale
 
         private void carBrand_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            Grid gg = (Grid)sender;
-            string id = gg.Tag.ToString();
-
-            if (id == "0")
+            var data = sender.GetDataContext<CarBrandModel>();
+            if (data == null)
             {
-                App.SaleFilterSelector_SelectedCarBrandID = id;
+                return;
+            }
+
+            if (data.Id.ToString() == "0")
+            {
+                App.SaleFilterSelector_FilterType = "b";
+                App.SaleFilterSelector_SelectedValue = "0";
+                App.SaleFilterSelector_SelectedName = "品牌";
                 GoBack();
             }
             else
@@ -298,18 +307,25 @@ namespace AutoWP7.View.Sale
                 this.carSeriesListGropus.Visibility = System.Windows.Visibility.Visible;
                 this.carListGropus.Visibility = System.Windows.Visibility.Collapsed;
                 this.carSpecListGropus.Visibility = System.Windows.Visibility.Collapsed;
-                CarSeriesLoadData(id);
+                BrandID = data.Id.ToString();
+                BrandName = data.Name;
+                CarSeriesLoadData(data.Id.ToString());
             }
         }
 
         private void carSeriesGird_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            Grid gg = (Grid)sender;
-            string id = gg.Tag.ToString();
-
-            if (id == "0")
+            var data = sender.GetDataContext<CarSeriesModel>();
+            if (data == null)
             {
-                App.SaleFilterSelector_SelectedCarSeriesID = id;
+                return;
+            }
+
+            if (data.Id.ToString() == "0")
+            {
+                App.SaleFilterSelector_FilterType = "b";
+                App.SaleFilterSelector_SelectedValue = BrandID;
+                App.SaleFilterSelector_SelectedName = BrandName;
                 GoBack();
             }
             else
@@ -317,17 +333,34 @@ namespace AutoWP7.View.Sale
                 this.carSeriesListGropus.Visibility = System.Windows.Visibility.Collapsed;
                 this.carListGropus.Visibility = System.Windows.Visibility.Collapsed;
                 this.carSpecListGropus.Visibility = System.Windows.Visibility.Visible;
-                CarSpecLoadData(id);
+                SeriesID = data.Id.ToString();
+                SeriesName = data.Name;
+                CarSpecLoadData(data.Id.ToString());
             }
         }
 
         private void carSpecGird_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            Grid gg = (Grid)sender;
-            string id = gg.Tag.ToString();
+            var data = sender.GetDataContext<CarSeriesQuoteModel>();
+            if (data == null)
+            {
+                return;
+            }
 
-            App.SaleFilterSelector_SelectedCarSeriesID = id;
-            GoBack();
+            if (data.Id.ToString() == "0")
+            {
+                App.SaleFilterSelector_FilterType = "ss";
+                App.SaleFilterSelector_SelectedValue = SeriesID;
+                App.SaleFilterSelector_SelectedName = SeriesName;
+                GoBack();
+            }
+            else
+            {
+                App.SaleFilterSelector_FilterType = "sp";
+                App.SaleFilterSelector_SelectedValue = data.Id.ToString();
+                App.SaleFilterSelector_SelectedName = data.Name;
+                GoBack();
+            }
         }
 
         private void GoBack()
