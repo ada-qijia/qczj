@@ -25,6 +25,7 @@ namespace ViewModels
         public ProvinceViewModel()
         {
             _provinceDataSource = new ObservableCollection<ProvinceModel>();
+            _cityDataSource = new ObservableCollection<ProvinceModel>();
         }
 
         /// <summary>
@@ -44,6 +45,24 @@ namespace ViewModels
                     OnPropertyChanging("ProvinceDataSource");
                     _provinceDataSource = value;
                     OnPropertyChanged("ProvinceDataSource");
+                }
+            }
+        }
+
+        private ObservableCollection<ProvinceModel> _cityDataSource;
+        public ObservableCollection<ProvinceModel> CityDataSource
+        {
+            get
+            {
+                return _cityDataSource;
+            }
+            set
+            {
+                if (value != _cityDataSource)
+                {
+                    OnPropertyChanging("CityDataSource");
+                    _cityDataSource = value;
+                    OnPropertyChanged("CityDataSource");
                 }
             }
         }
@@ -124,10 +143,8 @@ namespace ViewModels
                             model.Id = (int)items[k].SelectToken("Id");
                             model.FirstLetter = (string)items[k].SelectToken("FirstLetter");
                             model.Name = (string)items[k].SelectToken("Name");
-                            ProvinceDataSource.Add(model);
+                            CityDataSource.Add(model);
                         }
-
-                        ProvinceDataSource.Add(model);
                     }
                 }
 

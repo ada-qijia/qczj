@@ -8,6 +8,8 @@ using Microsoft.Phone.Controls;
 using Model;
 using ViewModels;
 using ViewModels.Handler;
+using AutoWP7.Utils;
+using System.Windows;
 
 namespace AutoWP7.View.Sale
 {
@@ -43,50 +45,15 @@ namespace AutoWP7.View.Sale
         }
 
         ProvinceSource provinceSource = new ProvinceSource();
+        SaleCityListViewModel provinceVM = null;
 
-        LocalDataContext ldc = new LocalDataContext();
         public void LoadData()
-        {
-            //本地数据库获取
-            var queryProvince = from s in ldc.provinces where s.Id > 0 select s;
-            if (queryProvince.Count() > 0)
-            {
-                var groupBy = from p in queryProvince
-                              group p by p.FatherName into c
-                              orderby c.Key
-                              select new Group<ProvinceModel>(c.Key, c);
-
-                foreach (var entity in groupBy)
-                {
-                    ProvinceGroup group = new ProvinceGroup(entity.key);
-
-                    foreach (var item in entity)
-                    {
-                        group.Add(item);
-                    }
-                    provinceSource.Add(group);
-                }
-                provinceListGroups.ItemsSource = provinceSource;
-            }
-            else //服务器获取
-            {
-                ProvinceLoadData();
-
-            }
-        }
-        #endregion
-
-
-        #region  省市数据网络获取
-
-        CityListViewModel provinceVM = null;
-        public void ProvinceLoadData()
         {
             GlobalIndicator.Instance.Text = "正在获取中...";
             GlobalIndicator.Instance.IsBusy = true;
             if (provinceVM == null)
             {
-                provinceVM = new CityListViewModel();
+                provinceVM = new SaleCityListViewModel();
             }
             provinceVM.LoadDataAysnc(string.Format("{0}{1}/news/province-{2}-ts0.html", App.appUrl, App.versionStr, App.AppInfo));
             provinceVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.ProvinceModel>>>(provinceVM_LoadDataCompleted);
@@ -102,14 +69,41 @@ namespace AutoWP7.View.Sale
             }
             else
             {
-                LoadData();
+                var groupBy = from p in provinceVM.ProvinceDataSource
+                              group p by p.FirstLetter into c
+                              orderby c.Key
+                              select new Group<ProvinceModel>(c.Key, c);
+
+                foreach (var entity in groupBy)
+                {
+                    ProvinceGroup group = new ProvinceGroup(entity.key);
+
+                    foreach (var item in entity)
+                    {
+                        group.Add(item);
+                    }
+                    provinceSource.Add(group);
+                }
+                provinceListGroups.ItemsSource = provinceSource;
             }
         }
 
         #endregion
 
-        private void cityNameStack_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void provinceNameStack_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            var province = sender.GetDataContext<ProvinceModel>();
+            //cityListBox.ItemsSource = 
+            var cities = from c in provinceVM.CityDataSource
+                         where c.Father == province.Id
+                         select c;
+
+            provinceListGroups.Visibility = Visibility.Collapsed;
+            cityListBox.Visibility = Visibility.Visible;
+            cityListBox.ItemsSource = cities.ToList();
+
+            return;
+
             TextBlock ss = (TextBlock)sender;
 
             //独立存储城市id
@@ -127,6 +121,11 @@ namespace AutoWP7.View.Sale
             setting.Save();
             App.CityId = ss.Tag.ToString();
             this.NavigationService.GoBack();
+        }
+
+        private void cityItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
         }
     }
 }

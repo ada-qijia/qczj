@@ -21,33 +21,46 @@ namespace ViewModels
     {
         public SaleCityListViewModel()
         {
-            _cityListDataSource = new ObservableCollection<ProvinceModel>();
+            _provinceDataSource = new ObservableCollection<ProvinceModel>();
+            _cityDataSource = new ObservableCollection<ProvinceModel>();
         }
 
-        /// <summary>
-        /// 返回的数据集合
-        /// </summary>
-        private ObservableCollection<ProvinceModel> _cityListDataSource;
-        public ObservableCollection<ProvinceModel> CityListDataSource
+        private ObservableCollection<ProvinceModel> _provinceDataSource;
+        public ObservableCollection<ProvinceModel> ProvinceDataSource
         {
             get
             {
-                return _cityListDataSource;
+                return _provinceDataSource;
             }
             set
             {
-                if (value != _cityListDataSource)
+                if (value != _provinceDataSource)
                 {
-                    OnPropertyChanging("CityListDataSource");
-                    _cityListDataSource = value;
-                    OnPropertyChanged("CityListDataSource");
+                    OnPropertyChanging("ProvinceDataSource");
+                    _provinceDataSource = value;
+                    OnPropertyChanged("ProvinceDataSource");
                 }
             }
         }
 
-        /// <summary>
-        /// 属性更改时的事件
-        /// </summary>
+        private ObservableCollection<ProvinceModel> _cityDataSource;
+        public ObservableCollection<ProvinceModel> CityDataSource
+        {
+            get
+            {
+                return _cityDataSource;
+            }
+            set
+            {
+                if (value != _cityDataSource)
+                {
+                    OnPropertyChanging("CityDataSource");
+                    _cityDataSource = value;
+                    OnPropertyChanged("CityDataSource");
+                }
+            }
+        }
+
         public event PropertyChangingEventHandler PropertyChanging;
         public void OnPropertyChanging(string propertyName)
         {
@@ -57,7 +70,6 @@ namespace ViewModels
             }
         }
 
-        //属性更改完毕事件
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName)
         {
@@ -67,14 +79,8 @@ namespace ViewModels
             }
         }
 
-
-        //事件通知
         public event EventHandler<APIEventArgs<IEnumerable<ProvinceModel>>> LoadDataCompleted;
 
-        /// <summary>
-        /// 请求Json格式的数据
-        /// </summary>
-        /// <param name="url">请求的地址url</param>
         public void LoadDataAysnc(string url)
         {
             WebClient wc = new WebClient();
@@ -84,7 +90,7 @@ namespace ViewModels
                 return;
             }
 
-           // wc.Encoding = new Gb2312Encoding();
+            // wc.Encoding = new Gb2312Encoding();
             wc.Headers["Accept-Charset"] = "utf-8";
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
             Uri urlSource = new Uri(url, UriKind.Absolute);
@@ -98,49 +104,45 @@ namespace ViewModels
                 }
                 else
                 {
-
-                    //返回的json数据
                     JObject json = JObject.Parse(ee.Result);
-                    if (json != null)
+                    JArray carJson = (JArray)json.SelectToken("result").SelectToken("provinces");
+
+                    ProvinceModel model = null;
+
+                    //全国
+                    var allProvinces = new ProvinceModel() { Id = 0, Name = "全国", FirstLetter="#" };
+                    ProvinceDataSource.Add(allProvinces);
+
+                    for (int i = 0; i < carJson.Count; i++)
                     {
+                        int provinceID = 0;
+                        model = new ProvinceModel();
+                        model.Father = 0;
+                        model.Id = provinceID = (int)carJson[i].SelectToken("id");
+                        model.Name = (string)carJson[i].SelectToken("name");
+                        model.FirstLetter = (string)carJson[i].SelectToken("firstletter");
+                        ProvinceDataSource.Add(model);
 
-                            JArray dataJson = (JArray)json.SelectToken("result").SelectToken("provinces");
-                            if (dataJson != null)
-                            {
-                                using (LocalDataContext ldc = new LocalDataContext())
-                                {
-                                    ProvinceModel model = null;
-                                    for (int i = 0; i < dataJson.Count; i++)
-                                    {
 
-                                        JArray items = (JArray)dataJson[i].SelectToken("citys");
-                                        if (items != null)
-                                        {
-                                            for (int k = 0; k < items.Count; k++)
-                                            {
-                                                model = new ProvinceModel();
-                                                model.Id = (int)items[k].SelectToken("id");
-                                                model.FirstLetter = (string)items[k].SelectToken("firstletter");
-                                                model.FatherName = (string)dataJson[i].SelectToken("name");
-                                                model.Name = (string)items[k].SelectToken("name");
-                                                //放入本地数据库
-                                                ldc.provinces.InsertOnSubmit(model);
-                                                CityListDataSource.Add(model);
-                                            }
-                                        }
-                                    }
-                                    //提交到本地数据库
-                                    ldc.SubmitChanges();
+                        //全省
+                        var allCities = new ProvinceModel() { Id = 0, Name = "全省", FirstLetter = "#", Father = provinceID };
+                        CityDataSource.Add(allCities);
 
-                                }
-                            }
-                        
+                        JArray items = (JArray)carJson[i].SelectToken("citys");
+                        for (int k = 0; k < items.Count; k++)
+                        {
+                            model = new ProvinceModel();
+                            model.Father = provinceID;// (int)carJson[i].SelectToken("id");
+
+                            model.Id = (int)items[k].SelectToken("id");
+                            model.FirstLetter = (string)items[k].SelectToken("firstletter");
+                            model.Name = (string)items[k].SelectToken("name");
+                            CityDataSource.Add(model);
+                        }
                     }
-
                 }
 
-                //注意
-                apiArgs.Result = CityListDataSource;
+                apiArgs.Result = ProvinceDataSource;
 
                 if (LoadDataCompleted != null)
                 {
@@ -154,4 +156,3 @@ namespace ViewModels
 
     }
 }
-

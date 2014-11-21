@@ -28,12 +28,13 @@
         </DataTemplate>
 
         <!--组-->
-        <DataTemplate x:Key="cityListItemTemplate">
-            <TextBlock Foreground="Black" Text="{Binding Name}" 
-                       Tag="{Binding Id}" Tap="cityNameStack_Tap"
+        <DataTemplate x:Key="provinceListItemTemplate">
+            <Grid Height="64" Width="480" Background="#00000000">
+                <TextBlock Foreground="Black" Text="{Binding Name}" 
+                       Tag="{Binding Id}" Tap="provinceNameStack_Tap"
                        FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
-                       FontSize="32"  
-                       Height="50" Width="480" />
+                       FontSize="32" />
+            </Grid>
         </DataTemplate>
 
         <!--字母索引-->
@@ -59,7 +60,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
     </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot" Background="White">
@@ -76,13 +77,16 @@
                                 IsGroupingEnabled="True"   
                                 HideEmptyGroups="True" 
                                 LayoutMode="List"
-                                ItemTemplate="{StaticResource cityListItemTemplate}"
+                                ItemTemplate="{StaticResource provinceListItemTemplate}"
                                 GroupHeaderTemplate="{StaticResource citygroupHeaderTemplate}"
                                 JumpListStyle="{StaticResource JumpList}"/>
-            <ListBox x:Name="cityListBox">
+            <ListBox x:Name="cityListBox" Visibility="Collapsed">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-
+                        <TextBlock Foreground="Black" Text="{Binding Name}" 
+                                   Tap="cityItem_Tap"
+                                   FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
+                                   FontSize="32" Height="64" Width="480" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ListBox>
