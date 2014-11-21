@@ -15,6 +15,9 @@ namespace AutoWP7.View.Sale
 {
     public partial class SaleCityFilterPage : PhoneApplicationPage
     {
+        private string provinceID = string.Empty;
+        private string provinceName = string.Empty;
+
         public SaleCityFilterPage()
         {
             InitializeComponent();
@@ -93,39 +96,46 @@ namespace AutoWP7.View.Sale
         private void provinceNameStack_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var province = sender.GetDataContext<ProvinceModel>();
-            //cityListBox.ItemsSource = 
-            var cities = from c in provinceVM.CityDataSource
-                         where c.Father == province.Id
-                         select c;
 
-            provinceListGroups.Visibility = Visibility.Collapsed;
-            cityListBox.Visibility = Visibility.Visible;
-            cityListBox.ItemsSource = cities.ToList();
-
-            return;
-
-            TextBlock ss = (TextBlock)sender;
-
-            //独立存储城市id
-            var setting = IsolatedStorageSettings.ApplicationSettings;
-            string key = "cityId";
-
-            if (setting.Contains(key))
+            if (province.Id == 0)
             {
-                setting[key] = ss.Tag.ToString();
+                App.SaleFilterSelector_FilterType = "country";
+                App.SaleFilterSelector_SelectedName = "地区";
+                App.SaleFilterSelector_SelectedValue = "0";
+                this.NavigationService.GoBack();
             }
             else
             {
-                setting.Add(key, ss.Tag.ToString());
+                provinceID = province.Id.ToString();
+                provinceName = province.Name;
+
+                var cities = from c in provinceVM.CityDataSource
+                             where c.Father == province.Id
+                             select c;
+
+                provinceListGroups.Visibility = Visibility.Collapsed;
+                cityListBox.Visibility = Visibility.Visible;
+                cityListBox.ItemsSource = cities.ToList();
             }
-            setting.Save();
-            App.CityId = ss.Tag.ToString();
-            this.NavigationService.GoBack();
         }
 
         private void cityItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            ProvinceModel city = sender.GetDataContext<ProvinceModel>();
+            if (city.Id == 0)
+            {
+                App.SaleFilterSelector_FilterType = "province";
+                App.SaleFilterSelector_SelectedName = provinceName;
+                App.SaleFilterSelector_SelectedValue = provinceID;
+                this.NavigationService.GoBack();
+            }
+            else
+            {
+                App.SaleFilterSelector_FilterType = "city";
+                App.SaleFilterSelector_SelectedName = city.Name;
+                App.SaleFilterSelector_SelectedValue = city.Id.ToString();
+                this.NavigationService.GoBack();
+            }
         }
     }
 }

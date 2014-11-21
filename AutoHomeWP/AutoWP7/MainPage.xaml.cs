@@ -640,6 +640,21 @@ namespace AutoWP7
 
             switch (App.SaleFilterSelector_FilterType)
             {
+                case "country":
+                    sale_param_pi = "0";
+                    sale_param_c = "0";
+                    SaleFilter1.Content = "地区";
+                    break;
+                case "province":
+                    sale_param_pi = App.SaleFilterSelector_SelectedValue;
+                    sale_param_c = "0";
+                    SaleFilter1.Content = App.SaleFilterSelector_SelectedName;
+                    break;
+                case "city":
+                    sale_param_pi = "0";
+                    sale_param_c = App.SaleFilterSelector_SelectedValue;
+                    SaleFilter1.Content = App.SaleFilterSelector_SelectedName;
+                    break;
                 case "price":
                     var strArray = App.SaleFilterSelector_SelectedValue.Split('|');
                     sale_param_minp = strArray[0];
