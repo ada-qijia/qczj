@@ -17,14 +17,12 @@ namespace AutoWP7.UcControl.SearchResult
     {
         private GeneralSearchResultViewModel SearchResultVM;
 
-        private string keyword;
-
         public GeneralSearchResult(string keyword)
         {
             InitializeComponent();
 
-            this.keyword = keyword;
             this.SearchResultVM = new GeneralSearchResultViewModel();
+            this.SearchResultVM.Keyword = keyword;
             //this.SearchResultVM.PropertyChanged += SearchResultVM_PropertyChanged;
             this.SearchResultVM.LoadDataCompleted += SearchResultVM_LoadDataCompleted;
             this.DataContext = this.SearchResultVM;
@@ -39,7 +37,7 @@ namespace AutoWP7.UcControl.SearchResult
             bool noResult = this.SearchResultVM.RowCount == 0;
             if (noResult)
             {
-                this.NoResultUC.SetContent(keyword, "内容");
+                this.NoResultUC.SetContent(this.SearchResultVM.Keyword, "内容");
             }
             this.NoResultUC.Visibility = noResult ? Visibility.Visible : Visibility.Collapsed;
             this.ResultPanel.Visibility = noResult ? Visibility.Collapsed : Visibility.Visible;
@@ -105,9 +103,8 @@ namespace AutoWP7.UcControl.SearchResult
             }
 
             int pageSize = 20;
-
             string cityName = App.CityName?? string.Empty;
-            string url = string.Format("{0}{1}/sou/search.ashx?a={2}&pm={3}&v={4}&q={5}&p={6}&s={7}&c={8}&cn={9}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword, nextPageIndex, pageSize, App.CityId, cityName);
+            string url = string.Format("{0}{1}/sou/search.ashx?a={2}&pm={3}&v={4}&q={5}&p={6}&s={7}&c={8}&cn={9}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, this.SearchResultVM.Keyword, nextPageIndex, pageSize, App.CityId, cityName);
 
             this.SearchResultVM.LoadDataAysnc(url);
         }
@@ -171,7 +168,7 @@ namespace AutoWP7.UcControl.SearchResult
             }
             App.BigImageList = bigImageList;
 
-            string url = string.Format("/View/Car/ImageViewer.xaml?pageTitle={0}&imageIndex={1}", keyword, index);
+            string url = string.Format("/View/Car/ImageViewer.xaml?pageTitle={0}&imageIndex={1}", this.SearchResultVM.Keyword, index);
             var frame = Application.Current.RootVisual as PhoneApplicationFrame;
             frame.Navigate(new Uri(url, UriKind.Relative));
         }

@@ -138,14 +138,13 @@ namespace AutoWP7.View.Search
             }
         }
 
-        private void search_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void keywordTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            this.LoadSearchResult(this.keywordTextBox.Text);
-        }
-
-        private void cancel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            this.keywordTextBox.Text = string.Empty;
+            if (e.Key == Key.Enter)
+            {
+                this.Focus();
+                this.LoadSearchResult(this.keywordTextBox.Text);
+            }
         }
 
         //更新搜索输入框提示内容

@@ -20,59 +20,40 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--顶部搜索框-->
-        <Grid Margin="0 12 0 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <toolkit:ListPicker x:Name="searchTypeListPicker" ItemsSource="{Binding}" Width="100" Margin="12 6 0 0" BorderThickness="1" SelectionChanged="searchTypeListPicker_SelectionChanged">
-                <toolkit:ListPicker.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
-                            <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}"/>
-                        </Grid>
-                    </DataTemplate>
-                </toolkit:ListPicker.ItemTemplate>
-            </toolkit:ListPicker>
-
-            <toolkit:PhoneTextBox x:Name="keywordTextBox" Grid.Column="1" Hint="搜索关键词" Margin="-12 0" Loaded="keywordTB_Loaded" TextChanged="keyboardTB_TextChanged"/>
-            <Image Grid.Column="1" HorizontalAlignment="Right" Source="/AutoWP7;component/Images/search.png" Height="40" Tap="search_Tap"/>
-            <TextBlock Grid.Column="2" Text="取消" VerticalAlignment="Center" Margin="24 12 12 12" Tap="cancel_Tap"/>
-        </Grid>
+        <Grid Width="120" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18 24 0 0" Background="{StaticResource App_Theme_Color}"/>
+        <Border Margin="18 24 18 12" Height="60" Style="{StaticResource StrokedBorderStyle}"/>
+        <toolkit:PhoneTextBox x:Name="keywordTextBox" Hint="搜索关键词" Height="74" Margin="138 12 18 0" Loaded="keywordTB_Loaded" TextChanged="keyboardTB_TextChanged" KeyDown="keywordTextBox_KeyDown"/>
 
         <Grid x:Name="KeywordsGrid" Grid.Row="1">
             <!--搜索历史-->
             <Grid x:Name="historyGrid">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto" MaxHeight="550"/>
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Grid Height="60" VerticalAlignment="Top" Background="Gray">
-                    <TextBlock Text="搜索历史" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12 6"/>
-                    <StackPanel x:Name="cleanStackPanel" Orientation="Horizontal" HorizontalAlignment="Right" Tap="cleanHistory_Tap">
-                        <TextBlock Text="清空搜索历史" VerticalAlignment="Center"  Margin="12 6 32 6"/>
-                        <Image Source="/AutoWP7;component/Images/close.png" VerticalAlignment="Center" Width="20"/>
-                    </StackPanel>
-                </Grid>
+                <TextBlock Text="搜索历史" VerticalAlignment="Center" Margin="18 6" Style="{StaticResource BlockTitleTextStyle}"/>
 
                 <ListBox x:Name="historyListBox" Grid.Row="1" ItemsSource="{Binding}" ManipulationStarted="historyListBox_ManipulationStarted">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" Tap="historyItem_Tap"/>
+                            <TextBlock Text="{Binding}" Style="{StaticResource FilterLargeTextStyle}" Margin="18 6" Tap="historyItem_Tap"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+
+                <StackPanel x:Name="cleanStackPanel" Grid.Row="2" Height="50" VerticalAlignment="Top" Orientation="Horizontal" Tap="cleanHistory_Tap" Margin="18 0">
+                    <Image Source="/AutoWP7;component/Images/close.png" VerticalAlignment="Center" Width="20"/>
+                    <TextBlock Text="清空搜索历史" VerticalAlignment="Center"  Margin="6" Style="{StaticResource BlockTitleTextStyle}" Foreground="{StaticResource App_Theme_Color}"/>
+                </StackPanel>
             </Grid>
 
             <!--推荐联想词-->
@@ -80,14 +61,28 @@
                  ManipulationStarted="suggestWordsListBox_ManipulationStarted">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" Tap="suggestItem_Tap"/>
+                        <TextBlock Text="{Binding}" Style="{StaticResource FilterLargeTextStyle}" Margin="18 6" Tap="suggestItem_Tap"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
 
         <!--搜索结果-->
-        <Grid x:Name="ResultGrid" Grid.Row="1" Visibility="Collapsed"/>
+        <Grid x:Name="ResultGrid" Grid.Row="1" Margin="18 0" Visibility="Collapsed"/>
+
+        <!--类型筛选-->
+        <toolkit:ListPicker x:Name="searchTypeListPicker" Grid.RowSpan="2" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18 18 0 0"  BorderThickness="0" ItemsSource="{Binding}" SelectionChanged="searchTypeListPicker_SelectionChanged">
+            <toolkit:ListPicker.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Background="{StaticResource App_Theme_Color}"/>
+                </ItemsPanelTemplate>
+            </toolkit:ListPicker.ItemsPanel>
+            <toolkit:ListPicker.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" Style="{StaticResource FilterWhiteTextStyle}" Margin="12 0"/>
+                </DataTemplate>
+            </toolkit:ListPicker.ItemTemplate>
+        </toolkit:ListPicker>
     </Grid>
 
 </phone:PhoneApplicationPage>

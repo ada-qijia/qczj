@@ -20,6 +20,16 @@ namespace ViewModels.Search
             { SetProperty<int>(ref _rowCount, value); }
         }
 
+        private string _keyword;
+        public string Keyword
+        {
+            get { return _keyword; }
+            set
+            {
+                SetProperty<string>(ref _keyword, value);
+            }
+        }
+
         #region 多页分批加载
 
         public int PageIndex { get; set; }

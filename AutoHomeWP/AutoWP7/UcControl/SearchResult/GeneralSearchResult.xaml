@@ -22,17 +22,17 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}"/>
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource ContentTextStyle}"/>
 
-                <TextBlock Grid.Row="2" Text="{Binding Type}"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}"/>
-                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评论'}"/>
+                <TextBlock Grid.Row="2" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" Margin="12 0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评论'}" Style="{StaticResource FooterLargeTextStyle}"/>
             </Grid>
         </DataTemplate>
 
@@ -43,16 +43,16 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}"/>
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
 
-                <TextBlock Grid.Row="1" Text="{Binding IndexDetail, Converter={StaticResource HtmlStringToNormalConverter}}"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Time}"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回帖'}"/>
+                <TextBlock Grid.Row="1" Text="{Binding IndexDetail, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回帖'}" Style="{StaticResource FooterLargeTextStyle}"/>
             </Grid>
         </DataTemplate>
 
@@ -61,22 +61,23 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Image Grid.RowSpan="2" Source="{Binding SmallImg}" Width="100" Height="80"/>
+                <Grid Grid.RowSpan="2" >
+                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
+                    <Image Source="{Binding SmallImg}" Style="{StaticResource ImageLeftStyle}"/>
+                </Grid>
 
-                <TextBlock Grid.ColumnSpan="2" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}"/>
-
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Time}"/>
-                <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
-                    <Image Source="/Images/alibi_recommendation.png"/>
-                    <TextBlock Text="{Binding ReplyCount,StringFormat='\{0}播放'}"/>
-                </StackPanel>
+                <TextBlock Grid.ColumnSpan="2" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                <Image Grid.Row="1" Grid.Column="2" Source="/Images/alibi_recommendation.png" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}"/>
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}播放'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Right"/>
             </Grid>
         </DataTemplate>
 
@@ -86,28 +87,26 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}"/>
-
-                <TextBlock Grid.Row="2" Text="{Binding Type}"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}"/>
-                <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
-                    <Image Source="/Images/ArrowR.png"/>
-                    <TextBlock Text="{Binding ReplyCount,StringFormat='\{0}评论'}"/>
-                </StackPanel>
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource ContentTextStyle}"/>
+                <Image Grid.Row="2" Grid.Column="2" Source="/Images/ArrowR.png" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Row="2" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}"/>
+                <TextBlock Text="{Binding ReplyCount,StringFormat='\{0}评论'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Right"/>
             </Grid>
 
         </DataTemplate>
 
         <DataTemplate x:Key="LoadMoreDataTemplate">
-            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="410" Tap="LoadMore_Tap">
+            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMore_Tap">
                 <TextBlock Foreground="Black" FontSize="28"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                            Text="点击加载更多..."/>
@@ -115,19 +114,20 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
+    <Grid x:Name="LayoutRoot">
         <ScrollViewer x:Name="ResultPanel">
             <StackPanel x:Name="BlocksStackPanel">
                 <!--车系-->
-                <ContentPresenter  x:Name="CarSeriesPresenter" Content="{Binding Series}" Visibility="{Binding Series, Converter={StaticResource EmptyToVisibilityConverter}}">
+                <ContentPresenter  x:Name="CarSeriesPresenter" Content="{Binding Series}" Width="{StaticResource ContentWidth}" Visibility="{Binding Series, Converter={StaticResource EmptyToVisibilityConverter}}">
                     <ContentPresenter.ContentTemplate>
                         <DataTemplate>
-                            <Grid Tap="CarSeries_Tap">
+                            <Grid Tap="CarSeries_Tap" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
-                                    <RowDefinition/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -135,71 +135,93 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Image Grid.RowSpan="3" Source="{Binding Img}"/>
-                                <TextBlock Grid.RowSpan="3" Text="{Binding ImgCount}" VerticalAlignment="Bottom"/>
+                                <Grid Grid.RowSpan="3" VerticalAlignment="Center">
+                                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                                    <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                                    <Grid Background="{StaticResource SemiBlackBrush}" Height="30" Width="120" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                        <TextBlock Text="{Binding ImgCount, StringFormat='共{0}张图'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="White"/>
+                                    </Grid>
+                                </Grid>
 
-                                <TextBlock Grid.Column="1" Text="{Binding Name}" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PriceBetween,StringFormat='指导价：{0}'}"/>
-                                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                    <TextBlock Text="{Binding KoubeiScore,StringFormat='\{0}分'}"/>
-                                    <TextBlock Text="{Binding KoubeiCount,StringFormat='({0}条口碑)'}"/>
-                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PriceBetween,StringFormat='指导价：{0}'}" Style="{StaticResource PriceRedTextStyle}"/>
 
-                                <Image Grid.RowSpan="3" Grid.Column="2" Source="/Images/ArrowR.png"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding KoubeiScore}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding KoubeiCount,StringFormat='\{0}条口碑'}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Right"/>
+
+                                <Image Grid.RowSpan="3" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
 
                                 <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal">
-                                    <TextBlock Text="参数配置" Tap="CarSeriesConfig_Tap"/>
-                                    <TextBlock Text="论坛" Tap="CarSeriesBBS_Tap"/>
-                                    <!--Visibility="{Binding BBSID}"-->
-                                    <TextBlock Text="口碑" Tap="CarSeriesKoubei_Tap"/>
-                                    <!--Visibility="{Binding IsShowKoubei}"-->
+                                    <Border Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" Margin="0 0 6 0">
+                                        <TextBlock Text="参数配置" Style="{StaticResource ButtonWhiteTextStyle}" Tap="CarSeriesConfig_Tap"/>
+                                    </Border>
+                                    <Border Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" Margin="6">
+                                        <TextBlock Text="论坛" Style="{StaticResource ButtonWhiteTextStyle}" Tap="CarSeriesBBS_Tap"/>
+                                    </Border>
+                                    <Border Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" Margin="6 6 0 6">
+                                        <TextBlock Text="口碑" Style="{StaticResource ButtonWhiteTextStyle}" Tap="CarSeriesKoubei_Tap"/>
+                                    </Border>
                                 </StackPanel>
+
+                                <Rectangle Grid.Row="4" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
                             </Grid>
                         </DataTemplate>
                     </ContentPresenter.ContentTemplate>
                 </ContentPresenter>
                 <!--车型-->
-                <StackPanel x:Name="CarModelStackPanel" Visibility="{Binding SpecList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                <StackPanel x:Name="CarModelStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding SpecList,Converter={StaticResource EmptyToVisibilityConverter}}">
                     <ItemsControl x:Name="CarModelItemsControl" ItemsSource="{Binding SpecList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid Tap="CarModel_Tap">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
-                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="130"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="{Binding Name}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding LowPrice}" HorizontalAlignment="Right"/>
-                                    <Image Grid.Column="2" Source="/Images/ArrowR.png"/>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding LowPrice}" Style="{StaticResource PriceRedTextStyle}" HorizontalAlignment="Right"/>
+                                    <Image Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <TextBlock Text="查看更多速腾车型" Tap="CarModelMore_Tap"/>
+
+                    <Border Style="{StaticResource FilledBorderStyle}" Margin="0 6" HorizontalAlignment="Center">
+                        <TextBlock Text="查看更多速腾车型" Style="{StaticResource ButtonWhiteTextStyle}" Tap="CarModelMore_Tap"/>
+                    </Border>
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
                 </StackPanel>
                 <!--品牌/厂商-->
-                <ItemsControl x:Name="BrandItemsControl" ItemsSource="{Binding SeriesList}" Visibility="{Binding SeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Tap="Brand_Tap">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+                <StackPanel Width="{StaticResource ContentWidth}" Visibility="{Binding SeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <ItemsControl x:Name="BrandItemsControl"  ItemsSource="{Binding SeriesList}" >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="{StaticResource ItemMinHeight}" Tap="Brand_Tap">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto" MaxWidth="180"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="{Binding Name}"/>
-                                <TextBlock Grid.Column="1" Text="{Binding PriceBetween}" HorizontalAlignment="Right"/>
-                                <Image Grid.Column="2" Source="/Images/ArrowR.png"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding PriceBetween}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                    <Image Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+                </StackPanel>
                 <!--图片-->
-                <StackPanel x:Name="ImgStackPanel" Visibility="{Binding ImgList,Converter={StaticResource EmptyToVisibilityConverter}}">
-                    <ItemsControl x:Name="ImgItemsControl" ItemsSource="{Binding ImgList}">
+                <StackPanel x:Name="ImgStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding ImgList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
+                        <Run Text="{Binding Keyword}" Foreground="Red"/>
+                        <Run Text="图片"/>
+                    </TextBlock>
+                    <ItemsControl x:Name="ImgItemsControl" ItemsSource="{Binding ImgList}" Margin="-6 0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"/>
@@ -208,109 +230,136 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding Img}" Tap="Img_Tap"/>
+                                <Grid>
+                                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
+                                    <Image Source="{Binding Img}" Tap="Img_Tap" Style="{StaticResource ImageListStyle}"/>
+                                </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <TextBlock Text="{Binding ImgCount, StringFormat='查看所有{0}张照片'}" Tap="ImgMore_Tap"/>
+
+                    <Border Style="{StaticResource FilledBorderStyle}" Margin="0 6" HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding ImgCount, StringFormat='查看所有{0}张照片'}" Style="{StaticResource ButtonWhiteTextStyle}" Tap="ImgMore_Tap"/>
+                    </Border>
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
                 </StackPanel>
                 <!--相关车系-->
-                <ItemsControl x:Name="RelatedSeriesItemsControl" ItemsSource="{Binding RelatedSeriesList}" Visibility="{Binding RelatedSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Tap="RelatedSeries_Tap">
-                                <Image Source="{Binding Img}"/>
-                                <TextBlock Text="{Binding Name}"/>
-                                <TextBlock Text="{Binding LowPrice}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                <!--经销商-->
-                <StackPanel x:Name="DealerStackPanel" Visibility="{Binding DealerList,Converter={StaticResource EmptyToVisibilityConverter}}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="北京"/>
-                        <TextBlock Text="速腾"/>
-                        <TextBlock Text="经销商"/>
-                    </StackPanel>
+                <StackPanel Width="{StaticResource ContentWidth}" Visibility="{Binding RelatedSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
+                        <Run Text="{Binding Keyword}" Foreground="Red"/>
+                        <Run Text="相关推荐"/>
+                    </TextBlock>
+                    <ItemsControl x:Name="RelatedSeriesItemsControl" ItemsSource="{Binding RelatedSeriesList}" Margin="-6 0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Tap="RelatedSeries_Tap">
+                                    <Grid>
+                                        <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
+                                        <Image Source="{Binding Img}" Style="{StaticResource ImageListStyle}"/>
+                                    </Grid>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding LowPrice}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red" HorizontalAlignment="Center" Margin="0 0 0 6"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
-                    <ItemsControl x:Name="DealerItemsControl" ItemsSource="{Binding DealerList}">
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+                </StackPanel>
+                <!--经销商-->
+                <StackPanel x:Name="DealerStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding DealerList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
+                        <Run Text="北京"/>
+                        <Run Text="{Binding Keyword}" Foreground="Red"/>
+                        <Run Text="经销商"/>
+                    </TextBlock>
+
+                    <ItemsControl x:Name="DealerItemsControl" ItemsSource="{Binding DealerList}" Margin="6">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
+                                        <RowDefinition Height="120"/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
 
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="100"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock Text="{Binding Name}"/>
-                                    <TextBlock Grid.Row="1" Text="{Binding Address}" />
-                                    <TextBlock Grid.RowSpan="2" Grid.Column="1" Text="{Binding Tel}"/>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding Address}" Style="{StaticResource FooterLargeTextStyle}"/>
+                                    <Border Grid.Row="2" Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding Tel}" Style="{StaticResource ButtonWhiteTextStyle}"/>
+                                    </Border>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </StackPanel>
-                <!--找车类搜索词-->
-                <ItemsControl x:Name="FindSeriesItemsControl" ItemsSource="{Binding FindSeriesList}" Visibility="{Binding FindSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Tap="FindSeries_Tap">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto" MaxWidth="100"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="{Binding Name}"/>
-                                <StackPanel Grid.Row="1" Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Level}"/>
-                                    <TextBlock Text="{Binding Displacement, StringFormat='/{0}'}"/>
-                                </StackPanel>
-                                <TextBlock Grid.RowSpan="2" Grid.Column="1" Text="{Binding PriceBetween}"/>
-                                <Image Grid.RowSpan="2" Grid.Column="2" Source="/Images/ArrowR.png" />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+                </StackPanel>
+                <!--找车-->
+                <StackPanel Width="{StaticResource ContentWidth}" Visibility="{Binding FindSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <ItemsControl x:Name="FindSeriesItemsControl" ItemsSource="{Binding FindSeriesList}" >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Tap="FindSeries_Tap">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto" MaxWidth="130"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}"/>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding PriceBetween}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red"/>
+                                        <Image Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding Level}" Style="{StaticResource ContentTextStyle}"/>
+                                        <TextBlock Text="{Binding Displacement, StringFormat='/{0}'}" Style="{StaticResource ContentTextStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+                </StackPanel>
                 <!--论坛精选-->
-                <StackPanel x:Name="JingxuanStackPanel" Visibility="{Binding JingxuanList.Count,Converter={StaticResource EmptyToVisibilityConverter}}">
-                    <TextBlock Text="{Binding RowCount,StringFormat='找到{0}条相关结果'}"/>
+                <StackPanel x:Name="JingxuanStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding JingxuanList.Count,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <TextBlock Text="{Binding RowCount,StringFormat='找到{0}条相关结果'}" Style="{StaticResource FooterSmallTextStyle}" Margin="0 6"/>
                     <ItemsControl x:Name="JingxuanItemsControl" ItemsSource="{Binding JingxuanList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}">
                                     <util:LoadMoreDataTemplateSelector.ItemTemplate>
                                         <DataTemplate>
-                                         <Grid>
+                                            <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition/>
                                                     <RowDefinition/>
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="130"/>
                                                     <ColumnDefinition/>
-                                                    <ColumnDefinition Width="Auto" MaxWidth="100"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <Image Grid.RowSpan="2" Source="{Binding SmallImg}" Width="100" Height="80"/>
-                                                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}"/>
-                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}"/>
-                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回'}"/>
+                                                <Grid Grid.RowSpan="2">
+                                                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
+                                                    <Image Source="{Binding SmallImg}" Style="{StaticResource ImageLeftStyle}"/>
+                                                </Grid>
+                                                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回'}" Style="{StaticResource FooterSmallTextStyle}"/>
                                             </Grid>
                                         </DataTemplate>
                                     </util:LoadMoreDataTemplateSelector.ItemTemplate>
@@ -320,8 +369,8 @@
                     </ItemsControl>
                 </StackPanel>
                 <!--自然结果-->
-                <StackPanel x:Name="NaturalStackPanel" Visibility="{Binding NaturalResultList.Count,Converter={StaticResource EmptyToVisibilityConverter}}">
-                    <TextBlock Text="{Binding RowCount,StringFormat='找到{0}条相关结果'}"/>
+                <StackPanel x:Name="NaturalStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding NaturalResultList.Count,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <TextBlock Text="{Binding RowCount,StringFormat='找到{0}条相关结果'}" Style="{StaticResource BlockTitleTextStyle}"/>
                     <ItemsControl ItemsSource="{Binding NaturalResultList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
