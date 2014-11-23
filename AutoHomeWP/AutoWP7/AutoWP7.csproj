@@ -167,6 +167,9 @@
     <Compile Include="Utils\DataTemplateSelector.cs" />
     <Compile Include="Utils\DateTimerHelper.cs" />
     <Compile Include="Utils\LoadMoreDataTemplateSelector.cs" />
+    <Compile Include="View\CarSearch\CarSearchResultPage.xaml.cs">
+      <DependentUpon>CarSearchResultPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Car\AskPrice.xaml.cs">
       <DependentUpon>AskPrice.xaml</DependentUpon>
     </Compile>
@@ -339,6 +342,10 @@
     <Page Include="UcControl\UcListBox\ListBoxUc.Theme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CarSearch\CarSearchResultPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Car\AskPrice.xaml">
       <SubType>Designer</SubType>

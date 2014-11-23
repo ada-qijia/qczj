@@ -187,6 +187,11 @@ namespace AutoWP7.View.CarSearch
 
         #endregion
 
+        private void goSearch_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/View/CarSearch/CarSearchResultPage.xaml", UriKind.Relative));
+        }
+
 
     }
 }

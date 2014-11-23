@@ -51,7 +51,7 @@
                            Text="重置" Margin="18,0,18,0"
                            VerticalAlignment="Center"/>
             </Grid>
-            <Grid Grid.Column="1" Background="{StaticResource App_Theme_Color}">
+            <Grid Grid.Column="1" Background="{StaticResource App_Theme_Color}" Tap="goSearch_Tap">
                 <TextBlock Grid.Column="1" FontSize="22" Foreground="#ffffffff" Margin="10,0" VerticalAlignment="Center">
                     <Run  Text="共"/>
                     <Run x:Name="searchResultSeriesCount" Text="999"/>

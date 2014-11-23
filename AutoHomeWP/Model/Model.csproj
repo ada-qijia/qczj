@@ -97,6 +97,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Base\LoadMoreItem.cs" />
+    <Compile Include="CarSearchResult.cs" />
     <Compile Include="SaleFilterItemModel.cs" />
     <Compile Include="CarSearchFilter.cs" />
     <Compile Include="SaleItemModel.cs" />
