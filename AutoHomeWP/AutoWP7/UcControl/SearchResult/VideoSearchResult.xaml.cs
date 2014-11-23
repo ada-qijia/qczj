@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using ViewModels.Search;
+using Model.Search;
 
 namespace AutoWP7.UcControl.SearchResult
 {
@@ -49,7 +50,7 @@ namespace AutoWP7.UcControl.SearchResult
             GlobalIndicator.Instance.Text = "正在获取中...";
             GlobalIndicator.Instance.IsBusy = true;
 
-            int nextPageIndex = this.SearchResultVM.PageIndex+1;
+            int nextPageIndex = this.SearchResultVM.PageIndex + 1;
             if (restart)
             {
                 this.SearchResultVM.ClearData();
@@ -65,6 +66,17 @@ namespace AutoWP7.UcControl.SearchResult
         #endregion
 
         #region UI interaction
+
+        private void video_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var model = (sender as FrameworkElement).DataContext as VideoSearchModel;
+            if (model != null)
+            {
+                string url = string.Format("/View/Channel/News/VideoEndPage.xaml?videoid={0}", model.ID);
+                var frame = Application.Current.RootVisual as PhoneApplicationFrame;
+                frame.Navigate(new Uri(url, UriKind.Relative));
+            }
+        }
 
         private void LoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {

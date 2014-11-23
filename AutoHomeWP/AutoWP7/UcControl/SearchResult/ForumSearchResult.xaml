@@ -48,21 +48,21 @@
 
             <!--筛选选项-->
             <StackPanel Orientation="Horizontal" Margin="0 0 0 12">
-                <toolkit:ListPicker x:Name="sortListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}">
+                <toolkit:ListPicker x:Name="sortListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}" SizeChanged="sortListPicker_SizeChanged">
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" HorizontalAlignment="Center" Foreground="Gray"/>
                         </DataTemplate>
                     </toolkit:ListPicker.ItemTemplate>
                 </toolkit:ListPicker>
-                <toolkit:ListPicker x:Name="rangeListPicker" Style="{StaticResource FilterListPickerStyle}" Margin="12 0" ItemsSource="{Binding RelatedBBSList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterBBSDataTemplate}">
+                <toolkit:ListPicker x:Name="rangeListPicker" Style="{StaticResource FilterListPickerStyle}" Margin="12 0" ItemsSource="{Binding RelatedBBSList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterBBSDataTemplate}" SelectionChanged="rangeListPicker_SelectionChanged">
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Foreground="Gray"/>
                         </DataTemplate>
                     </toolkit:ListPicker.ItemTemplate>
                 </toolkit:ListPicker>
-                <toolkit:ListPicker x:Name="timeListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}">
+                <toolkit:ListPicker x:Name="timeListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}" SelectionChanged="timeListPicker_SelectionChanged">
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" HorizontalAlignment="Center" Foreground="Gray"/>
@@ -76,7 +76,7 @@
             <ItemsControl Grid.Row="2" x:Name="BBSItemsControl" ItemsSource="{Binding BBSList}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid Background="Transparent" Width="{StaticResource ContentWidth}">
+                        <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Tap="BBS_Tap">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -112,7 +112,7 @@
                         <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
                             <util:LoadMoreDataTemplateSelector.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}">
+                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Tap="Topic_Tap">
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
                                             <RowDefinition Height="Auto"/>

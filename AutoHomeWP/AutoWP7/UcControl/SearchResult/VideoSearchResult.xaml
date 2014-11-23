@@ -25,7 +25,7 @@
                         <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
                             <util:LoadMoreDataTemplateSelector.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="0 12">
+                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="0 12" Tap="video_Tap">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="130"/>
                                             <ColumnDefinition/>

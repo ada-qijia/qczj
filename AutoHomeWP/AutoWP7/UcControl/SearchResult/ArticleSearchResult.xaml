@@ -30,7 +30,7 @@
             </Grid.RowDefinitions>
 
             <!--筛选选项-->
-            <toolkit:ListPicker x:Name="typeListPicker" HorizontalAlignment="Left" Width="180" Margin="0" Foreground="Black" BorderBrush="{StaticResource App_Theme_Color}" BorderThickness="3" ItemsSource="{Binding ArticleFilterList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}">
+            <toolkit:ListPicker x:Name="typeListPicker" HorizontalAlignment="Left" Width="180" Margin="0" Foreground="Black" BorderBrush="{StaticResource App_Theme_Color}" BorderThickness="3" ItemsSource="{Binding ArticleFilterList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}" SelectionChanged="typeListPicker_SelectionChanged">
                 <toolkit:ListPicker.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Foreground="Gray"/>
@@ -46,7 +46,7 @@
                         <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
                             <util:LoadMoreDataTemplateSelector.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="0 12">
+                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="0 12" Tap="Article_Tap">
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
                                             <RowDefinition Height="Auto"/>

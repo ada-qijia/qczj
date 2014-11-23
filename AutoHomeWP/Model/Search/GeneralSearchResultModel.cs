@@ -229,6 +229,9 @@ namespace Model.Search
 
         [DataMember(Name="bbsname")]
         public string BBSName { get; set; }
+
+        [DataMember(Name="bbstype")]
+        public string BBSType { get; set; }
     }
 
     /// <summary>

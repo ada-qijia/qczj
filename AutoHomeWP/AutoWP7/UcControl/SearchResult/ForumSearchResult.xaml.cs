@@ -27,7 +27,7 @@ namespace AutoWP7.UcControl.SearchResult
 
             this.SearchResultVM = new ForumSearchResultViewModel();
             this.SearchResultVM.DefaultRelatedBBS = defaultRangeItem;
-            this.SearchResultVM.LoadDataCompleted+=SearchResultVM_LoadDataCompleted;
+            this.SearchResultVM.LoadDataCompleted += SearchResultVM_LoadDataCompleted;
             this.DataContext = this.SearchResultVM;
 
             InitializeSortTimeFilters();
@@ -63,7 +63,7 @@ namespace AutoWP7.UcControl.SearchResult
             GlobalIndicator.Instance.Text = "正在获取中...";
             GlobalIndicator.Instance.IsBusy = true;
 
-            int nextPageIndex = this.SearchResultVM.PageIndex+1;
+            int nextPageIndex = this.SearchResultVM.PageIndex + 1;
             if (restart)
             {
                 this.SearchResultVM.ClearData();
@@ -77,7 +77,7 @@ namespace AutoWP7.UcControl.SearchResult
             if (selectedBBS != null)
             {
                 bbsID = selectedBBS.ID.ToString();
-                bbsName = selectedBBS.Name??"";
+                bbsName = selectedBBS.Name ?? "";
             }
             int timeRange = this.timeListPicker.SelectedIndex;
             int pageSize = 20;
@@ -89,11 +89,49 @@ namespace AutoWP7.UcControl.SearchResult
 
         #region UI interaction
 
+        private void sortListPicker_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.LoadMore(true);
+        }
+
+        private void rangeListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this.LoadMore(true);
+        }
+
+        private void timeListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this.LoadMore(true);
+        }
+
+        private void BBS_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var model = (sender as FrameworkElement).DataContext as BBSModel;
+            if (model != null)
+            {
+                string url = string.Format("/View/Forum/LetterListPage.xaml?bbsId={0}&bbsType={1}&id={2}&title={3}", model.ID, model.Type, "", model.Name);
+                var frame = Application.Current.RootVisual as PhoneApplicationFrame;
+                frame.Navigate(new Uri(url, UriKind.Relative));
+            }
+        }
+
+        private void Topic_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var model = (sender as FrameworkElement).DataContext as TopicModel;
+            if (model != null)
+            {
+                string url = string.Format("/View/Forum/TopicDetailPage.xaml?from=0&bbsId={0}&topicId={1}&bbsType={2}", model.BBSID, model.ID, model.BBSType);
+                var frame = Application.Current.RootVisual as PhoneApplicationFrame;
+                frame.Navigate(new Uri(url, UriKind.Relative));
+            }
+        }
+
         private void LoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.LoadMore(false);
         }
 
         #endregion
+
     }
 }

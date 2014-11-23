@@ -37,7 +37,9 @@ xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
             </Grid.RowDefinitions>
             <TextBlock FontSize="32" Foreground="#3cadeb" Grid.Row="0"
                        HorizontalAlignment="Center" x:Name="letterName" />
-            <Image x:Name="searchImg" Grid.Row="0" Source="/AutoWP7;component/Images/search.png" Margin="12 0" HorizontalAlignment="Right" Tap="search_Tap"/>
+            <Image x:Name="searchImg" Margin="12 6" HorizontalAlignment="Right" Tap="search_Tap"
+                               Source="/Images/SearchButton.png">
+            </Image>
             <StackPanel Margin="10,0,0,0" Grid.Row="1" Orientation="Horizontal">
                 <TextBlock  Foreground="#3cadeb" Text="共 "/>
                 <TextBlock  Foreground="#3cadeb" x:Name="letterTotal"/>

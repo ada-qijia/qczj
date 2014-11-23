@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:util="clr-namespace:AutoWP7.Utils"
     xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
     mc:Ignorable="d"
@@ -93,7 +94,11 @@
                 </Grid>
 
                 <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
-                <Image Grid.Row="1" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource TagImageStyle}"/>
+               
+                <Border Grid.Row="1" Grid.Column="2" Background="{StaticResource App_Theme_Color}" Height="25" Width="50" HorizontalAlignment="Right">
+                    <TextBlock Text="视频" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </Border>
+                
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left"/>
                 <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}播放'}" Style="{StaticResource FooterLargeTextStyle}"/>
 
@@ -118,8 +123,11 @@
 
                 <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
                 <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource ContentTextStyle}"/>
-                <Image Grid.Row="2" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource TagImageStyle}"/>
-
+                
+                <Border Grid.Row="2" Grid.Column="2" Background="Orange" Height="25" Width="50" HorizontalAlignment="Right">
+                    <TextBlock Text="说客" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </Border>
+                
                 <TextBlock Grid.Row="3" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>
                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
                 <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评论'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Right"/>
@@ -136,6 +144,15 @@
                                                            Text="点击加载更多..."/>
             </Border>
         </DataTemplate>
+
+        <Style x:Name="ratingItemFillStyle" TargetType="toolkit:RatingItem">
+            <Setter Property="Background" Value="Orange" />
+        </Style>
+        
+        <Style x:Name="ratingItemUnFillStyle" TargetType="toolkit:RatingItem">
+            <Setter Property="Background" Value="LightGray" />
+        </Style>
+
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -167,22 +184,18 @@
                                     </Grid>
                                 </Grid>
 
-                                <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PriceBetween,StringFormat='指导价：{0}'}" Style="{StaticResource PriceRedTextStyle}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" MaxHeight="35"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PriceBetween,StringFormat='指导价：{0}'}" Style="{StaticResource PriceRedTextStyle}" Margin="0"/>
 
-                                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <!--stars-->
-                                    <Grid>
-                                        <Image Source="/Images/alibi_highlight.png"/>
-                                        <Rectangle Height="24" Width="{Binding KoubeiScore}" Fill="Orange">
-                                            <Rectangle.OpacityMask>
-                                                <ImageBrush Stretch="None" ImageSource="/Images/alibi_highlight.png"/>
-                                            </Rectangle.OpacityMask>
-                                        </Rectangle>
-                                    </Grid>
-                                    <TextBlock Text="{Binding KoubeiScore}" Style="{StaticResource FooterSmallTextStyle}" Foreground="Orange"/>
+                                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">                                   
+                                    <toolkit:Rating Width="125" Height="25" RatingItemCount="5" Value="{Binding KoubeiScore}" 
+                                    Background="Transparent" VerticalAlignment="Bottom" IsHitTestVisible="False"
+                                    FilledItemStyle="{StaticResource ratingItemFillStyle}"
+                                    UnfilledItemStyle="{StaticResource ratingItemUnFillStyle}" />
+
+                                    <TextBlock Text="{Binding KoubeiScore}" Style="{StaticResource FooterLargeTextStyle}" Foreground="Orange" Margin="0"/>
                                 </StackPanel>
-                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding KoubeiCount,StringFormat='\{0}条口碑'}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding KoubeiCount,StringFormat='\{0}条口碑'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Right" Margin="0"/>
 
                                 <Image Grid.RowSpan="3" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
 
@@ -193,7 +206,7 @@
                                     <Border Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" Margin="6">
                                         <TextBlock Text="论坛" Style="{StaticResource ButtonWhiteTextStyle}" Tap="CarSeriesBBS_Tap"/>
                                     </Border>
-                                    <Border Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" Margin="6 6 0 6" Background="{Binding}">
+                                    <Border Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" Margin="6 6 0 6">
                                         <TextBlock Text="口碑" Style="{StaticResource ButtonWhiteTextStyle}" Tap="CarSeriesKoubei_Tap"/>
                                     </Border>
                                 </StackPanel>
@@ -290,7 +303,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Tap="RelatedSeries_Tap">
+                                <StackPanel Background="Transparent" Tap="RelatedSeries_Tap">
                                     <Grid>
                                         <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
                                         <Image Source="{Binding Img}" Style="{StaticResource ImageListStyle}"/>
@@ -371,7 +384,7 @@
                                 <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}">
                                     <util:LoadMoreDataTemplateSelector.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid Style="{StaticResource BlockGridStyle}" Margin="0 6">
+                                            <Grid Style="{StaticResource BlockGridStyle}" Margin="0 6" Tap="Jingxuan_Tap">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition/>
                                                     <RowDefinition Height="Auto"/>
@@ -406,7 +419,7 @@
                                 <ucSearchResult:NatureResultDataTemplateSelector Content="{Binding}"
                                     ArticleTemplate="{StaticResource NaturalResultArticleDataTemplate}" TopicTemplate="{StaticResource NaturalResultTopicDataTemplate}"
                                     VideoTemplate="{StaticResource NaturalResultVideoDataTemplate}" LobbyistTemplate="{StaticResource NaturalResultLobbyistDataTemplate}"
-                                    LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}"/>
+                                    LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}" Tap="NaturalModel_Tap"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

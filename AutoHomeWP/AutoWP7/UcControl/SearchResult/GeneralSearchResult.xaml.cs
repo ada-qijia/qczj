@@ -103,7 +103,7 @@ namespace AutoWP7.UcControl.SearchResult
             }
 
             int pageSize = 20;
-            string cityName = App.CityName?? string.Empty;
+            string cityName = App.CityName ?? string.Empty;
             string url = string.Format("{0}{1}/sou/search.ashx?a={2}&pm={3}&v={4}&q={5}&p={6}&s={7}&c={8}&cn={9}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, this.SearchResultVM.Keyword, nextPageIndex, pageSize, App.CityId, cityName);
 
             this.SearchResultVM.LoadDataAysnc(url);
@@ -140,19 +140,25 @@ namespace AutoWP7.UcControl.SearchResult
         //找车-车型经销商页
         private void CarModel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            FrameworkElement elment = sender as FrameworkElement;
+            var model = elment.DataContext as SpecModel;
+            if (model != null && model.ID != 0)
+            {
+                string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}&selectedPage={1}", model.ID, "dealer");
+                this.Navigate(url);
+            }
         }
 
         //找车-车系车型页
         private void CarModelMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigateToCarSeriesModel();
         }
 
         //找车-车系车型页
         private void Brand_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigateToCarSeriesModel();
         }
 
         //进入图片浏览页
@@ -169,27 +175,83 @@ namespace AutoWP7.UcControl.SearchResult
             App.BigImageList = bigImageList;
 
             string url = string.Format("/View/Car/ImageViewer.xaml?pageTitle={0}&imageIndex={1}", this.SearchResultVM.Keyword, index);
-            var frame = Application.Current.RootVisual as PhoneApplicationFrame;
-            frame.Navigate(new Uri(url, UriKind.Relative));
+            this.Navigate(url);
         }
 
         //车系图片页
         private void ImgMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            if (this.SearchResultVM.Series != null && this.SearchResultVM.Series.ID != 0)
+            {
+                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=1&carSeriesId={0}", this.SearchResultVM.Series.ID);
+                this.Navigate(url);
+            }
         }
 
         //找车-车系车型页
         private void RelatedSeries_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigateToCarSeriesModel();
         }
 
         //找车-车系车型页
         private void FindSeries_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigateToCarSeriesModel();
         }
+
+        //帖子详情页
+        private void Jingxuan_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var model = (sender as FrameworkElement).DataContext as JingxuanModel;
+            if (model != null)
+            {
+                string url = string.Format("/View/Forum/TopicDetailPage.xaml?from=0&bbsId={0}&topicId={1}&bbsType={2}", model.BBSID, model.TopicID, model.BBSType);
+                this.Navigate(url);
+            }
+        }
+
+        //文章1，帖子5，视频3，说客2跳转到相应详情页
+        private void NaturalModel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var model = (sender as FrameworkElement).DataContext as NaturalModel;
+            if(model!=null)
+            {
+                int mediatype = model.MediaType;
+                if (mediatype == 1 || mediatype == 2)
+                {
+                    this.Navigate(string.Format("/View/Channel/News/NewsEndPage.xaml?newsid={0}&pageIndex=1&pageType={2}",model.ID,model.MediaType));
+                }
+                else if (mediatype == 3)
+                {
+                    this.Navigate(string.Format("/View/Channel/News/VideoEndPage.xaml?videoid={0}", model.ID));
+                }
+                else if(mediatype==5)
+                {
+                    string url = string.Format("/View/Forum/TopicDetailPage.xaml?from=0&bbsId={0}&topicId={1}&bbsType={2}", model.JumpPage, model.ID, model.Type);
+                    this.Navigate(url);
+                }
+            }
+        }
+
+        #region common private methods
+
+        private void NavigateToCarSeriesModel()
+        {
+            if (this.SearchResultVM.Series != null && this.SearchResultVM.Series.ID != 0)
+            {
+                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", this.SearchResultVM.Series.ID);
+                this.Navigate(url);
+            }
+        }
+
+        private void Navigate(string relativeUrl)
+        {
+            var frame = Application.Current.RootVisual as PhoneApplicationFrame;
+            frame.Navigate(new Uri(relativeUrl, UriKind.Relative));
+        }
+
+        #endregion
 
         #endregion
 

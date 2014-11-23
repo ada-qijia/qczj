@@ -50,9 +50,9 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <StackPanel x:Name="cleanStackPanel" Grid.Row="2" Height="50" VerticalAlignment="Top" Orientation="Horizontal" Tap="cleanHistory_Tap" Margin="18 0">
-                    <Image Source="/AutoWP7;component/Images/close.png" VerticalAlignment="Center" Width="20"/>
-                    <TextBlock Text="清空搜索历史" VerticalAlignment="Center"  Margin="6" Style="{StaticResource BlockTitleTextStyle}" Foreground="{StaticResource App_Theme_Color}"/>
+                <StackPanel x:Name="cleanStackPanel" Grid.Row="2" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Orientation="Horizontal" Background="Transparent" Tap="cleanHistory_Tap" Margin="18 0">
+                    <Image Source="/AutoWP7;component/Images/More/clear.png" />
+                    <TextBlock Text="清空搜索历史" VerticalAlignment="Center" Style="{StaticResource BlockTitleTextStyle}" Foreground="{StaticResource App_Theme_Color}" Height="Auto"/>
                 </StackPanel>
             </Grid>
 
@@ -83,6 +83,7 @@
                 </DataTemplate>
             </toolkit:ListPicker.ItemTemplate>
         </toolkit:ListPicker>
+        <Image  Source="/Images/DropDownArrow.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="115 6 0 0"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

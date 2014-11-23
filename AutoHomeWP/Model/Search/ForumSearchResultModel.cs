@@ -25,8 +25,8 @@ namespace Model.Search
         [DataMember(Name = "imgurl")]
         public string Img { get; set; }
 
-        //[DataMember(Name="bbstype")]
-        //public string Type { get; set; }
+        [DataMember(Name="bbstype")]
+        public string Type { get; set; }
 
         [DataMember(Name = "topiccount")]
         public int TopicCount { get; set; }
@@ -43,6 +43,9 @@ namespace Model.Search
 
         [DataMember(Name = "bbsname")]
         public string BBSName { get; set; }
+
+        [DataMember(Name="bbstype")]
+        public string BBSType { get; set; }
 
         [DataMember(Name = "replycount")]
         public int ReplyCount { get; set; }
