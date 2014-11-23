@@ -16,6 +16,6 @@
         </Grid.RowDefinitions>
         
         <Image Source="/Images/alibi_recommendation.png"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Stretch="None"/>
-        <TextBlock x:Name="promptTextBlock" Grid.Row="1" Style="{StaticResource BlockTitleTextStyle}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <TextBlock x:Name="promptTextBlock" Grid.Row="1" Style="{StaticResource BlockTitleTextStyle}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Height="Auto" Margin="0 12"/>
     </Grid>
 </UserControl>

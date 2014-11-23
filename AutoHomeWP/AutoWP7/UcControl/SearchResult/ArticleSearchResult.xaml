@@ -15,7 +15,7 @@
     <UserControl.Resources>
         <DataTemplate x:Key="FilterStringDataTemplate">
             <Grid Width="216" Height="60" Margin="0 12" Background="{StaticResource App_Theme_Color}">
-                <TextBlock Text="{Binding Name}" FontSize="{StaticResource PhoneFontSizeLarge}" HorizontalAlignment="Center" VerticalAlignment="Center" TextTrimming="WordEllipsis"/>
+                <TextBlock Text="{Binding Name}" Style="{StaticResource FilterWhiteTextStyle}" Height="35"/>
             </Grid>
         </DataTemplate>
 
@@ -33,7 +33,7 @@
             <toolkit:ListPicker x:Name="typeListPicker" HorizontalAlignment="Left" Width="180" Margin="0" Foreground="Black" BorderBrush="{StaticResource App_Theme_Color}" BorderThickness="3" ItemsSource="{Binding ArticleFilterList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}">
                 <toolkit:ListPicker.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Foreground="Gray"/>
                     </DataTemplate>
                 </toolkit:ListPicker.ItemTemplate>
             </toolkit:ListPicker>
@@ -58,7 +58,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.ColumnSpan="3" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                                        <TextBlock Grid.ColumnSpan="3" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}" MaxHeight="30"/>
                                         <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Content, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource ContentTextStyle}"/>
 
                                         <TextBlock Grid.Row="2" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>

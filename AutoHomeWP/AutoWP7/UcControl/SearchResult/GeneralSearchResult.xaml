@@ -170,7 +170,18 @@
                                 <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
                                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PriceBetween,StringFormat='指导价：{0}'}" Style="{StaticResource PriceRedTextStyle}"/>
 
-                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding KoubeiScore}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left"/>
+                                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <!--stars-->
+                                    <Grid>
+                                        <Image Source="/Images/alibi_highlight.png"/>
+                                        <Rectangle Height="24" Width="{Binding KoubeiScore}" Fill="Orange">
+                                            <Rectangle.OpacityMask>
+                                                <ImageBrush Stretch="None" ImageSource="/Images/alibi_highlight.png"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                    </Grid>
+                                    <TextBlock Text="{Binding KoubeiScore}" Style="{StaticResource FooterSmallTextStyle}" Foreground="Orange"/>
+                                </StackPanel>
                                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding KoubeiCount,StringFormat='\{0}条口碑'}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Right"/>
 
                                 <Image Grid.RowSpan="3" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
@@ -182,7 +193,7 @@
                                     <Border Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" Margin="6">
                                         <TextBlock Text="论坛" Style="{StaticResource ButtonWhiteTextStyle}" Tap="CarSeriesBBS_Tap"/>
                                     </Border>
-                                    <Border Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" Margin="6 6 0 6">
+                                    <Border Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" Margin="6 6 0 6" Background="{Binding}">
                                         <TextBlock Text="口碑" Style="{StaticResource ButtonWhiteTextStyle}" Tap="CarSeriesKoubei_Tap"/>
                                     </Border>
                                 </StackPanel>
@@ -222,7 +233,7 @@
                     <ItemsControl x:Name="BrandItemsControl"  ItemsSource="{Binding SeriesList}" >
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="{StaticResource ItemSingleLineHeight}" Tap="Brand_Tap">
+                                <Grid MinHeight="{StaticResource ItemSingleLineHeight}" Tap="Brand_Tap">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="Auto" MaxWidth="180"/>
@@ -242,8 +253,7 @@
                 <!--图片-->
                 <StackPanel x:Name="ImgStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding ImgList,Converter={StaticResource EmptyToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
-                        <Run Text="{Binding Keyword}" Foreground="Red"/>
-                        <Run Text="图片"/>
+                        <Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="图片"/>
                     </TextBlock>
                     <ItemsControl x:Name="ImgItemsControl" ItemsSource="{Binding ImgList}" Margin="-6 0">
                         <ItemsControl.ItemsPanel>
@@ -270,8 +280,7 @@
                 <!--相关车系-->
                 <StackPanel Width="{StaticResource ContentWidth}" Visibility="{Binding RelatedSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
-                        <Run Text="{Binding Keyword}" Foreground="Red"/>
-                        <Run Text="相关推荐"/>
+                        <Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="相关推荐"/>
                     </TextBlock>
                     <ItemsControl x:Name="RelatedSeriesItemsControl" ItemsSource="{Binding RelatedSeriesList}" Margin="-6 0">
                         <ItemsControl.ItemsPanel>
@@ -286,7 +295,7 @@
                                         <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
                                         <Image Source="{Binding Img}" Style="{StaticResource ImageListStyle}"/>
                                     </Grid>
-                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Center" MaxHeight="30"/>
                                     <TextBlock Text="{Binding LowPrice}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red" HorizontalAlignment="Center" Margin="0 0 0 6"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -298,9 +307,7 @@
                 <!--经销商-->
                 <StackPanel x:Name="DealerStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding DealerList,Converter={StaticResource EmptyToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
-                        <Run Text="北京"/>
-                        <Run Text="{Binding Keyword}" Foreground="Red"/>
-                        <Run Text="经销商"/>
+                        <Run Text="北京"/><Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="经销商"/>
                     </TextBlock>
 
                     <ItemsControl x:Name="DealerItemsControl" ItemsSource="{Binding DealerList}" Margin="6">
@@ -341,14 +348,13 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}"/>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" MaxHeight="30"/>
                                     <TextBlock Grid.Column="1" Text="{Binding PriceBetween}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red"/>
                                     <Image Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
 
-                                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0 6 0 0">
-                                        <TextBlock Text="{Binding Level}" Style="{StaticResource ContentTextStyle}"/>
-                                        <TextBlock Text="{Binding Displacement, StringFormat='/{0}'}" Style="{StaticResource ContentTextStyle}"/>
-                                    </StackPanel>
+                                    <TextBlock  Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource ContentTextStyle}" HorizontalAlignment="Left" Margin="0 6 0 0">
+                                            <Run Text="{Binding Level}"/><Run Text="{Binding Displacement, StringFormat='/{0}'}"/>
+                                    </TextBlock>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

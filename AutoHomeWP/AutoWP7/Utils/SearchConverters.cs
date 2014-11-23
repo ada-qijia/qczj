@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace AutoWP7.Utils
 {
@@ -100,7 +101,7 @@ namespace AutoWP7.Utils
     /// <summary>
     /// Remove highligh tag B.
     /// </summary>
-    public class HtmlStringToNormalConverter:IValueConverter
+    public class HtmlStringToNormalConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -111,6 +112,26 @@ namespace AutoWP7.Utils
                 return htmlContent;
             }
 
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EmptyToBackgroundConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            //#ff3cadeb
+            var appThemeColor = Color.FromArgb(255, 60, 173, 235);
+            if (value is int)
+            {
+                return (int)value == 0 ? new SolidColorBrush(Colors.Gray) : new SolidColorBrush(appThemeColor);
+            }
             return value;
         }
 

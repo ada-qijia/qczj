@@ -18,22 +18,20 @@
 
         <Style x:Key="FilterListPickerStyle" TargetType="toolkit:ListPicker">
             <Setter Property="Width" Value="{StaticResource OneThirdButtonWidth}"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0"/>
             <Setter Property="BorderBrush" Value="{StaticResource App_Theme_Color}"/>
             <Setter Property="BorderThickness" Value="3"/>
-            <Setter Property="Foreground" Value="Black"/>
         </Style>
 
         <DataTemplate x:Key="FilterStringDataTemplate">
             <Grid Width="216" Height="60" Margin="0 12" Background="{StaticResource App_Theme_Color}">
-                <TextBlock Text="{Binding}" FontSize="{StaticResource PhoneFontSizeLarge}" HorizontalAlignment="Center" VerticalAlignment="Center" TextTrimming="WordEllipsis"/>
+                <TextBlock Text="{Binding}" Style="{StaticResource FilterWhiteTextStyle}" Height="35"/>
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="FilterBBSDataTemplate">
             <Grid Width="216" Height="60" Margin="12" Background="{StaticResource App_Theme_Color}">
-                <TextBlock Text="{Binding Name}" FontSize="{StaticResource PhoneFontSizeLarge}" HorizontalAlignment="Center" VerticalAlignment="Center" TextTrimming="WordEllipsis"/>
+                <TextBlock Text="{Binding Name}"  Style="{StaticResource FilterWhiteTextStyle}" Height="35"/>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
@@ -50,15 +48,27 @@
 
             <!--筛选选项-->
             <StackPanel Orientation="Horizontal" Margin="0 0 0 12">
-                <toolkit:ListPicker x:Name="sortListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}"/>
-                <toolkit:ListPicker x:Name="rangeListPicker" Style="{StaticResource FilterListPickerStyle}" Margin="12 0" ItemsSource="{Binding RelatedBBSList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterBBSDataTemplate}">
+                <toolkit:ListPicker x:Name="sortListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}">
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding}" HorizontalAlignment="Center" Foreground="Gray"/>
                         </DataTemplate>
                     </toolkit:ListPicker.ItemTemplate>
                 </toolkit:ListPicker>
-                <toolkit:ListPicker x:Name="timeListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}"/>
+                <toolkit:ListPicker x:Name="rangeListPicker" Style="{StaticResource FilterListPickerStyle}" Margin="12 0" ItemsSource="{Binding RelatedBBSList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterBBSDataTemplate}">
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Foreground="Gray"/>
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                </toolkit:ListPicker>
+                <toolkit:ListPicker x:Name="timeListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}">
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" HorizontalAlignment="Center" Foreground="Gray"/>
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                </toolkit:ListPicker>
             </StackPanel>
 
             <!--相关论坛-->
