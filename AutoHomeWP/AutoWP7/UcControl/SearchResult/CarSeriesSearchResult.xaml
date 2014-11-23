@@ -10,18 +10,18 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="480">
 
-    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
+    <Grid x:Name="LayoutRoot">
         <Grid x:Name="ResultPanel">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding CarSeriesList.Count,StringFormat='找到{0}个相关车系'}"/>
+            <TextBlock Text="{Binding CarSeriesList.Count,StringFormat='找到{0}个相关车系'}" Style="{StaticResource BlockTitleTextStyle}"/>
             <ListBox x:Name="CarSeriesListBox" Grid.Row="1" ItemsSource="{Binding CarSeriesList}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Background="Transparent" Margin="0 12" Width="456" Tap="CarSeries_Tap">
+                        <Grid Background="Transparent" Margin="0 12" Width="{StaticResource ContentWidth}" Tap="CarSeries_Tap">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
@@ -33,18 +33,20 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <Image Grid.RowSpan="2" Height="60" Width="80" Source="Images/smallImage.jpg" Margin="12"/>
-                            <Image Grid.RowSpan="2" Height="60" Width="80" Source="{Binding Img}" Margin="12"/>
-
-                            <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
-                                <TextBlock Text="{Binding FactoryName}"/>
-                                <TextBlock Text="{Binding Name,StringFormat=' - {0}'}"/>
+                            <Grid Grid.RowSpan="2" >
+                                <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                                <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                            </Grid>
+                            
+                            <StackPanel Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal">
+                                <TextBlock Text="{Binding FactoryName}" Style="{StaticResource TitleLargeTextStyle}"/>
+                                <TextBlock Text="{Binding Name,StringFormat=' - {0}'}" Style="{StaticResource TitleLargeTextStyle}"/>
                             </StackPanel>
 
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Level}"/>
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PriceBetween}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Level}" FontSize="20" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PriceBetween}" FontSize="20" Foreground="Red" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
-                            <Image Grid.RowSpan="2" Grid.Column="3" Source="/Images/ArrowR.png"/>
+                            <Image Grid.RowSpan="2" Grid.Column="3" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

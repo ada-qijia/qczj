@@ -256,6 +256,9 @@ namespace Model.Search
         [DataMember(Name="time")]
         public string Time { get; set; }
 
+        [DataMember(Name = "indexdetail")]
+        public string IndexDetail { get; set; }
+
         [DataMember(Name="smallpic")]
         public string SmallImg { get; set; }
 

@@ -11,7 +11,8 @@
     <System:Double x:Key="ContentWidth">444</System:Double>
     <System:Double x:Key="SmallColumnWidth">130</System:Double>
     <System:Double x:Key="OneThirdButtonWidth">140</System:Double>
-    <System:Double x:Key="ItemMinHeight">50</System:Double>
+    <System:Double x:Key="ItemSingleLineHeight">50</System:Double>
+    <System:Double x:Key="ItemBlockHeight">90</System:Double>
     
     <SolidColorBrush x:Key="SemiBlackBrush" Color="#66000000"/>
     
@@ -72,6 +73,7 @@
     <Style x:Key="BlockTitleTextStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="Gray"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Height" Value="42"/>
     </Style>
     
     <Style x:Key="TitleNormalTextStyle" TargetType="TextBlock">
@@ -81,16 +83,19 @@
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextTrimming" Value="WordEllipsis"/>
+        <Setter Property="MaxHeight" Value="60"/>
     </Style>
 
     <Style x:Key="TitleLargeTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleNormalTextStyle}">
         <Setter Property="FontSize" Value="26"/>
-        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>    
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
+        <Setter Property="MaxHeight" Value="70"/>
     </Style>
 
     <Style x:Key="ContentTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleNormalTextStyle}">
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Foreground" Value="Gray"/>
+        <Setter Property="Height" Value="24"/>
     </Style>
     
     <Style x:Key="PriceRedTextStyle" TargetType="TextBlock">
@@ -102,14 +107,14 @@
     <Style x:Key="FooterSmallTextStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
-        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Margin" Value="0 6 0 0"/>
         <Setter Property="Foreground" Value="Gray"/>
     </Style>
 
     <Style x:Key="FooterLargeTextStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="17"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
-        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Margin" Value="0 6 0 0"/>
         <Setter Property="Foreground" Value="Gray"/>
     </Style>
 </ResourceDictionary>

@@ -103,7 +103,7 @@
         </Style>
 
         <!--ApplicationBar-->
-        <shell:ApplicationBar x:Key="searchAppBar" Opacity="0.8" BackgroundColor="Black" ForegroundColor="White" IsMenuEnabled="False">
+        <shell:ApplicationBar x:Key="searchAppBar" BackgroundColor="Black" ForegroundColor="White" IsMenuEnabled="False">
             <shell:ApplicationBarIconButton IconUri="/Images/bar_search.png" Text="搜索" Click="searchButton_Click"/>
         </shell:ApplicationBar>
         

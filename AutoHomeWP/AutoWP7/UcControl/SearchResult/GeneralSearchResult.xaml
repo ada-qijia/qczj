@@ -12,14 +12,26 @@
     d:DesignHeight="480" d:DesignWidth="480">
 
     <UserControl.Resources>
+        <Style x:Key="BlockGridStyle" TargetType="Grid">
+            <Setter Property="Width" Value="{StaticResource ContentWidth}"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style x:Key="TagImageStyle" TargetType="Image">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Width" Value="50"/>
+        </Style>
+
         <util:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
 
         <DataTemplate x:Key="NaturalResultArticleDataTemplate">
-            <Grid>
+            <Grid Style="{StaticResource BlockGridStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -33,14 +45,17 @@
                 <TextBlock Grid.Row="2" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" Margin="12 0" HorizontalAlignment="Left"/>
                 <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评论'}" Style="{StaticResource FooterLargeTextStyle}"/>
+
+                <Rectangle Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="NaturalResultTopicDataTemplate">
-            <Grid>
+            <Grid Style="{StaticResource BlockGridStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -53,15 +68,18 @@
                 <TextBlock Grid.Row="1" Text="{Binding IndexDetail, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
                 <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回帖'}" Style="{StaticResource FooterLargeTextStyle}"/>
+
+                <Rectangle Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="NaturalResultVideoDataTemplate">
-            <Grid>
+            <Grid Style="{StaticResource BlockGridStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="130"/>
@@ -69,25 +87,28 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.RowSpan="2" >
-                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
+                <Grid Grid.RowSpan="3" >
+                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
                     <Image Source="{Binding SmallImg}" Style="{StaticResource ImageLeftStyle}"/>
                 </Grid>
 
-                <TextBlock Grid.ColumnSpan="2" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
-                <Image Grid.Row="1" Grid.Column="2" Source="/Images/alibi_recommendation.png" HorizontalAlignment="Right"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}"/>
-                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}播放'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                <Image Grid.Row="1" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource TagImageStyle}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}播放'}" Style="{StaticResource FooterLargeTextStyle}"/>
+
+                <Rectangle Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="NaturalResultLobbyistDataTemplate">
-            <Grid>
+            <Grid Style="{StaticResource BlockGridStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -97,10 +118,13 @@
 
                 <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
                 <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource ContentTextStyle}"/>
-                <Image Grid.Row="2" Grid.Column="2" Source="/Images/ArrowR.png" HorizontalAlignment="Right"/>
-                <TextBlock Grid.Row="2" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}"/>
-                <TextBlock Text="{Binding ReplyCount,StringFormat='\{0}评论'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Right"/>
+                <Image Grid.Row="2" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource TagImageStyle}"/>
+
+                <TextBlock Grid.Row="3" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
+                <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评论'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Right"/>
+
+                <Rectangle Grid.Row="4" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
             </Grid>
 
         </DataTemplate>
@@ -173,7 +197,7 @@
                     <ItemsControl x:Name="CarModelItemsControl" ItemsSource="{Binding SpecList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Tap="CarModel_Tap">
+                                <Grid Margin="0 12" Tap="CarModel_Tap">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="130"/>
@@ -181,7 +205,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding LowPrice}" Style="{StaticResource PriceRedTextStyle}" HorizontalAlignment="Right"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding LowPrice}" Style="{StaticResource TitleLargeTextStyle}" Foreground="Red" HorizontalAlignment="Right"/>
                                     <Image Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
                                 </Grid>
                             </DataTemplate>
@@ -198,7 +222,7 @@
                     <ItemsControl x:Name="BrandItemsControl"  ItemsSource="{Binding SeriesList}" >
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="{StaticResource ItemMinHeight}" Tap="Brand_Tap">
+                                <Grid Height="{StaticResource ItemSingleLineHeight}" Tap="Brand_Tap">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="Auto" MaxWidth="180"/>
@@ -306,7 +330,7 @@
                     <ItemsControl x:Name="FindSeriesItemsControl" ItemsSource="{Binding FindSeriesList}" >
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Tap="FindSeries_Tap">
+                                <Grid Style="{StaticResource BlockGridStyle}" Margin="0 12" Tap="FindSeries_Tap">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>
@@ -314,15 +338,14 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="Auto" MaxWidth="130"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}"/>
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <TextBlock Text="{Binding PriceBetween}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red"/>
-                                        <Image Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
-                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="{Binding PriceBetween}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red"/>
+                                    <Image Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
 
-                                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0 6 0 0">
                                         <TextBlock Text="{Binding Level}" Style="{StaticResource ContentTextStyle}"/>
                                         <TextBlock Text="{Binding Displacement, StringFormat='/{0}'}" Style="{StaticResource ContentTextStyle}"/>
                                     </StackPanel>
@@ -335,17 +358,17 @@
                 </StackPanel>
                 <!--论坛精选-->
                 <StackPanel x:Name="JingxuanStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding JingxuanList.Count,Converter={StaticResource EmptyToVisibilityConverter}}">
-                    <TextBlock Text="{Binding RowCount,StringFormat='找到{0}条相关结果'}" Style="{StaticResource FooterSmallTextStyle}" Margin="0 6"/>
-                    <ItemsControl x:Name="JingxuanItemsControl" ItemsSource="{Binding JingxuanList}">
+                    <TextBlock Text="{Binding RowCount,StringFormat='找到{0}条相关结果'}" Style="{StaticResource BlockTitleTextStyle}"/>
+                    <ItemsControl x:Name="JingxuanItemsControl" ItemsSource="{Binding JingxuanList}" >
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}">
                                     <util:LoadMoreDataTemplateSelector.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid>
+                                            <Grid Style="{StaticResource BlockGridStyle}" Margin="0 6">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition/>
-                                                    <RowDefinition/>
+                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="130"/>
@@ -354,11 +377,11 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <Grid Grid.RowSpan="2">
-                                                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
+                                                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
                                                     <Image Source="{Binding SmallImg}" Style="{StaticResource ImageLeftStyle}"/>
                                                 </Grid>
                                                 <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
-                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left"/>
                                                 <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回'}" Style="{StaticResource FooterSmallTextStyle}"/>
                                             </Grid>
                                         </DataTemplate>

@@ -76,8 +76,8 @@ namespace AutoWP7.Utils
 
         public static bool UpdateSearchHistory(IEnumerable<string> history)
         {
-            string content = history == null ? null : JsonHelper.Serialize(history);
-            bool result = IsolatedStorageFileHelper.WriteIsoFile(SearchHistoryFileName, content, System.IO.FileMode.OpenOrCreate);
+            string content = history == null ? "" : JsonHelper.Serialize(history);
+            bool result = IsolatedStorageFileHelper.WriteIsoFile(SearchHistoryFileName, content, System.IO.FileMode.Create);
             return result;
         }
 

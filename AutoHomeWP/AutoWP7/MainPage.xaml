@@ -511,7 +511,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar Opacity="0.8" BackgroundColor="Black"  ForegroundColor="White"  Mode="Minimized" IsMenuEnabled="True">
+        <shell:ApplicationBar BackgroundColor="Black"  ForegroundColor="White"  Mode="Minimized" IsMenuEnabled="True">
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="moreIconButton" Click="moreIconButton_Click" Text="更多"/>
             </shell:ApplicationBar.MenuItems>

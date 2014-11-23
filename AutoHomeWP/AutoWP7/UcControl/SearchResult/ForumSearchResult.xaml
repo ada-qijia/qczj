@@ -16,17 +16,13 @@
         <util:BoolToVisibleConverter x:Key="BoolToVisibleConverter"/>
         <util:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
 
-        <Style x:Key="TitleTextblockStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="22"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="MaxHeight" Value="70"/>
-            <Setter Property="TextTrimming" Value="WordEllipsis"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-        </Style>
-
-        <Style x:Key="FooterTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource News_Time_Style}">
-
+        <Style x:Key="FilterListPickerStyle" TargetType="toolkit:ListPicker">
+            <Setter Property="Width" Value="{StaticResource OneThirdButtonWidth}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource App_Theme_Color}"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="Foreground" Value="Black"/>
         </Style>
 
         <DataTemplate x:Key="FilterStringDataTemplate">
@@ -42,105 +38,112 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
-        <ScrollViewer x:Name="ResultPanel">
-            <StackPanel>
-                <!--筛选选项-->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+    <Grid x:Name="LayoutRoot">
+        <Grid x:Name="ResultPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-                    <toolkit:ListPicker x:Name="sortListPicker" Grid.Column="0" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}"/>
-                    <toolkit:ListPicker x:Name="rangeListPicker" Grid.Column="1" ItemsSource="{Binding RelatedBBSList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterBBSDataTemplate}">
-                        <toolkit:ListPicker.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}"/>
-                            </DataTemplate>
-                        </toolkit:ListPicker.ItemTemplate>
-                    </toolkit:ListPicker>
-                    <toolkit:ListPicker x:Name="timeListPicker" Grid.Column="2" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}"/>
-                </Grid>
+            <!--筛选选项-->
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 12">
+                <toolkit:ListPicker x:Name="sortListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}"/>
+                <toolkit:ListPicker x:Name="rangeListPicker" Style="{StaticResource FilterListPickerStyle}" Margin="12 0" ItemsSource="{Binding RelatedBBSList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterBBSDataTemplate}">
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                </toolkit:ListPicker>
+                <toolkit:ListPicker x:Name="timeListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}"/>
+            </StackPanel>
 
-                <!--相关论坛-->
-                <StackPanel Grid.Row="1" Visibility="{Binding BBSList,Converter={StaticResource EmptyToVisibilityConverter}}">
-                    <TextBlock Text="{Binding BBSList.Count,StringFormat='找到{0}个相关论坛'}"/>
-                    <ItemsControl x:Name="BBSItemsControl" ItemsSource="{Binding BBSList}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Background="Transparent">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+            <!--相关论坛-->
+            <TextBlock Grid.Row="1" Text="{Binding BBSList.Count,StringFormat='找到{0}个相关论坛'}" Visibility="{Binding BBSList.Count,Converter={StaticResource EmptyToVisibilityConverter}}" Style="{StaticResource BlockTitleTextStyle}" Margin="0 0 0 12"/>
+            <ItemsControl Grid.Row="2" x:Name="BBSItemsControl" ItemsSource="{Binding BBSList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="Transparent" Width="{StaticResource ContentWidth}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                                    <Image Height="90" Width="120" Source="Images/smallImage.jpg" Margin="12"/>
-                                    <Image Height="90" Width="120" Source="{Binding Img}" Margin="12"/>
+                            <Grid Grid.RowSpan="2">
+                                <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                                <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                            </Grid>
 
-                                    <TextBlock Grid.Column="1" Text="{Binding Name, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleTextblockStyle}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding TopicCount}" VerticalAlignment="Bottom" MaxHeight="50" Style="{StaticResource FooterTextBlockStyle}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Name, Converter={StaticResource HtmlStringToNormalConverter}}"  Style="{StaticResource TitleNormalTextStyle}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TopicCount,StringFormat='共{0}帖子'}" Style="{StaticResource FooterLargeTextStyle}"/>
 
-                                    <Image Grid.Column="2" Source="Images/ArrowR.png" Margin="12"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
+                            <Image Grid.RowSpan="2" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
 
-                <!--相关帖子-->
-                <StackPanel Grid.Row="2">
-                    <TextBlock Text="{Binding RowCount, StringFormat='找到{0}篇相关帖子'}"/>
-                    <ListBox x:Name="TopicListBox" ItemsSource="{Binding TopicList}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
-                                    <util:LoadMoreDataTemplateSelector.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Background="Transparent">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition/>
-                                                </Grid.ColumnDefinitions>
+                            <Rectangle Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-                                                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleTextblockStyle}"/>
-                                                <Image Visibility="{Binding IsJinghua,Converter={StaticResource BoolToVisibleConverter}}" Source="/Images/alibi_recommendation.png"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding PostDate}" Style="{StaticResource FooterTextBlockStyle}"/>
+            <!--相关帖子-->
+            <TextBlock Grid.Row="3" Text="{Binding RowCount, StringFormat='找到{0}篇相关帖子'}" Style="{StaticResource BlockTitleTextStyle}" Margin="0 0 0 12"/>
+            <ListBox Grid.Row="4" x:Name="TopicListBox" ItemsSource="{Binding TopicList}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
+                            <util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                                                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterTextBlockStyle}"/>
-                                                    <Image Source="Images/ArrowR.png" Visibility="{Binding IsPic, Converter={StaticResource BoolToVisibleConverter}}" Stretch="None"/>
-                                                </StackPanel>
+                                        <TextBlock Grid.RowSpan="2" Text="精" Visibility="{Binding IsJinghua,Converter={StaticResource BoolToVisibleConverter}}" FontSize="36" VerticalAlignment="Top" Foreground="Red"/>
+                                        <TextBlock Grid.RowSpan="2" Text="图" Visibility="{Binding IsPic, Converter={StaticResource BoolToVisibleConverter}}" FontSize="36" VerticalAlignment="Top" Foreground="Red"/>
 
-                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回帖'}" Style="{StaticResource FooterTextBlockStyle}"/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
 
-                                    <util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
-                                        <DataTemplate>
-                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="410" Tap="LoadMore_Tap">
-                                                <TextBlock Foreground="Black" FontSize="28"
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PostDate}" Style="{StaticResource FooterSmallTextStyle}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding ReplyCount,StringFormat='\{0}回帖'}" Style="{StaticResource FooterLargeTextStyle}"/>
+
+                                        <Rectangle Grid.Row="2" Grid.ColumnSpan="4" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </util:LoadMoreDataTemplateSelector.ItemTemplate>
+
+                            <util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMore_Tap">
+                                        <TextBlock Foreground="Black" FontSize="28"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                            Text="点击加载更多..."/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
-                                </util:LoadMoreDataTemplateSelector>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </StackPanel>
-            </StackPanel>
-        </ScrollViewer>
+                                    </Border>
+                                </DataTemplate>
+                            </util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                        </util:LoadMoreDataTemplateSelector>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-        <ucSearchResult:NoResultView x:Name="NoResultUC" Visibility="Collapsed"/>
+        </Grid>
+        <ucSearchResult:NoResultView x:Name="NoResultUC" Grid.RowSpan="3" Visibility="Collapsed"/>
     </Grid>
 </UserControl>
