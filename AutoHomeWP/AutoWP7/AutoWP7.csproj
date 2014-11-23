@@ -287,6 +287,9 @@
     <Compile Include="View\More\MorePage.xaml.cs">
       <DependentUpon>MorePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\CarSearch\CarSearchPage.xaml.cs">
+      <DependentUpon>CarSearchPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -497,6 +500,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\CarSearch\CarSearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
@@ -510,6 +517,7 @@
     <Resource Include="Images\Tiles\ShuoKe.png" />
     <Content Include="Images\alibi_summary.png" />
     <Content Include="Images\ArrowR.png" />
+    <Content Include="Images\ArrowRWhite.png" />
     <Content Include="Images\bar_all.png" />
     <Content Include="Images\bar_louzhu.png" />
     <Content Include="Images\bar_xshquanbu.png" />
@@ -527,6 +535,7 @@
     <Content Include="Images\More\VS.png" />
     <Content Include="Images\alibi_recommendation.png" />
     <Content Include="Images\ReloadButton.png" />
+    <Content Include="Images\SearchButton.png" />
     <Content Include="Images\selectall.png" />
     <Content Include="Images\alibi_super_highlight.png" />
     <Content Include="Images\VideoPlayer\fast_forward.png" />

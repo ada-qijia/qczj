@@ -29,7 +29,7 @@ namespace AutoWP7.View.Sale
             LoadData();
         }
 
-        #region 省市数据获取
+        #region Load Data
 
         private class ProvinceGroup : List<ProvinceModel>
         {
@@ -57,9 +57,9 @@ namespace AutoWP7.View.Sale
             if (provinceVM == null)
             {
                 provinceVM = new SaleCityListViewModel();
+                provinceVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.ProvinceModel>>>(provinceVM_LoadDataCompleted);
             }
             provinceVM.LoadDataAysnc(string.Format("{0}{1}/news/province-{2}-ts0.html", App.appUrl, App.versionStr, App.AppInfo));
-            provinceVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.ProvinceModel>>>(provinceVM_LoadDataCompleted);
         }
 
         void provinceVM_LoadDataCompleted(object sender, ViewModels.Handler.APIEventArgs<IEnumerable<Model.ProvinceModel>> e)
@@ -114,6 +114,7 @@ namespace AutoWP7.View.Sale
                              select c;
 
                 provinceListGroups.Visibility = Visibility.Collapsed;
+                pageTitle.Text = "选择城市";
                 cityListBox.Visibility = Visibility.Visible;
                 cityListBox.ItemsSource = cities.ToList();
             }

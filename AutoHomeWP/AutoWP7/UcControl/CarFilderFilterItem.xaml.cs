@@ -27,6 +27,16 @@ namespace AutoWP7.UcControl
         public static readonly DependencyProperty FilterNameProperty =
             DependencyProperty.Register("FilterName", typeof(string), typeof(CarFilderFilterItem), new PropertyMetadata(string.Empty));
 
+        //private static void OnFilterNamePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    CarFilderFilterItem control = d as CarFilderFilterItem;
+        //    string name = e.NewValue.ToString();
+        //    if (control != null)
+        //    {
+        //        control.FilterName = name;
+        //    }
+        //}
+
         #endregion
 
         #region DependencyProperty : FilterValue

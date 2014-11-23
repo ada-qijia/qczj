@@ -187,7 +187,7 @@ namespace AutoWP7
 
         }
 
-        #region 头条数据加载
+        #region 最新
 
         //计时器
         DispatcherTimer timer;
@@ -337,6 +337,90 @@ namespace AutoWP7
             });
         }
 
+        /* 焦点图和头条 mediatype：1文章；2视频 ；3说客；
+         * 最新新闻列表 mediatype：1-文章2-说客 3-视频 */
+
+        // 文章最终页
+        private void NaviGoArticleEndPage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var news = (sender as FrameworkElement).DataContext as NewsModel;
+            if (news != null)
+            {
+                string pageindex = "1";
+                int mediatype = news.mediatype;
+                if (mediatype == 1 || mediatype == 2)//文章 和 说客 按同一种类型处理
+                {
+                    pageindex = news.pageIndex;
+                    this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + pageindex + "&pageType=" + mediatype, UriKind.Relative));
+                }
+                else if (mediatype == 3)
+                {
+                    this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + news.id, UriKind.Relative));
+                }
+            }
+            return;
+
+            /**************************************
+             
+            Grid gg = (Grid)sender;
+            var news = ldc.newestModels.Where(o => o.id == (int)gg.Tag).FirstOrDefault();
+            string pageIndex = "1";
+            string newstype = string.Empty;
+            if (news != null)
+            {
+                //取得文章类型（新闻or说客）
+                newstype = news.type;
+                pageIndex = news.pageIndex;
+            }
+            this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=" + pageIndex + "&newsType=" + newstype, UriKind.Relative));
+        
+             **************************************/
+        }
+
+        // 焦点图
+        private void topImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var news = (sender as FrameworkElement).DataContext as NewsModel;
+            if (news != null)
+            {
+                int mediatype = news.mediatype;
+                if (mediatype == 1 || mediatype == 3)//文章 和 说客 按同一种类型处理
+                {
+                    this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + focusImagePageIndex + "&pageType=" + mediatype, UriKind.Relative));
+                }
+                else if (mediatype == 2)
+                {
+                    this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + news.id, UriKind.Relative));
+                }
+            }
+            //this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + img.Tag + "&pageIndex=" + focusImagePageIndex + "&newsType=", UriKind.Relative));
+        }
+
+        //刷新状态
+        bool isRefreshing = false;
+        //刷新
+        private void refresh_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (isRefreshing == false)
+            {
+                isRefreshing = true;
+
+                //刷新点击统计
+                UmengSDK.UmengAnalytics.onEvent("refresh", "刷新点击量");
+
+                if (NewsDataSource.Count() > 0)
+                {
+                    NewsDataSource.Clear();
+                }
+                //隐藏刷新按钮
+                // refreshImg.Visibility = Visibility.Collapsed;
+
+                //刷新数据
+                SetNetWorkNewestLoadData(1, loadPageSize, "0", true);
+            }
+
+        }
+
         #endregion
 
         #region  找车
@@ -419,11 +503,9 @@ namespace AutoWP7
 
         }
 
-        //汽车品牌网络加载
         CarBrandViewModel carVM = null;
 
         // 品牌找车
-        // </summary>
         public void SetWebCarBrandLoadData()
         {
             if (carVM == null)
@@ -495,6 +577,12 @@ namespace AutoWP7
         {
             carFinderFilterPanel.Visibility = Visibility.Visible;
             carBrandListGropus.Visibility = Visibility.Collapsed;
+        }
+
+        //条件找车
+        private void carSearchButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/View/CarSearch/CarSearchPage.xaml", UriKind.Relative));
         }
 
         #endregion
@@ -802,90 +890,6 @@ namespace AutoWP7
 
         #endregion
 
-        /* 焦点图和头条 mediatype：1文章；2视频 ；3说客；
-         * 最新新闻列表 mediatype：1-文章2-说客 3-视频 */
-
-        // 文章最终页
-        private void NaviGoArticleEndPage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            var news = (sender as FrameworkElement).DataContext as NewsModel;
-            if (news != null)
-            {
-                string pageindex = "1";
-                int mediatype = news.mediatype;
-                if (mediatype == 1 || mediatype == 2)//文章 和 说客 按同一种类型处理
-                {
-                    pageindex = news.pageIndex;
-                    this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + pageindex + "&pageType=" + mediatype, UriKind.Relative));
-                }
-                else if (mediatype == 3)
-                {
-                    this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + news.id, UriKind.Relative));
-                }
-            }
-            return;
-
-            /**************************************
-             
-            Grid gg = (Grid)sender;
-            var news = ldc.newestModels.Where(o => o.id == (int)gg.Tag).FirstOrDefault();
-            string pageIndex = "1";
-            string newstype = string.Empty;
-            if (news != null)
-            {
-                //取得文章类型（新闻or说客）
-                newstype = news.type;
-                pageIndex = news.pageIndex;
-            }
-            this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=" + pageIndex + "&newsType=" + newstype, UriKind.Relative));
-        
-             **************************************/
-        }
-
-        // 焦点图
-        private void topImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            var news = (sender as FrameworkElement).DataContext as NewsModel;
-            if (news != null)
-            {
-                int mediatype = news.mediatype;
-                if (mediatype == 1 || mediatype == 3)//文章 和 说客 按同一种类型处理
-                {
-                    this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + focusImagePageIndex + "&pageType=" + mediatype, UriKind.Relative));
-                }
-                else if (mediatype == 2)
-                {
-                    this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + news.id, UriKind.Relative));
-                }
-            }
-            //this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + img.Tag + "&pageIndex=" + focusImagePageIndex + "&newsType=", UriKind.Relative));
-        }
-
-        //刷新状态
-        bool isRefreshing = false;
-        //刷新
-        private void refresh_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            if (isRefreshing == false)
-            {
-                isRefreshing = true;
-
-                //刷新点击统计
-                UmengSDK.UmengAnalytics.onEvent("refresh", "刷新点击量");
-
-                if (NewsDataSource.Count() > 0)
-                {
-                    NewsDataSource.Clear();
-                }
-                //隐藏刷新按钮
-                // refreshImg.Visibility = Visibility.Collapsed;
-
-                //刷新数据
-                SetNetWorkNewestLoadData(1, loadPageSize, "0", true);
-            }
-
-        }
-
         // 导向车系列表页
         private void carBrandIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -955,10 +959,6 @@ namespace AutoWP7
         {
             return new Uri(string.Format("/View/Channel/NewsListPage.xaml?tag={0}", tag), UriKind.Relative);
         }
-
-
-
-
 
 
     }

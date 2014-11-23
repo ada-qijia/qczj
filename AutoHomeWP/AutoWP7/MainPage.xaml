@@ -375,21 +375,25 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
             <!--找车-->
-            <controls:PanoramaItem Foreground="#3cadeb" Header="找车">
+            <controls:PanoramaItem Foreground="#3cadeb">
+                <controls:PanoramaItem.Header>
+                    <StackPanel  Orientation="Horizontal" Width="460">
+                        <TextBlock FontSize="72" VerticalAlignment="Bottom" Foreground="#3cadeb" Text="找车"/>
+
+                        <Image Margin="210,30,0,0" Tap="carSearchButton_Tap"
+                               HorizontalAlignment="Center"
+                               x:Name="carSearchButton"
+                               Source="/Images/SearchButton.png">
+                        </Image>
+
+                    </StackPanel>
+                </controls:PanoramaItem.Header>
 
                 <Grid Margin="10,-30,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <!--<Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" x:Name="carBrandListButton" Content="品牌找车" Click="carBrandListButton_Click"/>
-                        <Button Grid.Column="1" x:Name="carFinderFiltersButton" Content="条件筛选" Click="carFinderFiltersButton_Click"/>
-                    </Grid>-->
                     <p:LongListSelector x:Name="carBrandListGropus" Grid.Row="1"
                                         ItemsSource="{Binding}"
                                         IsGroupingEnabled="True"   
@@ -399,13 +403,7 @@
                                         GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" 
                                         JumpListStyle="{StaticResource JumpList}" />
                     <Grid x:Name="carFinderFilterPanel" Grid.Row="1" Visibility="Collapsed">
-                        <ScrollViewer>
-                            <StackPanel>
-                                <uc:CarFilderFilterItem FilterName="品牌"/>
-                                <uc:CarFilderFilterItem FilterName="价格"/>
-                                <uc:CarFilderFilterItem FilterName="级别"/>
-                            </StackPanel>
-                        </ScrollViewer>
+                        
                     </Grid>
                 </Grid>
 
