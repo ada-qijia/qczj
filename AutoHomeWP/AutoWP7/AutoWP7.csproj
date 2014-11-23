@@ -522,6 +522,7 @@
     <Content Include="Images\bar_louzhu.png" />
     <Content Include="Images\bar_xshquanbu.png" />
     <Content Include="Images\bg.png" />
+    <Content Include="Images\BigNotification.png" />
     <Content Include="Images\car_addcomspec.png" />
     <Content Include="Images\car_added.png" />
     <Content Include="Images\car_addvs.png" />
@@ -532,6 +533,7 @@
     <Content Include="Images\DefaultUserIcon.png" />
     <Content Include="Images\alibi_gasstation.png" />
     <Content Include="Images\alibi_highlight.png" />
+    <Content Include="Images\DropDownArrow.png" />
     <Content Include="Images\More\VS.png" />
     <Content Include="Images\alibi_recommendation.png" />
     <Content Include="Images\ReloadButton.png" />
