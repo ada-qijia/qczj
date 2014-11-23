@@ -3,10 +3,24 @@ using System.Collections.Generic;
 
 namespace Model
 {
-    public class CarSearchFilterItemModel
+    public class CarSearchFilterItemModel : BindableBase
     {
         public string name { get; set; }
         public string value { get; set; }
+
+        private bool _Selected;
+        public bool Selected
+        {
+            get { return _Selected; }
+            set
+            {
+                if (_Selected != value)
+                {
+                    _Selected = value;
+                    RaisePropertyChanged("Selected");
+                }
+            }
+        }
     }
 
     public class CarSearchFilterGroupModel

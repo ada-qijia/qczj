@@ -22,6 +22,7 @@ namespace ViewModels
         public CarSearchFilterViewModel()
         {
             _dataSource = new List<CarSearchFilterGroupModel>();
+            FilterGroups = new Dictionary<string, CarSearchFilterGroupModel>();
         }
 
         private List<CarSearchFilterGroupModel> _dataSource;
@@ -40,6 +41,8 @@ namespace ViewModels
                 }
             }
         }
+
+        public Dictionary<string, CarSearchFilterGroupModel> FilterGroups;
 
         public event EventHandler<APIEventArgs<List<CarSearchFilterGroupModel>>> LoadDataCompleted;
 
@@ -94,6 +97,7 @@ namespace ViewModels
                             group.filters.Add(filter);
                         }
                         DataSource.Add(group);
+                        FilterGroups.Add(key, group);
                     }
                 }
 

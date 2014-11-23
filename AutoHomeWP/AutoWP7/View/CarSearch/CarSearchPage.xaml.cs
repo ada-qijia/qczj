@@ -16,7 +16,7 @@ namespace AutoWP7.View.CarSearch
 {
     public partial class CarSearchPage : PhoneApplicationPage
     {
-
+        #region Lifecycle
 
         public CarSearchPage()
         {
@@ -29,7 +29,19 @@ namespace AutoWP7.View.CarSearch
             LoadFilters();
         }
 
-        #region Load Filters
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (filterPopupShown)
+            {
+                HideFilterPopups();
+                e.Cancel = true;
+            }
+            base.OnBackKeyPress(e);
+        }
+
+        #endregion
+
+        #region Filter Groups
 
         CarSearchFilterViewModel filterVM = null;
         Dictionary<string, CarFilderFilterItem> filterControls = new Dictionary<string, CarFilderFilterItem>();
@@ -60,31 +72,121 @@ namespace AutoWP7.View.CarSearch
             }
             else
             {
-                filterListBox.ItemsSource = e.Result;
+                filterGroupListBox.ItemsSource = filterVM.DataSource;
             }
         }
 
-        #endregion
-
-        private void Filter_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            var group = sender.GetDataContext<CarSearchFilterGroupModel>();
-            switch (group.key)
-            {
-                case "price":
-
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void Filter_Loaded(object sender, RoutedEventArgs e)
+        private void FilterGroup_Loaded(object sender, RoutedEventArgs e)
         {
             string key = sender.GetDataContext<CarSearchFilterGroupModel>().key;
             CarFilderFilterItem control = sender as CarFilderFilterItem;
             filterControls.Add(key, control);
         }
+
+        #endregion
+
+        #region Filter Selection
+
+        private bool filterPopupShown = false;
+        private CarSearchFilterGroupModel selectedFilterGroup = null;
+        private CarFilderFilterItem selectedFilterGroupControl = null;
+
+        private void FilterGroup_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            selectedFilterGroupControl = sender as CarFilderFilterItem;
+            var group = sender.GetDataContext<CarSearchFilterGroupModel>();
+            selectedFilterGroup = group;
+
+            if (group.key == "configs")
+            {
+                multiSelectionPanel.Visibility = Visibility.Visible;
+                if (multiFilterListBox.ItemsSource == null)
+                {
+                    multiFilterListBox.ItemsSource = filterVM.FilterGroups[group.key].filters;
+                    filterVM.FilterGroups[group.key].filters[0].Selected = true;
+                }
+            }
+            else
+            {
+                singleSelectionPanel.Visibility = Visibility.Visible;
+                singleFilterListBox.ItemsSource = filterVM.FilterGroups[group.key].filters;
+            }
+            filterPopupShown = true;
+            pageTitle.Text = "选择" + group.DisplayName;
+        }
+
+        private void HideFilterPopups()
+        {
+            singleSelectionPanel.Visibility = Visibility.Collapsed;
+            multiSelectionPanel.Visibility = Visibility.Collapsed;
+            filterPopupShown = false;
+            pageTitle.Text = "条件筛选";
+        }
+
+        private void singleFilterItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var item = sender.GetDataContext<CarSearchFilterItemModel>();
+            selectedFilterGroupControl.SelectedFilter = item.name;
+            HideFilterPopups();
+        }
+
+        private void multiFilterItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var item = sender.GetDataContext<CarSearchFilterItemModel>();
+
+            if (item.value == "0")
+            {
+                item.Selected = true;
+                foreach (var filter in selectedFilterGroup.filters)
+                {
+                    if (filter.value != "0")
+                    {
+                        filter.Selected = false;
+                    }
+                }
+                return;
+            }
+            else
+            {
+                item.Selected = !item.Selected;
+                if (item.Selected)
+                {
+                    filterVM.FilterGroups["configs"].filters[0].Selected = false;
+                }
+
+                bool noItemIsChecked = true;
+                foreach (var filter in selectedFilterGroup.filters)
+                {
+                    if (filter.value != "0" && filter.Selected)
+                    {
+                        noItemIsChecked = false;
+                        break;
+                    }
+                }
+                filterVM.FilterGroups["configs"].filters[0].Selected = noItemIsChecked;
+            }
+        }
+
+        private void multiSelectionOK_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            string filterNames = string.Empty;
+            foreach (var filter in selectedFilterGroup.filters)
+            {
+                if (filter.Selected)
+                {
+                    filterNames += filter.name + ",";
+                }
+            }
+            if (filterNames.Length > 0)
+            {
+                filterNames = filterNames.Trim(',');
+                selectedFilterGroupControl.SelectedFilter = filterNames;
+            }
+            HideFilterPopups();
+        }
+
+        #endregion
+
 
     }
 }

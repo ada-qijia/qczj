@@ -39,16 +39,16 @@ namespace AutoWP7.UcControl
 
         #endregion
 
-        #region DependencyProperty : FilterValue
+        #region DependencyProperty : SelectedFilter
 
-        public string FilterValue
+        public string SelectedFilter
         {
-            get { return (string)GetValue(FilterValueProperty); }
+            get { return (string)GetValue(SelectedFilterProperty); }
             set
             {
-                SetValue(FilterValueProperty, value);
-                filterValueTextBlock.Text = value;
-                if (string.IsNullOrEmpty(value))
+                SetValue(SelectedFilterProperty, value);
+                SelectedFilterTextBlock.Text = value;
+                if (value == "不限")
                 {
                     notSetTextBlock.Visibility = Visibility.Visible;
                 }
@@ -59,8 +59,8 @@ namespace AutoWP7.UcControl
             }
         }
 
-        public static readonly DependencyProperty FilterValueProperty =
-            DependencyProperty.Register("FilterValue", typeof(string), typeof(CarFilderFilterItem), new PropertyMetadata(null));
+        public static readonly DependencyProperty SelectedFilterProperty =
+            DependencyProperty.Register("SelectedFilter", typeof(string), typeof(CarFilderFilterItem), new PropertyMetadata(null));
 
         //private static void OnItemsPanelMarginPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         //{

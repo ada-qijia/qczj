@@ -9,12 +9,14 @@
     <Grid x:Name="LayoutRoot" Background="#00000000">
         <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}"/>
         <TextBlock x:Name="filterNameTextBlock" Text="{Binding DisplayName}" FontSize="28" Foreground="#ff000000" VerticalAlignment="Center"/>
+
+        <TextBlock x:Name="SelectedFilterTextBlock" FontSize="28" Foreground="{StaticResource App_Theme_Color}" 
+                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                   Margin="0,0,24,0" Text="不限" TextTrimming="WordEllipsis"
+                   MaxWidth="240"/>
         <TextBlock x:Name="notSetTextBlock" Text="不限" FontSize="28" Foreground="#ff808080" 
                    VerticalAlignment="Center" HorizontalAlignment="Right"
-                   Margin="0,0,36,0"/>
-        <TextBlock x:Name="filterValueTextBlock" Text="" FontSize="28" Foreground="{StaticResource App_Theme_Color}" 
-                   VerticalAlignment="Center" HorizontalAlignment="Right"
-                   Margin="0,0,36,0" />
+                   Margin="0,0,24,0"/>
         <Image Source="/Images/ArrowR.png" Stretch="None" HorizontalAlignment="Right" Margin="0,0,0,0"/>
     </Grid>
 </UserControl>

@@ -29,20 +29,15 @@
 
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="24,10,24,0">
             <ScrollViewer>
-                <ItemsControl x:Name="filterListBox">
+                <ItemsControl x:Name="filterGroupListBox">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <uc:CarFilderFilterItem FilterName="{Binding key}" 
-                                                    Loaded="Filter_Loaded"
-                                                    Tap="Filter_Tap"/>
+                                                    Loaded="FilterGroup_Loaded"
+                                                    Tap="FilterGroup_Tap"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <!--<StackPanel>
-                    <uc:CarFilderFilterItem FilterName="品牌" Tap="FilterItem_Tap" Tag="brand"/>
-                    <uc:CarFilderFilterItem FilterName="价格" Tap="FilterItem_Tap" Tag="price"/>
-                    <uc:CarFilderFilterItem FilterName="级别" Tap="FilterItem_Tap" Tag=""/>
-                </StackPanel>-->
             </ScrollViewer>
         </Grid>
         <Grid Grid.Row="2" Height="64">
@@ -64,9 +59,56 @@
                     <Run x:Name="searchResultSpecCount" Text="9999"/>
                     <Run Text="个车型符合要求"/>
                 </TextBlock>
-               
+
                 <Image Source="/Images/ArrowRWhite.png" Stretch="None" HorizontalAlignment="Right" Margin="0,0,12,0"/>
 
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1" Grid.RowSpan="2" x:Name="singleSelectionPanel" Background="White" Visibility="Collapsed">
+            <ScrollViewer>
+                <ItemsControl x:Name="singleFilterListBox" Margin="24,0,24,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="64" Background="#00000000" Tap="singleFilterItem_Tap">
+                                <TextBlock Text="{Binding name}" FontSize="32" Foreground="Black" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+        <Grid Grid.Row="1" Grid.RowSpan="2" x:Name="multiSelectionPanel" Background="White" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer>
+                <ItemsControl x:Name="multiFilterListBox" Margin="24,0,24,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="64" Background="#00000000" Tap="multiFilterItem_Tap">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox x:Name="multiFilterItemCheckBox" 
+                                          IsChecked="{Binding Selected}"
+                                          IsThreeState="False" IsHitTestVisible="False"
+                                          Style="{StaticResource CheckBoxPureStyle}"
+                                          BorderBrush="{StaticResource App_Theme_Color}"
+                                          Foreground="{StaticResource App_Theme_Color}"
+                                          VerticalAlignment="Center" HorizontalAlignment="Center"
+                                          Margin="0,0,12,0"/>
+                                <TextBlock Grid.Column="1" Text="{Binding name}" FontSize="32" Foreground="Black" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <Grid Grid.Row="1" Background="{StaticResource App_Theme_Color}" Height="64" Margin="24"
+                  Tap="multiSelectionOK_Tap">
+                <TextBlock Text="确认" FontSize="32" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
         </Grid>
     </Grid>
