@@ -1,21 +1,11 @@
 ﻿using System;
 using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Model;
 using ViewModels.Handler;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using System.Windows.Media.Imaging;
-using System.Windows.Resources;
 
 namespace ViewModels
 {
@@ -51,6 +41,10 @@ namespace ViewModels
         public int PageCount { get; set; }
 
         public int PageIndex { get; set; }
+
+        public int RowCount { get; set; }
+
+        public int TotalSpecCount { get; set; }
 
         public bool IsEndPage
         {
@@ -120,24 +114,33 @@ namespace ViewModels
                         model.price = (string)ja[i].SelectToken("price");
                         model.count = (int)ja[i].SelectToken("count");
 
-                        ////dealer
-                        //var jo = ja[i].SelectToken("dealer");
-                        //if (jo != null)
-                        //{
-                        //    SaleDealer dealer = new SaleDealer();
-                        //    dealer.id = (int)jo.SelectToken("id");
-                        //    dealer.name = (string)jo.SelectToken("name");
-                        //    dealer.shortname = (string)jo.SelectToken("shortname");
-                        //    dealer.city = (string)jo.SelectToken("city");
-                        //    dealer.phone = (string)jo.SelectToken("phone");
-                        //    model.dealer = dealer;
-                        //}
-
+                        //spec item groups
+                        var ja2 = (JArray)ja[i].SelectToken("specitemgroups");
+                        foreach (var jo2 in ja2)
+                        {
+                            CarSearchResultSpecItemGroupModel group = new CarSearchResultSpecItemGroupModel();
+                            group.groupname = (string)ja2.SelectToken("groupname");
+                            
+                            //spec items
+                            var ja3 = (JArray)jo2.SelectToken("specitems");
+                            foreach (var jo3 in ja3)
+                            {
+                                CarSearchResultSpecItemModel spec = new CarSearchResultSpecItemModel();
+                                spec.id = (int)jo3.SelectToken("id");
+                                spec.name = (string)jo3.SelectToken("name");
+                                spec.price = (string)jo3.SelectToken("price");
+                                spec.description = (string)jo3.SelectToken("description");
+                                group.specitems.Add(spec);
+                            }
+                            model.specitemgroups.Add(group);
+                        }
                         DataSource.Add(model);
                     }
 
                     this.PageCount = (int)json.SelectToken("result").SelectToken("pagecount");
                     this.PageIndex = (int)json.SelectToken("result").SelectToken("pageindex");
+                    this.RowCount = (int)json.SelectToken("result").SelectToken("rowcount");
+                    this.TotalSpecCount = (int)json.SelectToken("result").SelectToken("totalspeccount");
 
                     EnsureMoreButton();
                 }
