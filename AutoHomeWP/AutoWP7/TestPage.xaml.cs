@@ -26,12 +26,13 @@ namespace AutoWP7
 
 
 
-            string video = "http://video.ch9.ms/ch9/eafd/4f2a4d99-05fe-4ebd-97c2-709957a5eafd/EnableTestingInProductionInAzureWebsites_mid.mp4";
-            string cover = "http://video.ch9.ms/ch9/eafd/4f2a4d99-05fe-4ebd-97c2-709957a5eafd/EnableTestingInProductionInAzureWebsites_512.jpg";
+            //string video = "http://video.ch9.ms/ch9/eafd/4f2a4d99-05fe-4ebd-97c2-709957a5eafd/EnableTestingInProductionInAzureWebsites_mid.mp4";
+            //string cover = "http://video.ch9.ms/ch9/eafd/4f2a4d99-05fe-4ebd-97c2-709957a5eafd/EnableTestingInProductionInAzureWebsites_512.jpg";
             //videoPlayer.SetCover(cover);
             //videoPlayer.SetSource(video);
 
-            string url = "http://221.192.136.99:804/wpv1.5/content/news/wpvideopage-a2-pm3-v1.5.0-vidXNzkxNTM5MTMy.html";
+            //string url = "http://221.192.136.99:804/wpv1.5/content/news/wpvideopage-a2-pm3-v1.5.0-vidXNzkxNTM5MTMy.html";
+            string url = "http://221.192.136.99:804/wpv1.6/content/dealer/downprice-a2-pm1-v4.3.0-sp11007-n11983239-t0-d85260-ss806-nt0.html";
             browser.Navigate(new Uri(url, UriKind.Absolute));
         }
 
