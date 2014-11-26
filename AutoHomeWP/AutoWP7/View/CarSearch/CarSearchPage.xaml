@@ -48,7 +48,7 @@
                                FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
                                FontSize="20" Foreground="Gray"/>
                     <TextBlock Text="{Binding price}" Grid.Column="2" Grid.Row="1" 
-                               FontSize="24" Foreground="Red"/>
+                               FontSize="24" Foreground="#ffe84f3c"/>
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -224,7 +224,28 @@
         </Grid>
 
         <Grid x:Name="SpecPanel" Background="White" Visibility="Collapsed">
-            <p:LongListSelector x:Name="carSpecListBox"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock FontSize="56" Foreground="{StaticResource App_Theme_Color}" Margin="24,12,0,0"
+                       Text="选择车型"/>
+            <Grid Grid.Row="1" Margin="24,10,24,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image  Width="120" Height="90" Source="{Binding img}" Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding name}" 
+                           Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
+                           FontSize="25" Foreground="Black" Margin="0,-5,0,0"
+                           TextTrimming="WordEllipsis"/>
+                <TextBlock Text="{Binding price}" 
+                           Grid.Column="1" VerticalAlignment="Bottom"
+                           FontSize="22" Foreground="#ffe84f3c"/>
+            </Grid>
+            <p:LongListSelector x:Name="carSpecListBox" Grid.Row="2"
                                 IsGroupingEnabled="True"   
                                 HideEmptyGroups="True" 
                                 LayoutMode="List"

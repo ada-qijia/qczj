@@ -368,6 +368,7 @@ namespace AutoWP7.View.CarSearch
 
         void PopulateSpecList(CarSearchResultSeriesItemModel carSeries)
         {
+            SpecPanel.DataContext = carSeries;
             specsGroups = new ObservableCollection<CarSeriesGroup>();
             foreach (var specGroup in carSeries.specitemgroups)
             {
