@@ -9,6 +9,8 @@ using Model;
 using ViewModels;
 using ViewModels.Handler;
 using System.Windows;
+using Microsoft.Phone.Shell;
+using AutoWP7.Utils;
 
 namespace AutoWP7.View.Channel
 {
@@ -222,6 +224,10 @@ namespace AutoWP7.View.Channel
                     }
                     break;
             }
+
+            //设置AppBar搜索按钮可见性
+            bool searchButtonVisible = header == "新闻" || header == "视频";
+            setAppBarSearchButtonVisible(searchButtonVisible);
         }
 
         #endregion
@@ -1077,6 +1083,34 @@ namespace AutoWP7.View.Channel
 
         #endregion
 
+        #region 设置AppBar搜索按钮
+
+        private void setAppBarSearchButtonVisible(bool isVisible)
+        {
+            if (isVisible)
+            {
+                if (ApplicationBar == null)
+                {
+                    ApplicationBar = (ApplicationBar)this.Resources["searchAppBar"];
+                }
+            }
+            else
+            {
+                ApplicationBar = null;
+            }
+        }
+
+        //导航到搜索页面
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            string header = (piv.SelectedItem as PivotItem).Header.ToString();
+            //新闻为综合搜索，视频为视频搜索
+            SearchType type = header=="新闻" ? SearchType.General : SearchType.Video;
+            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(type);           
+            this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
+        }
+
+        #endregion
 
     }
 

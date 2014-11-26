@@ -10,6 +10,8 @@ using Microsoft.Phone.Controls;
 using Model;
 using ViewModels;
 using ViewModels.Handler;
+using Microsoft.Phone.Shell;
+using AutoWP7.Utils;
 
 namespace AutoWP7.View.Forum
 {
@@ -38,7 +40,7 @@ namespace AutoWP7.View.Forum
                         //读取我的论坛信息
                         LoadUserInfo();
                     }
-                    break; 
+                    break;
             }
         }
 
@@ -49,8 +51,6 @@ namespace AutoWP7.View.Forum
         bool isSubjectLoaded = false;
         private void piv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-
             switch (piv.SelectedIndex)
             {
                 case 0: //车系论坛
@@ -94,10 +94,12 @@ namespace AutoWP7.View.Forum
                             myForumListbox.Visibility = Visibility.Collapsed;
                             loginPanel.Visibility = Visibility.Visible;
                         }
-
                     }
                     break;
             }
+
+            //只有我的论坛时搜索按钮不可见，其他情况都可见
+            setAppBarSearchButtonVisible(!(piv.SelectedIndex == 3));
         }
 
 
@@ -125,7 +127,7 @@ namespace AutoWP7.View.Forum
                 return true;
             }
             return false;
-        } 
+        }
         #endregion
 
         #region 车系论坛数据加载
@@ -186,14 +188,14 @@ namespace AutoWP7.View.Forum
                     }
                     carSeriesAllForumSource.Add(group);
                 }
-               
+
 
                 System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     GlobalIndicator.Instance.Text = "";
                     GlobalIndicator.Instance.IsBusy = false;
                     carSeriesAllForumGropus.ItemsSource = carSeriesAllForumSource;
-                 
+
                 });
             }
             else //网络加载
@@ -490,7 +492,33 @@ namespace AutoWP7.View.Forum
                 }
             }
 
-            this.NavigationService.Navigate(new Uri("/View/Forum/LetterListPage.xaml?bbsId="+bbsId+"&bbsType=c&&id="+tt.Tag+"&title="+title,UriKind.Relative));
+            this.NavigationService.Navigate(new Uri("/View/Forum/LetterListPage.xaml?bbsId=" + bbsId + "&bbsType=c&&id=" + tt.Tag + "&title=" + title, UriKind.Relative));
         }
+
+        #region 设置AppBar搜索按钮
+
+        private void setAppBarSearchButtonVisible(bool isVisible)
+        {
+            if (isVisible)
+            {
+                if (ApplicationBar == null)
+                {
+                    ApplicationBar = (ApplicationBar)this.Resources["searchAppBar"];
+                }
+            }
+            else
+            {
+                ApplicationBar = null;
+            }
+        }
+
+        //导航到搜索页面
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(SearchType.Forum);
+            this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
+        }
+
+        #endregion
     }
 }

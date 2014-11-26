@@ -378,17 +378,14 @@
             <controls:PanoramaItem Foreground="#3cadeb">
                 <controls:PanoramaItem.Header>
                     <StackPanel  Orientation="Horizontal" Width="460">
-                        <TextBlock FontSize="72" VerticalAlignment="Bottom" Foreground="#3cadeb" Text="找车"/>
-
-                        <Image Margin="210,30,0,0" Tap="carSearchButton_Tap"
+                        <TextBlock Text="找车"/>
+                        <Image Margin="210,30,0,0" Tap="search_Tap"
                                HorizontalAlignment="Center"
-                               x:Name="carSearchButton"
                                Source="/Images/SearchButton.png">
                         </Image>
-
-                    </StackPanel>
+                    </StackPanel>    
                 </controls:PanoramaItem.Header>
-
+                
                 <Grid Margin="10,-30,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0"/>

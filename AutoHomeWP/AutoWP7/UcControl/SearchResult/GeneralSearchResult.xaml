@@ -1,0 +1,448 @@
+﻿<UserControl x:Class="AutoWP7.UcControl.SearchResult.GeneralSearchResult"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:util="clr-namespace:AutoWP7.Utils"
+    xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480">
+
+    <UserControl.Resources>
+        <Style x:Key="BlockGridStyle" TargetType="Grid">
+            <Setter Property="Width" Value="{StaticResource ContentWidth}"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style x:Key="TagImageStyle" TargetType="Image">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Width" Value="50"/>
+        </Style>
+
+        <util:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
+        <util:SpecKoubeiToStyleConverter x:Key="SpecKoubeiToStyleConverter"/>
+        <util:DealerTelConverter x:Key="DealerTelConverter"/>
+
+        <DataTemplate x:Key="NaturalResultArticleDataTemplate">
+            <Grid Style="{StaticResource BlockGridStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource ContentTextStyle}"/>
+
+                <TextBlock Grid.Row="2" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" Margin="12 0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评论'}" Style="{StaticResource FooterLargeTextStyle}"/>
+
+                <Rectangle Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NaturalResultTopicDataTemplate">
+            <Grid Style="{StaticResource BlockGridStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+
+                <TextBlock Grid.Row="1" Text="{Binding IndexDetail, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回帖'}" Style="{StaticResource FooterLargeTextStyle}"/>
+
+                <Rectangle Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NaturalResultVideoDataTemplate">
+            <Grid Style="{StaticResource BlockGridStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.RowSpan="3" >
+                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                    <Image Source="{Binding SmallImg}" Style="{StaticResource ImageLeftStyle}"/>
+                </Grid>
+
+                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+
+                <Border Grid.Row="1" Grid.Column="2" Background="{StaticResource App_Theme_Color}" Height="25" Width="50" HorizontalAlignment="Right">
+                    <TextBlock Text="视频" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </Border>
+
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}播放'}" Style="{StaticResource FooterLargeTextStyle}"/>
+
+                <Rectangle Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NaturalResultLobbyistDataTemplate">
+            <Grid Style="{StaticResource BlockGridStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource ContentTextStyle}"/>
+
+                <Border Grid.Row="2" Grid.Column="2" Background="Orange" Height="25" Width="50" HorizontalAlignment="Right">
+                    <TextBlock Text="说客" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </Border>
+
+                <TextBlock Grid.Row="3" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
+                <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评论'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Right"/>
+
+                <Rectangle Grid.Row="4" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
+            </Grid>
+
+        </DataTemplate>
+
+        <DataTemplate x:Key="LoadMoreDataTemplate">
+            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMore_Tap">
+                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+            </Border>
+        </DataTemplate>
+
+        <Style x:Name="ratingItemFillStyle" TargetType="toolkit:RatingItem">
+            <Setter Property="Background" Value="Orange" />
+        </Style>
+
+        <Style x:Name="ratingItemUnFillStyle" TargetType="toolkit:RatingItem">
+            <Setter Property="Background" Value="LightGray" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <ScrollViewer x:Name="ResultPanel">
+            <StackPanel x:Name="BlocksStackPanel">
+                <!--车系-->
+                <StackPanel x:Name="CarSeriesPresenter" Width="{StaticResource ContentWidth}" Visibility="{Binding Series, Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <ContentPresenter Content="{Binding Series}" Width="{StaticResource ContentWidth}">
+                        <ContentPresenter.ContentTemplate>
+                            <DataTemplate>
+                                <Grid Tap="CarSeries_Tap" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.RowSpan="3" VerticalAlignment="Center">
+                                        <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                                        <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                                        <Grid Background="{StaticResource SemiBlackBrush}" Height="30" Width="120" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                            <TextBlock Text="{Binding ImgCount, StringFormat='共{0}张图'}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="White"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <TextBlock Grid.Column="1" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" MaxHeight="35"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PriceBetween,StringFormat='指导价：{0}'}" Style="{StaticResource PriceRedTextStyle}" Margin="0"/>
+
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <toolkit:Rating Width="125" Height="25" RatingItemCount="5" Value="{Binding KoubeiScore}" 
+                                    Background="Transparent" VerticalAlignment="Bottom" IsHitTestVisible="False"
+                                    FilledItemStyle="{StaticResource ratingItemFillStyle}"
+                                    UnfilledItemStyle="{StaticResource ratingItemUnFillStyle}" />
+
+                                        <TextBlock Text="{Binding KoubeiScore}" Style="{StaticResource FooterLargeTextStyle}" Foreground="Orange" Margin="0"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding KoubeiCount,StringFormat='\{0}条口碑'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Right" Margin="0"/>
+
+                                    <Image Grid.RowSpan="3" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ContentPresenter.ContentTemplate>
+                    </ContentPresenter>
+
+                    <StackPanel x:Name="CarSeriesButtonsStackPanel" Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal">
+                        <Border Width="{StaticResource OneThirdButtonWidth}" Margin="0 0 6 0" Tap="CarSeriesConfig_Tap"
+                                 Style="{Binding SpecList,Converter={StaticResource SpecKoubeiToStyleConverter}}" >
+                            <TextBlock Text="参数配置" Style="{StaticResource ButtonWhiteTextStyle}" />
+                        </Border>
+                        <Border Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" Margin="6" Tap="CarSeriesBBS_Tap">
+                            <TextBlock Text="论坛" Style="{StaticResource ButtonWhiteTextStyle}"/>
+                        </Border>
+                        <Border Width="{StaticResource OneThirdButtonWidth}" Margin="6 6 0 6" Tap="CarSeriesKoubei_Tap"
+                                Style="{Binding Series.IsShowKoubei,Converter={StaticResource SpecKoubeiToStyleConverter}}">
+                            <TextBlock Text="口碑" Style="{StaticResource ButtonWhiteTextStyle}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <Rectangle Grid.Row="4" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+
+                </StackPanel>
+                <!--车型-->
+                <StackPanel x:Name="CarModelStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding SpecList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <ItemsControl x:Name="CarModelItemsControl" ItemsSource="{Binding SpecList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0 12" Background="Transparent" Tap="CarModel_Tap">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding LowPrice}" Style="{StaticResource TitleLargeTextStyle}" Foreground="Red" HorizontalAlignment="Right"/>
+                                    <Image Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Border Style="{StaticResource FilledBorderStyle}" Margin="0 6" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Margin="12 6">
+                            <TextBlock Style="{StaticResource ButtonWhiteTextStyle}" Margin="0" Tap="CarModelMore_Tap">
+                                <Run Text="查看更多"/><Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="车型"/>
+                            </TextBlock>
+                            <Image Source="/Images/ArrowRWhite.png" Style="{StaticResource ArrowImageStyle}"/>
+                        </StackPanel>
+                    </Border>
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+                </StackPanel>
+                <!--品牌/厂商-->
+                <StackPanel Width="{StaticResource ContentWidth}" Visibility="{Binding SeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <ItemsControl x:Name="BrandItemsControl"  ItemsSource="{Binding SeriesList}" >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid MinHeight="{StaticResource ItemSingleLineHeight}" Background="Transparent" Tap="Brand_Tap">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto" MaxWidth="180"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding PriceBetween}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                    <Image Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+                </StackPanel>
+                <!--图片-->
+                <StackPanel x:Name="ImgStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding ImgList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
+                        <Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="图片"/>
+                    </TextBlock>
+                    <ItemsControl x:Name="ImgItemsControl" ItemsSource="{Binding ImgList}" Margin="-6 0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
+                                    <Image Source="{Binding Img}" Tap="Img_Tap" Style="{StaticResource ImageListStyle}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Border Style="{StaticResource FilledBorderStyle}" Margin="0 6" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Margin="12 6">
+                            <TextBlock Text="{Binding ImgCount, StringFormat='查看所有{0}张照片'}" Style="{StaticResource ButtonWhiteTextStyle}" Margin="0" Tap="ImgMore_Tap"/>
+                            <Image Source="/Images/ArrowRWhite.png" Style="{StaticResource ArrowImageStyle}"/>
+                        </StackPanel>
+                    </Border>
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+                </StackPanel>
+                <!--相关车系-->
+                <StackPanel Width="{StaticResource ContentWidth}" Visibility="{Binding RelatedSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
+                        <Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="相关推荐"/>
+                    </TextBlock>
+                    <ItemsControl x:Name="RelatedSeriesItemsControl" ItemsSource="{Binding RelatedSeriesList}" Margin="-6 0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Background="Transparent" Tap="RelatedSeries_Tap">
+                                    <Grid>
+                                        <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
+                                        <Image Source="{Binding Img}" Style="{StaticResource ImageListStyle}"/>
+                                    </Grid>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Center" MaxHeight="30"/>
+                                    <TextBlock Text="{Binding LowPrice}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red" HorizontalAlignment="Center" Margin="0 0 0 6"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+                </StackPanel>
+                <!--经销商-->
+                <StackPanel x:Name="DealerStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding DealerList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0 6">
+                        <TextBlock x:Name="DealerCityNameTextBlock" Style="{StaticResource TitleNormalTextStyle}"/>
+                        <TextBlock Style="{StaticResource TitleNormalTextStyle}">
+                           <Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="经销商"/>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <ItemsControl x:Name="DealerItemsControl" ItemsSource="{Binding DealerList}" Margin="6">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource BlockGridStyle}" Margin="0 12">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" MaxHeight="30"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding Address}" Style="{StaticResource FooterLargeTextStyle}" MaxHeight="50" Margin="0 6 0 12"/>
+                                    <Border Grid.Row="2" Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding Tel,Converter={StaticResource DealerTelConverter}}" Style="{StaticResource ButtonWhiteTextStyle}"/>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+                </StackPanel>
+                <!--找车-->
+                <StackPanel Width="{StaticResource ContentWidth}" Visibility="{Binding FindSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <ItemsControl x:Name="FindSeriesItemsControl" ItemsSource="{Binding FindSeriesList}" >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource BlockGridStyle}" Margin="0 12" Tap="FindSeries_Tap">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto" MaxWidth="130"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" MaxHeight="30"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding PriceBetween}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red"/>
+                                    <Image Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
+
+                                    <TextBlock  Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource ContentTextStyle}" HorizontalAlignment="Left" Margin="0 6 0 0">
+                                            <Run Text="{Binding Level}"/><Run Text="{Binding Displacement, StringFormat='/{0}'}"/>
+                                    </TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+                </StackPanel>
+                <!--论坛精选-->
+                <StackPanel x:Name="JingxuanStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding JingxuanList.Count,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <TextBlock Text="{Binding RowCount,StringFormat='找到{0}条相关结果'}" Style="{StaticResource BlockTitleTextStyle}"/>
+                    <ItemsControl x:Name="JingxuanItemsControl" ItemsSource="{Binding JingxuanList}" >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}">
+                                    <util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Style="{StaticResource BlockGridStyle}" Margin="0 6" Tap="Jingxuan_Tap">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="130"/>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid Grid.RowSpan="2">
+                                                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                                                    <Image Source="{Binding SmallImg}" Style="{StaticResource ImageLeftStyle}"/>
+                                                </Grid>
+                                                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回'}" Style="{StaticResource FooterSmallTextStyle}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                </util:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                <!--自然结果-->
+                <StackPanel x:Name="NaturalStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding NaturalResultList.Count,Converter={StaticResource EmptyToVisibilityConverter}}">
+                    <TextBlock Text="{Binding RowCount,StringFormat='找到{0}条相关结果'}" Style="{StaticResource BlockTitleTextStyle}"/>
+                    <ItemsControl ItemsSource="{Binding NaturalResultList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ucSearchResult:NatureResultDataTemplateSelector Content="{Binding}"
+                                    ArticleTemplate="{StaticResource NaturalResultArticleDataTemplate}" TopicTemplate="{StaticResource NaturalResultTopicDataTemplate}"
+                                    VideoTemplate="{StaticResource NaturalResultVideoDataTemplate}" LobbyistTemplate="{StaticResource NaturalResultLobbyistDataTemplate}"
+                                    LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}" Tap="NaturalModel_Tap"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <ucSearchResult:NoResultView x:Name="NoResultUC" Visibility="Collapsed"/>
+    </Grid>
+</UserControl>

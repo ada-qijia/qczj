@@ -102,6 +102,11 @@
             </Setter>
         </Style>
 
+        <!--ApplicationBar-->
+        <shell:ApplicationBar x:Key="searchAppBar" BackgroundColor="Black" ForegroundColor="White" IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton IconUri="/Images/bar_search.png" Text="搜索" Click="searchButton_Click"/>
+        </shell:ApplicationBar>
+        
     </phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot 是包含所有页面内容的根网格-->
     <Grid x:Name="LayoutRoot" Background="White">

@@ -1,0 +1,129 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" 
+    xmlns:uc="clr-namespace:AutoWP7.UcControl"
+    xmlns:util="clr-namespace:AutoWP7.Utils"
+    >
+
+    <util:HtmlStringToNormalConverter x:Key="HtmlStringToNormalConverter"/>
+
+    <System:Double x:Key="ContentWidth">444</System:Double>
+    <System:Double x:Key="SmallColumnWidth">130</System:Double>
+    <System:Double x:Key="OneThirdButtonWidth">140</System:Double>
+    <System:Double x:Key="ItemSingleLineHeight">50</System:Double>
+    <System:Double x:Key="ItemBlockHeight">90</System:Double>
+    
+    <SolidColorBrush x:Key="SemiBlackBrush" Color="#66000000"/>
+    
+    <SolidColorBrush x:Key="Theme_Color" Color="#ff3cadeb"/>
+
+    <Style x:Key="StrokedBorderStyle" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource Theme_Color}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="Height" Value="50"/>
+    </Style>
+
+    <Style x:Key="FilledBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Theme_Color}"/>
+        <Setter Property="Height" Value="50"/>
+    </Style>
+
+    <Style x:Name="DisabledBorderStyle" TargetType="Border" BasedOn="{StaticResource FilledBorderStyle}">
+        <Setter Property="Background" Value="Gray"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+    </Style>
+
+    <Style x:Name="EnabledBorderStyle" TargetType="Border" BasedOn="{StaticResource FilledBorderStyle}">
+        <Setter Property="IsHitTestVisible" Value="True"/>
+    </Style>
+
+    <Style x:Key="ImageLeftStyle" TargetType="Image">
+        <Setter Property="Height" Value="90"/>
+        <Setter Property="Width" Value="120"/>
+        <Setter Property="Margin" Value="0 0 10 0"/>
+    </Style>
+    
+    <Style x:Key="ImageListStyle" TargetType="Image">
+        <Setter Property="Width" Value="{StaticResource OneThirdButtonWidth}"/>
+        <Setter Property="Height" Value="108"/>
+        <Setter Property="Margin" Value="6"/>
+    </Style>
+    
+    <Style x:Key="ArrowImageStyle" TargetType="Image">
+        <Setter Property="Width" Value="10"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="6 0 0 0"/>
+    </Style>
+
+    <!--TextBlock styles-->
+    <Style x:Key="FilterWhiteTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Margin" Value="6"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="FilterLargeTextStyle" TargetType="TextBlock" BasedOn="{StaticResource FilterWhiteTextStyle}">
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+    </Style>
+
+    <Style x:Key="ButtonWhiteTextStyle" TargetType="TextBlock" BasedOn="{StaticResource FilterWhiteTextStyle}">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Height" Value="36"/>
+    </Style>
+ 
+    <Style x:Key="BlockTitleTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="Gray"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Height" Value="42"/>
+    </Style>
+    
+    <Style x:Key="TitleNormalTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextTrimming" Value="WordEllipsis"/>
+        <Setter Property="MaxHeight" Value="60"/>
+    </Style>
+
+    <Style x:Key="TitleLargeTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleNormalTextStyle}">
+        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
+        <Setter Property="MaxHeight" Value="70"/>
+    </Style>
+
+    <Style x:Key="ContentTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleNormalTextStyle}">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="Gray"/>
+        <Setter Property="Height" Value="24"/>
+    </Style>
+    
+    <Style x:Key="PriceRedTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Foreground" Value="Red"/>
+        <Setter Property="Margin" Value="0 6 0 0"/>
+    </Style>
+
+    <Style x:Key="FooterSmallTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="0 6 0 0"/>
+        <Setter Property="Foreground" Value="Gray"/>
+    </Style>
+
+    <Style x:Key="FooterLargeTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="0 6 0 0"/>
+        <Setter Property="Foreground" Value="Gray"/>
+    </Style>
+</ResourceDictionary>
