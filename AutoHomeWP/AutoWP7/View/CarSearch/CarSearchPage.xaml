@@ -16,6 +16,43 @@
 
     <phone:PhoneApplicationPage.Resources>
 
+        <DataTemplate x:Key="groupHeaderTemplate">
+            <Grid Margin="24,0,0,0">
+                <Grid Width="300" Height="50" HorizontalAlignment="Left">
+                    <Border Background="LightGray">
+                        <TextBlock Margin="10,0,0,0" Foreground="Black" 
+                                   FontSize="26"
+                                   Text="{Binding key}" TextAlignment="Left" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="jumpListItemTemplate" x:Name="itemTempLate">
+            <Grid Width="480" x:Name="carSeriesGird" >
+                <Grid Tap="carSpec_Tap" Margin="24,0,24,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="specNameTB" Text="{Binding name}" 
+                               Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                               FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                               FontSize="26" Foreground="Black" TextTrimming="WordEllipsis"/>
+                    <TextBlock Text="{Binding description}"  Grid.Column="0" Grid.Row="1" 
+                               FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
+                               FontSize="20" Foreground="Gray"/>
+                    <TextBlock Text="{Binding price}" Grid.Column="2" Grid.Row="1" 
+                               FontSize="24" Foreground="Red"/>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
     </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -58,9 +95,9 @@
                 <Grid Grid.Column="1" Background="{StaticResource App_Theme_Color}" Tap="goSearch_Tap">
                     <TextBlock Grid.Column="1" FontSize="22" Foreground="#ffffffff" Margin="10,0" VerticalAlignment="Center">
                     <Run  Text="共"/>
-                    <Run x:Name="searchResultSeriesCount" Text="999"/>
+                    <Run x:Name="searchResultSeriesCount" Text=""/>
                     <Run Text="个车系"/>
-                    <Run x:Name="searchResultSpecCount" Text="9999"/>
+                    <Run x:Name="searchResultSpecCount" Text=""/>
                     <Run Text="个车型符合要求"/>
                     </TextBlock>
 
@@ -117,7 +154,7 @@
             </Grid>
         </Grid>
 
-        <Grid x:Name="ResultPanel" Background="White" Visibility="Collapsed">
+        <Grid x:Name="SeriesPanel" Background="White" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -135,57 +172,64 @@
                     <Run Text="个车型"/>
             </TextBlock>
 
-            <Grid Grid.Row="2">
-                <ScrollViewer>
-                    <ItemsControl x:Name="searchResultListBox"  Margin="24,0,24,0">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <util:LoadMoreDataTemplateSelector Content="{Binding}" >
-                                    <util:LoadMoreDataTemplateSelector.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Margin="0,0,0,12" Background="#00000000" Tap="searchResultItem_Tap" Width="432">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Image  Width="120" Height="90" Source="{Binding img}" Margin="0,0,10,0"/>
-                                                <TextBlock Text="{Binding name}" 
+            <ScrollViewer Grid.Row="2">
+                <ItemsControl x:Name="searchResultListBox"  Margin="24,0,24,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <util:LoadMoreDataTemplateSelector Content="{Binding}" >
+                                <util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,0,0,12" Background="#00000000" Tap="searchResultItem_Tap" Width="432">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image  Width="120" Height="90" Source="{Binding img}" Margin="0,0,10,0"/>
+                                            <TextBlock Text="{Binding name}" 
                                                        Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top"
                                                        FontSize="25" Foreground="Black" Margin="0,-5,0,0"
                                                        TextTrimming="WordEllipsis"/>
-                                                <TextBlock Text="{Binding level}" 
+                                            <TextBlock Text="{Binding level}" 
                                                        Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                                                        FontSize="22" Foreground="#ffa0a0a0"/>
-                                                <TextBlock Text="{Binding price}" 
+                                            <TextBlock Text="{Binding price}" 
                                                        Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                                        FontSize="22" Foreground="#ffe84f3c"/>
 
-                                                <Grid Grid.Column="2" VerticalAlignment="Center" Margin="12,0,0,0">
-                                                    <Ellipse Fill="#ff808080" Width="32" Height="32"/>
-                                                    <TextBlock Text="{Binding count}" 
+                                            <Grid Grid.Column="2" VerticalAlignment="Center" Margin="12,0,0,0">
+                                                <Ellipse Fill="#ff808080" Width="32" Height="32"/>
+                                                <TextBlock Text="{Binding count}" 
                                                            Foreground="#ffffffff" FontSize="24"
                                                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                                </Grid>
                                             </Grid>
-                                        </DataTemplate>
-                                    </util:LoadMoreDataTemplateSelector.ItemTemplate>
-                                    <util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
-                                        <DataTemplate>
-                                            <Border  Margin="0,10,0,16" Tap="searchLoadMore_Tap" 
+                                        </Grid>
+                                    </DataTemplate>
+                                </util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                <util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                    <DataTemplate>
+                                        <Border  Margin="0,10,0,16" Tap="searchLoadMore_Tap" 
                                                  Background="LightGray" Height="64" Width="432">
-                                                <TextBlock Foreground="Black" FontSize="28"
+                                            <TextBlock Foreground="Black" FontSize="28"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                        Text="点击加载更多..."/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
-                                </util:LoadMoreDataTemplateSelector>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                            </util:LoadMoreDataTemplateSelector>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid x:Name="SpecPanel" Background="White" Visibility="Collapsed">
+            <p:LongListSelector x:Name="carSpecListBox"
+                                IsGroupingEnabled="True"   
+                                HideEmptyGroups="True" 
+                                LayoutMode="List"
+                                ItemTemplate="{StaticResource jumpListItemTemplate}" 
+                                GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" />
         </Grid>
 
     </Grid>

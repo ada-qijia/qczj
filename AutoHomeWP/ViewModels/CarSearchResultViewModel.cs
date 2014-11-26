@@ -119,7 +119,7 @@ namespace ViewModels
                         foreach (var jo2 in ja2)
                         {
                             CarSearchResultSpecItemGroupModel group = new CarSearchResultSpecItemGroupModel();
-                            group.groupname = (string)ja2.SelectToken("groupname");
+                            group.groupname = (string)jo2.SelectToken("groupname");
                             
                             //spec items
                             var ja3 = (JArray)jo2.SelectToken("specitems");

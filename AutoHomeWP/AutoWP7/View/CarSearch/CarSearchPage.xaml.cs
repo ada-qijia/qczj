@@ -11,6 +11,7 @@ using ViewModels.Handler;
 using AutoWP7.Utils;
 using System.Windows;
 using AutoWP7.UcControl;
+using System.Collections.ObjectModel;
 
 namespace AutoWP7.View.CarSearch
 {
@@ -31,17 +32,22 @@ namespace AutoWP7.View.CarSearch
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            if (filterPopupShown)
+            if (SpecPanel.Visibility == Visibility.Visible)
+            {
+                SpecPanel.Visibility = Visibility.Collapsed;
+                e.Cancel = true;
+            }
+            else if (SeriesPanel.Visibility == Visibility.Visible)
+            {
+                SeriesPanel.Visibility = Visibility.Collapsed;
+                e.Cancel = true;
+            }
+            else if (filterPopupShown)
             {
                 HideFilterPopups();
                 e.Cancel = true;
             }
-            else if (ResultPanelShown)
-            {
-                ResultPanel.Visibility = Visibility.Collapsed;
-                ResultPanelShown = false;
-                e.Cancel = true;
-            }
+
             base.OnBackKeyPress(e);
         }
 
@@ -214,7 +220,6 @@ namespace AutoWP7.View.CarSearch
         string f = "0";
 
         CarSearchResultViewModel searchVM = null;
-        bool ResultPanelShown = false;
 
         private void SetSearchParam(string key, string value)
         {
@@ -310,15 +315,15 @@ namespace AutoWP7.View.CarSearch
 
         private void goSearch_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
-            ResultPanel.Visibility = Visibility.Visible;
-            ResultPanelShown = true;
+            SeriesPanel.Visibility = Visibility.Visible;
             //this.NavigationService.Navigate(new Uri("/View/CarSearch/CarSearchResultPage.xaml", UriKind.Relative));
         }
 
         private void searchResultItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            var carSeries = sender.GetDataContext<CarSearchResultSeriesItemModel>();
+            PopulateSpecList(carSeries);
+            SpecPanel.Visibility = Visibility.Visible;
         }
 
         private void resetSearch_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -344,7 +349,44 @@ namespace AutoWP7.View.CarSearch
             Search(true);
         }
 
-    
+        #region Spec List
+
+        class CarSeriesGroup : List<CarSearchResultSpecItemModel>
+        {
+            public CarSeriesGroup()
+            { }
+            public CarSeriesGroup(string groupname)
+            {
+                key = groupname;
+            }
+
+            public string key { get; set; }
+            public bool HasItems { get { return Count > 0; } }
+        }
+
+        ObservableCollection<CarSeriesGroup> specsGroups = null;
+
+        void PopulateSpecList(CarSearchResultSeriesItemModel carSeries)
+        {
+            specsGroups = new ObservableCollection<CarSeriesGroup>();
+            foreach (var specGroup in carSeries.specitemgroups)
+            {
+                CarSeriesGroup groupitem = new CarSeriesGroup(specGroup.groupname);
+                foreach (var spec in specGroup.specitems)
+                {
+                    groupitem.Add(spec);
+                }
+                specsGroups.Add(groupitem);
+            }
+            carSpecListBox.ItemsSource = specsGroups;
+        }
+
+        #endregion
+
+        private void carSpec_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
 
     }
 }
