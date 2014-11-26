@@ -121,6 +121,8 @@ namespace ViewModels
                         model.inventorystate = (int)ja[i].SelectToken("inventorystate");
                         model.dealerprice = (string)ja[i].SelectToken("dealerprice");
                         model.fctprice = (string)ja[i].SelectToken("fctprice");
+                        model.articleid = (int)ja[i].SelectToken("articleid");
+                        model.articletype = (int)ja[i].SelectToken("articletype");
 
                         //dealer
                         var jo = ja[i].SelectToken("dealer");

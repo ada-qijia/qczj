@@ -679,7 +679,10 @@ namespace AutoWP7
 
         private void saleItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            var data = sender.GetDataContext<SaleItemModel>();
+            string url = string.Format("/View/Sale/SaleDetailPage.xaml?seriesid={0}&specid={1}&articleid={2}&articletype={3}&dealerid={4}",
+                data.seriesid,data.specid,data.articleid,data.articletype,data.dealer.id);
+            this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
 
         private void saleItem_CallDealer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -997,7 +1000,7 @@ namespace AutoWP7
         {
             //最新搜索为综合，否则为论坛搜索
             SearchType type = pano.SelectedIndex == 0 ? SearchType.General : SearchType.Forum;
-            string searchPageUrl =View.Search.SearchPage.GetSearchPageUrlWithParams(type);
+            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(type);
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 

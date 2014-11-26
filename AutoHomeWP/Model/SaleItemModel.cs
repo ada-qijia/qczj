@@ -14,6 +14,9 @@ namespace Model
         public int inventorystate { get; set; }
         public string dealerprice { get; set; }
         public string fctprice { get; set; }
+        public int articleid { get; set; }
+        public int articletype { get; set; }
+
         public SaleDealer dealer { get; set; }
 
         //for ui only
