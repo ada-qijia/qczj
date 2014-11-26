@@ -15,6 +15,7 @@ using ViewModels.Handler;
 using System.ComponentModel;
 using Microsoft.Phone.Shell;
 using AutoWP7.Utils;
+using Microsoft.Phone.Tasks;
 
 namespace AutoWP7
 {
@@ -687,12 +688,28 @@ namespace AutoWP7
 
         private void saleItem_CallDealer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            var data = sender.GetDataContext<SaleItemModel>();
+            UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "电话拨打点击量");
+            Image bb = (Image)sender;
+            PhoneCallTask phoneCall = new PhoneCallTask();
+            phoneCall.PhoneNumber = data.dealer.phone;
+            phoneCall.Show();
         }
 
         private void saleItem_CallPrice_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            var data = sender.GetDataContext<SaleItemModel>();
+            string cityId = string.Empty;
+            if (string.IsNullOrEmpty(App.CityId)) //默认北京
+            {
+                cityId = "110100";
+            }
+            else
+            {
+                cityId = App.CityId;
+            }
+            string url = string.Format("/View/Car/AskPrice.xaml?dealerid={0}&cityID={1}&seriesID={2}&specID={3}", data.dealer.id, cityId, data.seriesid, data.specid);
+            this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
 
         protected void ShowSaleFilter()
