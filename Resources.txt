@@ -1,0 +1,3 @@
+Resource for AutoHome
+Developing apps for Windows Phone 8
+http://msdn.microsoft.com/en-us/library/windows/apps/ff402551(v=vs.105).aspx

@@ -159,6 +159,25 @@
     <Compile Include="UcControl\DataTemplateSelector.cs" />
     <Compile Include="UcControl\ImageToggleButton.cs" />
     <Compile Include="UcControl\KoubeiDataTemplateSelector.cs" />
+    <Compile Include="UcControl\SearchResult\ArticleSearchResult.xaml.cs">
+      <DependentUpon>ArticleSearchResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcControl\SearchResult\CarSeriesSearchResult.xaml.cs">
+      <DependentUpon>CarSeriesSearchResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcControl\SearchResult\ForumSearchResult.xaml.cs">
+      <DependentUpon>ForumSearchResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcControl\SearchResult\GeneralSearchResult.xaml.cs">
+      <DependentUpon>GeneralSearchResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcControl\SearchResult\NatureResultDataTemplateSelector.cs" />
+    <Compile Include="UcControl\SearchResult\NoResultView.xaml.cs">
+      <DependentUpon>NoResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcControl\SearchResult\VideoSearchResult.xaml.cs">
+      <DependentUpon>VideoSearchResult.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UcControl\UcMediaElement\MediaElementUc.xaml.cs">
       <DependentUpon>MediaElementUc.xaml</DependentUpon>
     </Compile>
@@ -170,6 +189,8 @@
     <Compile Include="View\CarSearch\CarSearchResultPage.xaml.cs">
       <DependentUpon>CarSearchResultPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\SearchConverters.cs" />
+    <Compile Include="Utils\SearchHelper.cs" />
     <Compile Include="View\Car\AskPrice.xaml.cs">
       <DependentUpon>AskPrice.xaml</DependentUpon>
     </Compile>
@@ -293,6 +314,9 @@
     <Compile Include="View\CarSearch\CarSearchPage.xaml.cs">
       <DependentUpon>CarSearchPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Search\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -311,6 +335,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Style\SearchStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -328,6 +356,30 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UcControl\CarFilderFilterItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\SearchResult\ArticleSearchResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\SearchResult\CarSeriesSearchResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\SearchResult\ForumSearchResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\SearchResult\GeneralSearchResult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\SearchResult\NoResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\SearchResult\VideoSearchResult.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -511,6 +563,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Search\SearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
@@ -527,6 +583,7 @@
     <Content Include="Images\ArrowRWhite.png" />
     <Content Include="Images\bar_all.png" />
     <Content Include="Images\bar_louzhu.png" />
+    <Content Include="Images\bar_search.png" />
     <Content Include="Images\bar_xshquanbu.png" />
     <Content Include="Images\bg.png" />
     <Content Include="Images\BigNotification.png" />
@@ -544,6 +601,7 @@
     <Content Include="Images\More\VS.png" />
     <Content Include="Images\alibi_recommendation.png" />
     <Content Include="Images\ReloadButton.png" />
+    <Resource Include="Images\search.png" />
     <Content Include="Images\SearchButton.png" />
     <Content Include="Images\selectall.png" />
     <Content Include="Images\alibi_super_highlight.png" />

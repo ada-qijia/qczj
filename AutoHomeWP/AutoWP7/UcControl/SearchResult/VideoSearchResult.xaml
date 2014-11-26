@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="AutoWP7.UcControl.SearchResult.VideoSearchResult"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
+    xmlns:util="clr-namespace:AutoWP7.Utils"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid x:Name="ResultPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{Binding RowCount,StringFormat='找到{0}个相关视频'}" Style="{StaticResource BlockTitleTextStyle}"/>
+            <ListBox x:Name="VideoListBox" Grid.Row="1" ItemsSource="{Binding VideoList}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
+                            <util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="0 12" Tap="video_Tap">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="130"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Grid Grid.RowSpan="2">
+                                            <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                                            <Image Source="{Binding SmallImg}" Style="{StaticResource ImageLeftStyle}"/>
+                                        </Grid>
+                                        
+                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+
+                                        <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PlayCount,StringFormat='\{0}播放'}" Style="{StaticResource FooterLargeTextStyle}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </util:LoadMoreDataTemplateSelector.ItemTemplate>
+
+                            <util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMore_Tap">
+                                        <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                    </Border>
+                                </DataTemplate>
+                            </util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                        </util:LoadMoreDataTemplateSelector>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <ucSearchResult:NoResultView x:Name="NoResultUC" Visibility="Collapsed"/>
+    </Grid>
+
+</UserControl>

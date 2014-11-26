@@ -111,6 +111,13 @@
     <Compile Include="CarSearchFilterViewModel.cs" />
     <Compile Include="CarSearchResultViewModel.cs" />
     <Compile Include="SaleViewModel.cs" />
+    <Compile Include="Search\ArticleSearchResultViewModel.cs" />
+    <Compile Include="Search\CarSeriesSearchResultViewModel.cs" />
+    <Compile Include="Search\ForumSearchResultViewModel.cs" />
+    <Compile Include="Search\GeneralSearchResultViewModel.cs" />
+    <Compile Include="Search\ISearchViewModel.cs" />
+    <Compile Include="Search\SearchResultViewModelBase.cs" />
+    <Compile Include="Search\VideoSearchResultViewModel.cs" />
     <Compile Include="SpecAlibiViewModel.cs" />
     <Compile Include="CarSeriesConfigurationViewModel.cs" />
     <Compile Include="CarSeriesAllForumViewModel.cs" />
@@ -120,6 +127,7 @@
     <Compile Include="CityListViewModel.cs" />
     <Compile Include="AlibiDetailViewModel.cs" />
     <Compile Include="SaleFilterViewModel.cs" />
+    <Compile Include="Search\SuggestWordsViewModel.cs" />
     <Compile Include="VideoDetailViewModel.cs" />
     <Compile Include="DealerViewModel.cs" />
     <Compile Include="CarSeriesForumViewModel.cs" />

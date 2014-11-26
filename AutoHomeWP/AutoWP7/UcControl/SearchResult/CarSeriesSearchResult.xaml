@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="AutoWP7.UcControl.SearchResult.CarSeriesSearchResult"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid x:Name="ResultPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{Binding CarSeriesList.Count,StringFormat='找到{0}个相关车系'}" Style="{StaticResource BlockTitleTextStyle}"/>
+            <ListBox x:Name="CarSeriesListBox" Grid.Row="1" ItemsSource="{Binding CarSeriesList}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="Transparent" Margin="0 12" Width="{StaticResource ContentWidth}" Tap="CarSeries_Tap">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.RowSpan="2" >
+                                <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                                <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                            </Grid>
+                            
+                            <StackPanel Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal">
+                                <TextBlock Text="{Binding FactoryName}" Style="{StaticResource TitleLargeTextStyle}"/>
+                                <TextBlock Text="{Binding Name,StringFormat=' - {0}'}" Style="{StaticResource TitleLargeTextStyle}"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Level}" FontSize="20" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PriceBetween}" FontSize="20" Foreground="Red" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+
+                            <Image Grid.RowSpan="2" Grid.Column="3" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <ucSearchResult:NoResultView x:Name="NoResultUC" Visibility="Collapsed"/>
+    </Grid>
+</UserControl>

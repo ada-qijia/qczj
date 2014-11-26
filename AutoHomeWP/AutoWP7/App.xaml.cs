@@ -20,6 +20,7 @@ using System.IO.IsolatedStorage;
 using System.Reflection;
 using ViewModels;
 using AutoWP7.Handler;
+using ViewModels.Handler;
 namespace AutoWP7
 {
     public partial class App : Application
@@ -106,8 +107,28 @@ namespace AutoWP7
                 if (value != _cityId)
                 {
                     _cityId = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        using (LocalDataContext ldc = new LocalDataContext())
+                        {
+                            var result = from s in ldc.provinces where s.Id == int.Parse(App.CityId) select s.Name;
+                            if (result!=null && result.Count() > 0)
+                            {
+                                CityName = result.First();
+                            }
+                        }
+                    }
                 }
             }
+        }
+
+        //默认北京
+        private static string _cityName = "北京";
+        public static string CityName
+        {
+            get { return _cityName; }
+            private set { _cityName = value; }
         }
 
         /// <summary>

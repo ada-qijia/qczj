@@ -1,4 +1,6 @@
 ﻿using Model;
+﻿using AutoWP7.UcControl;
+using Model;
 using System.Windows;
 
 namespace AutoWP7.Utils

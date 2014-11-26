@@ -1,0 +1,159 @@
+﻿<UserControl x:Class="AutoWP7.UcControl.SearchResult.ForumSearchResult"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:util="clr-namespace:AutoWP7.Utils"
+    xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480">
+
+    <UserControl.Resources>
+        <util:BoolToVisibleConverter x:Key="BoolToVisibleConverter"/>
+        <util:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
+
+        <Style x:Key="FilterListPickerStyle" TargetType="toolkit:ListPicker">
+            <Setter Property="Width" Value="{StaticResource OneThirdButtonWidth}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource App_Theme_Color}"/>
+            <Setter Property="BorderThickness" Value="3"/>
+        </Style>
+
+        <DataTemplate x:Key="FilterStringDataTemplate">
+            <Grid Width="216" Height="60" Margin="0 12" Background="{StaticResource App_Theme_Color}">
+                <TextBlock Text="{Binding}" Style="{StaticResource FilterWhiteTextStyle}" Height="35"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="FilterBBSDataTemplate">
+            <Grid Width="216" Height="60" Margin="12" Background="{StaticResource App_Theme_Color}">
+                <TextBlock Text="{Binding Name}"  Style="{StaticResource FilterWhiteTextStyle}" Height="35"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid x:Name="ResultPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!--筛选选项-->
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 12">
+                <toolkit:ListPicker x:Name="sortListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}" SelectionChanged="sortListPicker_SelectionChanged">
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" HorizontalAlignment="Center" Foreground="Gray"/>
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                </toolkit:ListPicker>
+                <toolkit:ListPicker x:Name="rangeListPicker" Style="{StaticResource FilterListPickerStyle}" Margin="12 0" ItemsSource="{Binding RelatedBBSList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterBBSDataTemplate}" SelectionChanged="rangeListPicker_SelectionChanged">
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Foreground="Gray" MaxWidth="130" TextTrimming="WordEllipsis"/>
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                </toolkit:ListPicker>
+                <toolkit:ListPicker x:Name="timeListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}" SelectionChanged="timeListPicker_SelectionChanged">
+                    <toolkit:ListPicker.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" HorizontalAlignment="Center" Foreground="Gray"/>
+                        </DataTemplate>
+                    </toolkit:ListPicker.ItemTemplate>
+                </toolkit:ListPicker>
+            </StackPanel>
+
+            <!--相关论坛-->
+            <TextBlock Grid.Row="1" Text="{Binding BBSList.Count,StringFormat='找到{0}个相关论坛'}" Visibility="{Binding BBSList.Count,Converter={StaticResource EmptyToVisibilityConverter}}" Style="{StaticResource BlockTitleTextStyle}" Margin="0 0 0 12"/>
+            <ItemsControl Grid.Row="2" x:Name="BBSItemsControl" ItemsSource="{Binding BBSList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Tap="BBS_Tap">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.RowSpan="2">
+                                <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                                <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                            </Grid>
+
+                            <TextBlock Grid.Column="1" Text="{Binding Name, Converter={StaticResource HtmlStringToNormalConverter}}"  Style="{StaticResource TitleNormalTextStyle}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TopicCount,StringFormat='共{0}帖子'}" Style="{StaticResource FooterLargeTextStyle}"/>
+
+                            <Image Grid.RowSpan="2" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
+
+                            <Rectangle Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!--相关帖子-->
+            <TextBlock Grid.Row="3" Text="{Binding RowCount, StringFormat='找到{0}篇相关帖子'}" Style="{StaticResource BlockTitleTextStyle}" Margin="0 0 0 12"/>
+            <ListBox Grid.Row="4" x:Name="TopicListBox" ItemsSource="{Binding TopicList}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
+                            <util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Tap="Topic_Tap">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.RowSpan="2" Text="精" Visibility="{Binding IsJinghua,Converter={StaticResource BoolToVisibleConverter}}" FontSize="36" VerticalAlignment="Top" Foreground="Red"/>
+                                        <TextBlock Grid.RowSpan="2" Text="图" Visibility="{Binding IsPic, Converter={StaticResource BoolToVisibleConverter}}" FontSize="36" VerticalAlignment="Top" Foreground="Red"/>
+
+                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PostDate}" Style="{StaticResource FooterSmallTextStyle}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding ReplyCount,StringFormat='\{0}回帖'}" Style="{StaticResource FooterLargeTextStyle}"/>
+
+                                        <Rectangle Grid.Row="2" Grid.ColumnSpan="4" Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 12"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </util:LoadMoreDataTemplateSelector.ItemTemplate>
+
+                            <util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMore_Tap">
+                                        <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                    </Border>
+                                </DataTemplate>
+                            </util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                        </util:LoadMoreDataTemplateSelector>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Grid>
+        <ucSearchResult:NoResultView x:Name="NoResultUC" Grid.RowSpan="3" Visibility="Collapsed"/>
+    </Grid>
+</UserControl>
