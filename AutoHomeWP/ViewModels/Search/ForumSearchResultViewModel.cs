@@ -81,19 +81,20 @@ namespace ViewModels.Search
 
                             //相关论坛列表
                             blockToken = resultToken.SelectToken("relatedclubs");
-                            this.RelatedBBSList.Clear();
-                            if (blockToken.HasValues)
+                            if (blockToken.HasValues && this.RelatedBBSList.Count <= 1)//首次加载,以后同样关键词返回结果一样
                             {
                                 var relatedClubList = JsonHelper.DeserializeOrDefault<List<RelatedBBSModel>>(blockToken.ToString());
-                                if (relatedClubList != null)
+                                if (relatedClubList != null && relatedClubList.Count > 0)
                                 {
+                                    this.RelatedBBSList.Clear();
                                     foreach (var model in relatedClubList)
                                     {
                                         this.RelatedBBSList.Add(model);
                                     }
                                 }
                             }
-                            else if(this.DefaultRelatedBBS!=null)
+
+                            if (this.RelatedBBSList.Count == 0 && this.DefaultRelatedBBS != null)
                             {
                                 this.RelatedBBSList.Add(DefaultRelatedBBS);
                             }
@@ -154,20 +155,6 @@ namespace ViewModels.Search
             this.RowCount = 0;
             this.PageIndex = 0;
             this.PageCount = 0;
-            if (this.DefaultRelatedBBS != null)
-            {
-                foreach (var relatedBBS in this.RelatedBBSList)
-                {
-                    if (relatedBBS.ID != this.DefaultRelatedBBS.ID)
-                    {
-                        this.RelatedBBSList.Remove(relatedBBS);
-                    }
-                }
-            }
-            else
-            {
-                this.RelatedBBSList.Clear();
-            }
 
             this.BBSList.Clear();
             this.TopicList.Clear();

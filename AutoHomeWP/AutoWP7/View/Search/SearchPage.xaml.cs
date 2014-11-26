@@ -83,6 +83,8 @@ namespace AutoWP7.View.Search
                         bbsName = NavigationContext.QueryString.ContainsKey("param2") ? NavigationContext.QueryString["param2"] : string.Empty;
                     }
                 }
+
+                this.keywordTextBox.Loaded += keywordTB_Loaded;
             }
         }
 
@@ -92,6 +94,7 @@ namespace AutoWP7.View.Search
         private void keywordTB_Loaded(object sender, RoutedEventArgs e)
         {
             this.keywordTextBox.Focus();
+            this.keywordTextBox.Loaded -= keywordTB_Loaded;
         }
 
         //列出最多10个推荐联想词

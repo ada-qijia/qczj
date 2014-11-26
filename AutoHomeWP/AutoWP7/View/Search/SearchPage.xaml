@@ -29,7 +29,7 @@
         <!--顶部搜索框-->
         <Grid Width="120" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18 24 0 0" Background="{StaticResource App_Theme_Color}"/>
         <Border Margin="18 24 18 12" Height="60" Style="{StaticResource StrokedBorderStyle}"/>
-        <toolkit:PhoneTextBox x:Name="keywordTextBox" Hint="搜索关键词" Height="60" Margin="138 12 18 0" BorderThickness="0" Padding="0" Loaded="keywordTB_Loaded" TextChanged="keyboardTB_TextChanged" KeyDown="keywordTextBox_KeyDown" />
+        <toolkit:PhoneTextBox x:Name="keywordTextBox" Hint="搜索关键词" Height="60" Margin="138 12 18 0" BorderThickness="0" Padding="0" TextChanged="keyboardTB_TextChanged" KeyDown="keywordTextBox_KeyDown" />
 
         <Grid x:Name="KeywordsGrid" Grid.Row="1">
             <!--搜索历史-->

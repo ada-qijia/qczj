@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using ViewModels.Search;
+using Model.Search;
 
 namespace AutoWP7.UcControl.SearchResult
 {
@@ -30,10 +26,14 @@ namespace AutoWP7.UcControl.SearchResult
 
         void SearchResultVM_LoadDataCompleted(object sender, EventArgs e)
         {
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false;
+
             //只有一条记录时导航到找车-车系车型页
             if (this.SearchResultVM.RowCount == 1)
             {
-                throw new NotImplementedException();
+                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", this.SearchResultVM.CarSeriesList[0].ID);
+                this.Navigate(url);
             }
             else
             {
@@ -51,6 +51,9 @@ namespace AutoWP7.UcControl.SearchResult
 
         public void ReLoad()
         {
+            GlobalIndicator.Instance.Text = "正在获取中...";
+            GlobalIndicator.Instance.IsBusy = true;
+
             this.SearchResultVM.ClearData();
             string url = string.Format("{0}{1}/sou/series.ashx?app={2}&platform={3}&version={4}&kw={5}", App.appUrl, App.versionStr, App.appId, App.platForm, App.version, keyword);
             this.SearchResultVM.LoadDataAysnc(url);
@@ -61,14 +64,18 @@ namespace AutoWP7.UcControl.SearchResult
         //导航到多条时车系综述/只一条时找车-车系车型页
         private void CarSeries_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (this.SearchResultVM.RowCount == 1)
+            CarSeriesSearchModel model = (sender as FrameworkElement).DataContext as CarSeriesSearchModel;
+            if (model != null)
             {
-
+                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", model.ID);
+                this.Navigate(url);
             }
-            else
-            {
+        }
 
-            }
+        private void Navigate(string relativeUrl)
+        {
+            var frame = Application.Current.RootVisual as PhoneApplicationFrame;
+            frame.Navigate(new Uri(relativeUrl, UriKind.Relative));
         }
     }
 }

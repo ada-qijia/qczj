@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace AutoWP7.Utils
 {
@@ -41,26 +38,6 @@ namespace AutoWP7.Utils
         {
             return value;
         }
-    }
-
-    public class NullableBoolToBoolConverter : IValueConverter
-    {
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is bool? && (bool)value)
-            {
-                return true;
-            }
-            else
-            { return false; }
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return value;
-        }
-
     }
 
     /// <summary>
@@ -99,7 +76,7 @@ namespace AutoWP7.Utils
     }
 
     /// <summary>
-    /// Remove highligh tag B.
+    /// Remove highlight tag B.
     /// </summary>
     public class HtmlStringToNormalConverter : IValueConverter
     {
@@ -121,18 +98,56 @@ namespace AutoWP7.Utils
         }
     }
 
-    public class EmptyToBackgroundConverter : IValueConverter
+    /// <summary>
+    /// 综合搜索车系内容块中参数配置和口碑
+    /// </summary>
+    public class SpecKoubeiToStyleConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool isEnabled=false;
+            //IsShowKoubei
+            if(value is int)
+            {
+                isEnabled = (int)value == 1;
+            }
+            //spec list
+            else if(value is IEnumerable<object>)
+            {
+                isEnabled=((IEnumerable<object>)value).Count() > 0 ;
+            }
+
+            try
+            {
+                ResourceDictionary searchStyle = Application.Current.Resources.MergedDictionaries[1];
+                return isEnabled ? searchStyle["EnabledBorderStyle"] : searchStyle["DisabledBorderStyle"];
+            }
+            catch { }
+
+            return null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// 综合搜索经销商模块中电话
+    /// </summary>
+    public class DealerTelConverter:IValueConverter
     {
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            //#ff3cadeb
-            var appThemeColor = Color.FromArgb(255, 60, 173, 235);
-            if (value is int)
-            {
-                return (int)value == 0 ? new SolidColorBrush(Colors.Gray) : new SolidColorBrush(appThemeColor);
-            }
-            return value;
+           string tel=value as string;
+           if(tel!=null)
+           {
+               return tel.StartsWith("400") ? "400电话" : "拨打电话";
+           }
+
+           return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

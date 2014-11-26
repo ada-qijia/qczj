@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using ViewModels.Search;
 using Model.Search;
 
@@ -89,19 +84,28 @@ namespace AutoWP7.UcControl.SearchResult
 
         #region UI interaction
 
-        private void sortListPicker_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void sortListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.LoadMore(true);
+            if (e.AddedItems.Count > 0 && e.RemovedItems.Count > 0)
+            {
+                this.LoadMore(true);
+            }
         }
 
         private void rangeListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.LoadMore(true);
+            if (e.AddedItems.Count > 0 && e.RemovedItems.Count > 0)
+            {
+                this.LoadMore(true);
+            }
         }
 
         private void timeListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.LoadMore(true);
+            if (e.AddedItems.Count > 0 && e.RemovedItems.Count > 0)
+            {
+                this.LoadMore(true);
+            }
         }
 
         private void BBS_Tap(object sender, System.Windows.Input.GestureEventArgs e)

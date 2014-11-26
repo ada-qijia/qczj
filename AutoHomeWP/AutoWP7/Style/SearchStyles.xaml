@@ -29,6 +29,15 @@
         <Setter Property="Height" Value="50"/>
     </Style>
 
+    <Style x:Name="DisabledBorderStyle" TargetType="Border" BasedOn="{StaticResource FilledBorderStyle}">
+        <Setter Property="Background" Value="Gray"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+    </Style>
+
+    <Style x:Name="EnabledBorderStyle" TargetType="Border" BasedOn="{StaticResource FilledBorderStyle}">
+        <Setter Property="IsHitTestVisible" Value="True"/>
+    </Style>
+
     <Style x:Key="ImageLeftStyle" TargetType="Image">
         <Setter Property="Height" Value="90"/>
         <Setter Property="Width" Value="120"/>

@@ -543,6 +543,7 @@
     <Resource Include="Images\Tiles\ShuoKe.png" />
     <Content Include="Images\alibi_summary.png" />
     <Content Include="Images\ArrowR.png" />
+    <Content Include="Images\ArrowRWhite.png" />
     <Content Include="Images\bar_all.png" />
     <Content Include="Images\bar_louzhu.png" />
     <Content Include="Images\bar_search.png" />

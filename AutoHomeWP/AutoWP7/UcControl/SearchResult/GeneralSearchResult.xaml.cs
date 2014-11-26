@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using ViewModels.Search;
 using Model.Search;
-using ViewModels.Handler;
 
 namespace AutoWP7.UcControl.SearchResult
 {
@@ -26,6 +22,8 @@ namespace AutoWP7.UcControl.SearchResult
             //this.SearchResultVM.PropertyChanged += SearchResultVM_PropertyChanged;
             this.SearchResultVM.LoadDataCompleted += SearchResultVM_LoadDataCompleted;
             this.DataContext = this.SearchResultVM;
+
+            this.DealerCityNameTextBlock.Text = App.CityName;
         }
 
         //如果结果为空，显示没有结果提示
@@ -116,32 +114,34 @@ namespace AutoWP7.UcControl.SearchResult
         //进入找车-车系车型页
         private void CarSeries_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigateToCarSeriesModel();
         }
 
         //跳至关注度最高的车型参数配置页
         private void CarSeriesConfig_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //hotSpecID
+            string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}&selectedPage={1}", this.SearchResultVM.Series.HotSpecID, "spec");
+            this.Navigate(url);
         }
 
         //找车-车系论坛帖子列表页
         private void CarSeriesBBS_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=3&carSeriesId={0}", this.SearchResultVM.Series.ID);
+            this.Navigate(url);
         }
 
         //找车-车系口碑页
         private void CarSeriesKoubei_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=4&carSeriesId={0}", this.SearchResultVM.Series.ID);
+            this.Navigate(url);
         }
 
         //找车-车型经销商页
         private void CarModel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            FrameworkElement elment = sender as FrameworkElement;
-            var model = elment.DataContext as SpecModel;
+            var model = (sender as FrameworkElement).DataContext as SpecModel;
             if (model != null && model.ID != 0)
             {
                 string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}&selectedPage={1}", model.ID, "dealer");
@@ -158,7 +158,12 @@ namespace AutoWP7.UcControl.SearchResult
         //找车-车系车型页
         private void Brand_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            this.NavigateToCarSeriesModel();
+            var model = (sender as FrameworkElement).DataContext as SeriesModel;
+            if (model != null && model.ID != 0)
+            {
+                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", model.ID);
+                this.Navigate(url);
+            }
         }
 
         //进入图片浏览页
@@ -191,13 +196,23 @@ namespace AutoWP7.UcControl.SearchResult
         //找车-车系车型页
         private void RelatedSeries_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            this.NavigateToCarSeriesModel();
+            var model = (sender as FrameworkElement).DataContext as RelatedSeriesModel;
+            if (model != null && model.ID != 0)
+            {
+                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", model.ID);
+                this.Navigate(url);
+            }
         }
 
         //找车-车系车型页
         private void FindSeries_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            this.NavigateToCarSeriesModel();
+            var model = (sender as FrameworkElement).DataContext as FindSeriesModel;
+            if (model != null && model.ID != 0)
+            {
+                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", model.ID);
+                this.Navigate(url);
+            }
         }
 
         //帖子详情页
@@ -220,7 +235,7 @@ namespace AutoWP7.UcControl.SearchResult
                 int mediatype = model.MediaType;
                 if (mediatype == 1 || mediatype == 2)
                 {
-                    this.Navigate(string.Format("/View/Channel/News/NewsEndPage.xaml?newsid={0}&pageIndex=1&pageType={2}",model.ID,model.MediaType));
+                    this.Navigate(string.Format("/View/Channel/News/NewsEndPage.xaml?newsid={0}&pageIndex=1&pageType={1}",model.ID,model.MediaType));
                 }
                 else if (mediatype == 3)
                 {

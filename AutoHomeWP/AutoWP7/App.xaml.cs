@@ -123,7 +123,13 @@ namespace AutoWP7
             }
         }
 
-        public static string CityName { get; private set; }
+        //默认北京
+        private static string _cityName = "北京";
+        public static string CityName
+        {
+            get { return _cityName; }
+            private set { _cityName = value; }
+        }
 
         /// <summary>
         /// 图片总数

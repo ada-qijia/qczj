@@ -48,7 +48,7 @@
 
             <!--筛选选项-->
             <StackPanel Orientation="Horizontal" Margin="0 0 0 12">
-                <toolkit:ListPicker x:Name="sortListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}" SizeChanged="sortListPicker_SizeChanged">
+                <toolkit:ListPicker x:Name="sortListPicker" Style="{StaticResource FilterListPickerStyle}" ItemsSource="{Binding}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterStringDataTemplate}" SelectionChanged="sortListPicker_SelectionChanged">
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" HorizontalAlignment="Center" Foreground="Gray"/>
@@ -58,7 +58,7 @@
                 <toolkit:ListPicker x:Name="rangeListPicker" Style="{StaticResource FilterListPickerStyle}" Margin="12 0" ItemsSource="{Binding RelatedBBSList}" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource FilterBBSDataTemplate}" SelectionChanged="rangeListPicker_SelectionChanged">
                     <toolkit:ListPicker.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Foreground="Gray" MaxWidth="130" TextTrimming="WordEllipsis"/>
                         </DataTemplate>
                     </toolkit:ListPicker.ItemTemplate>
                 </toolkit:ListPicker>
