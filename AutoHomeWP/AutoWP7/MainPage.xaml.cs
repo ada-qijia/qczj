@@ -103,7 +103,7 @@ namespace AutoWP7
             }
 
             //为最新和论坛设置AppBar搜索按钮
-            bool searchButtonVisible = pano.SelectedIndex == 0 || pano.SelectedIndex == 4;
+            bool searchButtonVisible = pano.SelectedIndex == 0 || pano.SelectedIndex == 2 || pano.SelectedIndex == 4;
             setAppBarSearchButtonVisible(searchButtonVisible);
         }
 
@@ -1015,16 +1015,23 @@ namespace AutoWP7
         //导航到搜索页面
         private void searchButton_Click(object sender, EventArgs e)
         {
-            //最新搜索为综合，否则为论坛搜索
-            SearchType type = pano.SelectedIndex == 0 ? SearchType.General : SearchType.Forum;
+            //最新搜索为综合，找车搜索为车系，论坛搜索为论坛
+            SearchType type = SearchType.General;
+            switch (pano.SelectedIndex)
+            {
+                case 0:
+                    type = SearchType.General;
+                    break;
+                case 2:
+                    type = SearchType.CarSeries;
+                    break;
+                case 4:
+                    type = SearchType.Forum;
+                    break;
+                default:
+                    break;
+            }
             string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(type);
-            this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
-        }
-
-        //找车搜索
-        private void search_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(SearchType.CarSeries);
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 

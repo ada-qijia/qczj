@@ -377,13 +377,26 @@
             <!--找车-->
             <controls:PanoramaItem Foreground="#3cadeb">
                 <controls:PanoramaItem.Header>
-                    <StackPanel  Orientation="Horizontal" Width="460">
+                    <!--<StackPanel  Orientation="Horizontal" Width="460">
                         <TextBlock Text="找车"/>
-                        <Image Margin="210,30,0,0" Tap="search_Tap"
+                        <Image Margin="210,30,0,0" Tap="carSearchButton_Tap"
                                HorizontalAlignment="Center"
                                Source="/Images/SearchButton.png">
                         </Image>
-                    </StackPanel>    
+                    </StackPanel>-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="270"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="找车" Foreground="#3cadeb" Grid.Column="0"/>
+                        <Button BorderBrush="#00adef" BorderThickness="3,3,3,3"   
+                                Tap="carSearchButton_Tap"
+                                Content="条件筛选"
+                                Foreground="Gray"
+                                Margin="0,10,0,0"
+                                Height="70" Width="150" Grid.Column="1"/>
+                    </Grid>
                 </controls:PanoramaItem.Header>
                 
                 <Grid Margin="10,-30,10,0">

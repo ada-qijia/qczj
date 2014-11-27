@@ -135,7 +135,6 @@ namespace AutoWP7.View.Car
                             //更新城市id
                             if (!string.IsNullOrEmpty(App.CityId))
                             {
-
                                 //重新加载经销商数据
                                 DealerLoadData();
                             }

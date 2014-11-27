@@ -108,8 +108,8 @@ namespace ViewModels
                     {
                         JArray carJson = (JArray)json.SelectToken("result").SelectToken("enginelist");
 
-                        //using (LocalDataContext ldc = new LocalDataContext())
-                        //{
+                        using (LocalDataContext ldc = new LocalDataContext())
+                        {
                             //读取数据
                             CarSeriesQuoteModel model = null;
                             for (int i = 0; i < carJson.Count; i++)
@@ -130,20 +130,20 @@ namespace ViewModels
                                     model.GroupOrder = i + 1;
                                     model.Compare = "";
                                     model.CompareText = "";
-                                    //ldc.carQuotes.InsertOnSubmit(model);
+                                    ldc.carQuotes.InsertOnSubmit(model);
                                     CarSeriesQuoteDataSource.Add(model);
                                 }
                             }
-                        //    ldc.SubmitChanges();
-                        //}
+                            ldc.SubmitChanges();
+                        }
 
                     }
                     else
                     {
                         JArray carJson = (JArray)json.SelectToken("result").SelectToken("list");
 
-                        //using (LocalDataContext ldc = new LocalDataContext())
-                        //{
+                        using (LocalDataContext ldc = new LocalDataContext())
+                        {
                             //读取数据
                             CarSeriesQuoteModel model = null;
 
@@ -158,12 +158,12 @@ namespace ViewModels
                                     model.Id = (int)carItemJson[j].SelectToken("id");
                                     model.Name = (string)carItemJson[j].SelectToken("name");
 
-                                    //ldc.carQuotes.InsertOnSubmit(model);
+                                    ldc.carQuotes.InsertOnSubmit(model);
                                     CarSeriesQuoteDataSource.Add(model);
                                 }
                             }
-                        //    ldc.SubmitChanges();
-                        //}
+                            ldc.SubmitChanges();
+                        }
                     }
 
 

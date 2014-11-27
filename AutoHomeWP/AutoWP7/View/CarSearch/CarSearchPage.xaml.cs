@@ -27,7 +27,10 @@ namespace AutoWP7.View.CarSearch
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            LoadFilters();
+            if (!filterLoaded)
+            {
+                LoadFilters();
+            }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -56,6 +59,7 @@ namespace AutoWP7.View.CarSearch
         #region Filter Groups
 
         CarSearchFilterViewModel filterVM = null;
+        bool filterLoaded = false;
 
         public void LoadFilters()
         {
@@ -85,6 +89,7 @@ namespace AutoWP7.View.CarSearch
             {
                 filterGroupListBox.ItemsSource = filterVM.DataSource;
                 Search(true);
+                filterLoaded = true;
             }
         }
 
@@ -384,10 +389,20 @@ namespace AutoWP7.View.CarSearch
 
         #endregion
 
+        private void carSeriesSummary_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var series = sender.GetDataContext<CarSearchResultSeriesItemModel>();
+            string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", series.id);
+            this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
+        }
+
         private void carSpec_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            var spec = sender.GetDataContext<CarSearchResultSpecItemModel>();
+            string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}",spec.id);
+            this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
+
 
     }
 }
