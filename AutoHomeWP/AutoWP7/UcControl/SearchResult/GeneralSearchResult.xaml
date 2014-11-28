@@ -243,9 +243,7 @@
 
                     <Border Style="{StaticResource FilledBorderStyle}" Margin="0 6" HorizontalAlignment="Center">
                         <StackPanel Orientation="Horizontal" Margin="12 6">
-                            <TextBlock Style="{StaticResource ButtonWhiteTextStyle}" Margin="0" Tap="CarModelMore_Tap">
-                                <Run Text="查看更多"/><Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="车型"/>
-                            </TextBlock>
+                            <TextBlock Style="{StaticResource ButtonWhiteTextStyle}" Text="{Binding MatchName,StringFormat='查看更多{0}车型'}" Margin="0" Tap="CarModelMore_Tap"/>
                             <Image Source="/Images/ArrowRWhite.png" Style="{StaticResource ArrowImageStyle}"/>
                         </StackPanel>
                     </Border>
@@ -276,7 +274,7 @@
                 <!--图片-->
                 <StackPanel x:Name="ImgStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding ImgList,Converter={StaticResource EmptyToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
-                        <Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="图片"/>
+                        <Run Text="{Binding MatchName}" Foreground="Red"/><Run Text="图片"/>
                     </TextBlock>
                     <ItemsControl x:Name="ImgItemsControl" ItemsSource="{Binding ImgList}" Margin="-6 0">
                         <ItemsControl.ItemsPanel>
@@ -306,7 +304,7 @@
                 <!--相关车系-->
                 <StackPanel Width="{StaticResource ContentWidth}" Visibility="{Binding RelatedSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
-                        <Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="相关推荐"/>
+                        <Run Text="{Binding MatchName}" Foreground="Red"/><Run Text="相关推荐"/>
                     </TextBlock>
                     <ItemsControl x:Name="RelatedSeriesItemsControl" ItemsSource="{Binding RelatedSeriesList}" Margin="-6 0">
                         <ItemsControl.ItemsPanel>
@@ -335,7 +333,7 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0 6">
                         <TextBlock x:Name="DealerCityNameTextBlock" Style="{StaticResource TitleNormalTextStyle}"/>
                         <TextBlock Style="{StaticResource TitleNormalTextStyle}">
-                           <Run Text="{Binding Keyword}" Foreground="Red"/><Run Text="经销商"/>
+                           <Run Text="{Binding MatchName}" Foreground="Red"/><Run Text="经销商"/>
                         </TextBlock>
                     </StackPanel>
 
