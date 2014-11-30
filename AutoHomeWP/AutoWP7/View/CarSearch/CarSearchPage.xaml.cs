@@ -87,6 +87,10 @@ namespace AutoWP7.View.CarSearch
             }
             else
             {
+                //add brand filter entry manually
+                CarSearchFilterGroupModel filter = new CarSearchFilterGroupModel() { key = "brand" };
+                filterVM.DataSource.Insert(0, filter);
+
                 filterGroupListBox.ItemsSource = filterVM.DataSource;
                 Search(true);
                 filterLoaded = true;
@@ -125,6 +129,14 @@ namespace AutoWP7.View.CarSearch
                     filterVM.FilterGroups[group.key].filters[0].Selected = true;
                 }
             }
+            else if (group.key == "brand")
+            {
+                brandSelectionPanel.Visibility = Visibility.Visible;
+                if (!brandLoaded)
+                {
+                    carBrandLoadData();
+                }
+            }
             else
             {
                 singleSelectionPanel.Visibility = Visibility.Visible;
@@ -138,6 +150,7 @@ namespace AutoWP7.View.CarSearch
         {
             singleSelectionPanel.Visibility = Visibility.Collapsed;
             multiSelectionPanel.Visibility = Visibility.Collapsed;
+            brandSelectionPanel.Visibility = Visibility.Collapsed;
             filterPopupShown = false;
             filterPanelTitle.Text = "条件筛选";
         }
@@ -209,6 +222,92 @@ namespace AutoWP7.View.CarSearch
 
         #endregion
 
+        #region  Brand
+
+        bool brandLoaded = false;
+
+        private class CarBrandGroup : List<CarBrandModel>
+        {
+            public CarBrandGroup(string category)
+            {
+                key = category;
+            }
+            public string key { get; set; }
+            public bool HasItems { get { return Count > 0; } }
+        }
+
+        private class CarBrandSource : List<CarBrandGroup>
+        {
+        }
+
+        CarBrandSource carBrandSource = new CarBrandSource();
+        CarBrandViewModel carVM = null;
+
+        public void carBrandLoadData()
+        {
+            GlobalIndicator.Instance.Text = "正在获取中...";
+            GlobalIndicator.Instance.IsBusy = true;
+
+            if (carVM == null)
+            {
+                carVM = new CarBrandViewModel();
+                carVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarBrandModel>>>(carVM_LoadDataCompleted);
+            }
+
+            //http://221.192.136.99:804/wpv1.6/cars/brandsdealer-a2-pm1-v3.0.1-ts635174268324922500.html
+            string url = string.Format("{0}{1}/cars/brandsdealer-{2}-ts{3}.html", App.appUrl, App.versionStr, App.AppInfo, 0);
+            carVM.LoadDataAysnc(url);
+        }
+
+        void carVM_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<CarBrandModel>> e)
+        {
+            if (e.Error != null)
+            {
+                Common.NetworkAvailablePrompt();
+            }
+            else
+            {
+                brandLoaded = true;
+
+                var groupBy = from car in e.Result
+                              group car by car.Letter into c
+                              orderby c.Key
+                              select new Group<CarBrandModel>(c.Key, c);
+
+                //add special item
+                CarBrandGroup allBrandGroup = new CarBrandGroup("#");
+                CarBrandModel allBrandItem = new CarBrandModel() { Id = 0, Name = "全部品牌" };
+                allBrandGroup.Add(allBrandItem);
+                carBrandSource.Add(allBrandGroup);
+
+                foreach (var entity in groupBy)
+                {
+                    CarBrandGroup group = new CarBrandGroup(entity.key + "         ");
+
+                    foreach (var item in entity)
+                    {
+                        group.Add(item);
+                    }
+                    carBrandSource.Add(group);
+                }
+                brandListSelector.ItemsSource = carBrandSource;
+            }
+
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false;
+        }
+
+        private void carBrand_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var brand = sender.GetDataContext<CarBrandModel>();
+            selectedFilterGroupControl.SelectedFilter = brand.Name;
+            HideFilterPopups();
+            SetSearchParam(selectedFilterKey, brand.Id.ToString());
+            Search(true);
+        }
+
+        #endregion
+
         #region Search
 
         string mip = "0";
@@ -231,6 +330,9 @@ namespace AutoWP7.View.CarSearch
             string[] strArr = null;
             switch (key)
             {
+                case "brand":
+                    bid = value;//brand
+                    break;
                 case "structure"://结构
                     st = value;
                     break;
@@ -399,9 +501,10 @@ namespace AutoWP7.View.CarSearch
         private void carSpec_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var spec = sender.GetDataContext<CarSearchResultSpecItemModel>();
-            string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}",spec.id);
+            string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}", spec.id);
             this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
+
 
 
     }
