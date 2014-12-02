@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
+using System.Linq;
 
 namespace ViewModels.Search
 {
@@ -200,7 +201,8 @@ namespace ViewModels.Search
                     blockToken = resultToken.SelectToken("speclistmodel");
                     if (blockToken.HasValues)
                     {
-                        this.SpecList = JsonHelper.DeserializeOrDefault<List<SpecModel>>(blockToken.ToString());
+                        var specs = JsonHelper.DeserializeOrDefault<List<SpecModel>>(blockToken.ToString());
+                        this.SpecList = specs == null ? null : specs.Where((model, index) => index < 3).ToList<SpecModel>();
                     }
 
                     //品牌

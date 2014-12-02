@@ -42,8 +42,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource ContentTextStyle}"/>
+                <TextBlock Grid.ColumnSpan="3" util:InlineService.InlineList="{Binding Title,Converter={StaticResource TextToInlinesConverter}}" Style="{StaticResource TitleNormalTextStyle}" FontFamily="Portable User Interface"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" util:InlineService.InlineList="{Binding IndexDetail,Converter={StaticResource TextToInlinesConverter}}" Style="{StaticResource ContentTextStyle}"/>
 
                 <TextBlock Grid.Row="2" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" Margin="12 0" HorizontalAlignment="Left"/>
@@ -66,7 +66,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                <TextBlock Grid.ColumnSpan="3" util:InlineService.InlineList="{Binding Title,Converter={StaticResource TextToInlinesConverter}}"  Style="{StaticResource TitleNormalTextStyle}"/>
 
                 <TextBlock Grid.Row="1" Text="{Binding IndexDetail, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
@@ -95,7 +95,7 @@
                     <Image Source="{Binding SmallImg}" Style="{StaticResource ImageLeftStyle}"/>
                 </Grid>
 
-                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" util:InlineService.InlineList="{Binding Title,Converter={StaticResource TextToInlinesConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
 
                 <Border Grid.Row="1" Grid.Column="2" Background="{StaticResource App_Theme_Color}" Height="25" Width="50" HorizontalAlignment="Right">
                     <TextBlock Text="视频" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
@@ -123,8 +123,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding IndexDetail,Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource ContentTextStyle}"/>
+                <TextBlock Grid.ColumnSpan="3" util:InlineService.InlineList="{Binding Title,Converter={StaticResource TextToInlinesConverter}}"  Style="{StaticResource TitleNormalTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" util:InlineService.InlineList="{Binding IndexDetail,Converter={StaticResource TextToInlinesConverter}}" Style="{StaticResource ContentTextStyle}"/>
 
                 <Border Grid.Row="2" Grid.Column="2" Background="Orange" Height="25" Width="50" HorizontalAlignment="Right">
                     <TextBlock Text="说客" FontSize="18" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
@@ -233,8 +233,8 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding LowPrice}" Style="{StaticResource TitleLargeTextStyle}" Foreground="Red" HorizontalAlignment="Right"/>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" FontSize="24"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding LowPrice}" Style="{StaticResource PriceRedTextStyle}" HorizontalAlignment="Right" FontFamily="Portable User Interface"/>
                                     <Image Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
                                 </Grid>
                             </DataTemplate>
@@ -337,7 +337,7 @@
                         </TextBlock>
                     </StackPanel>
 
-                    <ItemsControl x:Name="DealerItemsControl" ItemsSource="{Binding DealerList}" Margin="6">
+                    <ItemsControl x:Name="DealerItemsControl" ItemsSource="{Binding DealerList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid Style="{StaticResource BlockGridStyle}" Margin="0 12">
@@ -349,7 +349,7 @@
 
                                     <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" MaxHeight="30"/>
                                     <TextBlock Grid.Row="1" Text="{Binding Address}" Style="{StaticResource FooterLargeTextStyle}" MaxHeight="50" Margin="0 6 0 12"/>
-                                    <Border Grid.Row="2" Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" HorizontalAlignment="Left">
+                                    <Border Grid.Row="2" Style="{StaticResource FilledBorderStyle}" Width="{StaticResource OneThirdButtonWidth}" HorizontalAlignment="Left" Tap="DealerCall_Tap">
                                         <TextBlock Text="{Binding Tel,Converter={StaticResource DealerTelConverter}}" Style="{StaticResource ButtonWhiteTextStyle}"/>
                                     </Border>
                                 </Grid>

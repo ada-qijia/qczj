@@ -1,17 +1,12 @@
-﻿using System;
+﻿using AutoWP7.Utils;
+using Microsoft.Phone.Controls;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using AutoWP7.Utils;
 using System.Windows.Input;
-using System.Collections.ObjectModel;
-using ViewModels;
-using ViewModels.Handler;
+using System.Windows.Navigation;
 using ViewModels.Search;
 
 namespace AutoWP7.View.Search
@@ -85,6 +80,21 @@ namespace AutoWP7.View.Search
                 }
 
                 this.keywordTextBox.Loaded += keywordTB_Loaded;
+            }
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (this.ResultGrid.Visibility == Visibility.Visible)
+            {
+                this.ResultGrid.Children.Clear();
+                this.ResultGrid.Visibility = Visibility.Collapsed;
+                this.KeywordsGrid.Visibility = Visibility.Visible;
+                e.Cancel = true;
+            }
+            else
+            {
+                base.OnBackKeyPress(e);
             }
         }
 

@@ -58,8 +58,8 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.ColumnSpan="3" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}" MaxHeight="30"/>
-                                        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Content, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource ContentTextStyle}"/>
+                                        <TextBlock Grid.ColumnSpan="3" util:InlineService.InlineList="{Binding Title,Converter={StaticResource TextToInlinesConverter}}" Style="{StaticResource TitleNormalTextStyle}" MaxHeight="30" FontFamily="Portable User Interface"/>
+                                        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" util:InlineService.InlineList="{Binding Content,Converter={StaticResource TextToInlinesConverter}}" Style="{StaticResource ContentTextStyle}" FontFamily="Portable User Interface"/>
 
                                         <TextBlock Grid.Row="2" Text="{Binding Type}" Style="{StaticResource FooterSmallTextStyle}"/>
                                         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Date}" Style="{StaticResource FooterSmallTextStyle}" Margin="12 0" HorizontalAlignment="Left"/>

@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 
 namespace AutoWP7.Utils
 {
@@ -86,6 +86,38 @@ namespace AutoWP7.Utils
             string content = IsolatedStorageFileHelper.ReadIsoFile(SearchHistoryFileName);
             List<string> result = JsonHelper.DeserializeOrDefault<List<string>>(content);
             return result;
+        }
+    }
+
+    //Set the inlines of TextBlock.
+    public class InlineService
+    {
+        public static readonly DependencyProperty InlineListProperty = DependencyProperty.RegisterAttached("InlineList", typeof(List<Inline>), typeof(InlineService), new PropertyMetadata(null, OnInlineListPropertyChanged));
+
+        private static void OnInlineListPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var tb = obj as TextBlock;
+            if (tb != null)
+            {
+                tb.Inlines.Clear();
+                var inlines = e.NewValue as List<Inline>;
+                if (inlines != null)
+                {
+                    inlines.ForEach(item => tb.Inlines.Add(item));
+                }
+            }
+        }
+
+        public static List<Inline> GetInlineList(TextBlock element)
+        {
+            if (element != null)
+                return element.GetValue(InlineListProperty) as List<Inline>;
+            return null;
+        }
+
+        public static void SetInlineList(TextBlock element, List<Inline> inlines)
+        {
+            element.SetValue(InlineListProperty, inlines);
         }
     }
 }

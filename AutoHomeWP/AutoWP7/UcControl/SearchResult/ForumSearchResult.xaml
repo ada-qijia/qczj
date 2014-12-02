@@ -127,7 +127,7 @@
                                                 <TextBlock Grid.RowSpan="2" Text="精" Visibility="{Binding IsJinghua,Converter={StaticResource BoolToVisibleConverter}}" FontSize="36" VerticalAlignment="Top" Foreground="Red"/>
                                                 <TextBlock Grid.RowSpan="2" Text="图" Visibility="{Binding IsPic, Converter={StaticResource BoolToVisibleConverter}}" FontSize="36" VerticalAlignment="Top" Foreground="Red"/>
 
-                                                <TextBlock Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+                                                <TextBlock Grid.Column="1" Grid.ColumnSpan="3"  util:InlineService.InlineList="{Binding Title,Converter={StaticResource TextToInlinesConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
 
                                                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PostDate}" Style="{StaticResource FooterSmallTextStyle}"/>
                                                 <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
