@@ -40,6 +40,9 @@ namespace Model
                 string displayName = string.Empty;
                 switch (key)
                 {
+                    case "brand":
+                        displayName = "品牌";
+                        break;
                     case "structure":
                         displayName = "结构";
                         break;

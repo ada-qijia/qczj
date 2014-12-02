@@ -204,19 +204,23 @@ namespace AutoWP7.View.CarSearch
         private void multiSelectionOK_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             string filterNames = string.Empty;
+            string filterValue = "0";
             foreach (var filter in selectedFilterGroup.filters)
             {
                 if (filter.Selected)
                 {
                     filterNames += filter.name + ",";
+                    filterValue += filter.value + ",";
                 }
             }
             if (filterNames.Length > 0)
             {
                 filterNames = filterNames.Trim(',');
+                filterValue = filterValue.Trim(',');
                 selectedFilterGroupControl.SelectedFilter = filterNames;
             }
             HideFilterPopups();
+            SetSearchParam(selectedFilterKey, filterValue);
             Search(true);
         }
 
@@ -300,7 +304,7 @@ namespace AutoWP7.View.CarSearch
         private void carBrand_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var brand = sender.GetDataContext<CarBrandModel>();
-            selectedFilterGroupControl.SelectedFilter = brand.Name;
+            selectedFilterGroupControl.SelectedFilter = brand.Id == 0 ? "不限" : brand.Name;
             HideFilterPopups();
             SetSearchParam(selectedFilterKey, brand.Id.ToString());
             Search(true);
