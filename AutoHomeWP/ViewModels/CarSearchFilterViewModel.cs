@@ -70,11 +70,6 @@ namespace ViewModels
                     {
                         string key = (string)carJson[i].SelectToken("key");
 
-                        if (key == "findorder")
-                        {
-                            continue;
-                        }
-
                         group = new CarSearchFilterGroupModel();
                         group.key = key;
 

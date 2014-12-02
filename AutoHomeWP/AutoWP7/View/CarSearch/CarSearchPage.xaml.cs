@@ -91,6 +91,28 @@ namespace AutoWP7.View.CarSearch
                 CarSearchFilterGroupModel filter = new CarSearchFilterGroupModel() { key = "brand" };
                 filterVM.DataSource.Insert(0, filter);
 
+                //change display order
+
+                CarSearchFilterGroupModel[] tempList = new CarSearchFilterGroupModel[filterVM.DataSource.Count - 1];
+                foreach (var item in filterVM.DataSource)
+                {
+                    if (item.key == "brand") tempList[0] = item;
+                    if (item.key == "price") tempList[1] = item;
+                    if (item.key == "level") tempList[2] = item;
+                    if (item.key == "country") tempList[3] = item;
+                    if (item.key == "gearbox") tempList[4] = item;
+                    if (item.key == "structure") tempList[5] = item;
+                    if (item.key == "displacement") tempList[6] = item;
+                    if (item.key == "fueltype") tempList[7] = item;
+                    if (item.key == "configs") tempList[8] = item;
+                    if (item.key == "findorder")
+                    {
+                        continue;
+                    }
+                }
+
+                filterVM.DataSource = tempList.ToList();
+
                 filterGroupListBox.ItemsSource = filterVM.DataSource;
                 Search(true);
                 filterLoaded = true;
