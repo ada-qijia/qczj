@@ -6,9 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using ViewModels.Handler;
 
 namespace ViewModels.Search
 {
@@ -21,6 +18,7 @@ namespace ViewModels.Search
             this.TopicList = new ObservableCollection<TopicModel>();
 
             this.LoadMoreButtonItem = new TopicModel() { IsLoadMore = true };
+            this.DownloadStringCompleted += ForumSearchResultViewModel_DownloadStringCompleted;
         }
 
         #region properties
@@ -59,94 +57,94 @@ namespace ViewModels.Search
             {
                 isLoading = true;
 
-                this.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
-                {
-                    if (ee.Error == null && ee.Result != null)
-                    {
-                        try
-                        {
-                            this.TryRemoveMoreButton();
-
-                            //返回的json数据
-                            JObject json = JObject.Parse(ee.Result);
-                            JToken resultToken = json.SelectToken("result");
-
-                            #region 用返回结果填充每个版块
-
-                            this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
-                            this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
-                            this.PageCount = resultToken.SelectToken("pagecount").Value<int>();
-
-                            JToken blockToken;
-
-                            //相关论坛列表
-                            blockToken = resultToken.SelectToken("relatedclubs");
-                            if (blockToken.HasValues && this.RelatedBBSList.Count <= 1)//首次加载,以后同样关键词返回结果一样
-                            {
-                                var relatedClubList = JsonHelper.DeserializeOrDefault<List<RelatedBBSModel>>(blockToken.ToString());
-                                if (relatedClubList != null && relatedClubList.Count > 0)
-                                {
-                                    this.RelatedBBSList.Clear();
-                                    foreach (var model in relatedClubList)
-                                    {
-                                        this.RelatedBBSList.Add(model);
-                                    }
-                                }
-                            }
-
-                            if (this.RelatedBBSList.Count == 0 && this.DefaultRelatedBBS != null)
-                            {
-                                this.RelatedBBSList.Add(DefaultRelatedBBS);
-                            }
-
-                            //论坛列表
-                            blockToken = resultToken.SelectToken("clublist");
-                            if (blockToken.HasValues)
-                            {
-                                var clubList = JsonHelper.DeserializeOrDefault<List<BBSModel>>(blockToken.ToString());
-                                if (clubList != null)
-                                {
-                                    foreach (var model in clubList)
-                                    {
-                                        this.BBSList.Add(model);
-                                    }
-                                }
-                            }
-
-                            //文章列表
-                            blockToken = resultToken.SelectToken("topiclist");
-                            if (blockToken.HasValues)
-                            {
-                                var topicList = JsonHelper.DeserializeOrDefault<List<TopicModel>>(blockToken.ToString());
-                                if (topicList != null)
-                                {
-                                    foreach (var model in topicList)
-                                    {
-                                        this.TopicList.Add(model);
-                                    }
-                                }
-                            }
-
-                            #endregion
-
-                            this.EnsureMoreButton();
-                        }
-                        catch
-                        {
-                        }
-                    }
-
-                    isLoading = false;
-
-                    //触发完成事件
-                    if (LoadDataCompleted != null)
-                    {
-                        LoadDataCompleted(this, null);
-                    }
-                });
-
                 //开始下载
                 this.DownloadStringAsync(url);
+            }
+        }
+
+        private void ForumSearchResultViewModel_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            if (e.Error == null && e.Result != null)
+            {
+                try
+                {
+                    this.TryRemoveMoreButton();
+
+                    //返回的json数据
+                    JObject json = JObject.Parse(e.Result);
+                    JToken resultToken = json.SelectToken("result");
+
+                    #region 用返回结果填充每个版块
+
+                    this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
+                    this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
+                    this.PageCount = resultToken.SelectToken("pagecount").Value<int>();
+
+                    JToken blockToken;
+
+                    //相关论坛列表
+                    blockToken = resultToken.SelectToken("relatedclubs");
+                    if (blockToken.HasValues && this.RelatedBBSList.Count <= 1)//首次加载,以后同样关键词返回结果一样
+                    {
+                        var relatedClubList = JsonHelper.DeserializeOrDefault<List<RelatedBBSModel>>(blockToken.ToString());
+                        if (relatedClubList != null && relatedClubList.Count > 0)
+                        {
+                            this.RelatedBBSList.Clear();
+                            foreach (var model in relatedClubList)
+                            {
+                                this.RelatedBBSList.Add(model);
+                            }
+                        }
+                    }
+
+                    if (this.RelatedBBSList.Count == 0 && this.DefaultRelatedBBS != null)
+                    {
+                        this.RelatedBBSList.Add(DefaultRelatedBBS);
+                    }
+
+                    //论坛列表
+                    blockToken = resultToken.SelectToken("clublist");
+                    if (blockToken.HasValues)
+                    {
+                        var clubList = JsonHelper.DeserializeOrDefault<List<BBSModel>>(blockToken.ToString());
+                        if (clubList != null)
+                        {
+                            foreach (var model in clubList)
+                            {
+                                this.BBSList.Add(model);
+                            }
+                        }
+                    }
+
+                    //文章列表
+                    blockToken = resultToken.SelectToken("topiclist");
+                    if (blockToken.HasValues)
+                    {
+                        var topicList = JsonHelper.DeserializeOrDefault<List<TopicModel>>(blockToken.ToString());
+                        if (topicList != null)
+                        {
+                            foreach (var model in topicList)
+                            {
+                                this.TopicList.Add(model);
+                            }
+                        }
+                    }
+
+                    #endregion
+
+                    this.EnsureMoreButton();
+                }
+                catch
+                {
+                }
+            }
+
+            isLoading = false;
+
+            //触发完成事件
+            if (LoadDataCompleted != null)
+            {
+                LoadDataCompleted(this, null);
             }
         }
 

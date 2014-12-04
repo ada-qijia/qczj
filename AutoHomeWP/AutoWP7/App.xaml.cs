@@ -92,7 +92,7 @@ namespace AutoWP7
 
         public static int timerId = 0;
 
-        private static string _cityId;
+        private static string _cityId = "110100";
         /// <summary>
         /// 城市ID
         /// </summary>

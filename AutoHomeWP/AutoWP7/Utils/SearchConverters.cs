@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace AutoWP7.Utils
 {
@@ -105,16 +107,16 @@ namespace AutoWP7.Utils
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool isEnabled=false;
+            bool isEnabled = false;
             //IsShowKoubei
-            if(value is int)
+            if (value is int)
             {
                 isEnabled = (int)value == 1;
             }
             //spec list
-            else if(value is IEnumerable<object>)
+            else if (value is IEnumerable<object>)
             {
-                isEnabled=((IEnumerable<object>)value).Count() > 0 ;
+                isEnabled = ((IEnumerable<object>)value).Count() > 0;
             }
 
             try
@@ -136,23 +138,57 @@ namespace AutoWP7.Utils
     /// <summary>
     /// 综合搜索经销商模块中电话
     /// </summary>
-    public class DealerTelConverter:IValueConverter
+    public class DealerTelConverter : IValueConverter
     {
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-           string tel=value as string;
-           if(tel!=null)
-           {
-               return tel.StartsWith("400") ? "400电话" : "拨打电话";
-           }
+            string tel = value as string;
+            if (tel != null)
+            {
+                return tel.StartsWith("400") ? "400电话" : "拨打电话";
+            }
 
-           return null;
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public class TextToInlinesConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            List<Inline> inlines = new List<Inline>();
+            string htmlContent = value as string;
+            if (!string.IsNullOrWhiteSpace(htmlContent))
+            {
+                var contentList = htmlContent.Split(new string[] { @"<B>", @"</B>" }, StringSplitOptions.RemoveEmptyEntries);
+                int startIndex = 0;
+                foreach (var subString in contentList)
+                {
+                    if (htmlContent.IndexOf(@"<B>" + subString + @"</B>", startIndex) >= 0)
+                    {
+                        inlines.Add(new Run() { Text = subString, Foreground = new SolidColorBrush(Colors.Red) });
+                        startIndex += subString.Length + 7;
+                    }
+                    else
+                    {
+                        inlines.Add(new Run() { Text = subString });
+                        startIndex += subString.Length;
+                    }
+                }
+            }
+
+            return inlines;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
         }
     }
 }

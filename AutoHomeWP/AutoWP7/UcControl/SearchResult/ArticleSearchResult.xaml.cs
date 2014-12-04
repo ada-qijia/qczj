@@ -72,7 +72,10 @@ namespace AutoWP7.UcControl.SearchResult
 
         private void typeListPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.LoadMore(true);
+            if (e.AddedItems.Count > 0 && e.RemovedItems.Count > 0)
+            {
+                this.LoadMore(true);
+            }
         }
 
         private void Article_Tap(object sender, System.Windows.Input.GestureEventArgs e)

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
+using System.Linq;
 
 namespace ViewModels.Search
 {
@@ -15,6 +16,7 @@ namespace ViewModels.Search
             //只有论坛精选和自然结果会有多页
             this.JingxuanList = new ObservableCollection<JingxuanModel>();
             this.NaturalResultList = new ObservableCollection<NaturalModel>();
+            this.DownloadStringCompleted += GeneralSearchResultViewModel_DownloadStringCompleted;
         }
 
         #region properties
@@ -32,7 +34,7 @@ namespace ViewModels.Search
                     {
                         this.LoadMoreButtonItem = new JingxuanModel() { IsLoadMore = true };
                     }
-                    else if(value == GeneralSearchResultMatchType.Others)
+                    else if (value == GeneralSearchResultMatchType.Others)
                     {
                         this.LoadMoreButtonItem = null;
                     }
@@ -44,6 +46,13 @@ namespace ViewModels.Search
 
                 SetProperty<GeneralSearchResultMatchType>(ref _matchType, value);
             }
+        }
+
+        private string _matchName;
+        public string MatchName
+        {
+            get { return _matchName; }
+            set { SetProperty<string>(ref _matchName, value); }
         }
 
         private HotSeriesModel _series;
@@ -146,133 +155,135 @@ namespace ViewModels.Search
             {
                 isLoading = true;
 
-                this.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
-                {
-                    if (ee.Error == null && ee.Result != null)
-                    {
-                        try
-                        {
-                            this.TryRemoveMoreButton();
-
-                            //返回的json数据
-                            JObject json = JObject.Parse(ee.Result);
-                            JToken resultToken = json.SelectToken("result");
-
-                            #region 用返回结果填充每个版块
-
-                            this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
-                            this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
-                            this.PageCount = resultToken.SelectToken("pagecount").Value<int>();
-
-                            int type = resultToken.SelectToken("matchtype").Value<int>();
-                            if (Enum.IsDefined(typeof(GeneralSearchResultMatchType), type))
-                            {
-                                MatchType = (GeneralSearchResultMatchType)type;
-                            }
-
-                            JToken blockToken;
-                            //车系
-                            blockToken = resultToken.SelectToken("seriesmodel");
-                            if (blockToken.HasValues)
-                            {
-                                var seriesModel = JsonHelper.DeserializeOrDefault<HotSeriesModel>(blockToken.ToString());
-                                if (seriesModel != null && seriesModel.IsShowModel)
-                                {
-                                    this.Series = seriesModel;
-                                }
-                            }
-
-                            //车型
-                            blockToken = resultToken.SelectToken("speclistmodel");
-                            if (blockToken.HasValues)
-                            {
-                                this.SpecList = JsonHelper.DeserializeOrDefault<List<SpecModel>>(blockToken.ToString());
-                            }
-
-                            //品牌
-                            blockToken = resultToken.SelectToken("serieslistmodel");
-                            if (blockToken.HasValues)
-                            {
-                                this.SeriesList = JsonHelper.DeserializeOrDefault<List<SeriesModel>>(blockToken.ToString());
-                            }
-
-                            //图片
-                            blockToken = resultToken.SelectToken("imgmodel");
-                            if (blockToken.HasValues)
-                            {
-                                this.ImgCount = blockToken.SelectToken("imgcount").Value<int>();
-                                this.ImgList = JsonHelper.DeserializeOrDefault<List<ImgModel>>(blockToken.SelectToken("imglist").ToString());
-                            }
-
-                            // RelatedSeriesList
-                            blockToken = resultToken.SelectToken("relatedseriesmodel");
-                            if (blockToken.HasValues)
-                            {
-                                this.RelatedSeriesList = JsonHelper.DeserializeOrDefault<List<RelatedSeriesModel>>(blockToken.ToString());
-                            }
-
-                            //DealerList
-                            blockToken = resultToken.SelectToken("dealermodel");
-                            if (blockToken.HasValues)
-                            {
-                                this.DealerList = JsonHelper.DeserializeOrDefault<List<DealerSearchModel>>(blockToken.ToString());
-                            }
-
-                            // FindCarResult
-                            blockToken = resultToken.SelectToken("findcarmodel.findserieslist");
-                            if (blockToken != null && blockToken.HasValues)
-                            {
-                                this.FindSeriesList = JsonHelper.DeserializeOrDefault<List<FindSeriesModel>>(blockToken.ToString());
-                            }
-
-                            //JingxuanList
-                            blockToken = resultToken.SelectToken("jingxuanmodel");
-                            if (blockToken.HasValues)
-                            {
-                                var modelList = JsonHelper.DeserializeOrDefault<List<JingxuanModel>>(blockToken.ToString());
-                                if (modelList != null)
-                                {
-                                    foreach (var model in modelList)
-                                    {
-                                        this.JingxuanList.Add(model);
-                                    }
-                                }
-                            }
-
-                            //NaturalResultList
-                            blockToken = resultToken.SelectToken("naturemodel");
-                            if (blockToken.HasValues)
-                            {
-                                var naturalList = JsonHelper.DeserializeOrDefault<List<NaturalModel>>(blockToken.ToString());
-                                if (naturalList != null)
-                                {
-                                    foreach (var naturalModel in naturalList)
-                                    {
-                                        this.NaturalResultList.Add(naturalModel);
-                                    }
-                                }
-                            }
-
-                            #endregion
-
-                            this.EnsureMoreButton();
-                        }
-                        catch
-                        {
-                        }
-                    }
-
-                    isLoading = false;
-
-                    //触发完成事件
-                    if (LoadDataCompleted != null)
-                    {
-                        LoadDataCompleted(this, null);
-                    }
-                });
-
                 //开始下载
                 this.DownloadStringAsync(url);
+            }
+        }
+
+        private void GeneralSearchResultViewModel_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            if (e.Error == null && e.Result != null)
+            {
+                try
+                {
+                    this.TryRemoveMoreButton();
+
+                    //返回的json数据
+                    JObject json = JObject.Parse(e.Result);
+                    JToken resultToken = json.SelectToken("result");
+
+                    #region 用返回结果填充每个版块
+
+                    this.RowCount = resultToken.SelectToken("rowcount").Value<int>();
+                    this.PageIndex = resultToken.SelectToken("pageindex").Value<int>();
+                    this.PageCount = resultToken.SelectToken("pagecount").Value<int>();
+
+                    int type = resultToken.SelectToken("matchtype").Value<int>();
+                    if (Enum.IsDefined(typeof(GeneralSearchResultMatchType), type))
+                    {
+                        MatchType = (GeneralSearchResultMatchType)type;
+                    }
+                    this.MatchName = resultToken.SelectToken("matchname").ToString();
+
+                    JToken blockToken;
+                    //车系
+                    blockToken = resultToken.SelectToken("seriesmodel");
+                    if (blockToken.HasValues)
+                    {
+                        var seriesModel = JsonHelper.DeserializeOrDefault<HotSeriesModel>(blockToken.ToString());
+                        if (seriesModel != null && seriesModel.IsShowModel)
+                        {
+                            this.Series = seriesModel;
+                        }
+                    }
+
+                    //车型
+                    blockToken = resultToken.SelectToken("speclistmodel");
+                    if (blockToken.HasValues)
+                    {
+                        var specs = JsonHelper.DeserializeOrDefault<List<SpecModel>>(blockToken.ToString());
+                        this.SpecList = specs == null ? null : specs.Where((model, index) => index < 3).ToList<SpecModel>();
+                    }
+
+                    //品牌
+                    blockToken = resultToken.SelectToken("serieslistmodel");
+                    if (blockToken.HasValues)
+                    {
+                        this.SeriesList = JsonHelper.DeserializeOrDefault<List<SeriesModel>>(blockToken.ToString());
+                    }
+
+                    //图片
+                    blockToken = resultToken.SelectToken("imgmodel");
+                    if (blockToken.HasValues)
+                    {
+                        this.ImgCount = blockToken.SelectToken("imgcount").Value<int>();
+                        this.ImgList = JsonHelper.DeserializeOrDefault<List<ImgModel>>(blockToken.SelectToken("imglist").ToString());
+                    }
+
+                    // RelatedSeriesList
+                    blockToken = resultToken.SelectToken("relatedseriesmodel");
+                    if (blockToken.HasValues)
+                    {
+                        this.RelatedSeriesList = JsonHelper.DeserializeOrDefault<List<RelatedSeriesModel>>(blockToken.ToString());
+                    }
+
+                    //DealerList
+                    blockToken = resultToken.SelectToken("dealermodel");
+                    if (blockToken.HasValues)
+                    {
+                        this.DealerList = JsonHelper.DeserializeOrDefault<List<DealerSearchModel>>(blockToken.ToString());
+                    }
+
+                    // FindCarResult
+                    blockToken = resultToken.SelectToken("findcarmodel.findserieslist");
+                    if (blockToken != null && blockToken.HasValues)
+                    {
+                        this.FindSeriesList = JsonHelper.DeserializeOrDefault<List<FindSeriesModel>>(blockToken.ToString());
+                    }
+
+                    //JingxuanList
+                    blockToken = resultToken.SelectToken("jingxuanmodel");
+                    if (blockToken.HasValues)
+                    {
+                        var modelList = JsonHelper.DeserializeOrDefault<List<JingxuanModel>>(blockToken.ToString());
+                        if (modelList != null)
+                        {
+                            foreach (var model in modelList)
+                            {
+                                this.JingxuanList.Add(model);
+                            }
+                        }
+                    }
+
+                    //NaturalResultList
+                    blockToken = resultToken.SelectToken("naturemodel");
+                    if (blockToken.HasValues)
+                    {
+                        var naturalList = JsonHelper.DeserializeOrDefault<List<NaturalModel>>(blockToken.ToString());
+                        if (naturalList != null)
+                        {
+                            foreach (var naturalModel in naturalList)
+                            {
+                                this.NaturalResultList.Add(naturalModel);
+                            }
+                        }
+                    }
+
+                    #endregion
+
+                    this.EnsureMoreButton();
+                }
+                catch
+                {
+                }
+            }
+
+            isLoading = false;
+
+            //触发完成事件
+            if (LoadDataCompleted != null)
+            {
+                LoadDataCompleted(this, null);
             }
         }
 
@@ -283,6 +294,7 @@ namespace ViewModels.Search
             this.PageIndex = 0;
 
             this.MatchType = GeneralSearchResultMatchType.Others;
+            this.MatchName = null;
             this.Series = null;
             this.SpecList = null;
             this.SeriesList = null;

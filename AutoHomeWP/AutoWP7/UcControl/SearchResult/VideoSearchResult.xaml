@@ -40,8 +40,8 @@
                                             <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
                                             <Image Source="{Binding SmallImg}" Style="{StaticResource ImageLeftStyle}"/>
                                         </Grid>
-                                        
-                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
+
+                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2"  util:InlineService.InlineList="{Binding Title,Converter={StaticResource TextToInlinesConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
 
                                         <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding Time}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left"/>
                                         <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PlayCount,StringFormat='\{0}播放'}" Style="{StaticResource FooterLargeTextStyle}"/>

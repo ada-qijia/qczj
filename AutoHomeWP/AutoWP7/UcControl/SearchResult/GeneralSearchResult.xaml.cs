@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using Microsoft.Phone.Controls;
 using ViewModels.Search;
 using Model.Search;
+using Microsoft.Phone.Tasks;
 
 namespace AutoWP7.UcControl.SearchResult
 {
@@ -108,6 +109,8 @@ namespace AutoWP7.UcControl.SearchResult
         }
 
         #endregion
+
+        #region UI interaction
 
         #region 内容导航
 
@@ -270,11 +273,18 @@ namespace AutoWP7.UcControl.SearchResult
 
         #endregion
 
-        #region UI interaction
-
         private void LoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.LoadMore(false);
+        }
+
+        private void DealerCall_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            DealerSearchModel model = (sender as FrameworkElement).DataContext as DealerSearchModel;
+            UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "电话拨打点击量");
+            PhoneCallTask phoneCall = new PhoneCallTask();
+            phoneCall.PhoneNumber = model.Tel;
+            phoneCall.Show();
         }
 
         #endregion
