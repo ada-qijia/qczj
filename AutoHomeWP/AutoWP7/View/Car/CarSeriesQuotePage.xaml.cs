@@ -260,7 +260,7 @@ namespace AutoWP7.View.Car
             {
                 carSeriesConfigVM = new CarSeriesConfigurationViewModel();
             }
-            string url = string.Format("{0}{2}/cars/speccompare-a2-pm3-v1.5.0-t1-s{1}.html", App.appUrl, carId, App.versionStr);
+            string url = string.Format("{0}{2}/cars/speccompare-a2-pm3-v1.6.0-t1-s{1}.html", App.appUrl, carId, App.versionStr);
             carSeriesConfigVM.LoadDataAysnc(url);
             carSeriesConfigVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<Model.CarSeriesConfigurationModel>>>(carSeriesConfigVM_LoadDataCompleted);
 
@@ -345,7 +345,7 @@ namespace AutoWP7.View.Car
                 //{
 
                 DealerVM = new DealerViewModel();
-                string url = string.Format("{0}{4}/dealer/pddealers-a2-pm3-v1.5.0-sp{1}-ss{2}-c{3}-sc0-p1-s20.html", App.appUrl, carId, 0, cityId, App.versionStr);
+                string url = string.Format("{0}{4}/dealer/pddealers-a2-pm3-v1.6.0-sp{1}-ss{2}-c{3}-sc0-p1-s20.html", App.appUrl, carId, 0, cityId, App.versionStr);
                 DealerVM.LoadDataAysnc(url, carId, cityId);
                 DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
             }
@@ -464,7 +464,7 @@ namespace AutoWP7.View.Car
                 alibiVM.LoadDataCompleted += alibiVM_LoadDataCompleted;
             }
 
-            //string url = "http://app.api.autohome.com.cn/wpv1.4/alibi/specalibilist-a2-pm3-v1.5.0-sp12129-p1-s20.html";
+            //string url = "http://app.api.autohome.com.cn/wpv1.4/alibi/specalibilist-a2-pm3-v1.6.0-sp12129-p1-s20.html";
             string url = string.Format("{0}{1}/alibi/specalibilist-{2}-sp{3}-p{4}-s{5}.html", App.appUrl, App.versionStr, App.AppInfo, App.CarTypeId, alibiPageIndex, pageSize);
             alibiVM.LoadDataAysnc(url);
         }

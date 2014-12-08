@@ -80,7 +80,7 @@ namespace AutoWP7.View.Channel.News
 
             VM = new VideoDetailViewModel();
 
-            //http://221.192.136.99:804/wpv1.5/news/videopagejson-a2-pm3-v1.5.0-vid29509.html
+            //http://221.192.136.99:804/wpv1.5/news/videopagejson-a2-pm3-v1.6.0-vid29509.html
             string url = string.Format("{0}{1}/news/videopagejson-{2}-vid{3}.html", App.appUrl, App.versionStr, App.AppInfo, videoId);
             //string url = string.Format("{0}{1}/news/videopagejson-{2}-vid{3}.html", "http://221.192.136.99:804", "/wpv1.5", App.AppInfo, videoId);
             VM.LoadDataAysnc(url);
@@ -139,7 +139,7 @@ namespace AutoWP7.View.Channel.News
         private void videoImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             WebBrowserTask webBrowserTask = new WebBrowserTask();
-            //http://221.192.136.99:804/wpv1.5/content/news/wpvideopage-a2-pm3-v1.5.0-vidXNzkyMzczMjI4.html
+            //http://221.192.136.99:804/wpv1.5/content/news/wpvideopage-a2-pm3-v1.6.0-vidXNzkyMzczMjI4.html
             string url = string.Format("{0}{1}/content/news/wpvideopage-{2}-vid{3}.html", App.newsPageDomain, App.versionStr, App.AppInfo, videoData.YoukuVideoKey);
 
             webBrowserTask.Uri = new Uri(url, UriKind.RelativeOrAbsolute);

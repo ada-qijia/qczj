@@ -134,7 +134,7 @@ namespace AutoWP7.View.Channel.Newest
         private void LoadData(string newsId)
         {
             newsVM = new NewsDetailViewModel();
-            string url = string.Format("{0}{2}/news/newsinfo-a2-pm3-v1.5.0-i{1}.html", App.appUrl, newsId, App.versionStr);
+            string url = string.Format("{0}{2}/content/news/newsinfo-a2-pm3-v1.6.0-i{1}.html", App.newsPageDomain, newsId, App.versionStr);
             newsVM.LoadDataAysnc(url);
 
             newsVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.NewsDetailModel>>>((ss, ee) =>

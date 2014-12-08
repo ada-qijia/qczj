@@ -308,7 +308,7 @@ namespace AutoWP7.View.Channel
                 videoComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(videoComm_LoadDataCompleted);
             }
 
-            //http://app.api.autohome.com.cn/wpv1.4/news/videos-a2-pm3-v1.5.0-vt0-p1-s20.html
+            //http://app.api.autohome.com.cn/wpv1.4/news/videos-a2-pm3-v1.6.0-vt0-p1-s20.html
             string format = App.appUrl + App.versionStr + "/news/videos-" + App.AppInfo + "-vt{0}-p{1}-s{2}.html";
             string url = string.Format(format, videoType, pageIndex, pageSize);
             videoComm.LoadDataAysnc(url, 3);
@@ -780,7 +780,7 @@ namespace AutoWP7.View.Channel
             {
                 shuokeComm = new NewsViewModel();
             }
-            string url = string.Format("{0}{3}/news/shuokelist-a2-pm1-v1.5.0-p{1}-s{2}.html", App.appUrl, pageIndex, pageSize, App.versionStr);
+            string url = string.Format("{0}{3}/news/shuokelist-a2-pm1-v1.6.0-p{1}-s{2}.html", App.appUrl, pageIndex, pageSize, App.versionStr);
 
             shuokeComm.LoadDataAysnc(url, 2);
             shuokeComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(shuoke_LoadDataCompleted);
@@ -962,7 +962,7 @@ namespace AutoWP7.View.Channel
                 originalVideoComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(originalVideoComm_LoadDataCompleted);
             }
 
-            //http://app.api.autohome.com.cn/wpv1.4/news/videos-a2-pm3-v1.5.0-vt0-p1-s20.html
+            //http://app.api.autohome.com.cn/wpv1.4/news/videos-a2-pm3-v1.6.0-vt0-p1-s20.html
             string format = App.appUrl + App.versionStr + "/news/videos-" + App.AppInfo + "-vt{0}-p{1}-s{2}.html";
             string url = string.Format(format, originalVideoType, pageIndex, pageSize);
             originalVideoComm.LoadDataAysnc(url, 3);

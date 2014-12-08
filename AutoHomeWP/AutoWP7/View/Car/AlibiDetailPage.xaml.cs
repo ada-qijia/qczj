@@ -47,7 +47,7 @@ namespace AutoWP7.View.Car
                 alibiVM.LoadDataCompleted += alibiVM_LoadDataCompleted;
             }
 
-            //string url = "http://app.api.autohome.com.cn/wpv1.4/alibi/alibiinfo-a2-pm3-v1.5.0-k257366.html";
+            //string url = "http://app.api.autohome.com.cn/wpv1.4/alibi/alibiinfo-a2-pm3-v1.6.0-k257366.html";
             string url = string.Format("{0}{1}/alibi/alibiinfo-{2}-k{3}.html", App.appUrl, App.versionStr, App.AppInfo, koubeiID);
             alibiVM.LoadDataAysnc(url);
         }

@@ -126,7 +126,7 @@ namespace AutoWP7.View.Car
                     byte[] bID = (byte[])uniqueID;
                     String deviceID = Convert.ToBase64String(bID);
                     string data = string.Empty;
-                    data += "a=2&pm=3&v=1.5.0&cityid=" + cityID + "&dealerid=" + dealerid + "&seriesid=" + seriesID + "&specid=" + specID + "&username=" + App.AskName + "&phone=" + App.AskPhone;
+                    data += "a=2&pm=3&v=1.6.0&cityid=" + cityID + "&dealerid=" + dealerid + "&seriesid=" + seriesID + "&specid=" + specID + "&username=" + App.AskName + "&phone=" + App.AskPhone;
                     data += "&deviceid=" + deviceID + "&devicetoken=0" + "&siteid=29" + "&channelid=" + App.ChannelId;
 
                     WebClient wc = new WebClient();
@@ -225,7 +225,7 @@ namespace AutoWP7.View.Car
             {
                 carSeriesQuoteVM = new CarSeriesQuoteViewModel();
             }
-            string url = string.Format("{0}{2}/cars/specslist-a2-pm3-v1.5.0-t0x000c-ss{1}.html", App.appUrl, seriesID, App.versionStr);
+            string url = string.Format("{0}{2}/cars/specslist-a2-pm3-v1.6.0-t0x000c-ss{1}.html", App.appUrl, seriesID, App.versionStr);
             carSeriesQuoteVM.LoadDataAysnc(url);
 
             carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(CarSeriesQuote_LoadDataCompleted);

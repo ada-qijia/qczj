@@ -394,7 +394,7 @@ namespace AutoWP7.View.Car
                 carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(carSeriesQuoteVM_LoadDataCompleted);
             }
 
-            string url = string.Format("{0}{2}/cars/seriessummary-a2-pm3-v1.5.0-s{1}-t0xffff-c0.html", App.appUrl, carSeriesId, App.versionStr);
+            string url = string.Format("{0}{2}/cars/seriessummary-a2-pm3-v1.6.0-s{1}-t0xffff-c0.html", App.appUrl, carSeriesId, App.versionStr);
             carSeriesQuoteVM.LoadDataAysnc(url, true);
             //这里已经有标准接口carSeriesQuoteVM.LoadDataAysnc(App.appUrl  + "/autov2.5.5/cars/seriessummary-a2-pm3-v2.5.5-s" + carSeriesId + "-t0XFFFF.html");
         }
@@ -605,7 +605,7 @@ namespace AutoWP7.View.Car
                             DealerVM = new DealerViewModel();
                             DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
                         }
-                        string url = string.Format("{0}{3}/dealer/pddealers-a2-pm1-v1.5.0-sp0-ss{1}-c{2}-sc0-p1-s20.html", App.appUrl, carSeriesId, cityId, App.versionStr);
+                        string url = string.Format("{0}{3}/dealer/pddealers-a2-pm1-v1.6.0-sp0-ss{1}-c{2}-sc0-p1-s20.html", App.appUrl, carSeriesId, cityId, App.versionStr);
                         DealerVM.LoadDataAysnc(url, carSeriesId, cityId);
                         //DealerVM.LoadDataAysnc(App.headUrl + "/dealers/Profile/Getlist.ashx?action=0x45b5&cityid=" + cityId + "&seriesid=" + carSeriesId, carSeriesId, cityId);
                     }
@@ -1091,7 +1091,7 @@ namespace AutoWP7.View.Car
 
         private string CreateSeriesNewsUrl(int pageIndex = 1, int pageSize = 20)
         {
-            return string.Format("{0}{6}/news/seriesnews-a2-pm3-v1.5.0-ss{1}-cs{2}-c{3}-p{4}-s{5}.html", App.appUrl, carSeriesId, curNewsType, curCityId, pageIndex, pageSize, App.versionStr);
+            return string.Format("{0}{6}/news/seriesnews-a2-pm3-v1.6.0-ss{1}-cs{2}-c{3}-p{4}-s{5}.html", App.appUrl, carSeriesId, curNewsType, curCityId, pageIndex, pageSize, App.versionStr);
         }
     }
 }
