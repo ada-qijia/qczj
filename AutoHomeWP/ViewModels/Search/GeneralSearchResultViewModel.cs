@@ -21,6 +21,8 @@ namespace ViewModels.Search
 
         #region properties
 
+        private NaturalModel relatedSeriesNaturalModel;
+
         private GeneralSearchResultMatchType _matchType;
         public GeneralSearchResultMatchType MatchType
         {
@@ -225,6 +227,14 @@ namespace ViewModels.Search
                     if (blockToken.HasValues)
                     {
                         this.RelatedSeriesList = JsonHelper.DeserializeOrDefault<List<RelatedSeriesModel>>(blockToken.ToString());
+                        if (this.RelatedSeriesList != null && this.RelatedSeriesList.Count > 0)
+                        {
+                            this.relatedSeriesNaturalModel = new NaturalModel() { IsRelatedSeries = true };
+                        }
+                        else
+                        {
+                            this.relatedSeriesNaturalModel = null;
+                        }
                     }
 
                     //DealerList
@@ -255,6 +265,13 @@ namespace ViewModels.Search
                         }
                     }
 
+                    //将原有相关车系移除
+                    var relatedItem = this.NaturalResultList.FirstOrDefault(model => model.IsRelatedSeries);
+                    if (relatedItem != null)
+                    {
+                        this.NaturalResultList.Remove(relatedItem);
+                    }
+
                     //NaturalResultList
                     blockToken = resultToken.SelectToken("naturemodel");
                     if (blockToken.HasValues)
@@ -267,6 +284,12 @@ namespace ViewModels.Search
                                 this.NaturalResultList.Add(naturalModel);
                             }
                         }
+                    }
+
+                    //将相关车系放到更多前面
+                    if (this.relatedSeriesNaturalModel != null)
+                    {
+                        this.NaturalResultList.Add(this.relatedSeriesNaturalModel);
                     }
 
                     #endregion

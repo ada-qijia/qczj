@@ -276,6 +276,9 @@ namespace Model.Search
         /// </summary>
         [DataMember(Name="jumppage")]
         public int JumpPage { get; set; }
+
+        [IgnoreDataMember]
+        public bool IsRelatedSeries { get; set; }
     }
 
     public enum NaturalModelMediaType

@@ -48,6 +48,9 @@ namespace AutoWP7.View.Channel
         public NewsListPage()
         {
             InitializeComponent();
+
+            //设置AppBar搜索按钮可见性
+            setAppBarSearchButtonVisible(true);
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -223,11 +226,7 @@ namespace AutoWP7.View.Channel
                         }
                     }
                     break;
-            }
-
-            //设置AppBar搜索按钮可见性
-            bool searchButtonVisible = header == "新闻" || header == "视频";
-            setAppBarSearchButtonVisible(searchButtonVisible);
+            }          
         }
 
         #endregion
@@ -1104,8 +1103,8 @@ namespace AutoWP7.View.Channel
         private void searchButton_Click(object sender, EventArgs e)
         {
             string header = (piv.SelectedItem as PivotItem).Header.ToString();
-            //新闻为综合搜索，视频为视频搜索
-            SearchType type = header=="新闻" ? SearchType.General : SearchType.Video;
+            //视频为视频搜索, 其他为综合搜索
+            SearchType type = header.Contains("视频")? SearchType.Video : SearchType.General;
             string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(type);           
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }

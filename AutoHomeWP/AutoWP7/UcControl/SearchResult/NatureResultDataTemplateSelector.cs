@@ -15,6 +15,8 @@ namespace AutoWP7.UcControl.SearchResult
 
         public DataTemplate LoadMoreTemplate { get; set; }
 
+        public DataTemplate RelatedSeriesTemplate { get; set; }
+
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             NaturalModel model = item as NaturalModel;
@@ -23,6 +25,10 @@ namespace AutoWP7.UcControl.SearchResult
                 if (model.IsLoadMore)
                 {
                     return LoadMoreTemplate;
+                }
+                else if(model.IsRelatedSeries)
+                {
+                    return RelatedSeriesTemplate;
                 }
                 else
                 {

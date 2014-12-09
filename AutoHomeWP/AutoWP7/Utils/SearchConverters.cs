@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.Search;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -184,6 +185,35 @@ namespace AutoWP7.Utils
             }
 
             return inlines;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+    }
+
+    //论坛搜索中的精，图显示
+    public class TopicModelToJingPicConverter:IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            string result=null;
+
+            TopicModel model = value as TopicModel;
+            if(model!=null)
+            {
+                if(model.IsJinghua)
+                {
+                    result = "精";
+                }
+                else if(model.IsPic)
+                {
+                    result = "图";
+                }
+            }
+
+            return result;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

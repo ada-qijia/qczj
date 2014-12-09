@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Phone.Controls;
+using Model.Search;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Phone.Controls;
 using ViewModels.Search;
-using Model.Search;
 
 namespace AutoWP7.UcControl.SearchResult
 {
@@ -12,6 +14,8 @@ namespace AutoWP7.UcControl.SearchResult
         private ForumSearchResultViewModel SearchResultVM;
 
         private string keyword;
+
+        private RelatedBBSModel lastSelectedRange;
 
         public ForumSearchResult(string keyword, RelatedBBSModel defaultRange = null)
         {
@@ -30,6 +34,18 @@ namespace AutoWP7.UcControl.SearchResult
 
         void SearchResultVM_LoadDataCompleted(object sender, EventArgs e)
         {
+            //将论坛范围筛选项重置为开始搜索前选项
+            var bbsCollection = this.rangeListPicker.ItemsSource as Collection<RelatedBBSModel>;
+            if (lastSelectedRange != null && bbsCollection != null)
+            {
+                var shouldSelected = bbsCollection.FirstOrDefault(bbs => bbs.ID == lastSelectedRange.ID);
+                if (shouldSelected != null)
+                {
+                    this.rangeListPicker.SelectedItem = shouldSelected;
+                }
+            }
+            this.rangeListPicker.SelectionChanged += this.rangeListPicker_SelectionChanged;
+
             GlobalIndicator.Instance.Text = "";
             GlobalIndicator.Instance.IsBusy = false;
 
@@ -55,6 +71,10 @@ namespace AutoWP7.UcControl.SearchResult
 
         public void LoadMore(bool restart)
         {
+            //暂时保存所选论坛范围项
+            lastSelectedRange = this.rangeListPicker.SelectedItem as RelatedBBSModel;
+            this.rangeListPicker.SelectionChanged -= this.rangeListPicker_SelectionChanged;
+
             GlobalIndicator.Instance.Text = "正在获取中...";
             GlobalIndicator.Instance.IsBusy = true;
 

@@ -15,6 +15,7 @@
     <UserControl.Resources>
         <util:BoolToVisibleConverter x:Key="BoolToVisibleConverter"/>
         <util:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
+        <util:TopicModelToJingPicConverter x:Key="TopicModelToJingPicConverter"/>
 
         <Style x:Key="FilterListPickerStyle" TargetType="toolkit:ListPicker">
             <Setter Property="Width" Value="{StaticResource OneThirdButtonWidth}"/>
@@ -124,8 +125,7 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <TextBlock Grid.RowSpan="2" Text="精" Visibility="{Binding IsJinghua,Converter={StaticResource BoolToVisibleConverter}}" FontSize="36" VerticalAlignment="Top" Foreground="Red"/>
-                                                <TextBlock Grid.RowSpan="2" Text="图" Visibility="{Binding IsPic, Converter={StaticResource BoolToVisibleConverter}}" FontSize="36" VerticalAlignment="Top" Foreground="Red"/>
+                                                <TextBlock Grid.RowSpan="2" Text="{Binding Converter={StaticResource TopicModelToJingPicConverter}}" FontSize="36" VerticalAlignment="Top" Foreground="Red"/>
 
                                                 <TextBlock Grid.Column="1" Grid.ColumnSpan="3"  util:InlineService.InlineList="{Binding Title,Converter={StaticResource TextToInlinesConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
 
@@ -153,7 +153,7 @@
                     </ItemsControl>
                 </StackPanel>
             </ScrollViewer>
-           
+
         </Grid>
         <ucSearchResult:NoResultView x:Name="NoResultUC" Grid.RowSpan="3" Visibility="Collapsed"/>
     </Grid>
