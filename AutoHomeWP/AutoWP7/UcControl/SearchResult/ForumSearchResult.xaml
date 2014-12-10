@@ -125,7 +125,7 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <TextBlock Grid.RowSpan="2" Text="{Binding Converter={StaticResource TopicModelToJingPicConverter}}" FontSize="36" VerticalAlignment="Top" Foreground="Red"/>
+                                                <TextBlock Grid.RowSpan="2" Text="{Binding Converter={StaticResource TopicModelToJingPicConverter}}" FontSize="26" VerticalAlignment="Top" Foreground="Red"/>
 
                                                 <TextBlock Grid.Column="1" Grid.ColumnSpan="3"  util:InlineService.InlineList="{Binding Title,Converter={StaticResource TextToInlinesConverter}}" Style="{StaticResource TitleNormalTextStyle}"/>
 
