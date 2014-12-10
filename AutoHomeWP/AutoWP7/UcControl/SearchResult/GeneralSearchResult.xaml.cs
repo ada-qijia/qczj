@@ -55,7 +55,7 @@ namespace AutoWP7.UcControl.SearchResult
                         blocks = new UIElement[] { BrandItemsControl, NaturalStackPanel };
                         break;
                     case GeneralSearchResultMatchType.CarSeries:
-                        blocks = new UIElement[] { CarSeriesPresenter, CarModelStackPanel, ImgStackPanel, RelatedSeriesItemsControl, NaturalStackPanel };
+                        blocks = new UIElement[] { CarSeriesPresenter, CarModelStackPanel, ImgStackPanel, NaturalStackPanel };
                         break;
                     case GeneralSearchResultMatchType.CarType:
                         blocks = new UIElement[] { CarSeriesPresenter, CarModelStackPanel, ImgStackPanel, NaturalStackPanel };

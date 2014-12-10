@@ -147,6 +147,35 @@
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="RelatedSeriesTemplate">
+            <StackPanel Width="{StaticResource ContentWidth}" DataContext="{Binding DataContext, ElementName=LayoutRoot}">
+                <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
+                        <Run Text="{Binding MatchName}" Foreground="Red"/><Run Text="相关推荐"/>
+                </TextBlock>
+                <ItemsControl x:Name="RelatedSeriesItemsControl" ItemsSource="{Binding RelatedSeriesList}" Margin="-6 0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Background="Transparent" Tap="RelatedSeries_Tap">
+                                <Grid>
+                                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
+                                    <Image Source="{Binding Img}" Style="{StaticResource ImageListStyle}"/>
+                                </Grid>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Center" MaxHeight="30"/>
+                                <TextBlock Text="{Binding LowPrice}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red" HorizontalAlignment="Center" Margin="0 0 0 6"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
+            </StackPanel>
+        </DataTemplate>
+
         <Style x:Name="ratingItemFillStyle" TargetType="toolkit:RatingItem">
             <Setter Property="Background" Value="Orange" />
         </Style>
@@ -301,33 +330,6 @@
                     </Border>
                     <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
                 </StackPanel>
-                <!--相关车系-->
-                <StackPanel Width="{StaticResource ContentWidth}" Visibility="{Binding RelatedSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
-                    <TextBlock Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Left" Margin="0 6">
-                        <Run Text="{Binding MatchName}" Foreground="Red"/><Run Text="相关推荐"/>
-                    </TextBlock>
-                    <ItemsControl x:Name="RelatedSeriesItemsControl" ItemsSource="{Binding RelatedSeriesList}" Margin="-6 0">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Background="Transparent" Tap="RelatedSeries_Tap">
-                                    <Grid>
-                                        <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageListStyle}"/>
-                                        <Image Source="{Binding Img}" Style="{StaticResource ImageListStyle}"/>
-                                    </Grid>
-                                    <TextBlock Text="{Binding Name}" Style="{StaticResource TitleNormalTextStyle}" HorizontalAlignment="Center" MaxHeight="30"/>
-                                    <TextBlock Text="{Binding LowPrice}" Style="{StaticResource TitleNormalTextStyle}" Foreground="Red" HorizontalAlignment="Center" Margin="0 0 0 6"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
-                    <Rectangle Style="{StaticResource SplitBar_Horizontal_Style}" Margin="0 6"/>
-                </StackPanel>
                 <!--经销商-->
                 <StackPanel x:Name="DealerStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding DealerList,Converter={StaticResource EmptyToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0 6">
@@ -424,7 +426,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
-                <!--自然结果-->
+                <!--自然结果, 相关车系-->
                 <StackPanel x:Name="NaturalStackPanel" Width="{StaticResource ContentWidth}" Visibility="{Binding NaturalResultList.Count,Converter={StaticResource EmptyToVisibilityConverter}}">
                     <TextBlock Text="{Binding RowCount,StringFormat='找到{0}条相关结果'}" Style="{StaticResource BlockTitleTextStyle}"/>
                     <ItemsControl ItemsSource="{Binding NaturalResultList}">
@@ -433,7 +435,7 @@
                                 <ucSearchResult:NatureResultDataTemplateSelector Content="{Binding}"
                                     ArticleTemplate="{StaticResource NaturalResultArticleDataTemplate}" TopicTemplate="{StaticResource NaturalResultTopicDataTemplate}"
                                     VideoTemplate="{StaticResource NaturalResultVideoDataTemplate}" LobbyistTemplate="{StaticResource NaturalResultLobbyistDataTemplate}"
-                                    LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}" Tap="NaturalModel_Tap"/>
+                                    LoadMoreTemplate="{StaticResource LoadMoreDataTemplate}" RelatedSeriesTemplate="{StaticResource RelatedSeriesTemplate}" Tap="NaturalModel_Tap"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

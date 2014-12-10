@@ -183,6 +183,14 @@ namespace AutoWP7.View.Search
                 default:
                     break;
             }
+
+            //重新搜索
+            string keyword = this.keywordTextBox.Text;
+            if(!string.IsNullOrEmpty(keyword))
+            {
+                this.AddSearchHistory(keyword);
+                this.LoadSearchResult(keyword);
+            }
         }
 
         private void cleanHistory_Tap(object sender, System.Windows.Input.GestureEventArgs e)
