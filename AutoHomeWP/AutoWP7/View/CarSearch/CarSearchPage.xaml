@@ -29,6 +29,15 @@
             </Grid>
         </DataTemplate>
 
+        <DataTemplate x:Key="carBrandListGroupHeaderTemplate">
+            <Grid Margin="24,10,0,0">
+                <Border Width="60" Height="60"  Background="#3cadeb" HorizontalAlignment="Left">
+                    <TextBlock Padding="5" Foreground="White" Style="{StaticResource PhoneTextLargeStyle}" 
+                               Text="{Binding key}" TextAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </DataTemplate>
+
         <DataTemplate x:Key="jumpListItemTemplate" x:Name="itemTempLate">
             <Grid Width="480" x:Name="carSeriesGird" >
                 <Grid Tap="carSpec_Tap" Margin="24,0,24,10">
@@ -59,15 +68,17 @@
             <Setter Property="ItemTemplate">
                 <Setter.Value >
                     <!--字母索引-->
-                    <DataTemplate  >
-                        <Border Background="#3cadeb" VerticalAlignment="Center" HorizontalAlignment="Center" Width="auto" Height="70" Margin="6">
-                            <TextBlock Text="{Binding key}" 
-                                       Margin="10,10,10,10" 
-                                       Foreground="White" 
-                                       Style="{StaticResource PhoneTextLargeStyle}" 
-                                       TextAlignment="Center" 
-                                       VerticalAlignment="Center"/>
-                        </Border>
+                    <DataTemplate>
+                        <Grid>
+                            <Border x:Name="border" Background="#3cadeb"
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Center" Width="100" Height="110" Margin="10,15,0,0">
+                                <TextBlock Text="{Binding key}" Margin="10,10,10,10"
+                                           Foreground="White" 
+                                           FontSize="32" TextAlignment="Center" 
+                                           VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                            </Border>
+                        </Grid>
                     </DataTemplate>
 
                 </Setter.Value>
@@ -195,7 +206,7 @@
                                 HideEmptyGroups="True" 
                                 LayoutMode="List"
                                 ItemTemplate="{StaticResource brandListItemTemplate}" 
-                                GroupHeaderTemplate="{StaticResource groupHeaderTemplate}"
+                                GroupHeaderTemplate="{StaticResource carBrandListGroupHeaderTemplate}"
                                 JumpListStyle="{StaticResource BrandJumpList}"/>
             </Grid>
          </Grid>
