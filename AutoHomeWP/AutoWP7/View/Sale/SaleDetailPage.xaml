@@ -22,7 +22,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <phone:WebBrowser x:Name="wb" IsScriptEnabled="True"/>
+        <phone:WebBrowser x:Name="wb" IsScriptEnabled="True" ScriptNotify="wb_ScriptNotify"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

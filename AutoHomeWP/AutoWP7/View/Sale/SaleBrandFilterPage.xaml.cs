@@ -79,7 +79,8 @@ namespace AutoWP7.View.Sale
             }
 
             //http://221.192.136.99:804/wpv1.6/cars/brandsdealer-a2-pm1-v3.0.1-ts635174268324922500.html
-            string url = string.Format("{0}{1}/cars/brandsdealer-{2}-ts{3}.html", App.appUrl, App.versionStr, App.AppInfo, 0);
+            //string url = string.Format("{0}{1}/cars/brandsdealer-{2}-ts{3}.html", App.appUrl, App.versionStr, App.AppInfo, 0);
+            string url = string.Format("{0}{1}/cars/brands-{2}-ts{3}.html", App.appUrl, App.versionStr, App.AppInfo, 0);
             carVM.LoadDataAysnc(url);
         }
 

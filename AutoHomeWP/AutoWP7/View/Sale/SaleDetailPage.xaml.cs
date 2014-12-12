@@ -36,5 +36,10 @@ namespace AutoWP7.View.Sale
             wb.Navigate(new Uri(url, UriKind.Absolute));
         }
 
+        private void wb_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+
+        }
+
     }
 }
