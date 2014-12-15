@@ -228,13 +228,13 @@ namespace AutoWP7
         //向服务器请求数据url地址头部
         public static string headUrl = "http://sp.autohome.com.cn";
 
-        public static string appUrl = "http://221.192.136.99:804";
-        public static string topicPageDomain = "http://221.192.136.99:804";
-        public static string newsPageDomain = "http://221.192.136.99:804";
+        //public static string appUrl = "http://221.192.136.99:804";
+        //public static string topicPageDomain = "http://221.192.136.99:804";
+        //public static string newsPageDomain = "http://221.192.136.99:804";
 
-        //public static string appUrl = "http://app.api.autohome.com.cn";
-        //public static string topicPageDomain = "http://forum.app.autohome.com.cn";
-        //public static string newsPageDomain = "http://cont.app.autohome.com.cn";
+        public static string appUrl = "http://app.api.autohome.com.cn";
+        public static string topicPageDomain = "http://forum.app.autohome.com.cn";
+        public static string newsPageDomain = "http://cont.app.autohome.com.cn";
 
         public static string loginUrl = "http://account.autohome.com.cn";
 
