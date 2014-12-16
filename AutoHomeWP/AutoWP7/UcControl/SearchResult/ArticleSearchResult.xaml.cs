@@ -83,7 +83,7 @@ namespace AutoWP7.UcControl.SearchResult
             ArticleModel model = (sender as FrameworkElement).DataContext as ArticleModel;
             if (model != null)
             {
-                string url = string.Format("/View/Channel/News/NewsEndPage.xaml?newsid={0}&pageIndex=1&pageType={2}", model.ID, 1);
+                string url = string.Format("/View/Channel/News/NewsEndPage.xaml?newsid={0}&pageIndex=1&pageType={1}", model.ID, 1);
                 var frame = Application.Current.RootVisual as PhoneApplicationFrame;
                 frame.Navigate(new Uri(url, UriKind.Relative));
             }
