@@ -218,5 +218,11 @@ namespace AutoWP7.View.Forum
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 
+        //收藏
+        private void favorite_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

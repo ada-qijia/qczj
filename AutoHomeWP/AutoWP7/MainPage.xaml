@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:toolkit="clr-namespace:MyPhoneControls;assembly=MyPhoneControls"
+    xmlns:wpToolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:local="clr-namespace:AutoWP7"
     xmlns:System="clr-namespace:System;assembly=mscorlib" 
     xmlns:uc="clr-namespace:AutoWP7.UcControl"
@@ -398,7 +399,7 @@
                                 Height="70" Width="150" Grid.Column="1"/>
                     </Grid>
                 </controls:PanoramaItem.Header>
-                
+
                 <Grid Margin="10,-30,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0"/>
@@ -413,7 +414,7 @@
                                         GroupHeaderTemplate="{StaticResource groupHeaderTemplate}" 
                                         JumpListStyle="{StaticResource JumpList}" />
                     <Grid x:Name="carFinderFilterPanel" Grid.Row="1" Visibility="Collapsed">
-                        
+
                     </Grid>
                 </Grid>
 
@@ -560,6 +561,102 @@
                                          Title="主题论坛" IsFrozen="True"/>
                     </Grid>
                 </ScrollViewer>
+            </controls:PanoramaItem>
+            <!--我-->
+            <controls:PanoramaItem Header="我">
+                <Grid Margin="10,-30,10,0" Background="{StaticResource App_Theme_Color}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--个人信息-->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="300"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Tap="MyInfo_Tap">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.RowSpan="2">
+                                <Image x:Name="DefaultPortraitImg"/>
+                                <Image x:Name="PortraitImg"/>
+                            </Grid>
+
+                            <TextBlock Grid.RowSpan="2" Grid.Column="1" Text="立即登录" VerticalAlignment="Center" Tap="Login_Tap"/>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <TextBlock Text="{Binding}"/>
+                                <Image/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                                <TextBlock Text="{Binding StringFormat='积分：{0'}"/>
+                                <TextBlock Text="{Binding StringFormat='家油券：{0}'}"/>
+                            </StackPanel>
+
+                            <Image Grid.RowSpan="2" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image x:Name="CommentReplyImg"/>
+                            <Border CornerRadius="5" BorderBrush="White" BorderThickness="2" Background="Red">
+                                <TextBlock Text="1"/>
+                            </Border>
+
+                            <Image Grid.Column="1" x:Name="ForumReplyImg"/>
+                            <Border Grid.Column="1">
+                                <TextBlock Text="2"/>
+                            </Border>
+
+                            <Image Grid.Column="2" x:Name="PrivateMsgImg"/>
+                            <Border Grid.Column="2">
+                                <TextBlock Text="3"/>
+                            </Border>
+                        </Grid>
+                    </Grid>
+
+                    <!--常用功能-->
+                    <Grid>
+                        <wpToolkit:WrapPanel Orientation="Horizontal" >
+                            <Grid Tap="MyCollection_Tap">
+                                <Image/>
+                                <TextBlock Text="我的收藏"/>
+                            </Grid>
+                            <Grid Tap="MyHostStick_Tap">
+                                <Image/>
+                                <TextBlock Text="我的主贴"/>
+                            </Grid>
+                            <Grid Tap="DraftBox_Tap">
+                                <Image/>
+                                <TextBlock Text="草稿箱"/>
+                            </Grid>
+                            <Grid Tap="ViewHistory_Tap">
+                                <Image/>
+                                <TextBlock Text="浏览历史"/>
+                            </Grid>
+                            <Grid Tap="CarCompare_Tap">
+                                <Image/>
+                                <TextBlock Text="车型对比"/>
+                            </Grid>
+                        </wpToolkit:WrapPanel>
+                    </Grid>
+                </Grid>
             </controls:PanoramaItem>
         </controls:Panorama>
 

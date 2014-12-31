@@ -31,7 +31,7 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" IsVisible="True" Opacity="0.8"  IsMenuEnabled="False">
-            <!--<shell:ApplicationBarIconButton x:Name="previousPage" Click="previousPage_Click" IconUri="Images/bar_pre.png" Text="上页"/>-->
+            <shell:ApplicationBarIconButton x:Name="favorite" Click="favorite_Click" IconUri="Images/favs.addto.png" Text="收藏"/>
             <shell:ApplicationBarIconButton x:Name="partPage" Click="partPage_Click" IconUri="Images/bar_paging.png" Text="分页"/>
             <shell:ApplicationBarIconButton x:Name="checkComment" Click="checkComment_Click" IconUri="Images/bar_checkComment.png" Text="查看评论"/>
             <!--<shell:ApplicationBarIconButton x:Name="nextPage" Click="nextPage_Click" IconUri="Images/bar_next.png" Text="下页"/>-->

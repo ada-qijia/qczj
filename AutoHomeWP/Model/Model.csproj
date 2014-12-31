@@ -98,6 +98,9 @@
   <ItemGroup>
     <Compile Include="Base\LoadMoreItem.cs" />
     <Compile Include="CarSearchResult.cs" />
+    <Compile Include="Me\DraftModel.cs" />
+    <Compile Include="Me\FavoriteModel.cs" />
+    <Compile Include="Me\MeModel.cs" />
     <Compile Include="SaleFilterItemModel.cs" />
     <Compile Include="CarSearchFilter.cs" />
     <Compile Include="Search\ArticleSearchResultModel.cs" />
@@ -135,6 +138,7 @@
     <Compile Include="MyForumModel.cs" />
     <Compile Include="Search\VideoSearchResultModel.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />

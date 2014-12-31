@@ -34,11 +34,16 @@
 
     <!--演示 ApplicationBar 用法的示例代码-->
     <phone:PhoneApplicationPage.ApplicationBar >
-        <shell:ApplicationBar IsVisible="True" Opacity="0.8" BackgroundColor="Black" ForegroundColor="White" IsMenuEnabled="False">
-            <shell:ApplicationBarIconButton x:Name="previousPage" Click="previousPage_Click" IconUri="Images/bar_pre.png" Text="上页"/>
-            <shell:ApplicationBarIconButton x:Name="fastReply" Click="fastReply_Click_1" IconUri="Images/bar_writeComment.png" Text="快速回复"/>
-            <shell:ApplicationBarIconButton x:Name="onlyowner" Click="onlyowner_Click_1" IconUri="Images/bar_writeComment.png" Text="只看楼主"/>
-            <shell:ApplicationBarIconButton x:Name="nextPage" Click="nextPage_Click" IconUri="Images/bar_next.png" Text="下页"/>
+        <shell:ApplicationBar IsVisible="True" Opacity="0.8" BackgroundColor="Black" ForegroundColor="White" IsMenuEnabled="True">
+            <shell:ApplicationBar.Buttons>
+                <shell:ApplicationBarIconButton x:Name="previousPage" Click="previousPage_Click" IconUri="Images/bar_pre.png" Text="上页"/>
+                <shell:ApplicationBarIconButton x:Name="fastReply" Click="fastReply_Click_1" IconUri="Images/bar_writeComment.png" Text="快速回复"/>
+                <shell:ApplicationBarIconButton x:Name="onlyowner" Click="onlyowner_Click_1" IconUri="Images/bar_writeComment.png" Text="只看楼主"/>
+                <shell:ApplicationBarIconButton x:Name="nextPage" Click="nextPage_Click" IconUri="Images/bar_next.png" Text="下页"/>
+            </shell:ApplicationBar.Buttons>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="favorite" Click="favorite_Click" Text="收藏" />
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

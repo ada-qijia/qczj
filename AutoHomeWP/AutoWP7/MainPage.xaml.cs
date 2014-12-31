@@ -97,11 +97,12 @@ namespace AutoWP7
                         {
                             SaleLoadData(false);
                         }
-                        setAppBarSearchButtonVisible(false);
                     }
                     break;
             }
 
+            //为我设置AppBar
+            setAppBarMeVisible(pano.SelectedIndex == 5,false);
             //为最新和论坛设置AppBar搜索按钮
             bool searchButtonVisible = pano.SelectedIndex == 0 || pano.SelectedIndex == 2 || pano.SelectedIndex == 4;
             setAppBarSearchButtonVisible(searchButtonVisible);
@@ -1037,5 +1038,86 @@ namespace AutoWP7
 
         #endregion
 
+        #region 我
+
+        private void setAppBarMeVisible(bool isVisible, bool loggedIn)
+        {
+            if (isVisible)
+            {
+                ApplicationBar.Buttons.Clear();
+                 if(loggedIn)
+                 {
+                    ApplicationBarIconButton refreshButton = new ApplicationBarIconButton();
+                    refreshButton.IconUri = new Uri("/Images/refresh.png", UriKind.Relative);
+                    refreshButton.Text = "刷新";
+                    refreshButton.Click += refresh_Click;
+                    ApplicationBar.Buttons.Add(refreshButton);
+                    ApplicationBar.Mode = ApplicationBarMode.Default;
+                 }
+
+                 ApplicationBar.MenuItems.Clear();
+                 ApplicationBarMenuItem settingItem = new ApplicationBarMenuItem();
+                 settingItem.Text = "设置";
+                 settingItem.Click += settingItem_Click;
+                 ApplicationBar.MenuItems.Add(settingItem);
+            }
+            else
+            {
+                ApplicationBar.MenuItems.Clear();
+                ApplicationBarMenuItem moreItem = new ApplicationBarMenuItem();
+                moreItem.Text = "更多";
+                moreItem.Click += moreIconButton_Click;
+                ApplicationBar.MenuItems.Add(moreItem);
+            }
+        }
+
+        private void settingItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Login_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //未登录，跳转到登录页
+            this.NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.Relative));
+        }
+
+        //进入个人资料页
+        private void MyInfo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void MyCollection_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void MyHostStick_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+        private void DraftBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void ViewHistory_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void CarCompare_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            UmengSDK.UmengAnalytics.onEvent("对比", "对比点击量");
+            this.NavigationService.Navigate(new Uri("/View/Car/CarCompareListPage.xaml?action=0", UriKind.Relative));
+        }
+
+        #endregion
     }
 }

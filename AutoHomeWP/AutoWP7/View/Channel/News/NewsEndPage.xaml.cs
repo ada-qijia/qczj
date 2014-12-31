@@ -345,5 +345,11 @@ namespace AutoWP7.View.Channel.News
         {
             return AppUrlMgr.NewsWebViewUrl(Convert.ToInt32(newsId), 1, 0, 0, 1, page, 1, 0, 0);
         }
+
+        //收藏
+        private void favorite_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

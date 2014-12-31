@@ -104,11 +104,17 @@ xmlns:p="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar BackgroundColor="Black" Opacity="0.8" ForegroundColor="White" IsVisible="True" IsMenuEnabled="False">
+        <shell:ApplicationBar BackgroundColor="Black" Opacity="0.8" ForegroundColor="White" IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBar.Buttons>
             <shell:ApplicationBarIconButton x:Name="lastestReply" Click="lastestReply_Click" IconUri="Images/bar_lastReply.png" Text="最后回复"/>
             <shell:ApplicationBarIconButton x:Name="newest" Click="newest_Click" IconUri="Images/bar_newest.png" Text="最新发帖"/>
             <shell:ApplicationBarIconButton x:Name="refine"  Click="refine_Click" IconUri="Images/bar_ring.png" Text="精华贴"/>
             <shell:ApplicationBarIconButton x:Name="sendLetter"  Click="sendLetter_Click"  IconUri="Images/bar_writeComment.png" Text="发帖"/>
+            </shell:ApplicationBar.Buttons>
+
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="favorite" Click="favorite_Click" Text="收藏" />
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

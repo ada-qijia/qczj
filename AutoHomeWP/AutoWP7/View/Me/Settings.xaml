@@ -1,0 +1,50 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="AutoWP7.View.Me.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="Black"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="False">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="PageTitle" Text="设置"  Foreground="{StaticResource App_Theme_Color}" HorizontalAlignment="Left" FontSize="72"  Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <ScrollViewer>
+                <StackPanel>
+                    <TextBlock Text="账号绑定" Tap="AccountBinding_Tap"/>
+                    <TextBlock Text="推送设置" Tap="NotificationSetting_Tap"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="小图模式"/>
+                        <ToggleButton Click="PictureMode_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="清除缓存（3M）"/>
+                        <Button BorderBrush="{StaticResource App_Theme_Color}" Foreground="Black" Content="清除缓存" Click="ClearCache_Click"/>
+                    </StackPanel>
+                    <TextBlock Text="意见反馈" Tap="Feedback_Tap"/>
+                    <TextBlock Text="手机汽车之家" Tap="AutohomeMobile_Tap"/>
+                    <TextBlock Text="关于汽车之家" Tap="About_Tap"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>

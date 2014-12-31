@@ -186,6 +186,7 @@
     <Compile Include="Utils\DataTemplateSelector.cs" />
     <Compile Include="Utils\DateTimerHelper.cs" />
     <Compile Include="Utils\LoadMoreDataTemplateSelector.cs" />
+    <Compile Include="Utils\MeHelper.cs" />
     <Compile Include="View\CarSearch\CarSearchResultPage.xaml.cs">
       <DependentUpon>CarSearchResultPage.xaml</DependentUpon>
     </Compile>
@@ -259,6 +260,21 @@
     </Compile>
     <Compile Include="View\Channel\NewsPartPageUserControl.xaml.cs">
       <DependentUpon>NewsPartPageUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\AccountBinding.xaml.cs">
+      <DependentUpon>AccountBinding.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\DraftBox.xaml.cs">
+      <DependentUpon>DraftBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\MyFavorite.xaml.cs">
+      <DependentUpon>MyFavorite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\MyInfoDetail.xaml.cs">
+      <DependentUpon>MyInfoDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sale\SaleCityFilterPage.xaml.cs">
       <DependentUpon>SaleCityFilterPage.xaml</DependentUpon>
@@ -494,6 +510,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Me\AccountBinding.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\DraftBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\MyFavorite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\MyInfoDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Sale\SaleCityFilterPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -585,6 +621,7 @@
     <Resource Include="Images\CallPrice.jpg" />
     <Resource Include="Images\detail1.jpg" />
     <Resource Include="Images\Tiles\ShuoKe.png" />
+    <Content Include="Assets\AppBar\favs.addto.png" />
     <Content Include="Images\alibi_summary.png" />
     <Content Include="Images\ArrowR.png" />
     <Content Include="Images\ArrowRWhite.png" />
@@ -605,6 +642,8 @@
     <Content Include="Images\alibi_gasstation.png" />
     <Content Include="Images\alibi_highlight.png" />
     <Content Include="Images\DropDownArrow.png" />
+    <Content Include="Images\favs.addto.png" />
+    <Content Include="Images\favs.png" />
     <Content Include="Images\More\VS.png" />
     <Content Include="Images\alibi_recommendation.png" />
     <Content Include="Images\ReloadButton.png" />

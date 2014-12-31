@@ -323,6 +323,12 @@ namespace AutoWP7.View.Forum
             else
                 this.NavigationService.Navigate(new Uri("/View/Forum/TopicDetailPage.xaml?from=0&bbsId=" + bbsId + "&topicId=" + topicId + "&bbsType=" + bbsType + "&isowner=0", UriKind.Relative));
         }
+
+        //收藏
+        private void favorite_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 

@@ -66,6 +66,12 @@ namespace AutoWP7.View.Car
             Text = "对比"
         };
 
+        public ApplicationBarIconButton AddFavorite = new ApplicationBarIconButton()
+        {
+            IconUri = new Uri("/Images/favs.addto.png", UriKind.Relative),
+            Text = "收藏"
+        };
+
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -222,7 +228,9 @@ namespace AutoWP7.View.Car
         {
             AddVS.Click += AddVS_Click;
             ToVS.Click += ToVS_Click;
+            AddFavorite.Click+=favorite_Click;
         }
+
         /// <summary>
         /// 去对比
         /// </summary>
@@ -240,6 +248,12 @@ namespace AutoWP7.View.Car
         void AddVS_Click(object sender, EventArgs e)
         {
 
+        }
+
+        //收藏
+        private void favorite_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         //标识状态（false 未加载，true已加载）
