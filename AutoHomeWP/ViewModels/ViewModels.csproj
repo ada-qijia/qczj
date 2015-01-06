@@ -106,8 +106,14 @@
     <Compile Include="CarBrandViewModel.cs" />
     <Compile Include="CarCompareViewModel.cs" />
     <Compile Include="CarSeriesActicleViewModel.cs" />
+    <Compile Include="Me\CommentReplyViewModel.cs" />
     <Compile Include="Me\DraftViewModel.cs" />
     <Compile Include="Me\FavoriteViewModel.cs" />
+    <Compile Include="Me\ForumReplyViewModel.cs" />
+    <Compile Include="Me\PrivateMessageFriendViewModel.cs" />
+    <Compile Include="Me\PrivateMessageViewModel.cs" />
+    <Compile Include="Me\TritanViewModel.cs" />
+    <Compile Include="Me\ViewHistoryViewModel.cs" />
     <Compile Include="SaleCityListViewModel.cs" />
     <Compile Include="SaleCarSpecListViewModel.cs" />
     <Compile Include="CarSearchFilterViewModel.cs" />

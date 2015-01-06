@@ -10,7 +10,7 @@ namespace AutoWP7.Utils
     {
         public const string MyFavoriteFileName = "MyFavorite.json";
         public const string DraftBoxFileName = "DraftBox.json";
-        public const string ViewHistoryFileName = "ViewHistory.json";
-
+        public const string RecentFileName = "Recent.json";
+        public const string PrivateMessageFileName = "PrivateMessage.json";
     }
 }

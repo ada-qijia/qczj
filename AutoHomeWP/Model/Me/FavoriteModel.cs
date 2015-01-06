@@ -1,8 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Model.Me
 {
+    
+    public enum FavoriteType
+    {
+        All,
+        CarSeries,
+        CarSpec,
+        Article,
+        Forum,
+        Topic,
+    }
+
     [DataContract]
     public class MyFavoriteModel
     {
@@ -24,26 +36,7 @@ namespace Model.Me
 
     //this should be consistent with cloud data schema
     [DataContract]
-    public class FavoriteCarSeriesModel
-    {
-        [DataMember(Name="id")]
-        public int ID { get; set; }
-
-        [DataMember(Name="name")]
-        public string Name { get; set; }
-
-        [DataMember(Name="imgurl")]
-        public string Img { get; set; }
-
-        [DataMember(Name="level")]
-        public string Level { get; set; }
-
-        [DataMember(Name="pricebetween")]
-        public string PriceBetween { get; set; }
-    }
-
-    [DataContract]
-    public class FavoriteCarSpecModel
+    public class FavoriteCarSeriesModel:LoadMoreItem
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }
@@ -51,18 +44,43 @@ namespace Model.Me
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "imgurl")]
+        [DataMember(Name = "pic")]
         public string Img { get; set; }
 
-        [DataMember]
-        public string SeriesName { get; set; }
+        [DataMember(Name = "level")]
+        public string Level { get; set; }
 
-        [DataMember(Name = "lowprice")]
-        public string LowPrice { get; set; }
+        [DataMember(Name = "price")]
+        public string PriceBetween { get; set; }
+
+        [DataMember(Name = "time")]
+        public string Time { get; set; }
     }
 
     [DataContract]
-    public class FavoriteArticleModel
+    public class FavoriteCarSpecModel:LoadMoreItem
+    {
+        [DataMember(Name = "id")]
+        public int ID { get; set; }
+
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [DataMember(Name = "price")]
+        public string LowPrice { get; set; }
+
+        [DataMember(Name="seriesname")]
+        public string SeriesName { get; set; }
+
+        [DataMember(Name = "pic")]
+        public string Img { get; set; }
+
+        [DataMember(Name = "time")]
+        public string Time { get; set; }
+    }
+
+    [DataContract]
+    public class FavoriteArticleModel:LoadMoreItem
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }
@@ -70,42 +88,57 @@ namespace Model.Me
         [DataMember(Name = "title")]
         public string Title { get; set; }
 
-        [DataMember(Name = "newstype")]
-        public string Type { get; set; }
-
-        [DataMember(Name = "imgurl")]
+        [DataMember(Name = "pic")]
         public string Img { get; set; }
 
-        [DataMember(Name = "date")]
-        public string Date { get; set; }
+        [DataMember(Name = "isvideo")]
+        public int IsVideo { get; set; }
+
+        [DataMember(Name = "publishtime")]
+        public string PublishTime { get; set; }
+
+        [DataMember(Name = "updatetime")]
+        public DateTime UpdateTime { get; set; }
+
+        [DataMember(Name = "time")]
+        public string Time { get; set; }
 
         [DataMember(Name = "replycount")]
         public int ReplyCount { get; set; }
-
-        [DataMember(Name = "url")]
-        public string Url { get; set; }
     }
 
     [DataContract]
-    public class FavoriteForumModel
+    public class FavoriteForumModel:LoadMoreItem
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }
 
         [DataMember(Name = "name")]
         public string Name { get; set; }
+
+        [DataMember(Name = "type")]
+        public string Type { get; set; }
+
+        [DataMember(Name = "time")]
+        public string Time { get; set; }
     }
 
     [DataContract]
-    public class FavoriteTopicModel
+    public class FavoriteTopicModel:LoadMoreItem
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }
 
-        [DataMember(Name = "title")]
+        [DataMember(Name = "name")]
         public string Title { get; set; }
 
-        [DataMember(Name="url")]
-        public string url { get; set; }
+        [DataMember(Name = "bbsid")]
+        public string BBSID { get; set; }
+
+        [DataMember(Name = "bbstype")]
+        public string BBSType { get; set; }
+
+        [DataMember(Name = "time")]
+        public string Time { get; set; }
     }
 }

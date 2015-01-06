@@ -186,6 +186,7 @@
     <Compile Include="Utils\DataTemplateSelector.cs" />
     <Compile Include="Utils\DateTimerHelper.cs" />
     <Compile Include="Utils\LoadMoreDataTemplateSelector.cs" />
+    <Compile Include="Utils\MeConverters.cs" />
     <Compile Include="Utils\MeHelper.cs" />
     <Compile Include="View\CarSearch\CarSearchResultPage.xaml.cs">
       <DependentUpon>CarSearchResultPage.xaml</DependentUpon>
@@ -272,6 +273,12 @@
     </Compile>
     <Compile Include="View\Me\MyInfoDetail.xaml.cs">
       <DependentUpon>MyInfoDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\MyTritan.xaml.cs">
+      <DependentUpon>MyTritan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\MyRecents.xaml.cs">
+      <DependentUpon>MyRecents.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Me\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -523,6 +530,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Me\MyInfoDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\MyTritan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\MyRecents.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

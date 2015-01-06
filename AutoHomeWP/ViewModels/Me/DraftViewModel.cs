@@ -1,19 +1,37 @@
-﻿using Model.Me;
-using System;
+﻿using CommonLayer;
+using Model.Me;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ViewModels.Me
 {
     public class DraftViewModel : Model.BindableBase
     {
-        public DraftViewModel()
+        public static string FilePath;
+
+        private DraftViewModel()
         {
             this.DraftList = new ObservableCollection<DraftModel>();
         }
+
+        #region single instance
+
+        private static DraftViewModel _singleInstance;
+        public static DraftViewModel SingleInstance
+        {
+            get
+            {
+                if (_singleInstance == null)
+                {
+                    _singleInstance = new DraftViewModel();
+                    _singleInstance.LoadDraft();
+                }
+                return _singleInstance;
+            }
+        }
+
+        #endregion
 
         #region properties
 
@@ -31,20 +49,39 @@ namespace ViewModels.Me
 
         #region public methods
 
-        public void SaveDraft(DraftModel model)
+        //read file
+        private void LoadDraft()
         {
-            this.DraftList.Insert(0, model);
-            //save file
+            string content = IsolatedStorageFileHelper.ReadIsoFile(FilePath);
+            List<DraftModel> result = JsonHelper.DeserializeOrDefault<List<DraftModel>>(content);
+            if (result != null)
+            {
+                this.DraftList.Concat(result);
+            }
         }
 
-        public void RemoveDraft(List<DraftModel> models)
+        //add item and save file
+        public bool AddDraft(DraftModel model)
         {
-            foreach(var model in models)
+            this.DraftList.Insert(0, model);
+            return SaveDraft();
+        }
+
+        //remove items and save file
+        public bool RemoveDraft(List<DraftModel> models)
+        {
+            foreach (var model in models)
             {
                 this.DraftList.Remove(model);
             }
+            return SaveDraft();
+        }
 
-            //save file
+        private bool SaveDraft()
+        {
+            string content = JsonHelper.Serialize(this.DraftList);
+            bool result = IsolatedStorageFileHelper.WriteIsoFile(FilePath, content, System.IO.FileMode.Create);
+            return result;
         }
 
         #endregion

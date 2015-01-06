@@ -98,9 +98,14 @@
   <ItemGroup>
     <Compile Include="Base\LoadMoreItem.cs" />
     <Compile Include="CarSearchResult.cs" />
+    <Compile Include="Me\CommentReplyModel.cs" />
     <Compile Include="Me\DraftModel.cs" />
     <Compile Include="Me\FavoriteModel.cs" />
+    <Compile Include="Me\ForumReplyModel.cs" />
     <Compile Include="Me\MeModel.cs" />
+    <Compile Include="Me\PrivateMessageModel.cs" />
+    <Compile Include="Me\TritanModel.cs" />
+    <Compile Include="Me\ViewHistoryModel.cs" />
     <Compile Include="SaleFilterItemModel.cs" />
     <Compile Include="CarSearchFilter.cs" />
     <Compile Include="Search\ArticleSearchResultModel.cs" />

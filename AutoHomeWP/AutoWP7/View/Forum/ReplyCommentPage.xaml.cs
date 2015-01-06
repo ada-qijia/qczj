@@ -6,6 +6,9 @@ using Model;
 using Newtonsoft.Json.Linq;
 using ViewModels.Handler;
 using System.Net;
+using System.Windows;
+using Model.Me;
+using ViewModels.Me;
 
 namespace AutoWP7.View.Forum
 {
@@ -178,5 +181,25 @@ namespace AutoWP7.View.Forum
 
             }
         }
+
+        #region 取消发帖时询问是否保存到草稿箱
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("尚未发送，是否保存到草稿箱？", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                DraftModel model = new DraftModel();
+                model.BBSID = bbsId;
+                model.Content = replyContent.Text;
+                model.SavedTime = DateTime.Now;
+                model.TopicID = topicId;
+                model.TargetReplyID = targetReplyId;
+                DraftViewModel.SingleInstance.AddDraft(model);
+            }
+
+            base.OnBackKeyPress(e);
+        }
+
+        #endregion
     }
 }
