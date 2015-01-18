@@ -25,12 +25,12 @@ namespace ViewModels.Me
             this.ForumList = new ObservableCollection<ViewHistoryForumModel>();
             this.TopicList = new ObservableCollection<ViewHistoryTopicModel>();
 
-            this.currentPageIndex = new Dictionary<ViewHistoryType, int>(5);
-            currentPageIndex.Add(ViewHistoryType.CarSeries, 0);
-            currentPageIndex.Add(ViewHistoryType.CarSpec, 0);
-            currentPageIndex.Add(ViewHistoryType.Article, 0);
-            currentPageIndex.Add(ViewHistoryType.Forum, 0);
-            currentPageIndex.Add(ViewHistoryType.Topic, 0);
+            this.currentPageIndex = new Dictionary<FavoriteType, int>(5);
+            currentPageIndex.Add(FavoriteType.CarSeries, 0);
+            currentPageIndex.Add(FavoriteType.CarSpec, 0);
+            currentPageIndex.Add(FavoriteType.Article, 0);
+            currentPageIndex.Add(FavoriteType.Forum, 0);
+            currentPageIndex.Add(FavoriteType.Topic, 0);
         }
 
         #region single instance
@@ -63,7 +63,7 @@ namespace ViewModels.Me
 
         public ObservableCollection<ViewHistoryTopicModel> TopicList { get; private set; }
 
-        public Dictionary<ViewHistoryType, int> currentPageIndex { get; private set; }
+        public Dictionary<FavoriteType, int> currentPageIndex { get; private set; }
 
         #endregion
 
@@ -83,12 +83,12 @@ namespace ViewModels.Me
         }
 
         //Save change locally, update related view to first page.
-        public bool AddItem(ViewHistoryType type, object historyModel)
+        public bool AddItem(FavoriteType type, object historyModel)
         {
             bool changed = false;
             switch (type)
             {
-                case ViewHistoryType.CarSeries:
+                case FavoriteType.CarSeries:
                     var carSeriesModel = historyModel as ViewHistoryCarSeriesModel;
                     if (carSeriesModel != null)
                     {
@@ -100,7 +100,7 @@ namespace ViewModels.Me
                         changed = true;
                     }
                     break;
-                case ViewHistoryType.CarSpec:
+                case FavoriteType.CarSpec:
                     var carSpecModel = historyModel as ViewHistoryCarSpecModel;
                     if (carSpecModel != null)
                     {
@@ -112,7 +112,7 @@ namespace ViewModels.Me
                         changed = true;
                     }
                     break;
-                case ViewHistoryType.Article:
+                case FavoriteType.Article:
                     var articleModel = historyModel as ViewHistoryArticleModel;
                     if (articleModel != null)
                     {
@@ -124,7 +124,7 @@ namespace ViewModels.Me
                         changed = true;
                     }
                     break;
-                case ViewHistoryType.Forum:
+                case FavoriteType.Forum:
                     var forumModel = historyModel as ViewHistoryForumModel;
                     if (forumModel != null)
                     {
@@ -136,7 +136,7 @@ namespace ViewModels.Me
                         changed = true;
                     }
                     break;
-                case ViewHistoryType.Topic:
+                case FavoriteType.Topic:
                     var topicModel = historyModel as ViewHistoryTopicModel;
                     if (topicModel != null)
                     {
@@ -193,41 +193,41 @@ namespace ViewModels.Me
         /// Reload the first page.
         /// </summary>
         /// <param name="type"></param>
-        public void Refresh(ViewHistoryType type)
+        public void Refresh(FavoriteType type)
         {
             switch (type)
             {
-                case ViewHistoryType.CarSeries:
+                case FavoriteType.CarSeries:
                     this.CarSeriesList.Clear();
                     this.LoadMore(type, 0);
                     break;
-                case ViewHistoryType.CarSpec:
+                case FavoriteType.CarSpec:
                     this.CarSpecList.Clear();
                     this.LoadMore(type, 0);
                     break;
-                case ViewHistoryType.Article:
+                case FavoriteType.Article:
                     this.ArticleList.Clear();
                     this.LoadMore(type, 0);
                     break;
-                case ViewHistoryType.Forum:
+                case FavoriteType.Forum:
                     this.ForumList.Clear();
                     this.LoadMore(type, 0);
                     break;
-                case ViewHistoryType.Topic:
+                case FavoriteType.Topic:
                     this.TopicList.Clear();
                     this.LoadMore(type, 0);
                     break;
-                case ViewHistoryType.All:
+                case FavoriteType.All:
                     this.CarSeriesList.Clear();
-                    this.LoadMore(ViewHistoryType.CarSeries, 0);
+                    this.LoadMore(FavoriteType.CarSeries, 0);
                     this.CarSpecList.Clear();
-                    this.LoadMore(ViewHistoryType.CarSpec, 0);
+                    this.LoadMore(FavoriteType.CarSpec, 0);
                     this.ArticleList.Clear();
-                    this.LoadMore(ViewHistoryType.Article, 0);
+                    this.LoadMore(FavoriteType.Article, 0);
                     this.ForumList.Clear();
-                    this.LoadMore(ViewHistoryType.Forum, 0);
+                    this.LoadMore(FavoriteType.Forum, 0);
                     this.TopicList.Clear();
-                    this.LoadMore(ViewHistoryType.Topic, 0);
+                    this.LoadMore(FavoriteType.Topic, 0);
                     break;
                 default:
                     break;
@@ -239,30 +239,30 @@ namespace ViewModels.Me
         /// </summary>
         /// <param name="type"></param>
         /// <param name="toPageIndex"></param>
-        public void LoadMore(ViewHistoryType type, int toPageIndex)
+        public void LoadMore(FavoriteType type, int toPageIndex)
         {
             switch (type)
             {
-                case ViewHistoryType.CarSeries:
+                case FavoriteType.CarSeries:
                     this.loadMore(this.CarSeriesList, this.viewHistoryModel.CarSeriesList, toPageIndex);
                     break;
-                case ViewHistoryType.CarSpec:
+                case FavoriteType.CarSpec:
                     this.loadMore(this.CarSpecList, this.viewHistoryModel.CarSpecList, toPageIndex);
                     break;
-                case ViewHistoryType.Article:
+                case FavoriteType.Article:
                     this.loadMore(this.ArticleList, this.viewHistoryModel.ArticleList, toPageIndex);
                     break;
-                case ViewHistoryType.Forum:
+                case FavoriteType.Forum:
                     this.loadMore(this.ForumList, this.viewHistoryModel.ForumList, toPageIndex);
                     break;
-                case ViewHistoryType.Topic:
+                case FavoriteType.Topic:
                     this.loadMore(this.TopicList, this.viewHistoryModel.TopicList, toPageIndex);
                     break;
                 default:
                     break;
             }
 
-            if (type > ViewHistoryType.All)
+            if (type > FavoriteType.All)
             {
                 this.currentPageIndex[type] = toPageIndex;
             }

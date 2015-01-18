@@ -23,10 +23,20 @@ namespace AutoWP7.View.Car
     /// </summary>
     public partial class CarSeriesDetailPage : PhoneApplicationPage
     {
+        private const string CarSeriesStateKey = "FavoriteCarSeries";
+
         public CarSeriesDetailPage()
         {
             InitializeComponent();
         }
+
+        public static void ShareModel(Model.Me.FavoriteCarSeriesModel model)
+        {
+            PhoneApplicationService.Current.State[CarSeriesStateKey] = model;
+        }
+
+        //共享车系
+        Model.Me.FavoriteCarSeriesModel carSeries;
 
         bool isBack = false;
 
@@ -82,6 +92,11 @@ namespace AutoWP7.View.Car
             {
                 case System.Windows.Navigation.NavigationMode.New:
                     {
+                        if (PhoneApplicationService.Current.State.ContainsKey(CarSeriesStateKey))
+                        {
+                            this.carSeries = PhoneApplicationService.Current.State[CarSeriesStateKey] as Model.Me.FavoriteCarSeriesModel;
+                        }
+
                         //车系id
                         carSeriesId = NavigationContext.QueryString["carSeriesId"];
                         //全局化
@@ -136,7 +151,7 @@ namespace AutoWP7.View.Car
                         ////更新城市id
                         cityId = App.CityId;
                         var tag = (piv.SelectedItem as PivotItem).Tag.ToString();
-                        if(tag == "dealer")// (piv.SelectedIndex == 3)
+                        if (tag == "dealer")// (piv.SelectedIndex == 3)
                         {
                             //更新城市id
                             if (!string.IsNullOrEmpty(App.CityId))
@@ -147,6 +162,8 @@ namespace AutoWP7.View.Car
                         }
                         if (tag == "quote")//(piv.SelectedIndex == 0)
                             InitSeriesSpecsInfo();
+
+                        PhoneApplicationService.Current.State[CarSeriesStateKey] = null;
                     }
                     break;
             }
@@ -228,7 +245,7 @@ namespace AutoWP7.View.Car
         {
             AddVS.Click += AddVS_Click;
             ToVS.Click += ToVS_Click;
-            AddFavorite.Click+=favorite_Click;
+            AddFavorite.Click += favorite_Click;
         }
 
         /// <summary>
@@ -250,10 +267,17 @@ namespace AutoWP7.View.Car
 
         }
 
-        //收藏
+        /// <summary>
+        /// 收藏
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void favorite_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (this.carSeries != null)
+            {
+                ViewModels.Me.FavoriteViewModel.SingleInstance.Add(Model.Me.FavoriteType.CarSeries, this.carSeries);
+            }
         }
 
         //标识状态（false 未加载，true已加载）
@@ -279,6 +303,7 @@ namespace AutoWP7.View.Car
                         UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "车系报价页点击量");
                         ApplicationBar.IsVisible = true;
                         this.ApplicationBar.Buttons.Clear();
+                        this.ApplicationBar.Buttons.Add(AddFavorite);
                         this.ApplicationBar.Buttons.Add(ToVS);
                         if (!isQuoteLoaded)
                         {
@@ -510,7 +535,7 @@ namespace AutoWP7.View.Car
             }
             GlobalIndicator.Instance.Text = "正在获取中......";
             GlobalIndicator.Instance.IsBusy = true;
-            if (carSeriesArticleVM==null)
+            if (carSeriesArticleVM == null)
             {
                 carSeriesArticleVM = new CarSeriesActicleViewModel();
                 carSeriesArticleVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(comm_LoadDataCompleted);
@@ -614,7 +639,7 @@ namespace AutoWP7.View.Car
                         GlobalIndicator.Instance.Text = "正在获取中...";
                         GlobalIndicator.Instance.IsBusy = true;
 
-                        if (DealerVM==null)
+                        if (DealerVM == null)
                         {
                             DealerVM = new DealerViewModel();
                             DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
@@ -685,7 +710,7 @@ namespace AutoWP7.View.Car
             {
                 forumPageIndex = 1;
             }
-            if (forumVM==null)
+            if (forumVM == null)
             {
                 forumVM = new CarSeriesForumViewModel();
                 forumVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<ForumModel>>>(forumVM_LoadDataCompleted);
@@ -728,7 +753,7 @@ namespace AutoWP7.View.Car
                             forumListbox.Visibility = Visibility.Visible;
 
                             ForumDataSource = (ObservableCollection<ForumModel>)e.Result;
-                            if (ForumDataSource.Count>0)
+                            if (ForumDataSource.Count > 0)
                             {
                                 bbsId = ForumDataSource[0].bbsId;
                                 bbsType = ForumDataSource[0].bbsType;
@@ -797,14 +822,14 @@ namespace AutoWP7.View.Car
                 carSeriesAlibiDataSource = e.Result;
                 alibiPanel.DataContext = carSeriesAlibiDataSource;
                 var groups = new ObservableCollection<CarSeriesAlibiSpecGroupModel>();
-                if (carSeriesAlibiDataSource.SpecGroupList!=null)
+                if (carSeriesAlibiDataSource.SpecGroupList != null)
                 {
                     foreach (var groupList in carSeriesAlibiDataSource.SpecGroupList)
                     {
                         groups.Add(groupList);
                     }
                 }
-                
+
                 carSeriesAlibiListSelector.ItemsSource = groups;
             }
         }
@@ -992,8 +1017,13 @@ namespace AutoWP7.View.Car
         private void topicIdGrid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             Grid gg = (Grid)sender;
+            var model = gg.DataContext as ForumModel;
+            if (model != null)
+            {
+                View.Forum.TopicDetailPage.ShareTitle(model.Title);
+            }
             //this.NavigationService.Navigate(new Uri("/View/Car/TopicDetailPage.xaml?topicId=" + gg.Tag + "&bbsId=" + bbsId + "&bbsType=" + bbsType, UriKind.Relative));
-            this.NavigationService.Navigate(new Uri("/View/Forum/TopicDetailPage.xaml?from=1&topicId=" + gg.Tag + "&bbsId=" + bbsId + "&bbsType=" + bbsType, UriKind.Relative));
+            this.NavigationService.Navigate(new Uri(string.Format("/View/Forum/TopicDetailPage.xaml?from=1&topicId={0}&bbsId={1}&bbsType={2}", gg.Tag, bbsId, bbsType), UriKind.Relative));
         }
 
         //导向车身外观页

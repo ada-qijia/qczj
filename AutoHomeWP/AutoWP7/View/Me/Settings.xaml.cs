@@ -20,7 +20,7 @@ namespace AutoWP7.View.Me
 
         private void AccountBinding_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigationService.Navigate(new Uri("/View/Me/AccountBinding.xaml", UriKind.Relative));
         }
 
         private void NotificationSetting_Tap(object sender, System.Windows.Input.GestureEventArgs e)

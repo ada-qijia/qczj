@@ -16,6 +16,7 @@ using System.ComponentModel;
 using Microsoft.Phone.Shell;
 using AutoWP7.Utils;
 using Microsoft.Phone.Tasks;
+using ViewModels.Me;
 
 namespace AutoWP7
 {
@@ -24,6 +25,8 @@ namespace AutoWP7
         public MainPage()
         {
             InitializeComponent();
+
+            CreateApplicationBarItems();
         }
 
         //最新资讯集合
@@ -68,8 +71,17 @@ namespace AutoWP7
                         UpdateLocalCity();
 
                         HandleSaleFilterSelection();
+
+                        //update me
+                        UpdateMeInfo();
                     }
                     break;
+            }
+
+            //update me
+            if (PhoneApplicationService.Current.State.Keys.Contains(Utils.MeHelper.MyInfoStateKey))
+            {
+                PhoneApplicationService.Current.State.Remove(Utils.MeHelper.MyInfoStateKey);
             }
         }
 
@@ -99,10 +111,13 @@ namespace AutoWP7
                         }
                     }
                     break;
+                case 5:
+                    UpdateMeInfo();
+                    break;
             }
 
             //为我设置AppBar
-            setAppBarMeVisible(pano.SelectedIndex == 5,false);
+            setAppBarMeVisible(pano.SelectedIndex == 5);
             //为最新和论坛设置AppBar搜索按钮
             bool searchButtonVisible = pano.SelectedIndex == 0 || pano.SelectedIndex == 2 || pano.SelectedIndex == 4;
             setAppBarSearchButtonVisible(searchButtonVisible);
@@ -683,7 +698,7 @@ namespace AutoWP7
         {
             var data = sender.GetDataContext<SaleItemModel>();
             string url = string.Format("/View/Sale/SaleDetailPage.xaml?seriesid={0}&specid={1}&articleid={2}&articletype={3}&dealerid={4}",
-                data.seriesid,data.specid,data.articleid,data.articletype,data.dealer.id);
+                data.seriesid, data.specid, data.articleid, data.articletype, data.dealer.id);
             this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
 
@@ -1040,45 +1055,94 @@ namespace AutoWP7
 
         #region 我
 
-        private void setAppBarMeVisible(bool isVisible, bool loggedIn)
+        MeViewModel MeVM;
+
+        private void UpdateMeInfo()
+        {
+            if (MeVM == null)
+            {
+                MeVM = new MeViewModel();
+                MeVM.LoadDataCompleted += MeVM_LoadDataCompleted;
+                this.MePanoItem.DataContext = MeVM;
+            }
+
+            var settings = IsolatedStorageSettings.ApplicationSettings;
+            if (Common.isLogin() )
+            {
+                //if (MeVM.Model == null)
+                {
+                    GlobalIndicator.Instance.Text = "正在获取中...";
+                    GlobalIndicator.Instance.IsBusy = true;
+
+                    //var userInfoModel = settings["userInfo"] as MyForumModel;
+                    //string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetUserInfo.ashx?a=2&pm=3&v=1.7.0&au={0}&u={1}&p=1&s=4",userInfoModel.Authorization,userInfoModel.Id);
+                    string url = MeHelper.GetUserInfoUrl();
+                    MeVM.LoadDataAysnc(url);
+                }
+            }
+            else
+            {
+                MeVM.ClearData();
+            }
+
+            setAppBarMeVisible(pano.SelectedIndex == 5);
+            this.NotLoginGrid.Visibility = this.NotLoginGrid.DataContext == null ? Visibility.Visible : Visibility.Collapsed;
+            this.IsLoginGrid.Visibility = this.NotLoginGrid.DataContext != null ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        void MeVM_LoadDataCompleted(object sender, EventArgs e)
+        {
+            this.NotLoginGrid.Visibility = this.NotLoginGrid.DataContext == null ? Visibility.Visible : Visibility.Collapsed;
+            this.IsLoginGrid.Visibility = this.NotLoginGrid.DataContext != null ? Visibility.Visible : Visibility.Collapsed;
+
+            GlobalIndicator.Instance.Text = "";
+            GlobalIndicator.Instance.IsBusy = false; 
+        }
+
+        ApplicationBarIconButton refreshButton;
+        ApplicationBarMenuItem settingItem;
+
+        private void CreateApplicationBarItems()
+        {
+            refreshButton = new ApplicationBarIconButton();
+            refreshButton.IconUri = new Uri("/Images/refresh.png", UriKind.Relative);
+            refreshButton.Text = "刷新";
+            refreshButton.Click += refresh_Click;
+
+            settingItem = new ApplicationBarMenuItem();
+            settingItem.Text = "设置";
+            settingItem.Click += settingItem_Click;
+        }
+
+        private void setAppBarMeVisible(bool isVisible)
         {
             if (isVisible)
             {
                 ApplicationBar.Buttons.Clear();
-                 if(loggedIn)
-                 {
-                    ApplicationBarIconButton refreshButton = new ApplicationBarIconButton();
-                    refreshButton.IconUri = new Uri("/Images/refresh.png", UriKind.Relative);
-                    refreshButton.Text = "刷新";
-                    refreshButton.Click += refresh_Click;
+                if (Common.isLogin())
+                {
                     ApplicationBar.Buttons.Add(refreshButton);
                     ApplicationBar.Mode = ApplicationBarMode.Default;
-                 }
+                }
 
-                 ApplicationBar.MenuItems.Clear();
-                 ApplicationBarMenuItem settingItem = new ApplicationBarMenuItem();
-                 settingItem.Text = "设置";
-                 settingItem.Click += settingItem_Click;
-                 ApplicationBar.MenuItems.Add(settingItem);
+                ApplicationBar.MenuItems.Clear();
+                ApplicationBar.MenuItems.Add(settingItem);
             }
             else
             {
+                ApplicationBar.Buttons.Clear();
                 ApplicationBar.MenuItems.Clear();
-                ApplicationBarMenuItem moreItem = new ApplicationBarMenuItem();
-                moreItem.Text = "更多";
-                moreItem.Click += moreIconButton_Click;
-                ApplicationBar.MenuItems.Add(moreItem);
             }
         }
 
         private void settingItem_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            this.NavigationService.Navigate(new Uri("/View/Me/Settings.xaml", UriKind.Relative));
         }
 
         private void refresh_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            UpdateMeInfo();
         }
 
         private void Login_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -1090,26 +1154,46 @@ namespace AutoWP7
         //进入个人资料页
         private void MyInfo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            PhoneApplicationService.Current.State[Utils.MeHelper.MyInfoStateKey] = this.MeVM.Model;
+            this.NavigationService.Navigate(new Uri("/View/Me/MyInfoDetail.xaml", UriKind.Relative));
+        }
+
+        //评论回复
+        private void CommentReply_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/View/Me/MyCommentReply.xaml", UriKind.Relative));
+        }
+
+        //论坛回复
+        private void ForumReply_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/View/Me/MyForumReply.xaml", UriKind.Relative));
+        }
+
+        private void PrivateMessage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
 
         }
 
         private void MyCollection_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigationService.Navigate(new Uri("/View/Me/MyFavorite.xaml", UriKind.Relative));
         }
 
-        private void MyHostStick_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void MyTritan_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigationService.Navigate(new Uri("/View/Me/MyForumReply.xaml", UriKind.Relative));
+           // this.NavigationService.Navigate(new Uri("/View/Me/MyTritan.xaml", UriKind.Relative));
         }
+
         private void DraftBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigationService.Navigate(new Uri("/View/Me/DraftBox.xaml", UriKind.Relative));
         }
 
-        private void ViewHistory_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void Recent_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigationService.Navigate(new Uri("/View/Me/MyRecents.xaml", UriKind.Relative));
         }
 
         private void CarCompare_Tap(object sender, System.Windows.Input.GestureEventArgs e)

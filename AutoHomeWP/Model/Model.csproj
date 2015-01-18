@@ -104,6 +104,7 @@
     <Compile Include="Me\ForumReplyModel.cs" />
     <Compile Include="Me\MeModel.cs" />
     <Compile Include="Me\PrivateMessageModel.cs" />
+    <Compile Include="Me\ThirdPartyBindingModel.cs" />
     <Compile Include="Me\TritanModel.cs" />
     <Compile Include="Me\ViewHistoryModel.cs" />
     <Compile Include="SaleFilterItemModel.cs" />

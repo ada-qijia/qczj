@@ -49,7 +49,7 @@ namespace Model.Me
         [DataMember(Name = "fromtitle")]
         public string From { get; set; }
 
-        [DataMember(Name = "notallowcom:")]
+        [DataMember(Name = "notallowcom")]
         public bool NotAllowCom { get; set; }
     }
 }

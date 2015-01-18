@@ -7,6 +7,7 @@ using Microsoft.Phone.Controls;
 using ViewModels.Search;
 using Model.Search;
 using Microsoft.Phone.Tasks;
+using Model;
 
 namespace AutoWP7.UcControl.SearchResult
 {
@@ -130,6 +131,9 @@ namespace AutoWP7.UcControl.SearchResult
         //找车-车系论坛帖子列表页
         private void CarSeriesBBS_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            var hotSeries=this.SearchResultVM.Series;
+            var favorite = new Model.Me.FavoriteCarSeriesModel() { ID = hotSeries.ID, Img = hotSeries.Img, Name = hotSeries.Name, PriceBetween = hotSeries.PriceBetween };
+            View.Car.CarSeriesDetailPage.ShareModel(favorite);
             string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=3&carSeriesId={0}", this.SearchResultVM.Series.ID);
             this.Navigate(url);
         }
@@ -137,6 +141,9 @@ namespace AutoWP7.UcControl.SearchResult
         //找车-车系口碑页
         private void CarSeriesKoubei_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            var hotSeries = this.SearchResultVM.Series;
+            var favorite = new Model.Me.FavoriteCarSeriesModel() { ID = hotSeries.ID, Img = hotSeries.Img, Name = hotSeries.Name, PriceBetween = hotSeries.PriceBetween };
+            View.Car.CarSeriesDetailPage.ShareModel(favorite);
             string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=4&carSeriesId={0}", this.SearchResultVM.Series.ID);
             this.Navigate(url);
         }
@@ -164,6 +171,8 @@ namespace AutoWP7.UcControl.SearchResult
             var model = (sender as FrameworkElement).DataContext as SeriesModel;
             if (model != null && model.ID != 0)
             {
+                var favorite = new Model.Me.FavoriteCarSeriesModel() { ID = model.ID, Name = model.Name, PriceBetween = model.PriceBetween };
+                View.Car.CarSeriesDetailPage.ShareModel(favorite);
                 string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", model.ID);
                 this.Navigate(url);
             }
@@ -224,6 +233,7 @@ namespace AutoWP7.UcControl.SearchResult
             var model = (sender as FrameworkElement).DataContext as JingxuanModel;
             if (model != null)
             {
+                View.Forum.TopicDetailPage.ShareTitle(model.Title);
                 string url = string.Format("/View/Forum/TopicDetailPage.xaml?from=0&bbsId={0}&topicId={1}&bbsType={2}", model.BBSID, model.TopicID, model.BBSType);
                 this.Navigate(url);
             }
@@ -233,19 +243,20 @@ namespace AutoWP7.UcControl.SearchResult
         private void NaturalModel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var model = (sender as FrameworkElement).DataContext as NaturalModel;
-            if(model!=null)
+            if (model != null)
             {
                 int mediatype = model.MediaType;
                 if (mediatype == 1 || mediatype == 2)
                 {
-                    this.Navigate(string.Format("/View/Channel/News/NewsEndPage.xaml?newsid={0}&pageIndex=1&pageType={1}",model.ID,model.MediaType));
+                    this.Navigate(string.Format("/View/Channel/News/NewsEndPage.xaml?newsid={0}&pageIndex=1&pageType={1}", model.ID, model.MediaType));
                 }
                 else if (mediatype == 3)
                 {
                     this.Navigate(string.Format("/View/Channel/News/VideoEndPage.xaml?videoid={0}", model.ID));
                 }
-                else if(mediatype==5)
+                else if (mediatype == 5)
                 {
+                    View.Forum.TopicDetailPage.ShareTitle(model.Title);
                     string url = string.Format("/View/Forum/TopicDetailPage.xaml?from=0&bbsId={0}&topicId={1}&bbsType={2}", model.JumpPage, model.ID, model.Type);
                     this.Navigate(url);
                 }

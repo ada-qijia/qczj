@@ -144,6 +144,7 @@ namespace AutoWP7.UcControl.SearchResult
             var model = (sender as FrameworkElement).DataContext as TopicModel;
             if (model != null)
             {
+                View.Forum.TopicDetailPage.ShareTitle(model.Title);
                 string url = string.Format("/View/Forum/TopicDetailPage.xaml?from=0&bbsId={0}&topicId={1}&bbsType={2}", model.BBSID, model.ID, model.BBSType);
                 var frame = Application.Current.RootVisual as PhoneApplicationFrame;
                 frame.Navigate(new Uri(url, UriKind.Relative));

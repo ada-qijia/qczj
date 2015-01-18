@@ -9,6 +9,8 @@ using Model;
 using ViewModels;
 using ViewModels.Handler;
 using AutoWP7.Utils;
+using Microsoft.Phone.Shell;
+using Model.Me;
 
 namespace AutoWP7.View.Forum
 {
@@ -202,7 +204,12 @@ namespace AutoWP7.View.Forum
         private void bbsIdGrid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             Grid gg = (Grid)sender;
-            this.NavigationService.Navigate(new Uri("/View/Forum/TopicDetailPage.xaml?from=0&bbsId=" + bbsId + "&topicId=" + gg.Tag + "&bbsType=" + bbsType, UriKind.Relative));
+            var model = gg.DataContext as ForumModel;
+            if (model != null)
+            {
+                View.Forum.TopicDetailPage.ShareTitle(model.Title);
+            }
+            this.NavigationService.Navigate(new Uri(string.Format("/View/Forum/TopicDetailPage.xaml?from=0&bbsId={0}&topicId={1}&bbsType={2}", bbsId, gg.Tag, bbsType), UriKind.Relative));
         }
 
         //发新帖
@@ -214,14 +221,20 @@ namespace AutoWP7.View.Forum
         //进入搜索页
         private void search_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(SearchType.Forum,bbsId,title);
+            string searchPageUrl = View.Search.SearchPage.GetSearchPageUrlWithParams(SearchType.Forum, bbsId, title);
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 
         //收藏
         private void favorite_Click(object sender, EventArgs e)
         {
+            FavoriteForumModel model = new FavoriteForumModel();
+            model.ID = int.Parse(bbsId);
+            model.Name = title;
+            model.Type = bbsType;
+            model.Time = DateTime.Now.ToString();
 
+            ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Forum, model);
         }
 
     }

@@ -1,4 +1,4 @@
-﻿<phone:PhoneApplicationPage
+﻿<utils:MultiSelectablePage
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -7,12 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Primitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:utils="clr-namespace:AutoWP7.Utils"
     x:Class="AutoWP7.View.Me.MyFavorite"
     mc:Ignorable="d"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
 
-    <phone:PhoneApplicationPage.Resources>
+    <utils:MultiSelectablePage.Resources>
         <DataTemplate x:Key="CarSeriesItemTemplate">
             <Grid Tap="CarSeriesItem_Tap">
                 <Grid.RowDefinitions>
@@ -31,9 +32,9 @@
                     <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
                 </Grid>
 
-                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="一汽奥迪-AL" Style="{StaticResource TitleLargeTextStyle}"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="中级车"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="27.28-57.81万"/>
+                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Level}"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PriceBetween}"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="CarSpecItemTemplate">
@@ -54,8 +55,8 @@
                 </Grid>
 
                 <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" FontSize="24"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CarSeries}"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="57.81万" Style="{StaticResource PriceRedTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SeriesName}"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding LowPrice}" Style="{StaticResource PriceRedTextStyle}"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ArticleItemTemplate">
@@ -75,18 +76,18 @@
                     <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
                 </Grid>
 
-                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" FontSize="24"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CarSeries}"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="2983评"/>
+                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title}" Style="{StaticResource TitleLargeTextStyle}" FontSize="24"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PublishTime}"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评'}"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ForumItemTemplate">
-            <TextBlock Text="奥迪论坛" Style="{StaticResource TitleLargeTextStyle}" Tap="ForumItem_Tap"/>
+            <TextBlock Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" Tap="ForumItem_Tap"/>
         </DataTemplate>
         <DataTemplate x:Key="TopicItemTemplate">
-            <TextBlock Text="帖子标题" Style="{StaticResource TitleLargeTextStyle}" Tap="TopicItem_Tap"/>
+            <TextBlock Text="{Binding Title}" Style="{StaticResource TitleLargeTextStyle}" Tap="TopicItem_Tap"/>
         </DataTemplate>
-    </phone:PhoneApplicationPage.Resources>
+    </utils:MultiSelectablePage.Resources>
 
     <Grid x:Name="LayoutRoot" Background="White">
         <phone:Pivot x:Name="FavoritePivot" Foreground="Black" SelectionChanged="FavoritePivot_SelectionChanged">
@@ -100,35 +101,35 @@
 
             <!--车系-->
             <phone:PivotItem Header="收藏车系">
-                <toolkit:LongListMultiSelector x:Name="CarSeriesList" Margin="0,14,-12,0" ItemsSource="{Binding}"
+                <toolkit:LongListMultiSelector x:Name="CarSeriesList" Margin="0,14,-12,0" ItemsSource="{Binding CarSeriesList}"
                                                 LayoutMode="List"
                                                 ItemTemplate="{StaticResource CarSeriesItemTemplate}"/>
             </phone:PivotItem>
 
             <!--车型-->
             <phone:PivotItem Header="收藏车型">
-                <toolkit:LongListMultiSelector x:Name="CarSpecList" Margin="0,14,-12,0" ItemsSource="{Binding}"
+                <toolkit:LongListMultiSelector x:Name="CarSpecList" Margin="0,14,-12,0" ItemsSource="{Binding CarSpecList}"
                                                 LayoutMode="List"
                                                 ItemTemplate="{StaticResource CarSpecItemTemplate}"/>
             </phone:PivotItem>
 
             <!--文章-->
             <phone:PivotItem Header="收藏文章">
-                <toolkit:LongListMultiSelector x:Name="ArticleList" Margin="0,14,-12,0" ItemsSource="{Binding}"
+                <toolkit:LongListMultiSelector x:Name="ArticleList" Margin="0,14,-12,0" ItemsSource="{Binding ArticleList}"
                                                 LayoutMode="List"
                                                 ItemTemplate="{StaticResource ArticleItemTemplate}"/>
             </phone:PivotItem>
 
             <!--论坛-->
             <phone:PivotItem Header="收藏论坛">
-                <toolkit:LongListMultiSelector x:Name="ForumList" Margin="0,14,-12,0" ItemsSource="{Binding}"
+                <toolkit:LongListMultiSelector x:Name="ForumList" Margin="0,14,-12,0" ItemsSource="{Binding ForumList}"
                                                 LayoutMode="List"
                                                 ItemTemplate="{StaticResource ForumItemTemplate}"/>
             </phone:PivotItem>
 
             <!--帖子-->
             <phone:PivotItem Header="收藏帖子">
-                <toolkit:LongListMultiSelector x:Name="TopicList" Margin="0,14,-12,0" ItemsSource="{Binding}"
+                <toolkit:LongListMultiSelector x:Name="TopicList" Margin="0,14,-12,0" ItemsSource="{Binding TopicList}"
                                                 LayoutMode="List"
                                                 ItemTemplate="{StaticResource TopicItemTemplate}"/>
             </phone:PivotItem>
@@ -139,4 +140,4 @@
         <shell:ApplicationBar IsMenuEnabled="True"> 
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
-</phone:PhoneApplicationPage>
+</utils:MultiSelectablePage>

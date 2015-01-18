@@ -341,6 +341,12 @@ namespace AutoWP7
         // 此代码在重新激活应用程序时不执行
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            #region 指定个人本地存储路径
+
+            Utils.MeHelper.InitalizeMePersistence();
+
+            #endregion
+
             #region 清洗auth
             var setting = IsolatedStorageSettings.ApplicationSettings;
             string key = "userInfo";

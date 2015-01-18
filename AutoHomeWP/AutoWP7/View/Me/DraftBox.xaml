@@ -14,6 +14,7 @@
 
     <phone:PhoneApplicationPage.Resources>
         <utils:DraftTitleConverter x:Key="DraftTitleConverter"/>
+        <utils:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -23,30 +24,28 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="PageTitle" Text="草稿箱"  Foreground="{StaticResource App_Theme_Color}" HorizontalAlignment="Left" FontSize="72"  Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <toolkit:LongListMultiSelector x:Name="DraftList" Margin="0,14,-12,0" ItemsSource="{Binding DraftList}"
-                                                LayoutMode="List">
+        <Grid x:Name="ContentPanel" Grid.Row="1">
+            <toolkit:LongListMultiSelector x:Name="DraftList" ItemsSource="{Binding DraftList}" LayoutMode="List" Background="Purple">
                 <toolkit:LongListMultiSelector.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid Margin="0 12">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding Converter={StaticResource DraftTitleConverter}}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding SavedTime}"/>
-                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Content}"/>
+                            <TextBlock Text="{Binding Converter={StaticResource DraftTitleConverter}}" Style="{StaticResource TitleLargeTextStyle}" MaxHeight="35" TextTrimming="WordEllipsis"/>
+                            <TextBlock Grid.Column="1" Text="{Binding SavedTime,Converter={StaticResource DateTimeToStringConverter},ConverterParameter='MM-dd hh:mm'}" Style="{StaticResource ContentTextStyle}" HorizontalAlignment="Right" FontFamily="Portable User Interface" Margin="0 0 12 0"/>
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Content}" Style="{StaticResource ContentTextStyle}"/>
                         </Grid>
                     </DataTemplate>
                 </toolkit:LongListMultiSelector.ItemTemplate>

@@ -188,6 +188,7 @@
     <Compile Include="Utils\LoadMoreDataTemplateSelector.cs" />
     <Compile Include="Utils\MeConverters.cs" />
     <Compile Include="Utils\MeHelper.cs" />
+    <Compile Include="Utils\MultiSelectablePage.cs" />
     <Compile Include="View\CarSearch\CarSearchResultPage.xaml.cs">
       <DependentUpon>CarSearchResultPage.xaml</DependentUpon>
     </Compile>
@@ -268,8 +269,14 @@
     <Compile Include="View\Me\DraftBox.xaml.cs">
       <DependentUpon>DraftBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Me\MyCommentReply.xaml.cs">
+      <DependentUpon>MyCommentReply.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Me\MyFavorite.xaml.cs">
       <DependentUpon>MyFavorite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\MyForumReply.xaml.cs">
+      <DependentUpon>MyForumReply.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Me\MyInfoDetail.xaml.cs">
       <DependentUpon>MyInfoDetail.xaml</DependentUpon>
@@ -279,6 +286,9 @@
     </Compile>
     <Compile Include="View\Me\MyRecents.xaml.cs">
       <DependentUpon>MyRecents.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\OthersHomePage.xaml.cs">
+      <DependentUpon>OthersHomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Me\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -358,6 +368,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Style\AppStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\MeStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -525,7 +539,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Me\MyCommentReply.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Me\MyFavorite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\MyForumReply.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -538,6 +560,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Me\MyRecents.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\OthersHomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -659,6 +685,17 @@
     <Content Include="Images\DropDownArrow.png" />
     <Content Include="Images\favs.addto.png" />
     <Content Include="Images\favs.png" />
+    <Content Include="Images\Me\carCompare.png" />
+    <Content Include="Images\Me\carOwner.png" />
+    <Content Include="Images\Me\commentReply.png" />
+    <Content Include="Images\Me\draftbox.png" />
+    <Content Include="Images\Me\forumReply.png" />
+    <Content Include="Images\Me\myFavorite.png" />
+    <Content Include="Images\Me\myTritan.png" />
+    <Content Include="Images\Me\privateMessage.png" />
+    <Content Include="Images\Me\qq.png" />
+    <Content Include="Images\Me\recent.png" />
+    <Content Include="Images\Me\weibo.png" />
     <Content Include="Images\More\VS.png" />
     <Content Include="Images\alibi_recommendation.png" />
     <Content Include="Images\ReloadButton.png" />

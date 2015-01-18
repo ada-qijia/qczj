@@ -13,5 +13,10 @@ namespace AutoWP7.UcControl.SearchResult
         {
             this.promptTextBlock.Text = string.Format("没有找到和\"{0}\"相符的{1}", keyword, contentType);
         }
+
+        public void SetContent(string content)
+        {
+            this.promptTextBlock.Text = content;
+        }
     }
 }

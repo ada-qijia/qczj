@@ -22,6 +22,8 @@ namespace AutoWP7.View.Forum
             InitializeComponent();
 
         }
+
+        string topicTitle = string.Empty;
         //论坛id
         string bbsId = string.Empty;
         //论坛板块 (c车系论坛 a地区论坛 o主题论坛)
@@ -46,6 +48,7 @@ namespace AutoWP7.View.Forum
                         bbsId = this.NavigationContext.QueryString["bbsId"];
                         bbsType = this.NavigationContext.QueryString["bbsType"];
                         topicId = this.NavigationContext.QueryString["topicId"];
+                        topicTitle=this.NavigationContext.QueryString["title"];
                         targetReplyId = this.NavigationContext.QueryString["targetReplyId"];
                         url = this.NavigationContext.QueryString["url"];
                         pageindex = this.NavigationContext.QueryString["pageindex"];
@@ -189,6 +192,7 @@ namespace AutoWP7.View.Forum
             if (MessageBox.Show("尚未发送，是否保存到草稿箱？", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 DraftModel model = new DraftModel();
+                model.Title = topicTitle;
                 model.BBSID = bbsId;
                 model.Content = replyContent.Text;
                 model.SavedTime = DateTime.Now;

@@ -58,7 +58,7 @@ namespace AutoWP7.View.Forum
         {
             if (isSending == false)
             {
-                
+
 
                 //检查是否已经登录
                 var setting = IsolatedStorageSettings.ApplicationSettings;
@@ -78,24 +78,24 @@ namespace AutoWP7.View.Forum
                         + "&_timestamp=" + DateTime.Now.Ticks//时间戳
                         + "&album_id=1"
                         + "&autohomeua=" + Common.GetAutoHomeUA() //设备类型\t系统版本号\tautohome\t客户端版本号
-                        + "&bbsid="+ bbsId
+                        + "&bbsid=" + bbsId
                         + "&content=" + lettercontent
                         + "&imei=" + Common.GetDeviceID()//设备唯一标识
                         + "&informfriends=0"
                         + "&reply_notify_me=1"
                         + "&title=" + lettertitle
                         + "&uc_ticket=" + userInfoModel.Authorization;
-                        //生成_sign
-                        sign=Common.GetSignStr(strData);
+                    //生成_sign
+                    sign = Common.GetSignStr(strData);
 
-                        strData += "&_sign=" + sign;
+                    strData += "&_sign=" + sign;
                     //发送
                     SendData(strData);
                 }
-                else 
+                else
                 {
                     //未登录，跳转到登录页
-                    this.NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml",UriKind.Relative));
+                    this.NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.Relative));
                 }
             }
         }
@@ -106,7 +106,7 @@ namespace AutoWP7.View.Forum
         /// </summary>
         /// <param name="userKey">用户key</param>
         /// <param name="strData">数据</param>
-        private void SendData( string strData)
+        private void SendData(string strData)
         {
             try
             {
@@ -148,8 +148,9 @@ namespace AutoWP7.View.Forum
                             Common.showMsg(strMsg);
                         }else
                         {
+                            View.Forum.TopicDetailPage.ShareTitle(title);
                             topicId = (int)json.SelectToken("result").SelectToken("topicid");
-                            this.NavigationService.Navigate(new Uri("/View/Forum/TopicDetailPage.xaml?bbsId=" + bbsId + "&topicId=" + topicId + "&bbsType=" + bbsType+"&issend="+1, UriKind.Relative));
+                            this.NavigationService.Navigate(new Uri("/View/Forum/TopicDetailPage.xaml?bbsId=" + bbsId + "&topicId=" + topicId + "&bbsType=" + bbsType + "&issend=" + 1, UriKind.Relative));
                         }
                     }
                     isSending = false;

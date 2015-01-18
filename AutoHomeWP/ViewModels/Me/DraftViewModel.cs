@@ -56,7 +56,8 @@ namespace ViewModels.Me
             List<DraftModel> result = JsonHelper.DeserializeOrDefault<List<DraftModel>>(content);
             if (result != null)
             {
-                this.DraftList.Concat(result);
+                foreach (var item in result)
+                    this.DraftList.Add(item);
             }
         }
 

@@ -46,30 +46,38 @@ namespace AutoWP7.Utils
     /// <summary>
     /// For IEnumerable<T> null or empty convert to Collapsed, otherwise Visibility.
     /// For generic object type, null to Collapsed.
+    /// parameter 1 used to reverse.
     /// </summary>
     public class EmptyToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            var result = Visibility.Collapsed;
             if (value != null)
             {
                 //for int type
                 if (value is int)
                 {
-                    return (int)value == 0 ? Visibility.Collapsed : Visibility.Visible;
+                    result = (int)value == 0 ? Visibility.Collapsed : Visibility.Visible;
                 }
                 //for Ienumerable type
                 else if (value is IEnumerable<object>)
                 {
-                    return ((IEnumerable<object>)value).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
+                    result = ((IEnumerable<object>)value).Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
                 }
                 else
                 {
-                    return Visibility.Visible;
+                    result = Visibility.Visible;
                 }
             }
 
-            return Visibility.Collapsed;
+            //1 is used to reverse
+            if(parameter!=null && parameter.ToString()=="1")
+            {
+                result = result == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            }
+
+            return result;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -194,20 +202,20 @@ namespace AutoWP7.Utils
     }
 
     //论坛搜索中的精，图显示
-    public class TopicModelToJingPicConverter:IValueConverter
+    public class TopicModelToJingPicConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string result=null;
+            string result = null;
 
             TopicModel model = value as TopicModel;
-            if(model!=null)
+            if (model != null)
             {
-                if(model.IsJinghua)
+                if (model.IsJinghua)
                 {
                     result = "精";
                 }
-                else if(model.IsPic)
+                else if (model.IsPic)
                 {
                     result = "图";
                 }

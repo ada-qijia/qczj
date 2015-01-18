@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utils="clr-namespace:AutoWP7.Utils"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -13,6 +14,11 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
 
+    <phone:PhoneApplicationPage.Resources>
+        <utils:MyInfoAuthTextConverter x:Key="MyInfoAuthTextConverter"/>
+        <utils:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
+    </phone:PhoneApplicationPage.Resources>
+    
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>
@@ -26,57 +32,69 @@
         </StackPanel>
 
         <!--ContentPanel-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ScrollViewer>
-                <StackPanel>
+        <Grid x:Name="ContentPanel" Grid.Row="1">
+            <ScrollViewer Foreground="Black">
+                <StackPanel Margin="24 0">
+                    <!--set the default style-->
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="0 12"/>
+                        </Style>
+
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource ContentTextStyle}"/>
+                    </StackPanel.Resources>
+
                     <StackPanel Orientation="Horizontal">
-                        <Image/>
-                        <Image/>
+                        <Grid>
+                            <Image Source="/Images/DefaultUserIcon.png"/>
+                            <Image Source="{Binding Img}"/>
+                        </Grid>
+                        <Image Source="/Images/Me/carOwner.png" Visibility="{Binding IsCarOwner,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" Stretch="None" VerticalAlignment="Bottom"/>
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="名称"/>
-                        <TextBlock/>
+                        <TextBlock Text="名称" Style="{StaticResource TitleLargeTextStyle}"/>
+                        <TextBlock Text="{Binding UserName}"/>
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="性别"/>
-                        <TextBlock/>
+                        <TextBlock Text="性别" Style="{StaticResource TitleLargeTextStyle}"/>
+                        <TextBlock Text="{Binding Gender}"/>
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="来自"/>
-                        <TextBlock/>
+                        <TextBlock Text="来自" Style="{StaticResource TitleLargeTextStyle}"/>
+                        <TextBlock Text="{Binding City}"/>
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="注册时间"/>
-                        <TextBlock/>
+                        <TextBlock Text="注册时间" Style="{StaticResource TitleLargeTextStyle}"/>
+                        <TextBlock Text="{Binding RegisterTime}"/>
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="认证"/>
-                        <TextBlock/>
+                        <TextBlock Text="认证" Style="{StaticResource TitleLargeTextStyle}"/>
+                        <TextBlock Text="{Binding IsPhoneAuth,Converter={StaticResource MyInfoAuthTextConverter}}"/>
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="关注"/>
-                        <TextBlock/>
+                        <TextBlock Text="关注" Style="{StaticResource TitleLargeTextStyle}"/>
+                        <TextBlock Text="{Binding FollowCar}" FontFamily="Portable User Interface"/>
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="积分"/>
-                        <TextBlock/>
+                        <TextBlock Text="积分" Style="{StaticResource TitleLargeTextStyle}"/>
+                        <TextBlock Text="{Binding Score}"/>
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="家油券"/>
-                        <TextBlock/>
+                        <TextBlock Text="家油券" Style="{StaticResource TitleLargeTextStyle}"/>
+                        <TextBlock Text="{Binding JiaYouQuan}"/>
                     </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Text="勋章"/>
-                        <TextBlock/>
+                        <TextBlock Text="勋章" Style="{StaticResource TitleLargeTextStyle}"/>
+                        <TextBlock Text="{Binding MedalsNum}"/>
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>

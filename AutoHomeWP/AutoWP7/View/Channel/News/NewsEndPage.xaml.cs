@@ -1,12 +1,12 @@
-﻿using System;
+﻿using AutoWP7.Handler;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using AutoWP7.Handler;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Model;
 using ViewModels;
 
 namespace AutoWP7.View.Channel.News
@@ -35,6 +35,7 @@ namespace AutoWP7.View.Channel.News
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
             buttonCount = this.ApplicationBar.Buttons.Count;
             switch (e.NavigationMode)
             {
@@ -67,7 +68,7 @@ namespace AutoWP7.View.Channel.News
                             for (int i = 0; i < buttonCount; i++)
                             {
                                 Icon = this.ApplicationBar.Buttons[i] as IApplicationBarIconButton;
-                                Icon.IsEnabled = App.barStatus[i]; ;
+                                Icon.IsEnabled = App.barStatus[i];
                             }
                         }
 
@@ -344,12 +345,6 @@ namespace AutoWP7.View.Channel.News
         private string CreateNewsViewUrl(int page)
         {
             return AppUrlMgr.NewsWebViewUrl(Convert.ToInt32(newsId), 1, 0, 0, 1, page, 1, 0, 0);
-        }
-
-        //收藏
-        private void favorite_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

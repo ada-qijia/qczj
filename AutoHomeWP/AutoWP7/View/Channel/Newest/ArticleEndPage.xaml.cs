@@ -10,6 +10,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Model;
 using ViewModels;
+using Model.Me;
 
 namespace AutoWP7.View.Channel.Newest
 {
@@ -21,6 +22,12 @@ namespace AutoWP7.View.Channel.Newest
             wb.ScriptNotify += new EventHandler<NotifyEventArgs>(wb_ScriptNotify);
         }
 
+        public static void ShareState(FavoriteArticleModel article)
+        {
+            PhoneApplicationService.Current.State["Article"] = article;
+        }
+
+        private NewsModel news;
         //文章Id
         string newsId = string.Empty;
         //页码
@@ -42,6 +49,11 @@ namespace AutoWP7.View.Channel.Newest
                 //第一次进入页面
                 case System.Windows.Navigation.NavigationMode.New:
                     {
+                        if (PhoneApplicationService.Current.State.ContainsKey("Article"))
+                        {
+                            news = PhoneApplicationService.Current.State["Article"] as NewsModel;
+                        }
+
                         UmengSDK.UmengAnalytics.onEvent("ArticleEndPageActivity", "文章最终页的访问次数");
                         newsId = NavigationContext.QueryString["newsid"];
                         pageIndex = Convert.ToInt32(NavigationContext.QueryString["pageIndex"]);
@@ -389,6 +401,26 @@ namespace AutoWP7.View.Channel.Newest
         private string CreateNewsPageUrl(int pageIndex)
         {
             return AppUrlMgr.NewsWebViewUrl(Convert.ToInt32(newsId), 1, 0, 0, 1, pageIndex, 1, 0, 0);
+        }
+
+        //收藏
+        private void favorite_Click(object sender, EventArgs e)
+        {
+            if (news != null)
+            {
+                FavoriteArticleModel model = new FavoriteArticleModel();
+                model.ID = news.id;
+                model.Time = news.time;
+                model.Img = news.smallpic;
+                model.Title = news.title;
+                int replyCnt;
+                if (int.TryParse(news.replycount, out replyCnt))
+                {
+                    model.ReplyCount = replyCnt;
+                }
+
+               ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Article, model);
+            }
         }
     }
 }

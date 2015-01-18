@@ -97,8 +97,8 @@ namespace Model.Me
         [DataMember(Name = "publishtime")]
         public string PublishTime { get; set; }
 
-        [DataMember(Name = "updatetime")]
-        public DateTime UpdateTime { get; set; }
+        //[DataMember(Name = "updatetime")]
+        //public DateTime UpdateTime { get; set; }
 
         [DataMember(Name = "time")]
         public string Time { get; set; }

@@ -7,15 +7,6 @@ using System.Threading.Tasks;
 
 namespace Model.Me
 {
-    public enum ViewHistoryType
-    {
-        All,
-        CarSeries,
-        CarSpec,
-        Article,
-        Forum,
-        Topic,
-    }
 
     [DataContract]
     public class ViewHistoryModel

@@ -36,6 +36,9 @@
         <local:BrandImageConverter x:Name="BrandImageConverter"/>
         <local:NewsestShuoKeImgConverter x:Name="NewsestShuoKeImgConverter"/>
         <local:NewsestHeadImgConverter x:Name="NewsestHeadImgConverter"/>
+        <util:EmptyToVisibilityConverter x:Name="EmptyToVisibilityConverter"/>
+        <util:UnreadCountTextConverter x:Name="UnreadCountTextConverter"/>
+        <util:UnreadVisibilityConverter x:Name="UnreadVisibilityConverter"/>
         <!--头-->
         <DataTemplate x:Key="groupHeaderTemplate">
             <Grid   Width="450" Margin="10,10,0,0">
@@ -110,6 +113,25 @@
             <Setter Property="Margin" Value="10" />
         </Style>
 
+        <Style x:Key="BadgeBorderStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="Background" Value="Red"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="80 0 0 0"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="MinWidth" Value="22"/>
+            <Setter Property="MaxWidth" Value="50"/>
+        </Style>
+
+        <Style x:Key="BadgeTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -563,97 +585,127 @@
                 </ScrollViewer>
             </controls:PanoramaItem>
             <!--我-->
-            <controls:PanoramaItem Header="我">
-                <Grid Margin="10,-30,10,0" Background="{StaticResource App_Theme_Color}">
+            <controls:PanoramaItem x:Name="MePanoItem" Foreground="White">
+                <controls:PanoramaItem.Header>
+                    <TextBlock Text="我" Foreground="{StaticResource App_Theme_Color}"/>
+                </controls:PanoramaItem.Header>
+                
+                <Grid Margin="10,-30,10,0" DataContext="{Binding Model}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <!--个人信息-->
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="300"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <Grid Background="{StaticResource App_Theme_Color}">
+                        <Grid x:Name="NotLoginGrid" Height="120">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                        <Grid Tap="MyInfo_Tap">
+                            <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageLeftStyle}" />
+                            <TextBlock Grid.Column="1" Text="立即登录" Style="{StaticResource ButtonWhiteTextStyle}" HorizontalAlignment="Left" Tap="Login_Tap"/>
+                        </Grid>
+
+                        <Grid x:Name="IsLoginGrid" Background="Transparent" Visibility="Collapsed">
                             <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
+                                <RowDefinition Height="120"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Grid Grid.RowSpan="2">
-                                <Image x:Name="DefaultPortraitImg"/>
-                                <Image x:Name="PortraitImg"/>
+                            <Grid Tap="MyInfo_Tap">
+                                <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageLeftStyle}" />
+                                <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
                             </Grid>
 
-                            <TextBlock Grid.RowSpan="2" Grid.Column="1" Text="立即登录" VerticalAlignment="Center" Tap="Login_Tap"/>
+                            <Grid Grid.Column="1" Tap="MyInfo_Tap">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <TextBlock Text="{Binding}"/>
-                                <Image/>
-                            </StackPanel>
-                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                                <TextBlock Text="{Binding StringFormat='积分：{0'}"/>
-                                <TextBlock Text="{Binding StringFormat='家油券：{0}'}"/>
-                            </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding UserName}" Style="{StaticResource ButtonWhiteTextStyle}" VerticalAlignment="Bottom" Margin="0"/>
+                                    <Image Source="/Images/Me/carOwner.png" Visibility="{Binding IsCarOwner,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" Stretch="None" VerticalAlignment="Bottom"/>
+                                </StackPanel>
 
-                            <Image Grid.RowSpan="2" Grid.Column="2" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}"/>
-                        </Grid>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                    <TextBlock Text="{Binding Score, StringFormat='积分：{0}'}" FontSize="16" Margin="0 0 24 0"/>
+                                    <TextBlock Text="{Binding JiaYouQuan, StringFormat='家油券：{0}'}" FontSize="16"/>
+                                </StackPanel>
 
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
+                                <Image Grid.RowSpan="2" Grid.Column="1" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}" Margin="6"/>
+                            </Grid>
 
-                            <Image x:Name="CommentReplyImg"/>
-                            <Border CornerRadius="5" BorderBrush="White" BorderThickness="2" Background="Red">
-                                <TextBlock Text="1"/>
-                            </Border>
+                            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
 
-                            <Image Grid.Column="1" x:Name="ForumReplyImg"/>
-                            <Border Grid.Column="1">
-                                <TextBlock Text="2"/>
-                            </Border>
+                                <Grid Tap="CommentReply_Tap">
+                                    <Border BorderThickness="0 1 0 0" BorderBrush="White"/>
+                                    <Image Source="/Images/Me/commentReply.png" Stretch="None"/>
+                                    <TextBlock Text="评论回复"/>
+                                    <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=1,FallbackValue=Collapsed}">
+                                        <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=1}" Style="{StaticResource BadgeTextStyle}"/>
+                                    </Border>
+                                </Grid>
 
-                            <Image Grid.Column="2" x:Name="PrivateMsgImg"/>
-                            <Border Grid.Column="2">
-                                <TextBlock Text="3"/>
-                            </Border>
+                                <Grid Grid.Column="1" Tap="ForumReply_Tap">
+                                    <Border BorderThickness="1 1 1 0" BorderBrush="White"/>
+                                    <Image Source="/Images/Me/forumReply.png" Stretch="None"/>
+                                    <TextBlock Text="论坛回复"/>
+                                    <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=2,FallbackValue=Collapsed}">
+                                        <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=2}" Style="{StaticResource BadgeTextStyle}"/>
+                                    </Border>
+                                </Grid>
+
+                                <Grid Grid.Column="2" Tap="PrivateMessage_Tap">
+                                    <Border BorderThickness="0 1 0 0" BorderBrush="White"/>
+                                    <Image Source="/Images/Me/privateMessage.png" Stretch="None"/>
+                                    <TextBlock Text="私信"/>
+                                    <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=2,FallbackValue=Collapsed}">
+                                        <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=5}" Style="{StaticResource BadgeTextStyle}"/>
+                                    </Border>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
 
                     <!--常用功能-->
-                    <Grid>
-                        <wpToolkit:WrapPanel Orientation="Horizontal" >
-                            <Grid Tap="MyCollection_Tap">
-                                <Image/>
-                                <TextBlock Text="我的收藏"/>
-                            </Grid>
-                            <Grid Tap="MyHostStick_Tap">
-                                <Image/>
-                                <TextBlock Text="我的主贴"/>
-                            </Grid>
-                            <Grid Tap="DraftBox_Tap">
-                                <Image/>
-                                <TextBlock Text="草稿箱"/>
-                            </Grid>
-                            <Grid Tap="ViewHistory_Tap">
-                                <Image/>
-                                <TextBlock Text="浏览历史"/>
-                            </Grid>
-                            <Grid Tap="CarCompare_Tap">
-                                <Image/>
-                                <TextBlock Text="车型对比"/>
-                            </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="常用功能" Style="{StaticResource EmptyListHeaderStyle}" Foreground="{StaticResource App_Theme_Color}" Margin="0 12"/>
+                        <wpToolkit:WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="-6 0">
+                            <wpToolkit:WrapPanel.Resources>
+                                <Style TargetType="Image">
+                                    <Setter Property="Margin" Value="6"/>
+                                    <Setter Property="Height" Value="91"/>
+                                    <Setter Property="Width" Value="91"/>
+                                </Style>
+                            </wpToolkit:WrapPanel.Resources>
+
+                            <Image Source="/Images/Me/myFavorite.png" Tap="MyCollection_Tap"/>
+                            <Image Source="/Images/Me/myTritan.png" Tap="MyTritan_Tap"/>
+                            <!--<Image Source="/Images/Me/myTritan.png" Visibility="{Binding Visibility,ElementName=IsLoginGrid}" Tap="MyTritan_Tap"/>-->
+                            <Image Source="/Images/Me/draftbox.png" Tap="DraftBox_Tap"/>
+                            <Image Source="/Images/Me/recent.png" Tap="Recent_Tap"/>
+                            <Image Source="/Images/Me/carCompare.png" Tap="CarCompare_Tap"/>
                         </wpToolkit:WrapPanel>
                     </Grid>
                 </Grid>
@@ -703,9 +755,9 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar BackgroundColor="Black"  ForegroundColor="White"  Mode="Minimized" IsMenuEnabled="True">
-            <shell:ApplicationBar.MenuItems>
+            <!--<shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="moreIconButton" Click="moreIconButton_Click" Text="更多"/>
-            </shell:ApplicationBar.MenuItems>
+            </shell:ApplicationBar.MenuItems>-->
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

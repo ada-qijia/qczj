@@ -24,6 +24,13 @@ namespace AutoWP7.View.Forum
             InitializeComponent();
         }
 
+        public static void ShareTitle(string title)
+        {
+            PhoneApplicationService.Current.State["TopicTitle"] = title;
+        }
+
+        //帖子标题
+        string topicTitle = string.Empty;
         //论坛id
         string bbsId = string.Empty;
         //帖子Id
@@ -53,6 +60,11 @@ namespace AutoWP7.View.Forum
             {
                 case System.Windows.Navigation.NavigationMode.New:
                     {
+                        if (PhoneApplicationService.Current.State.ContainsKey("TopicTitle"))
+                        {
+                            topicTitle = PhoneApplicationService.Current.State["TopicTitle"].ToString();
+                        }
+
                         if (this.NavigationContext.QueryString.ContainsKey("from"))
                         {
                             fromType = Convert.ToInt16(this.NavigationContext.QueryString["from"]);
@@ -63,7 +75,7 @@ namespace AutoWP7.View.Forum
                             UmengSDK.UmengAnalytics.onEvent("ForumActivity", "帖子最终页点击量");
                         topicId = NavigationContext.QueryString["topicId"];
                         bbsType = this.NavigationContext.QueryString["bbsType"];
-                        bbsId = this.NavigationContext.QueryString["bbsId"];                        
+                        bbsId = this.NavigationContext.QueryString["bbsId"];
                         if (this.NavigationContext.QueryString.ContainsKey("isowner"))
                         {
                             if (!string.IsNullOrEmpty(this.NavigationContext.QueryString["isowner"]))
@@ -118,6 +130,8 @@ namespace AutoWP7.View.Forum
                                 LoadData();
                             }
                         }
+
+                        PhoneApplicationService.Current.State["TopicTitle"] = string.Empty;
                     }
 
                     break;
@@ -128,7 +142,6 @@ namespace AutoWP7.View.Forum
             abbtn.Text = isOnlyOwner == 0 ? "只看楼主" : "查看全部";
             abbtn.IconUri = isOnlyOwner == 0 ? new Uri("/Images/bar_louzhu.png", UriKind.Relative) : new Uri("/Images/bar_all.png", UriKind.Relative);
         }
-
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
@@ -292,7 +305,7 @@ namespace AutoWP7.View.Forum
             else//回复
             {
                 this.NavigationService.Navigate(new Uri("/View/Forum/ReplyCommentPage.xaml?bbsId=" + bbsId + "&topicId=" +
-                    topicId + "&bbsType=" + bbsType + "&targetReplyId=" + e.Value + "&url=creatReply" + "&pageindex=" + pageIndex, UriKind.Relative));
+                    topicId + "&bbsType=" + bbsType + "&targetReplyId=" + e.Value + "&url=creatReply" + "&pageindex=" + pageIndex + "&title=" + topicTitle, UriKind.Relative));
             }
 
         }
@@ -302,7 +315,7 @@ namespace AutoWP7.View.Forum
         {
             string url = "createReplyManyImage";
             this.NavigationService.Navigate(new Uri("/View/Forum/ReplyCommentPage.xaml?bbsId=" + bbsId + "&bbsType=" +
-               bbsType + "&topicId=" + topicId + "&targetReplyId=0&url=" + url + "&pageindex=" + pageIndex, UriKind.Relative));
+               bbsType + "&topicId=" + topicId + "&targetReplyId=0&url=" + url + "&pageindex=" + pageIndex + "&title=" + topicTitle, UriKind.Relative));
 
         }
 
@@ -313,21 +326,26 @@ namespace AutoWP7.View.Forum
         /// <returns></returns>
         private string CreateTopicView(int pageIndex, bool jumpFloor)
         {
-            return AppUrlMgr.TopicWebViewUrl(Convert.ToInt64(topicId), isOnlyOwner, pageIndex, 20, 1, 0, 0, 0, floor, 0,issend);
+            return AppUrlMgr.TopicWebViewUrl(Convert.ToInt64(topicId), isOnlyOwner, pageIndex, 20, 1, 0, 0, 0, floor, 0, issend);
         }
 
         private void onlyowner_Click_1(object sender, EventArgs e)
         {
-            if (isOnlyOwner == 0)
-                this.NavigationService.Navigate(new Uri("/View/Forum/TopicDetailPage.xaml?from=0&bbsId=" + bbsId + "&topicId=" + topicId + "&bbsType=" + bbsType + "&isowner=1", UriKind.Relative));
-            else
-                this.NavigationService.Navigate(new Uri("/View/Forum/TopicDetailPage.xaml?from=0&bbsId=" + bbsId + "&topicId=" + topicId + "&bbsType=" + bbsType + "&isowner=0", UriKind.Relative));
+            string isOwner = isOnlyOwner == 0 ? "1" : "0";
+            string url = string.Format("/View/Forum/TopicDetailPage.xaml?from=0&bbsId={0}&topicId={1}&bbsType={2}&isowner={4}", bbsId, topicId, bbsType, isOwner);
+            this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
 
         //收藏
         private void favorite_Click(object sender, EventArgs e)
         {
+            Model.Me.FavoriteTopicModel model = new Model.Me.FavoriteTopicModel();
+            model.BBSID = bbsId;
+            model.BBSType = bbsType;
+            model.ID = int.Parse(topicId);
+            model.Title = topicTitle;
 
+            ViewModels.Me.FavoriteViewModel.SingleInstance.Add(Model.Me.FavoriteType.Topic, model);
         }
     }
 

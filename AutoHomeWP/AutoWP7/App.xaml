@@ -12,6 +12,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Style/AppStyles.xaml"/>
                 <ResourceDictionary Source="Style/SearchStyles.xaml"/>
+                <ResourceDictionary Source="Style/MeStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

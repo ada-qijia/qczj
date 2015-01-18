@@ -110,8 +110,11 @@
     <Compile Include="Me\DraftViewModel.cs" />
     <Compile Include="Me\FavoriteViewModel.cs" />
     <Compile Include="Me\ForumReplyViewModel.cs" />
+    <Compile Include="Me\MeViewModel.cs" />
+    <Compile Include="Me\OthersViewModel.cs" />
     <Compile Include="Me\PrivateMessageFriendViewModel.cs" />
     <Compile Include="Me\PrivateMessageViewModel.cs" />
+    <Compile Include="Me\ThirdPartyBindingViewModel.cs" />
     <Compile Include="Me\TritanViewModel.cs" />
     <Compile Include="Me\ViewHistoryViewModel.cs" />
     <Compile Include="SaleCityListViewModel.cs" />
