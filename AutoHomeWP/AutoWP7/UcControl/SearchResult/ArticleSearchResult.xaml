@@ -43,7 +43,7 @@
             <ListBox x:Name="ArticleListBox" Grid.Row="2" ItemsSource="{Binding ArticleList}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
+                        <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" FontFamily="Portable User Interface">
                             <util:LoadMoreDataTemplateSelector.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="0 12" Tap="Article_Tap">

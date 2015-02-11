@@ -128,9 +128,9 @@ namespace ViewModels
                 // wc.Headers["Accept-Charset"] = "utf-8";
                 //wc.Headers["Accept-Charset"] = "RequestCodeType";
                 wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                
+
                 data = "Authorization=" + postData;
-                
+
                 wc.UploadStringAsync(new Uri(url), "POST", data);
                 APIEventArgs<IEnumerable<MyForumModel>> apiArgs = new APIEventArgs<IEnumerable<MyForumModel>>();
                 wc.UploadStringCompleted += new UploadStringCompletedEventHandler((ss, ee) =>
@@ -162,7 +162,7 @@ namespace ViewModels
                                 model.Grade = (string)resultJson.SelectToken("grade");
                                 model.WeiWang = (string)resultJson.SelectToken("weiWang");
                                 model.Authorization = (string)json.SelectToken("authorization");
-
+                                model.UserID = (int)resultJson.SelectToken("userId");
                                 UserInfoDataSource.Add(model);
 
 
@@ -234,11 +234,9 @@ namespace ViewModels
 
             }
 
-     
+
 
         }
-
-
     }
 
 

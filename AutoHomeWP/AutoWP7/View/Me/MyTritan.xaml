@@ -19,13 +19,13 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <Grid Grid.Row="0" Margin="12,17,12,28">
+        <Grid Grid.Row="0" Margin="12,17,12,16">
             <TextBlock x:Name="PageTitle" Text="我的主贴"  Foreground="{StaticResource App_Theme_Color}" HorizontalAlignment="Left" FontSize="72"  Style="{StaticResource PhoneTextTitle1Style}"/>
             <TextBlock Text="{Binding RowCount,StringFormat='共{0}帖'}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource BlockTitleTextStyle}"/>
         </Grid>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="24,0,12,0">
             <ListBox x:Name="TopicListBox" ItemsSource="{Binding TopicList}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -43,7 +43,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}" Style="{StaticResource TitleNormalTextStyle}"/>
+                                        <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}" Style="{StaticResource TitleLargeTextStyle}"/>
 
                                         <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding PostDate}" Style="{StaticResource FooterSmallTextStyle}"/>
                                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ReplyCount,StringFormat='\{0}回复'}" Style="{StaticResource FooterLargeTextStyle}" Margin="12 0" HorizontalAlignment="Center"/>

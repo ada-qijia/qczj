@@ -14,6 +14,7 @@ using System.Net;
 using System.Windows;
 using ViewModels.Me;
 using Model.Me;
+using System.Linq;
 
 namespace AutoWP7.View.Forum
 {
@@ -27,7 +28,7 @@ namespace AutoWP7.View.Forum
             InitializeComponent();
         }
 
-
+        DraftModel sharedModel;
         string bbsId = string.Empty;
         // c车系论坛 a地区论坛 o主题论坛
         string bbsType = string.Empty;
@@ -45,6 +46,19 @@ namespace AutoWP7.View.Forum
                         bbsType = this.NavigationContext.QueryString["bbsType"];
                         title = this.NavigationContext.QueryString["title"];
                         PageTitle.Text = title;
+
+                        //this is a draft
+                        if (this.NavigationContext.QueryString.ContainsKey("savedTime"))
+                        {
+                            string savedTime = this.NavigationContext.QueryString["savedTime"];
+                            var draftList = DraftViewModel.SingleInstance.DraftList;
+                            sharedModel = draftList.FirstOrDefault(item => item.SavedTime.ToString() == savedTime);
+                            if (sharedModel != null)
+                            {
+                                this.letterTitle.Text = sharedModel.Title;
+                                this.letterContent.Text = sharedModel.Content;
+                            }
+                        }
                     }
                     break;
             }
@@ -112,7 +126,7 @@ namespace AutoWP7.View.Forum
             {
                 GlobalIndicator.Instance.Text = "正在发送中...";
                 GlobalIndicator.Instance.IsBusy = true;
-                
+
                 if (wc == null)
                 {
                     wc = new WebClient();
@@ -126,7 +140,7 @@ namespace AutoWP7.View.Forum
                 string url = App.clubUrl + "/api/topic/appadd";
                 Uri urlSource = new Uri(url, UriKind.Absolute);
                 wc.UploadStringAsync(urlSource, "POST", strData);
-                
+
                 wc.UploadStringCompleted += new UploadStringCompletedEventHandler((ss, ee) =>
                 {
                     APIEventArgs<string> apiArgs = new APIEventArgs<string>();
@@ -141,12 +155,13 @@ namespace AutoWP7.View.Forum
                     {
                         JObject json = JObject.Parse(ee.Result);
                         int returnCode = (int)json.SelectToken("returncode");
-                        
+
                         if (returnCode != 0)
                         {
                             string strMsg = (string)json.SelectToken("message");
                             Common.showMsg(strMsg);
-                        }else
+                        }
+                        else
                         {
                             View.Forum.TopicDetailPage.ShareTitle(title);
                             topicId = (int)json.SelectToken("result").SelectToken("topicid");
@@ -154,7 +169,7 @@ namespace AutoWP7.View.Forum
                         }
                     }
                     isSending = false;
-                   
+
                 });
             }
             catch (Exception ex)
@@ -243,12 +258,23 @@ namespace AutoWP7.View.Forum
         {
             if (MessageBox.Show("尚未发送，是否保存到草稿箱？", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
-                DraftModel model = new DraftModel();
-                model.BBSID = bbsId;
-                model.Content = letterContent.Text;
-                model.SavedTime = DateTime.Now;
-                model.Title = letterTitle.Text;
-                DraftViewModel.SingleInstance.AddDraft(model);
+                if (sharedModel != null)//update
+                {
+                    sharedModel.Title = letterTitle.Text;
+                    sharedModel.Content = letterContent.Text;
+                    sharedModel.SavedTime = DateTime.Now;
+                    DraftViewModel.SingleInstance.SaveDraft();
+                }
+                else
+                {
+                    DraftModel model = new DraftModel();
+                    model.BBSID = bbsId;
+                    model.BBSType = bbsType;
+                    model.Content = letterContent.Text;
+                    model.SavedTime = DateTime.Now;
+                    model.Title = letterTitle.Text;
+                    DraftViewModel.SingleInstance.AddDraft(model);
+                }
             }
 
             base.OnBackKeyPress(e);

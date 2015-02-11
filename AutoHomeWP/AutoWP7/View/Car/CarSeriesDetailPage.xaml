@@ -19,11 +19,22 @@
     <phone:PhoneApplicationPage.Resources>
         <local:LoadMoreVisibilityConverter x:Name="loadMoreVisibility"/>
         <!--<local:LoadMoreVisibilityConverter x:Name="loadMoreVisibility"/>-->
-        <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" Opacity="0.8" x:Key="appForum" IsVisible="True" IsMenuEnabled="False">
-            <shell:ApplicationBarIconButton x:Name="lastReplyAppbar" Click="lastReplyAppbar_Click" IconUri="Images/bar_lastReply.png"   Text="最后回复"/>
-            <shell:ApplicationBarIconButton x:Name="newestAppbar" Click="newestAppbar_Click" IconUri="Images/bar_newest.png"   Text="最新发帖"/>
-            <shell:ApplicationBarIconButton x:Name="refineAppbar" Click="refineAppbar_Click" IconUri="Images/bar_ring.png" Text="精华贴"/>
-            <shell:ApplicationBarIconButton x:Name="sendLetter"  Click="sendLetter_Click_1" IconUri="Images/bar_writeComment.png" Text="发帖"/>
+        <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" Opacity="0.8" x:Key="appCarSeries" IsVisible="True" IsMenuEnabled="False">
+            <shell:ApplicationBarIconButton  Click="FavoriteCarSeries_Click" IconUri="/Images/favs.addto.png" Text="收藏"/>
+            <shell:ApplicationBarIconButton  Click="ToVS_Click" IconUri="/Images/vs1.png" Text="对比"/>
+        </shell:ApplicationBar>
+
+        <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" Opacity="0.8" x:Key="appForum" IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBar.Buttons>
+                <shell:ApplicationBarIconButton x:Name="lastReplyAppbar" Click="lastReplyAppbar_Click" IconUri="Images/bar_lastReply.png"   Text="最后回复"/>
+                <shell:ApplicationBarIconButton x:Name="newestAppbar" Click="newestAppbar_Click" IconUri="Images/bar_newest.png"   Text="最新发帖"/>
+                <shell:ApplicationBarIconButton x:Name="refineAppbar" Click="refineAppbar_Click" IconUri="Images/bar_ring.png" Text="精华贴"/>
+                <shell:ApplicationBarIconButton x:Name="sendLetter"  Click="sendLetter_Click_1" IconUri="Images/bar_writeComment.png" Text="发帖"/>
+            </shell:ApplicationBar.Buttons>
+
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="favorite" Click="favoriteForum_Click" Text="收藏" />
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
 
         <shell:ApplicationBar Opacity="0.8" BackgroundColor="Black" ForegroundColor="White" x:Key="appArticle" IsVisible="True" IsMenuEnabled="False">

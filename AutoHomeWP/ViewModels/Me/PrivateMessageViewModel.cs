@@ -13,13 +13,12 @@ namespace ViewModels.Me
     /// <summary>
     /// pageIndex=50
     /// </summary>
-    public class PrivateMessageViewModel:Search.SearchResultViewModelBase
+    public class PrivateMessageViewModel : Search.SearchResultViewModelBase
     {
         public PrivateMessageViewModel()
         {
             this.MessageList = new ObservableCollection<PrivateMessageModel>();
 
-            this.LoadMoreButtonItem = new PrivateMessageModel() { IsLoadMore = true };
             this.DownloadStringCompleted += ViewModel_DownloadStringCompleted;
         }
 
@@ -51,7 +50,7 @@ namespace ViewModels.Me
             {
                 try
                 {
-                    this.TryRemoveMoreButton();
+                    //this.TryRemoveMoreButton();
 
                     //返回的json数据
                     JObject json = JObject.Parse(e.Result);
@@ -65,23 +64,39 @@ namespace ViewModels.Me
 
                     JToken blockToken;
 
-                    //文章列表
+                    //私信列表,按顺序插入
                     blockToken = resultToken.SelectToken("list");
                     if (blockToken.HasValues)
                     {
                         var topicList = JsonHelper.DeserializeOrDefault<List<PrivateMessageModel>>(blockToken.ToString());
                         if (topicList != null)
                         {
-                            foreach (var model in topicList)
+                            //sort ascending
+                            if (topicList.Count > 1 && topicList[0].ID > topicList[topicList.Count - 1].ID)
                             {
-                                this.MessageList.Add(model);
+                                topicList.Reverse();
+                            }
+
+                            if (this.MessageList.Count == 0 || topicList[0].ID > this.MessageList[this.MessageList.Count - 1].ID)
+                            {
+                                foreach (var model in topicList)
+                                {
+                                    this.MessageList.Add(model);
+                                }
+                            }
+                            else
+                            {
+                                for (int i = topicList.Count - 1; i >= 0; i++)
+                                {
+                                    this.MessageList.Insert(0, topicList[i]);
+                                }
                             }
                         }
                     }
 
                     #endregion
 
-                    this.EnsureMoreButton();
+                    //this.EnsureMoreButton();
                 }
                 catch
                 {

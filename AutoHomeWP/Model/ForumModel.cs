@@ -294,5 +294,23 @@ namespace Model
             }
         }
 
+        private string _bbsName;
+        public string BBSName
+        {
+            get
+            {
+                return _bbsName;
+            }
+            set
+            {
+                if (value != _bbsName)
+                {
+                    OnPropertyChanging("BBSName");
+                    _loadMore = value;
+                    OnPropertyChanged("BBSName");
+                }
+            }
+        }
+
     }
 }

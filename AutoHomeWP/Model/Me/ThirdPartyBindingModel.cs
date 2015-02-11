@@ -4,12 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace Model.Me
 {
     [DataContract]
-    public class ThirdPartyBindingModel
+    public class ThirdPartyBindingModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
         [DataMember(Name = "id")]
         public int ThirdPartyID { get; set; }
 
@@ -27,5 +38,17 @@ namespace Model.Me
 
         [DataMember(Name = "token")]
         public string Token { get; set; }
+
+        private bool _isExpired;
+        public bool IsExpired { get { return _isExpired; }
+            set
+            {
+               if(value!=_isExpired)
+               {
+                   _isExpired = value;
+                   OnPropertyChanged("IsExpired");
+               }
+            }
+        }
     }
 }

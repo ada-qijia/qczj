@@ -112,8 +112,21 @@
       <HintPath>lib\MyPhoneControls.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="QConnectSDK.WindowsPhone, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\QConnectSDK.1.1.1\lib\sl4-wp71\QConnectSDK.WindowsPhone.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp.WindowsPhone">
+      <HintPath>..\packages\RestSharp.104.1\lib\sl4-wp71\RestSharp.WindowsPhone.dll</HintPath>
+    </Reference>
+    <Reference Include="SinaBase">
+      <HintPath>..\..\..\AutoHome\codeResource\weibowp7sdk-19622\SDKLibrary\SinaBase.dll</HintPath>
+    </Reference>
     <Reference Include="UmengClassLibrary, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WaterTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="WeiboSdk">
+      <HintPath>..\..\..\AutoHome\codeResource\weibowp7sdk-19622\SDKLibrary\WeiboSdk.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -159,6 +172,12 @@
     <Compile Include="UcControl\DataTemplateSelector.cs" />
     <Compile Include="UcControl\ImageToggleButton.cs" />
     <Compile Include="UcControl\KoubeiDataTemplateSelector.cs" />
+    <Compile Include="UcControl\Me\MarkedPassword.xaml.cs">
+      <DependentUpon>MarkedPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcControl\Me\UpdateSelfInfo.xaml.cs">
+      <DependentUpon>UpdateSelfInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UcControl\SearchResult\ArticleSearchResult.xaml.cs">
       <DependentUpon>ArticleSearchResult.xaml</DependentUpon>
     </Compile>
@@ -189,6 +208,7 @@
     <Compile Include="Utils\MeConverters.cs" />
     <Compile Include="Utils\MeHelper.cs" />
     <Compile Include="Utils\MultiSelectablePage.cs" />
+    <Compile Include="Utils\PrivateMessageDataTemplateSelector.cs" />
     <Compile Include="View\CarSearch\CarSearchResultPage.xaml.cs">
       <DependentUpon>CarSearchResultPage.xaml</DependentUpon>
     </Compile>
@@ -266,6 +286,12 @@
     <Compile Include="View\Me\AccountBinding.xaml.cs">
       <DependentUpon>AccountBinding.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Me\CompleteMyInfo.xaml.cs">
+      <DependentUpon>CompleteMyInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\ConnectAccount.xaml.cs">
+      <DependentUpon>ConnectAccount.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Me\DraftBox.xaml.cs">
       <DependentUpon>DraftBox.xaml</DependentUpon>
     </Compile>
@@ -289,6 +315,21 @@
     </Compile>
     <Compile Include="View\Me\OthersHomePage.xaml.cs">
       <DependentUpon>OthersHomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\PrivateMessage.xaml.cs">
+      <DependentUpon>PrivateMessage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\PrivateMessageFriends.xaml.cs">
+      <DependentUpon>PrivateMessageFriends.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\QQ\AuthenticationPage.xaml.cs">
+      <DependentUpon>AuthenticationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\QQ\AuthenticationProcess.cs" />
+    <Compile Include="View\Me\QQ\AuthenticationViewModel.cs" />
+    <Compile Include="View\Me\QQ\AuthResult.cs" />
+    <Compile Include="View\Me\ServiceProtocol.xaml.cs">
+      <DependentUpon>ServiceProtocol.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Me\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -396,6 +437,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UcControl\CarFilderFilterItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\Me\MarkedPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UcControl\Me\UpdateSelfInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -535,6 +584,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Me\CompleteMyInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\ConnectAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Me\DraftBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -564,6 +621,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Me\OthersHomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\PrivateMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\PrivateMessageFriends.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\QQ\AuthenticationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Me\ServiceProtocol.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -653,17 +726,22 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <Resource Include="qzone.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\CallPrice.jpg" />
     <Resource Include="Images\detail1.jpg" />
     <Resource Include="Images\Tiles\ShuoKe.png" />
+    <Content Include="Assets\AppBar\check.png" />
     <Content Include="Assets\AppBar\favs.addto.png" />
+    <Content Include="Assets\AppBar\refresh.png" />
     <Content Include="Images\alibi_summary.png" />
+    <Content Include="Images\bar_select.png" />
     <Content Include="Images\ArrowR.png" />
     <Content Include="Images\ArrowRWhite.png" />
     <Content Include="Images\bar_all.png" />
@@ -685,11 +763,14 @@
     <Content Include="Images\DropDownArrow.png" />
     <Content Include="Images\favs.addto.png" />
     <Content Include="Images\favs.png" />
+    <Content Include="Images\Me\bar_exit.png" />
     <Content Include="Images\Me\carCompare.png" />
     <Content Include="Images\Me\carOwner.png" />
     <Content Include="Images\Me\commentReply.png" />
     <Content Include="Images\Me\draftbox.png" />
     <Content Include="Images\Me\forumReply.png" />
+    <Content Include="Images\Me\friendMessageTriangle.png" />
+    <Content Include="Images\Me\meMessageTriangle.png" />
     <Content Include="Images\Me\myFavorite.png" />
     <Content Include="Images\Me\myTritan.png" />
     <Content Include="Images\Me\privateMessage.png" />
@@ -715,7 +796,9 @@
     <Content Include="lib\DBCS.dll" />
     <Content Include="lib\HtmlAgilityPack.dll" />
     <Content Include="lib\Microsoft.Phone.Controls.Toolkit.pdb" />
-    <Content Include="lib\Microsoft.Phone.Controls.Toolkit.XML" />
+    <Content Include="lib\Microsoft.Phone.Controls.Toolkit.XML">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="SplashScreenImage.Screen-720p.jpg" />
     <Content Include="SplashScreenImage.Screen-WVGA.jpg" />
     <Content Include="SplashScreenImage.Screen-WXGA.jpg" />

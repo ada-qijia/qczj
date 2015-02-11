@@ -1,0 +1,134 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="AutoWP7.View.Me.OthersHomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:util="clr-namespace:AutoWP7.Utils"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+        <util:EmptyToVisibilityConverter x:Name="EmptyToVisibilityConverter"/>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Margin="12,17,0,16">
+            <TextBlock x:Name="PageTitle" Text="个人主页"  Foreground="{StaticResource App_Theme_Color}" HorizontalAlignment="Left" FontSize="72"  Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1">
+            <ScrollViewer>
+                <StackPanel Margin="24 0">
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="0 12"/>
+                        </Style>
+
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource ContentTextStyle}"/>
+                    </StackPanel.Resources>
+
+                    <StackPanel Margin="0" DataContext="{Binding MainInfo}">
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.RowSpan="2" Margin="-20 0 0 0">
+                                <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageLeftStyle}"/>
+                                <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                            </Grid>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0">
+                                <TextBlock Text="{Binding UserName}" Style="{StaticResource TitleLargeTextStyle}" VerticalAlignment="Bottom" Margin="0"/>
+                                <Image Source="/Images/Me/carOwner.png" Visibility="{Binding IsCarOwner,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" Stretch="None" VerticalAlignment="Bottom"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Score, StringFormat='积分：{0}'}" FontSize="16" VerticalAlignment="Bottom"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding JiaYouQuan, StringFormat='家油券：{0}'}" FontSize="16" VerticalAlignment="Bottom"/>
+                        </Grid>
+
+                        <StackPanel>
+                            <TextBlock Text="来自" Style="{StaticResource TitleLargeTextStyle}"/>
+                            <TextBlock Text="{Binding City}"/>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Text="注册时间" Style="{StaticResource TitleLargeTextStyle}"/>
+                            <TextBlock Text="{Binding RegisterTime}"/>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Text="爱车" Style="{StaticResource TitleLargeTextStyle}"/>
+                            <TextBlock Text="{Binding FollowCar}"/>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Text="勋章" Style="{StaticResource TitleLargeTextStyle}"/>
+                            <TextBlock Text="{Binding MedalsNum}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding RowCount, StringFormat='主贴列表（共{0}帖）'}" Style="{StaticResource TitleLargeTextStyle}" Margin="0 12"/>
+
+                    <ItemsControl ItemsSource="{Binding TopicList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
+                                    <util:LoadMoreDataTemplateSelector.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="0 12" Tap="Topic_Tap">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}" Style="{StaticResource TitleNormalTextStyle}"/>
+
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding PostDate}" Style="{StaticResource FooterSmallTextStyle}"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ReplyCount,StringFormat='\{0}回复'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Center" Margin="12 0"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0" FontFamily="Portable User Interface"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </util:LoadMoreDataTemplateSelector.ItemTemplate>
+
+                                    <util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMore_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </util:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </util:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</phone:PhoneApplicationPage>

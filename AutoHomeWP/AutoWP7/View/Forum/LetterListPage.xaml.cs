@@ -52,10 +52,14 @@ namespace AutoWP7.View.Forum
                 url = CreateTopicsUrl(false, 0);
                 //url = string.Format(App.headUrl + "/clubapp/topicList/topiclist.ashx?orderBy=replyDate&bbsId={0}&bbs={1}", bbsId,bbsType);
                 ForumListLoadData(url, true);
+
+                //添加浏览历史
+                AddRecents();
             }
+
+            //设置收藏按钮状态
+            setFavoriteButton();
         }
-
-
 
         #region 论坛数据加载
 
@@ -225,17 +229,68 @@ namespace AutoWP7.View.Forum
             this.NavigationService.Navigate(new Uri(searchPageUrl, UriKind.Relative));
         }
 
-        //收藏
+        #region 收藏管理
+
+        //收藏论坛
         private void favorite_Click(object sender, EventArgs e)
+        {
+            var favoriteBtn = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+
+            if (favoriteBtn.Text.Contains("取消"))
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Forum, new List<int>{ int.Parse(bbsId)});
+                setFavoriteButton(success);
+                string msg = success ? "取消收藏成功" : "取消收藏失败";
+                Common.showMsg(msg);
+            }
+            else
+            {
+                FavoriteForumModel model = CreateCurrentForumModel();
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Forum, model);
+                setFavoriteButton(!success);
+                string msg = success ? "收藏成功" : "收藏失败";
+                Common.showMsg(msg);
+            }
+        }
+
+        private FavoriteForumModel CreateCurrentForumModel()
         {
             FavoriteForumModel model = new FavoriteForumModel();
             model.ID = int.Parse(bbsId);
             model.Name = title;
             model.Type = bbsType;
             model.Time = DateTime.Now.ToString();
-
-            ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Forum, model);
+            return model;
         }
 
+        private void setFavoriteButton(bool? addFavorite = null)
+        {
+            var favoriteBtn = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+
+            int id = int.Parse(bbsId);
+            bool add;
+            if (addFavorite.HasValue)
+            {
+                add = addFavorite.Value;
+            }
+            else
+            {
+                var exist = ViewModels.Me.FavoriteViewModel.SingleInstance.Exist(FavoriteType.Forum, id);
+                add = !exist;
+            }
+            favoriteBtn.Text = add ? "收藏" : "取消收藏";
+        }
+
+        #endregion
+
+        #region 浏览历史
+
+        private void AddRecents()
+        {
+            var model = this.CreateCurrentForumModel();
+            ViewModels.Me.ViewHistoryViewModel.SingleInstance.AddItem(FavoriteType.Forum, model);
+        }
+
+        #endregion
     }
 }

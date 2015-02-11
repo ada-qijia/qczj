@@ -264,5 +264,21 @@ namespace Model
             }
         }
 
+        //用户ID
+        private int _userID;
+        [Column]
+        public int UserID
+        {
+            get { return _userID; }
+            set
+            {
+                if (value != _userID)
+                {
+                    OnPropertyChanging("UserID");
+                    _userID = value;
+                    OnPropertyChanged("UserID");
+                }
+            }
+        }
     }
 }

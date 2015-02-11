@@ -2,6 +2,7 @@
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Model;
+using Model.Me;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,6 +21,13 @@ namespace AutoWP7.View.Channel.News
         {
             InitializeComponent();
         }
+
+        public static void ShareState(FavoriteArticleModel article)
+        {
+            PhoneApplicationService.Current.State[Utils.MeHelper.FavoriteStateKey] = article;
+        }
+
+        private FavoriteArticleModel news;
 
         //新闻id
         string newsId = string.Empty;
@@ -41,6 +49,12 @@ namespace AutoWP7.View.Channel.News
             {
                 case System.Windows.Navigation.NavigationMode.New:
                     {
+                        if (PhoneApplicationService.Current.State.ContainsKey(Utils.MeHelper.FavoriteStateKey))
+                        {
+                            news = PhoneApplicationService.Current.State[Utils.MeHelper.FavoriteStateKey] as FavoriteArticleModel;
+                            PhoneApplicationService.Current.State.Remove(Utils.MeHelper.FavoriteStateKey);
+                        }
+
                         UmengSDK.UmengAnalytics.onEvent("ArticleEndPageActivity", "文章最终页的访问次数");
 
                         newsId = NavigationContext.QueryString["newsid"];
@@ -54,8 +68,11 @@ namespace AutoWP7.View.Channel.News
                         }
                         else if (pageType == 2)
                         {
-                            LoadEndPage();
+                            LoadShuokeData();
                         }
+
+                        //添加浏览历史
+                        AddRecents();
                     }
                     break;
                 case System.Windows.Navigation.NavigationMode.Back:
@@ -71,13 +88,15 @@ namespace AutoWP7.View.Channel.News
                                 Icon.IsEnabled = App.barStatus[i];
                             }
                         }
-
-
                     }
                     break;
-
             }
+            //设置收藏按钮状态
+            setFavoriteButton();
 
+            //设置小图模式开关
+            bool isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode();
+            SetImageModeMenuItem(isSmallImageMode);
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -101,7 +120,6 @@ namespace AutoWP7.View.Channel.News
 
         //分页集合
         public static ObservableCollection<NewsDetailModel> newsDataSource = new ObservableCollection<NewsDetailModel>();
-
 
         #region 分页数据加载
         NewsDetailViewModel newsVM = null;
@@ -133,7 +151,7 @@ namespace AutoWP7.View.Channel.News
                     //分页控件
                     if (newsDataSource.Count <= 1)
                     {
-                        IApplicationBarIconButton iconButton = this.ApplicationBar.Buttons[0] as IApplicationBarIconButton;
+                        IApplicationBarIconButton iconButton = this.ApplicationBar.Buttons[1] as IApplicationBarIconButton;
                         iconButton.IsEnabled = false;
 
                     }
@@ -146,13 +164,10 @@ namespace AutoWP7.View.Channel.News
         }
         #endregion
 
-        private void LoadEndPage()
+        private void LoadShuokeData()
         {
-            if (pageType == 2)
-            {
-                string newsPageUrl = AppUrlMgr.ShuoWebViewUrl(Convert.ToInt32(newsId), 0, 1, 1, 0, 0);
-                wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute));
-            }
+            string newsPageUrl = AppUrlMgr.ShuoWebViewUrl(Convert.ToInt32(newsId), 0, 1, 1, 0, 0);
+            wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute));
         }
 
         // 上页
@@ -179,7 +194,6 @@ namespace AutoWP7.View.Channel.News
             }
             (App.Current as App).newsPartPageMessage.Hide();
             this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsCommentListPage.xaml?newsid=" + newsId + "&pageType=" + pageType, UriKind.Relative));
-
         }
 
         // 下页
@@ -217,7 +231,7 @@ namespace AutoWP7.View.Channel.News
         private void wb_Navigating(object sender, NavigatingEventArgs e)
         {
             IApplicationBarIconButton Icon;
-            for (int i = 0; i < buttonCount; i++)
+            for (int i = 1; i < buttonCount; i++)
             {
                 Icon = this.ApplicationBar.Buttons[i] as IApplicationBarIconButton;
                 Icon.IsEnabled = false;
@@ -233,21 +247,21 @@ namespace AutoWP7.View.Channel.News
             IApplicationBarIconButton iconButton;
             if (pageCount <= 1)//如果总页数小于等于1  
             {
-                for (int i = 0; i < buttonCount; i++)
+                for (int i = 1; i < buttonCount; i++)
                 {
                     //将上页和分页控件置灰
                     iconButton = this.ApplicationBar.Buttons[i] as IApplicationBarIconButton;
                     iconButton.IsEnabled = false;
                 }
                 //将评论控件置可见
-                iconButton = this.ApplicationBar.Buttons[1] as IApplicationBarIconButton;
+                iconButton = this.ApplicationBar.Buttons[2] as IApplicationBarIconButton;
                 iconButton.IsEnabled = true;
 
             }
             else
             {
 
-                for (int i = 0; i < buttonCount; i++)
+                for (int i = 1; i < buttonCount; i++)
                 {
                     iconButton = this.ApplicationBar.Buttons[i] as IApplicationBarIconButton;
                     iconButton.IsEnabled = true;
@@ -292,26 +306,30 @@ namespace AutoWP7.View.Channel.News
                     for (int i = 0; i < buttonCount; i++)
                     {
                         App.barStatus[i] = (this.ApplicationBar.Buttons[i] as IApplicationBarIconButton).IsEnabled;
-
                     }
+
                     this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ShowBigImage.xaml?type=1&id=" + newsId + "&url=" + e.Value, UriKind.Relative));
                 }
                 else
                 {
+                    if (news != null)
+                    {
+                        NewsEndPage.ShareState(news);
+                    }
+
                     if (e.Value.Contains("-"))//带页码的文章最终页
                     {
                         string[] strArrary = e.Value.Split('-');
                         newsId = strArrary[0];
                         pageIndex = Convert.ToInt32(strArrary[1]);
-                        urlSource = new Uri("/View/Channel/Newest/ArticleEndPage.xaml?" + new Guid().ToString() + "&newsid=" + newsId + "&pageIndex=" + pageIndex, UriKind.Relative);
+                        urlSource = new Uri("/View/Channel/News/NewsEndPage.xaml?" + new Guid().ToString() + "&newsid=" + newsId + "&pageIndex=" + pageIndex + "&pageType=" + pageType, UriKind.Relative);
                         this.NavigationService.Navigate(urlSource);
-
                     }
-                    else  //不带页码的文章最终页
+                    else //不带页码的文章最终页
                     {
                         newsId = e.Value;
                         pageIndex = 1;
-                        urlSource = new Uri("/View/Channel/Newest/ArticleEndPage.xaml?" + new Guid().ToString() + "&newsid=" + newsId + "&pageIndex=" + pageIndex, UriKind.Relative);
+                        urlSource = new Uri("/View/Channel/News/NewsEndPage.xaml?" + new Guid().ToString() + "&newsid=" + newsId + "&pageIndex=" + pageIndex + "&pageType=" + pageType, UriKind.Relative);
                         this.NavigationService.Navigate(urlSource);
                     }
                 }
@@ -334,7 +352,7 @@ namespace AutoWP7.View.Channel.News
         //刷新
         private void refreshButton_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            string newsPageUrl = CreateNewsViewUrl(pageIndex);
+            string newsPageUrl = pageType == 2 ? CreateShuokeViewUrl() : CreateNewsViewUrl(pageIndex);
             wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute));
             //wb.Navigate(new Uri(App.headUrl + "/news/news.aspx?newsid=" + newsId + "&pageIndex=" + pageIndex, UriKind.Absolute));
             refreshButton.Visibility = Visibility.Collapsed;
@@ -344,7 +362,94 @@ namespace AutoWP7.View.Channel.News
 
         private string CreateNewsViewUrl(int page)
         {
-            return AppUrlMgr.NewsWebViewUrl(Convert.ToInt32(newsId), 1, 0, 0, 1, page, 1, 0, 0);
+            int isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode() ? 1 : 0;
+            return AppUrlMgr.NewsWebViewUrl(Convert.ToInt32(newsId), 1, isSmallImageMode, 0, 1, page, 1, 0, 0);
         }
+
+        private string CreateShuokeViewUrl()
+        {
+            return AppUrlMgr.ShuoWebViewUrl(Convert.ToInt32(newsId), 0, 1, 1, 0, 0);
+        }
+
+        #region 收藏管理
+
+        //收藏文章
+        private void favorite_Click(object sender, EventArgs e)
+        {
+            var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+
+            if (favoriteBtn.Text.Contains("取消"))
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int>{ news.ID});
+                setFavoriteButton(success);
+                string msg = success ? "取消收藏成功" : "取消收藏失败";
+                Common.showMsg(msg);
+            }
+            else
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Article, news);
+                setFavoriteButton(!success);
+                string msg = success ? "收藏成功" : "收藏失败";
+                Common.showMsg(msg);
+            }
+        }
+
+        private void setFavoriteButton(bool? addFavorite = null)
+        {
+            var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            if (news == null)
+            {
+                favoriteBtn.IsEnabled = false;
+            }
+            else
+            {
+                bool add;
+                if (addFavorite.HasValue)
+                {
+                    add = addFavorite.Value;
+                }
+                else
+                {
+                    var exist = ViewModels.Me.FavoriteViewModel.SingleInstance.Exist(FavoriteType.Article, news.ID);
+                    add = !exist;
+                }
+                string iconUrl = add ? "/Images/favs.addto.png" : "/Images/favs.png";
+                favoriteBtn.IconUri = new Uri(iconUrl, UriKind.Relative);
+                favoriteBtn.Text = add ? "收藏" : "取消收藏";
+                favoriteBtn.IsEnabled = true;
+            }
+        }
+
+        #endregion
+
+        #region 大图小图模式
+
+        //切换大图小图模式
+        private void ImageMode_Click(object sender, EventArgs e)
+        {
+            var menuItem = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+            bool toSmallMode = menuItem.Text.Contains("小");
+            System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings[Utils.MeHelper.SmallImageModeKey] = toSmallMode;
+
+            SetImageModeMenuItem(toSmallMode);
+            refreshButton_Tap_1(null, null);
+        }
+
+        private void SetImageModeMenuItem(bool isSmallImageMode)
+        {
+            var menuItem = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+            menuItem.Text = isSmallImageMode ? "大图模式" : "小图模式";
+        }
+
+        #endregion
+
+        #region 浏览历史
+
+        private void AddRecents()
+        {
+            ViewModels.Me.ViewHistoryViewModel.SingleInstance.AddItem(FavoriteType.Article, news);
+        }
+
+        #endregion
     }
 }

@@ -120,7 +120,7 @@
             <Setter Property="Background" Value="Red"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Margin" Value="80 0 0 0"/>
+            <Setter Property="Margin" Value="75 3 0 0"/>
             <Setter Property="Height" Value="22"/>
             <Setter Property="MinWidth" Value="22"/>
             <Setter Property="MaxWidth" Value="50"/>
@@ -132,6 +132,8 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+
+        <SolidColorBrush x:Key="TransBorderBrush" Color="#33ffffff"/>
     </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -589,7 +591,7 @@
                 <controls:PanoramaItem.Header>
                     <TextBlock Text="我" Foreground="{StaticResource App_Theme_Color}"/>
                 </controls:PanoramaItem.Header>
-                
+
                 <Grid Margin="10,-30,10,0" DataContext="{Binding Model}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -598,7 +600,7 @@
 
                     <!--个人信息-->
                     <Grid Background="{StaticResource App_Theme_Color}">
-                        <Grid x:Name="NotLoginGrid" Height="120">
+                        <Grid x:Name="NotLoginGrid" Height="120" Visibility="{Binding Converter={StaticResource EmptyToVisibilityConverter}, ConverterParameter=1,TargetNullValue=Visible}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
@@ -608,7 +610,7 @@
                             <TextBlock Grid.Column="1" Text="立即登录" Style="{StaticResource ButtonWhiteTextStyle}" HorizontalAlignment="Left" Tap="Login_Tap"/>
                         </Grid>
 
-                        <Grid x:Name="IsLoginGrid" Background="Transparent" Visibility="Collapsed">
+                        <Grid x:Name="IsLoginGrid" Background="Transparent" Visibility="{Binding Converter={StaticResource EmptyToVisibilityConverter},TargetNullValue=Collapsed}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="120"/>
                                 <RowDefinition Height="Auto"/>
@@ -623,7 +625,7 @@
                                 <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
                             </Grid>
 
-                            <Grid Grid.Column="1" Tap="MyInfo_Tap">
+                            <Grid Grid.Column="1" Background="Transparent" Tap="MyInfo_Tap">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -635,15 +637,15 @@
 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding UserName}" Style="{StaticResource ButtonWhiteTextStyle}" VerticalAlignment="Bottom" Margin="0"/>
-                                    <Image Source="/Images/Me/carOwner.png" Visibility="{Binding IsCarOwner,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" Stretch="None" VerticalAlignment="Bottom"/>
+                                    <Image Source="/Images/Me/carOwner.png" Width="20" Visibility="{Binding IsCarOwner,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" VerticalAlignment="Bottom"/>
                                 </StackPanel>
 
-                                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" Margin="0 6">
                                     <TextBlock Text="{Binding Score, StringFormat='积分：{0}'}" FontSize="16" Margin="0 0 24 0"/>
                                     <TextBlock Text="{Binding JiaYouQuan, StringFormat='家油券：{0}'}" FontSize="16"/>
                                 </StackPanel>
 
-                                <Image Grid.RowSpan="2" Grid.Column="1" Source="/Images/ArrowR.png" Style="{StaticResource ArrowImageStyle}" Margin="6"/>
+                                <Image Grid.RowSpan="2" Grid.Column="1" Source="/Images/ArrowRWhite.png" Style="{StaticResource ArrowImageStyle}" Margin="6"/>
                             </Grid>
 
                             <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -653,32 +655,56 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
 
-                                <Grid Tap="CommentReply_Tap">
-                                    <Border BorderThickness="0 1 0 0" BorderBrush="White"/>
-                                    <Image Source="/Images/Me/commentReply.png" Stretch="None"/>
-                                    <TextBlock Text="评论回复"/>
-                                    <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=1,FallbackValue=Collapsed}">
-                                        <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=1}" Style="{StaticResource BadgeTextStyle}"/>
-                                    </Border>
-                                </Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="{StaticResource TransBorderBrush}"/>
+                                        <Setter Property="Height" Value="80"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </Style>
 
-                                <Grid Grid.Column="1" Tap="ForumReply_Tap">
-                                    <Border BorderThickness="1 1 1 0" BorderBrush="White"/>
-                                    <Image Source="/Images/Me/forumReply.png" Stretch="None"/>
-                                    <TextBlock Text="论坛回复"/>
-                                    <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=2,FallbackValue=Collapsed}">
-                                        <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=2}" Style="{StaticResource BadgeTextStyle}"/>
-                                    </Border>
-                                </Grid>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Height" Value="40"/>
+                                        <Setter Property="VerticalAlignment" Value="Top"/>
+                                        <Setter Property="Margin" Value="6"/>
+                                    </Style>
 
-                                <Grid Grid.Column="2" Tap="PrivateMessage_Tap">
-                                    <Border BorderThickness="0 1 0 0" BorderBrush="White"/>
-                                    <Image Source="/Images/Me/privateMessage.png" Stretch="None"/>
-                                    <TextBlock Text="私信"/>
-                                    <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=2,FallbackValue=Collapsed}">
-                                        <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=5}" Style="{StaticResource BadgeTextStyle}"/>
-                                    </Border>
-                                </Grid>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="16"/>
+                                        <Setter Property="VerticalAlignment" Value="Bottom"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="Margin" Value="6"/>
+                                    </Style>
+                                </Grid.Resources>
+
+                                <Border BorderThickness="0 1 0 0" Tap="CommentReply_Tap">
+                                    <Grid>
+                                        <Image Source="/Images/Me/commentReply.png"/>
+                                        <TextBlock Text="评论回复"/>
+                                        <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=1,FallbackValue=Collapsed}">
+                                            <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=1}" Style="{StaticResource BadgeTextStyle}"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Column="1" BorderThickness="1 1 1 0" Tap="ForumReply_Tap">
+                                    <Grid>
+                                        <Image Source="/Images/Me/forumReply.png"/>
+                                        <TextBlock Text="论坛回复"/>
+                                        <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=2,FallbackValue=Collapsed}">
+                                            <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=2}" Style="{StaticResource BadgeTextStyle}"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Column="2" BorderThickness="0 1 0 0" Tap="PrivateMessage_Tap">
+                                    <Grid>
+                                        <Image Source="/Images/Me/privateMessage.png"/>
+                                        <TextBlock Text="私信"/>
+                                        <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=2,FallbackValue=Collapsed}">
+                                            <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=5}" Style="{StaticResource BadgeTextStyle}"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -693,19 +719,64 @@
                         <TextBlock Text="常用功能" Style="{StaticResource EmptyListHeaderStyle}" Foreground="{StaticResource App_Theme_Color}" Margin="0 12"/>
                         <wpToolkit:WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="-6 0">
                             <wpToolkit:WrapPanel.Resources>
-                                <Style TargetType="Image">
-                                    <Setter Property="Margin" Value="6"/>
-                                    <Setter Property="Height" Value="91"/>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="LightGray"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="Background" Value="White"/>
                                     <Setter Property="Width" Value="91"/>
+                                    <Setter Property="Height" Value="91"/>
+                                    <Setter Property="Margin" Value="6"/>
+                                </Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Height" Value="65"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Top"/>
+                                </Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource ContentTextStyle}">
+                                    <Setter Property="VerticalAlignment" Value="Bottom"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="Margin" Value="3"/>
                                 </Style>
                             </wpToolkit:WrapPanel.Resources>
 
-                            <Image Source="/Images/Me/myFavorite.png" Tap="MyCollection_Tap"/>
-                            <Image Source="/Images/Me/myTritan.png" Tap="MyTritan_Tap"/>
-                            <!--<Image Source="/Images/Me/myTritan.png" Visibility="{Binding Visibility,ElementName=IsLoginGrid}" Tap="MyTritan_Tap"/>-->
-                            <Image Source="/Images/Me/draftbox.png" Tap="DraftBox_Tap"/>
-                            <Image Source="/Images/Me/recent.png" Tap="Recent_Tap"/>
-                            <Image Source="/Images/Me/carCompare.png" Tap="CarCompare_Tap"/>
+                            <Border Tap="MyCollection_Tap">
+                                <Grid>
+                                    <Image Source="/Images/Me/myFavorite.png"/>
+                                    <TextBlock Text="我的收藏"/>
+                                </Grid>
+                            </Border>
+
+                            <Border x:Name="MyTritanPanel" Tap="MyTritan_Tap" Visibility="{Binding Visibility,ElementName=IsLoginGrid}">
+                                <Grid>
+                                    <Image Source="/Images/Me/myTritan.png"/>
+                                    <TextBlock Text="我的主帖"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Tap="DraftBox_Tap">
+                                <Grid>
+                                    <Image Source="/Images/Me/draftbox.png"/>
+                                    <TextBlock Text="草稿箱"/>
+                                    <Border x:Name="UnreadDraftBorder" Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding UnReadCount,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" Margin="60 3 0 0">
+                                        <TextBlock Text="{Binding UnReadCount}" Style="{StaticResource BadgeTextStyle}"/>
+                                    </Border>
+
+                                </Grid>
+                            </Border>
+
+                            <Border Tap="Recent_Tap">
+                                <Grid>
+                                    <Image Source="/Images/Me/recent.png"/>
+                                    <TextBlock Text="浏览历史"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Tap="CarCompare_Tap">
+                                <Grid>
+                                    <Image Source="/Images/Me/carCompare.png"/>
+                                    <TextBlock Text="车型对比"/>
+                                </Grid>
+                            </Border>
                         </wpToolkit:WrapPanel>
                     </Grid>
                 </Grid>

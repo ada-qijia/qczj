@@ -4,15 +4,17 @@ using System.Runtime.Serialization;
 
 namespace Model.Me
 {
-    
+    /// <summary>
+    /// 数值与获取收藏列表中参数对应
+    /// </summary>
     public enum FavoriteType
     {
-        All,
-        CarSeries,
-        CarSpec,
-        Article,
-        Forum,
-        Topic,
+        All=0,
+        CarSeries=3,
+        CarSpec=4,
+        Article=5,
+        Forum=2,
+        Topic=1,
     }
 
     [DataContract]
@@ -34,9 +36,18 @@ namespace Model.Me
         public List<FavoriteTopicModel> TopicList { get; set; }
     }
 
+    [DataContract]
+    public class FavoriteModelBase : LoadMoreItem
+    {
+        /// <summary>
+        /// 1 添加收藏，2 取消收藏
+        /// </summary>
+        public int Action { get; set; }
+    }
+
     //this should be consistent with cloud data schema
     [DataContract]
-    public class FavoriteCarSeriesModel:LoadMoreItem
+    public class FavoriteCarSeriesModel : FavoriteModelBase
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }
@@ -58,7 +69,7 @@ namespace Model.Me
     }
 
     [DataContract]
-    public class FavoriteCarSpecModel:LoadMoreItem
+    public class FavoriteCarSpecModel : FavoriteModelBase
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }
@@ -69,7 +80,7 @@ namespace Model.Me
         [DataMember(Name = "price")]
         public string LowPrice { get; set; }
 
-        [DataMember(Name="seriesname")]
+        [DataMember(Name = "seriesname")]
         public string SeriesName { get; set; }
 
         [DataMember(Name = "pic")]
@@ -80,7 +91,7 @@ namespace Model.Me
     }
 
     [DataContract]
-    public class FavoriteArticleModel:LoadMoreItem
+    public class FavoriteArticleModel : FavoriteModelBase
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }
@@ -108,7 +119,7 @@ namespace Model.Me
     }
 
     [DataContract]
-    public class FavoriteForumModel:LoadMoreItem
+    public class FavoriteForumModel : FavoriteModelBase
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }
@@ -124,7 +135,7 @@ namespace Model.Me
     }
 
     [DataContract]
-    public class FavoriteTopicModel:LoadMoreItem
+    public class FavoriteTopicModel : FavoriteModelBase
     {
         [DataMember(Name = "id")]
         public int ID { get; set; }

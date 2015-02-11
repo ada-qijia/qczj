@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel Grid.Row="0" Margin="12,17,0,16">
             <TextBlock x:Name="PageTitle" Text="个人资料" Foreground="{StaticResource App_Theme_Color}" HorizontalAlignment="Left" FontSize="72"  Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
@@ -102,8 +102,8 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar Mode="Minimized" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/bar_pre.png" Click="Logout_Click" Text="退出账户"/>
+        <shell:ApplicationBar Opacity="0.8" BackgroundColor="Black" ForegroundColor="White" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/Me/bar_exit.png" Click="Logout_Click" Text="退出账户"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

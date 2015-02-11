@@ -12,38 +12,18 @@ namespace Model.Me
     public class ViewHistoryModel
     {
         [DataMember]
-        public List<ViewHistoryCarSeriesModel> CarSeriesList { get; set; }
+        public List<FavoriteCarSeriesModel> CarSeriesList { get; set; }
 
         [DataMember]
-        public List<ViewHistoryCarSpecModel> CarSpecList { get; set; }
+        public List<FavoriteCarSpecModel> CarSpecList { get; set; }
 
         [DataMember]
-        public List<ViewHistoryArticleModel> ArticleList { get; set; }
+        public List<FavoriteArticleModel> ArticleList { get; set; }
 
         [DataMember]
-        public List<ViewHistoryForumModel> ForumList { get; set; }
+        public List<FavoriteForumModel> ForumList { get; set; }
 
         [DataMember]
-        public List<ViewHistoryTopicModel> TopicList { get; set; }
+        public List<FavoriteTopicModel> TopicList { get; set; }
     }
-
-    [DataContract]
-    public class ViewHistoryCarSeriesModel:FavoriteCarSeriesModel
-    { }
-
-    [DataContract]
-    public class ViewHistoryCarSpecModel:FavoriteCarSpecModel
-    { }
-
-    [DataContract]
-    public class ViewHistoryArticleModel : FavoriteArticleModel
-    { }
-
-    [DataContract]
-    public class ViewHistoryForumModel : FavoriteForumModel
-    { }
-
-    [DataContract]
-    public class ViewHistoryTopicModel:FavoriteTopicModel
-    { }
 }

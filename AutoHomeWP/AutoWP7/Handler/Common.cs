@@ -24,7 +24,7 @@ namespace AutoWP7.Handler
         public static void showMsg(string msg)
         {
             ToastPrompt prompt = new ToastPrompt();
-            prompt.Foreground = new SolidColorBrush(Color.FromArgb(200,255,255,255));
+            prompt.Foreground = new SolidColorBrush(Color.FromArgb(200, 255, 255, 255));
             prompt.Message = msg;
             prompt.MillisecondsUntilHidden = 1000;
             prompt.Show();
@@ -82,7 +82,7 @@ namespace AutoWP7.Handler
         /// 验证是否已经登录
         /// </summary>
         /// <returns>true(已登录) false(未登录)</returns>
-        public static  bool isLogin()
+        public static bool isLogin()
         {
             var setting = IsolatedStorageSettings.ApplicationSettings;
             string key = "userInfo";
@@ -139,7 +139,7 @@ namespace AutoWP7.Handler
             _sign = App.appKey + _sign + App.appKey;
             _sign = MD5.GetMd5String(_sign);
             _sign = _sign.ToUpper();
-                return _sign;
+            return _sign;
         }
         /// <summary>
         /// 获取User-Agent（设备类型\t系统版本号\tautohome\t客户端版本号）
@@ -149,6 +149,16 @@ namespace AutoWP7.Handler
         {
             //设备类型\t系统版本号\tautohome\t客户端版本号
             return "WP\t" + Common.GetSysVersion() + "\tautohome\t" + GetSysVersion();
+        }
+
+        /// <summary>
+        /// 获取上行接口用到的时间戳
+        /// </summary>
+        /// <returns></returns>
+        public static string GetTimeStamp()
+        {
+            var stamp = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+            return stamp.ToString();
         }
     }
 }

@@ -549,5 +549,12 @@ namespace AutoWP7
         }
 
         #endregion
+
+        #region 第三方登录信息
+
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+
+        #endregion
     }
 }

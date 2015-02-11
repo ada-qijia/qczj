@@ -14,6 +14,9 @@ using Model.Me;
 
 namespace AutoWP7.View.Channel.Newest
 {
+    /// <summary>
+    /// 该页面已被\View\Channel\News\NewsEndPage.xaml取代
+    /// </summary>
     public partial class ArticleEndPage : PhoneApplicationPage
     {
         public ArticleEndPage()
@@ -24,10 +27,10 @@ namespace AutoWP7.View.Channel.Newest
 
         public static void ShareState(FavoriteArticleModel article)
         {
-            PhoneApplicationService.Current.State["Article"] = article;
+            PhoneApplicationService.Current.State[Utils.MeHelper.FavoriteStateKey] = article;
         }
 
-        private NewsModel news;
+        private FavoriteArticleModel news;
         //文章Id
         string newsId = string.Empty;
         //页码
@@ -49,9 +52,10 @@ namespace AutoWP7.View.Channel.Newest
                 //第一次进入页面
                 case System.Windows.Navigation.NavigationMode.New:
                     {
-                        if (PhoneApplicationService.Current.State.ContainsKey("Article"))
+                        if (PhoneApplicationService.Current.State.ContainsKey(Utils.MeHelper.FavoriteStateKey))
                         {
-                            news = PhoneApplicationService.Current.State["Article"] as NewsModel;
+                            news = PhoneApplicationService.Current.State[Utils.MeHelper.FavoriteStateKey] as FavoriteArticleModel;
+                            PhoneApplicationService.Current.State.Remove(Utils.MeHelper.FavoriteStateKey);
                         }
 
                         UmengSDK.UmengAnalytics.onEvent("ArticleEndPageActivity", "文章最终页的访问次数");
@@ -92,6 +96,8 @@ namespace AutoWP7.View.Channel.Newest
 
             }
 
+            //设置收藏按钮状态
+            setFavoriteButton();
         }
 
         //文章内的链接
@@ -111,6 +117,11 @@ namespace AutoWP7.View.Channel.Newest
                 }
                 else
                 {
+                    if (news != null)
+                    {
+                        ArticleEndPage.ShareState(news);
+                    }
+
                     if (e.Value.Contains("-"))//带页码的文章最终页
                     {
                         string[] strArrary = e.Value.Split('-');
@@ -169,7 +180,7 @@ namespace AutoWP7.View.Channel.Newest
                     //分页控件
                     if (newsDataSource.Count <= 1)
                     {
-                        IApplicationBarIconButton iconButton = this.ApplicationBar.Buttons[0] as IApplicationBarIconButton;
+                        IApplicationBarIconButton iconButton = this.ApplicationBar.Buttons[1] as IApplicationBarIconButton;
                         iconButton.IsEnabled = false;
 
                     }
@@ -281,7 +292,7 @@ namespace AutoWP7.View.Channel.Newest
         private void wb_Navigating(object sender, NavigatingEventArgs e)
         {
             IApplicationBarIconButton Icon;
-            for (int i = 0; i < buttomCount; i++)
+            for (int i = 1; i < buttomCount; i++)
             {
                 Icon = this.ApplicationBar.Buttons[i] as IApplicationBarIconButton;
                 Icon.IsEnabled = false;
@@ -308,11 +319,11 @@ namespace AutoWP7.View.Channel.Newest
                 //iconButton.IsEnabled = false;
 
                 //将分页控件置灰
-                iconButton = this.ApplicationBar.Buttons[0] as IApplicationBarIconButton;
+                iconButton = this.ApplicationBar.Buttons[1] as IApplicationBarIconButton;
                 iconButton.IsEnabled = false;
 
                 //将评论控件置可见
-                iconButton = this.ApplicationBar.Buttons[1] as IApplicationBarIconButton;
+                iconButton = this.ApplicationBar.Buttons[2] as IApplicationBarIconButton;
                 iconButton.IsEnabled = true;
 
             }
@@ -400,27 +411,59 @@ namespace AutoWP7.View.Channel.Newest
         /// <returns></returns>
         private string CreateNewsPageUrl(int pageIndex)
         {
-            return AppUrlMgr.NewsWebViewUrl(Convert.ToInt32(newsId), 1, 0, 0, 1, pageIndex, 1, 0, 0);
+            int isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode() ? 1 : 0;
+            return AppUrlMgr.NewsWebViewUrl(Convert.ToInt32(newsId), 1, isSmallImageMode, 0, 1, pageIndex, 1, 0, 0);
         }
 
-        //收藏
+        #region 收藏
+
+        //收藏文章
         private void favorite_Click(object sender, EventArgs e)
         {
-            if (news != null)
-            {
-                FavoriteArticleModel model = new FavoriteArticleModel();
-                model.ID = news.id;
-                model.Time = news.time;
-                model.Img = news.smallpic;
-                model.Title = news.title;
-                int replyCnt;
-                if (int.TryParse(news.replycount, out replyCnt))
-                {
-                    model.ReplyCount = replyCnt;
-                }
+            var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
 
-               ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Article, model);
+            if (favoriteBtn.Text.Contains("取消"))
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int>{ news.ID});
+                setFavoriteButton(success);
+                string msg = success ? "取消收藏成功" : "取消收藏失败";
+                Common.showMsg(msg);
+            }
+            else
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Article, news);
+                setFavoriteButton(!success);
+                string msg = success ? "收藏成功" : "收藏失败";
+                Common.showMsg(msg);
             }
         }
+
+        private void setFavoriteButton(bool? addFavorite = null)
+        {
+            var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            if (news == null)
+            {
+                favoriteBtn.IsEnabled = false;
+            }
+            else
+            {
+                bool add;
+                if (addFavorite.HasValue)
+                {
+                    add = addFavorite.Value;
+                }
+                else
+                {
+                    var exist = ViewModels.Me.FavoriteViewModel.SingleInstance.Exist(FavoriteType.Article, news.ID);
+                    add = !exist;
+                }
+                string iconUrl = add ? "/Images/favs.addto.png" : "/Images/favs.png";
+                favoriteBtn.IconUri = new Uri(iconUrl, UriKind.Relative);
+                favoriteBtn.Text = add ? "收藏" : "取消收藏";
+                favoriteBtn.IsEnabled = true;
+            }
+        }
+
+        #endregion
     }
 }

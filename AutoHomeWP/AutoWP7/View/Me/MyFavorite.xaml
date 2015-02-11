@@ -8,17 +8,19 @@
     xmlns:Primitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:utils="clr-namespace:AutoWP7.Utils"
+    xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
     x:Class="AutoWP7.View.Me.MyFavorite"
     mc:Ignorable="d"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
 
     <utils:MultiSelectablePage.Resources>
+        <utils:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
         <DataTemplate x:Key="CarSeriesItemTemplate">
-            <Grid Tap="CarSeriesItem_Tap">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12" Tap="CarSeriesItem_Tap">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -33,15 +35,15 @@
                 </Grid>
 
                 <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Level}"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PriceBetween}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Level}" Style="{StaticResource FooterLargeTextStyle}" FontSize="20"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PriceBetween}" Style="{StaticResource PriceRedTextStyle}"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="CarSpecItemTemplate">
-            <Grid Margin="0 12" Tap="CarSpecItem_Tap">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12" Tap="CarSpecItem_Tap">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -54,16 +56,16 @@
                     <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
                 </Grid>
 
-                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" FontSize="24"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SeriesName}"/>
+                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SeriesName}" Style="{StaticResource FooterLargeTextStyle}" FontSize="20"/>
                 <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding LowPrice}" Style="{StaticResource PriceRedTextStyle}"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ArticleItemTemplate">
-            <Grid Margin="0 12" Tap="ArticleItem_Tap">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12" Tap="ArticleItem_Tap">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -76,16 +78,20 @@
                     <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
                 </Grid>
 
-                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title}" Style="{StaticResource TitleLargeTextStyle}" FontSize="24"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PublishTime}"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评'}"/>
+                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title}" Style="{StaticResource TitleLargeTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PublishTime}" Style="{StaticResource FooterLargeTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评'}" Style="{StaticResource FooterLargeTextStyle}"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ForumItemTemplate">
-            <TextBlock Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" Tap="ForumItem_Tap"/>
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12 0 24" Tap="ForumItem_Tap">
+                <TextBlock Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" MaxHeight="70"/>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:Key="TopicItemTemplate">
-            <TextBlock Text="{Binding Title}" Style="{StaticResource TitleLargeTextStyle}" Tap="TopicItem_Tap"/>
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12 0 24" Tap="TopicItem_Tap">
+                <TextBlock Text="{Binding Title}"  Style="{StaticResource TitleLargeTextStyle}" MaxHeight="70"/>
+            </Grid>
         </DataTemplate>
     </utils:MultiSelectablePage.Resources>
 
@@ -93,51 +99,164 @@
         <phone:Pivot x:Name="FavoritePivot" Foreground="Black" SelectionChanged="FavoritePivot_SelectionChanged">
             <phone:Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <Grid Margin="0">
+                    <Grid>
                         <TextBlock Text="{Binding}" Foreground="#3cadeb"/>
                     </Grid>
                 </DataTemplate>
             </phone:Pivot.HeaderTemplate>
 
             <!--车系-->
-            <phone:PivotItem Header="收藏车系">
-                <toolkit:LongListMultiSelector x:Name="CarSeriesList" Margin="0,14,-12,0" ItemsSource="{Binding CarSeriesList}"
-                                                LayoutMode="List"
-                                                ItemTemplate="{StaticResource CarSeriesItemTemplate}"/>
+            <phone:PivotItem Header="收藏车系" Margin="12 18 12 0">
+                <Grid>
+                    <toolkit:LongListMultiSelector x:Name="CarSeriesList" ItemsSource="{Binding CarSeriesList}" LayoutMode="List" Visibility="{Binding CarSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                        <toolkit:LongListMultiSelector.Resources>
+                            <Style TargetType="CheckBox" BasedOn="{StaticResource CheckBoxThemeStyle}"/>
+                        </toolkit:LongListMultiSelector.Resources>
+
+                        <toolkit:LongListMultiSelector.ItemTemplate>
+                            <DataTemplate>
+                                <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource CarSeriesItemTemplate}">
+                                    <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreCarSeries_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </utils:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </toolkit:LongListMultiSelector.ItemTemplate>
+                    </toolkit:LongListMultiSelector>
+
+                    <ucSearchResult:NoResultView x:Name="NoCarSeriesResultView" Visibility="{Binding CarSeriesList.Count,Converter={StaticResource EmptyToVisibilityConverter},ConverterParameter=1}"/>
+                </Grid>
             </phone:PivotItem>
 
             <!--车型-->
-            <phone:PivotItem Header="收藏车型">
-                <toolkit:LongListMultiSelector x:Name="CarSpecList" Margin="0,14,-12,0" ItemsSource="{Binding CarSpecList}"
-                                                LayoutMode="List"
-                                                ItemTemplate="{StaticResource CarSpecItemTemplate}"/>
+            <phone:PivotItem Header="收藏车型" Margin="12 18 12 0">
+                <Grid>
+                    <toolkit:LongListMultiSelector x:Name="CarSpecList" ItemsSource="{Binding CarSpecList}" LayoutMode="List" Visibility="{Binding CarSpecList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                        <toolkit:LongListMultiSelector.Resources>
+                            <Style TargetType="CheckBox" BasedOn="{StaticResource CheckBoxThemeStyle}"/>
+                        </toolkit:LongListMultiSelector.Resources>
+
+                        <toolkit:LongListMultiSelector.ItemTemplate>
+                            <DataTemplate>
+                                <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource CarSpecItemTemplate}">
+                                    <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreCarSpec_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </utils:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </toolkit:LongListMultiSelector.ItemTemplate>
+                    </toolkit:LongListMultiSelector>
+
+                    <ucSearchResult:NoResultView x:Name="NoCarSpecResultView" Visibility="{Binding CarSpecList.Count,Converter={StaticResource EmptyToVisibilityConverter},ConverterParameter=1}"/>
+                </Grid>
             </phone:PivotItem>
 
             <!--文章-->
-            <phone:PivotItem Header="收藏文章">
-                <toolkit:LongListMultiSelector x:Name="ArticleList" Margin="0,14,-12,0" ItemsSource="{Binding ArticleList}"
-                                                LayoutMode="List"
-                                                ItemTemplate="{StaticResource ArticleItemTemplate}"/>
+            <phone:PivotItem Header="收藏文章" Margin="12 18 12 0">
+                <Grid>
+                    <toolkit:LongListMultiSelector x:Name="ArticleList" ItemsSource="{Binding ArticleList}"
+                                                LayoutMode="List" Visibility="{Binding ArticleList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                        <toolkit:LongListMultiSelector.Resources>
+                            <Style TargetType="CheckBox" BasedOn="{StaticResource CheckBoxThemeStyle}"/>
+                        </toolkit:LongListMultiSelector.Resources>
+
+                        <toolkit:LongListMultiSelector.ItemTemplate>
+                            <DataTemplate>
+                                <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource ArticleItemTemplate}">
+                                    <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreArticle_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </utils:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </toolkit:LongListMultiSelector.ItemTemplate>
+                    </toolkit:LongListMultiSelector>
+
+                    <ucSearchResult:NoResultView x:Name="NoArticleResultView" Visibility="{Binding ArticleList.Count,Converter={StaticResource EmptyToVisibilityConverter},ConverterParameter=1}"/>
+                </Grid>
             </phone:PivotItem>
 
             <!--论坛-->
-            <phone:PivotItem Header="收藏论坛">
-                <toolkit:LongListMultiSelector x:Name="ForumList" Margin="0,14,-12,0" ItemsSource="{Binding ForumList}"
-                                                LayoutMode="List"
-                                                ItemTemplate="{StaticResource ForumItemTemplate}"/>
+            <phone:PivotItem Header="收藏论坛" Margin="12 18 12 0">
+                <Grid>
+                    <toolkit:LongListMultiSelector x:Name="ForumList" ItemsSource="{Binding ForumList}"
+                                                LayoutMode="List" Visibility="{Binding ForumList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                        <toolkit:LongListMultiSelector.Resources>
+                            <Style TargetType="CheckBox" BasedOn="{StaticResource CheckBoxThemeStyle}"/>
+                        </toolkit:LongListMultiSelector.Resources>
+
+                        <toolkit:LongListMultiSelector.ItemTemplate>
+                            <DataTemplate>
+                                <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource ForumItemTemplate}">
+                                    <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreForum_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </utils:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </toolkit:LongListMultiSelector.ItemTemplate>
+
+                    </toolkit:LongListMultiSelector>
+
+                    <ucSearchResult:NoResultView x:Name="NoForumResultView" Visibility="{Binding ForumList.Count,Converter={StaticResource EmptyToVisibilityConverter},ConverterParameter=1}"/>
+                </Grid>
             </phone:PivotItem>
 
             <!--帖子-->
-            <phone:PivotItem Header="收藏帖子">
-                <toolkit:LongListMultiSelector x:Name="TopicList" Margin="0,14,-12,0" ItemsSource="{Binding TopicList}"
-                                                LayoutMode="List"
-                                                ItemTemplate="{StaticResource TopicItemTemplate}"/>
+            <phone:PivotItem Header="收藏帖子" Margin="12 18 12 0">
+                <Grid>
+                    <toolkit:LongListMultiSelector x:Name="TopicList" ItemsSource="{Binding TopicList}" LayoutMode="List" Visibility="{Binding TopicList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                        <toolkit:LongListMultiSelector.Resources>
+                            <Style TargetType="CheckBox" BasedOn="{StaticResource CheckBoxThemeStyle}"/>
+                        </toolkit:LongListMultiSelector.Resources>
+
+                        <toolkit:LongListMultiSelector.ItemTemplate>
+                            <DataTemplate>
+                                <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource TopicItemTemplate}">
+                                    <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreTopic_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </utils:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </toolkit:LongListMultiSelector.ItemTemplate>
+                    </toolkit:LongListMultiSelector>
+
+                    <ucSearchResult:NoResultView x:Name="NoTopicResultView" Visibility="{Binding TopicList.Count,Converter={StaticResource EmptyToVisibilityConverter},ConverterParameter=1}"/>
+                </Grid>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsMenuEnabled="True"> 
+        <shell:ApplicationBar IsMenuEnabled="True">
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 </utils:MultiSelectablePage>

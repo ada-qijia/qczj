@@ -37,11 +37,11 @@
 
                     <TextBlock Text="账号绑定"  Tap="AccountBinding_Tap"/>
                     <TextBlock Text="推送设置" Tap="NotificationSetting_Tap"/>
-                    <toolkit:ToggleSwitch BorderBrush="{StaticResource App_Theme_Color}" Content="小图模式" Margin="0 12" Click="PictureMode_Click" Style="{StaticResource ToggleSwitchThemeStyle}"/>
-                    <Grid>
+                    <toolkit:ToggleSwitch x:Name="ImageModeToggleSwitch" BorderBrush="{StaticResource App_Theme_Color}" Content="小图模式" Margin="0 12" Click="ImageMode_Click" Style="{StaticResource ToggleSwitchThemeStyle}"/>
+                    <!--<Grid>
                         <TextBlock Text="清除缓存（3M）"/>
                         <Button BorderBrush="{StaticResource App_Theme_Color}" Foreground="Black" Content="清除缓存" HorizontalAlignment="Right" Margin="-12 0" Click="ClearCache_Click"/>
-                    </Grid>
+                    </Grid>-->
                     <TextBlock Text="意见反馈" Tap="Feedback_Tap"/>
                     <TextBlock Text="手机汽车之家" Tap="AutohomeMobile_Tap"/>
                     <TextBlock Text="关于汽车之家" Tap="About_Tap"/>

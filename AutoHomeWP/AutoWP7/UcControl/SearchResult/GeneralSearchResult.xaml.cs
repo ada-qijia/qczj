@@ -132,8 +132,8 @@ namespace AutoWP7.UcControl.SearchResult
         private void CarSeriesBBS_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var hotSeries=this.SearchResultVM.Series;
-            var favorite = new Model.Me.FavoriteCarSeriesModel() { ID = hotSeries.ID, Img = hotSeries.Img, Name = hotSeries.Name, PriceBetween = hotSeries.PriceBetween };
-            View.Car.CarSeriesDetailPage.ShareModel(favorite);
+            //var favorite = new Model.Me.FavoriteCarSeriesModel() { ID = hotSeries.ID, Img = hotSeries.Img, Name = hotSeries.Name, PriceBetween = hotSeries.PriceBetween };
+            //View.Car.CarSeriesDetailPage.ShareModel(favorite);
             string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=3&carSeriesId={0}", this.SearchResultVM.Series.ID);
             this.Navigate(url);
         }
@@ -142,8 +142,8 @@ namespace AutoWP7.UcControl.SearchResult
         private void CarSeriesKoubei_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var hotSeries = this.SearchResultVM.Series;
-            var favorite = new Model.Me.FavoriteCarSeriesModel() { ID = hotSeries.ID, Img = hotSeries.Img, Name = hotSeries.Name, PriceBetween = hotSeries.PriceBetween };
-            View.Car.CarSeriesDetailPage.ShareModel(favorite);
+            //var favorite = new model.me.favoritecarseriesmodel() { id = hotseries.id, img = hotseries.img, name = hotseries.name, pricebetween = hotseries.pricebetween };
+            //view.car.carseriesdetailpage.sharemodel(favorite);
             string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=4&carSeriesId={0}", this.SearchResultVM.Series.ID);
             this.Navigate(url);
         }
@@ -171,8 +171,8 @@ namespace AutoWP7.UcControl.SearchResult
             var model = (sender as FrameworkElement).DataContext as SeriesModel;
             if (model != null && model.ID != 0)
             {
-                var favorite = new Model.Me.FavoriteCarSeriesModel() { ID = model.ID, Name = model.Name, PriceBetween = model.PriceBetween };
-                View.Car.CarSeriesDetailPage.ShareModel(favorite);
+                //var favorite = new Model.Me.FavoriteCarSeriesModel() { ID = model.ID, Name = model.Name, PriceBetween = model.PriceBetween };
+                //View.Car.CarSeriesDetailPage.ShareModel(favorite);
                 string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", model.ID);
                 this.Navigate(url);
             }

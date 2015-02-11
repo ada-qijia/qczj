@@ -521,6 +521,16 @@ namespace AutoWP7.View.CarSearch
         private void carSeriesSummary_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var series = sender.GetDataContext<CarSearchResultSeriesItemModel>();
+
+            //共享车系
+            Model.Me.FavoriteCarSeriesModel favoriteModel = new Model.Me.FavoriteCarSeriesModel();
+            favoriteModel.ID = series.id;
+            favoriteModel.Img = series.img;
+            favoriteModel.Level = series.level;
+            favoriteModel.Name = series.name;
+            favoriteModel.PriceBetween = series.price;
+            View.Car.CarSeriesDetailPage.ShareModel(favoriteModel);
+
             string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", series.id);
             this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
@@ -528,11 +538,20 @@ namespace AutoWP7.View.CarSearch
         private void carSpec_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var spec = sender.GetDataContext<CarSearchResultSpecItemModel>();
-            string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}", spec.id);
+
+            //共享车型
+            CarSearchResultSeriesItemModel carSeries = SpecPanel.DataContext  as CarSearchResultSeriesItemModel;
+            Model.Me.FavoriteCarSpecModel favoriteModel = new Model.Me.FavoriteCarSpecModel();
+            favoriteModel.ID = spec.id;
+            favoriteModel.LowPrice = spec.price;
+            favoriteModel.Name = spec.name;
+            favoriteModel.SeriesName = carSeries.name;
+            Car.CarSeriesQuotePage.ShareModel(favoriteModel);
+
+            string seriesName = carSeries == null ? string.Empty : carSeries.name;
+            string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}"+ "&seriesName=" + seriesName, spec.id);
             this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
-
-
 
     }
 }

@@ -1075,6 +1075,19 @@ namespace AutoWP7.View.Channel
 
             if (news != null)
             {
+                //共享文章
+                Model.Me.FavoriteArticleModel favoriteModel = new Model.Me.FavoriteArticleModel();
+                favoriteModel.ID = news.id;
+                favoriteModel.Img = news.imgurl;
+                favoriteModel.Title = news.title;
+                favoriteModel.PublishTime = news.time;
+                int reply;
+                if (int.TryParse(news.replycount, out reply))
+                {
+                    favoriteModel.ReplyCount = reply;
+                }
+                View.Channel.News.NewsEndPage.ShareState(favoriteModel);
+
                 pageindex = news.pageIndex;
                 this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=" + pageindex + "&pageType=" + pageType, UriKind.Relative));
             }

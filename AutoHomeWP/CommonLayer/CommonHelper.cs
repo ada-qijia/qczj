@@ -59,5 +59,10 @@ namespace CommonLayer
             wc.DownloadStringAsync(urlSource);
         }
 
+        public static void UploadStringAsync(string url,string data, UploadStringCompletedEventHandler completedHandler)
+        {
+
+        }
+
     }
 }

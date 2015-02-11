@@ -4,6 +4,7 @@ using ViewModels;
 using AutoWP7.Handler;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Windows;
 
 namespace AutoWP7.View.Channel.Newest
 {

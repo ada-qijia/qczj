@@ -43,6 +43,7 @@
             </shell:ApplicationBar.Buttons>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="favorite" Click="favorite_Click" Text="收藏" />
+                <shell:ApplicationBarMenuItem Text="小图模式" Click="ImageMode_Click"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

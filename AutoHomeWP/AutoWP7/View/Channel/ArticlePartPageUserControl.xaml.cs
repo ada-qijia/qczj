@@ -31,8 +31,6 @@ namespace AutoWP7.View.Channel
             (App.Current as App).newestPartPageMessage.Hide();
             PhoneApplicationFrame rootFrame = Application.Current.RootVisual as PhoneApplicationFrame;
             ((ArticleEndPage)rootFrame.Content).wb.InvokeScript("GetALocation", "news", gg.Tag.ToString());
-            //Uri urlSource= new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + App.newsid + "&pageIndex="+gg.Tag, UriKind.Relative);
-            //rootFrame.Navigate(urlSource);  
         }
 
         private void LayoutRoot_LostFocus(object sender, RoutedEventArgs e)

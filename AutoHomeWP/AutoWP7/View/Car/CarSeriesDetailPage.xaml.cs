@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml.Linq;
 using System.Threading.Tasks;
+using Model.Me;
 
 namespace AutoWP7.View.Car
 {
@@ -23,8 +24,6 @@ namespace AutoWP7.View.Car
     /// </summary>
     public partial class CarSeriesDetailPage : PhoneApplicationPage
     {
-        private const string CarSeriesStateKey = "FavoriteCarSeries";
-
         public CarSeriesDetailPage()
         {
             InitializeComponent();
@@ -32,7 +31,7 @@ namespace AutoWP7.View.Car
 
         public static void ShareModel(Model.Me.FavoriteCarSeriesModel model)
         {
-            PhoneApplicationService.Current.State[CarSeriesStateKey] = model;
+            PhoneApplicationService.Current.State[Utils.MeHelper.FavoriteStateKey] = model;
         }
 
         //共享车系
@@ -44,6 +43,8 @@ namespace AutoWP7.View.Car
         int bbsId = 0;
         //论坛类型
         string bbsType = string.Empty;
+        //论坛名称
+        string bbsName = string.Empty;
         //车系id
         string carSeriesId = string.Empty;
         //车型id
@@ -70,18 +71,6 @@ namespace AutoWP7.View.Car
             Text = "添加"
         };
 
-        public ApplicationBarIconButton ToVS = new ApplicationBarIconButton()
-        {
-            IconUri = new Uri("/Images/vs1.png", UriKind.Relative),
-            Text = "对比"
-        };
-
-        public ApplicationBarIconButton AddFavorite = new ApplicationBarIconButton()
-        {
-            IconUri = new Uri("/Images/favs.addto.png", UriKind.Relative),
-            Text = "收藏"
-        };
-
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -92,9 +81,10 @@ namespace AutoWP7.View.Car
             {
                 case System.Windows.Navigation.NavigationMode.New:
                     {
-                        if (PhoneApplicationService.Current.State.ContainsKey(CarSeriesStateKey))
+                        if (PhoneApplicationService.Current.State.ContainsKey(Utils.MeHelper.FavoriteStateKey))
                         {
-                            this.carSeries = PhoneApplicationService.Current.State[CarSeriesStateKey] as Model.Me.FavoriteCarSeriesModel;
+                            this.carSeries = PhoneApplicationService.Current.State[Utils.MeHelper.FavoriteStateKey] as Model.Me.FavoriteCarSeriesModel;
+                            PhoneApplicationService.Current.State.Remove(Utils.MeHelper.FavoriteStateKey);
                         }
 
                         //车系id
@@ -128,6 +118,9 @@ namespace AutoWP7.View.Car
                         {
                             piv.SelectedIndex = int.Parse(indexId);
                         }
+
+                        //添加浏览历史
+                        AddRecentsCarSeries();
                     }
                     break;
                 case System.Windows.Navigation.NavigationMode.Back:
@@ -162,8 +155,6 @@ namespace AutoWP7.View.Car
                         }
                         if (tag == "quote")//(piv.SelectedIndex == 0)
                             InitSeriesSpecsInfo();
-
-                        PhoneApplicationService.Current.State[CarSeriesStateKey] = null;
                     }
                     break;
             }
@@ -244,8 +235,6 @@ namespace AutoWP7.View.Car
         private void InitBtn()
         {
             AddVS.Click += AddVS_Click;
-            ToVS.Click += ToVS_Click;
-            AddFavorite.Click += favorite_Click;
         }
 
         /// <summary>
@@ -265,19 +254,6 @@ namespace AutoWP7.View.Car
         void AddVS_Click(object sender, EventArgs e)
         {
 
-        }
-
-        /// <summary>
-        /// 收藏
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void favorite_Click(object sender, EventArgs e)
-        {
-            if (this.carSeries != null)
-            {
-                ViewModels.Me.FavoriteViewModel.SingleInstance.Add(Model.Me.FavoriteType.CarSeries, this.carSeries);
-            }
         }
 
         //标识状态（false 未加载，true已加载）
@@ -302,9 +278,7 @@ namespace AutoWP7.View.Car
                     {
                         UmengSDK.UmengAnalytics.onEvent("SeriesActivity", "车系报价页点击量");
                         ApplicationBar.IsVisible = true;
-                        this.ApplicationBar.Buttons.Clear();
-                        this.ApplicationBar.Buttons.Add(AddFavorite);
-                        this.ApplicationBar.Buttons.Add(ToVS);
+                        this.ApplicationBar = Resources["appCarSeries"] as ApplicationBar;
                         if (!isQuoteLoaded)
                         {
                             CarSeriesQuoteLoadData();
@@ -369,6 +343,9 @@ namespace AutoWP7.View.Car
                     }
                     break;
             }
+
+            //设置收藏按钮状态
+            setFavoriteButton();
         }
 
         /// <summary>
@@ -515,7 +492,18 @@ namespace AutoWP7.View.Car
                 if (isFind)
                     break;
             }
-            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&paramisshow=" + paramIsShow, UriKind.Relative));
+
+            //共享车型
+            var quoteModel = gg.DataContext as CarSeriesQuoteModel;
+            Model.Me.FavoriteCarSpecModel favoriteModel = new FavoriteCarSpecModel();
+            favoriteModel.ID = quoteModel.Id;
+            favoriteModel.LowPrice = quoteModel.Price;
+            favoriteModel.Name = quoteModel.Name;
+            favoriteModel.SeriesName = this.autoName.Text;
+            CarSeriesQuotePage.ShareModel(favoriteModel);
+
+            string seriesName = this.carSeries == null ? string.Empty : this.carSeries.Name;
+            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&paramisshow=" + paramIsShow + "&seriesName=" + seriesName, UriKind.Relative));
         }
 
         #endregion
@@ -756,7 +744,16 @@ namespace AutoWP7.View.Car
                             if (ForumDataSource.Count > 0)
                             {
                                 bbsId = ForumDataSource[0].bbsId;
+                                bbsName = ForumDataSource[0].BBSName;
                                 bbsType = ForumDataSource[0].bbsType;
+
+                                this.setFavoriteButton();
+
+                                //添加浏览记录
+                                if(forumPageIndex==1)
+                                {
+                                    AddRecentsForum();
+                                }
                             }
 
                             if (ForumDataSource.Count < 20)
@@ -1006,11 +1003,24 @@ namespace AutoWP7.View.Car
         //导向文章最终页页面
         private void acticleStack_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
             Grid gg = (Grid)sender;
-            ///View/Channel/Newest/ArticleEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=1
-            this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=1", UriKind.Relative));
-            //this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesArticleEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=1", UriKind.Relative));
+
+            //共享文章
+            var model = gg.DataContext as NewsModel;
+            FavoriteArticleModel favoriteModel = new FavoriteArticleModel();
+            favoriteModel.ID = model.id;
+            favoriteModel.Img = model.imgurl;
+            favoriteModel.Title = model.title;
+            favoriteModel.PublishTime = model.time;
+            int reply;
+            if (int.TryParse(model.replycount, out reply))
+            {
+                favoriteModel.ReplyCount = reply;
+            }
+            Channel.Newest.ArticleEndPage.ShareState(favoriteModel);
+            string url = "/View/Channel/News/NewsEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=1" + "&pageType=" + model.mediatype;
+            this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
+            //this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=1", UriKind.Relative));
         }
 
         //导向帖子最终页
@@ -1137,5 +1147,144 @@ namespace AutoWP7.View.Car
         {
             return string.Format("{0}{6}/news/seriesnews-a2-pm3-v1.6.0-ss{1}-cs{2}-c{3}-p{4}-s{5}.html", App.appUrl, carSeriesId, curNewsType, curCityId, pageIndex, pageSize, App.versionStr);
         }
+
+        #region 收藏管理
+
+        /// <summary>
+        /// 收藏车系
+        /// </summary>
+        private void FavoriteCarSeries_Click(object sender, EventArgs e)
+        {
+            var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+
+            if (favoriteBtn.Text.Contains("取消"))
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSeries, new List<int> { this.carSeries.ID });
+                setFavoriteButton(success);
+                string msg = success ? "取消收藏成功" : "取消收藏失败";
+                Common.showMsg(msg);
+            }
+            else
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.CarSeries, this.carSeries);
+                setFavoriteButton(!success);
+                string msg = success ? "收藏成功" : "收藏失败";
+                Common.showMsg(msg);
+            }
+        }
+
+        //收藏论坛
+        private void favoriteForum_Click(object sender, EventArgs e)
+        {
+            var favoriteBtn = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+
+            if (favoriteBtn.Text.Contains("取消"))
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Forum, new List<int> { bbsId });
+                setFavoriteButton(success);
+                string msg = success ? "取消收藏成功" : "取消收藏失败";
+                Common.showMsg(msg);
+            }
+            else
+            {
+                FavoriteForumModel model = CreateCurrentForumModel();
+
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Forum, model);
+                setFavoriteButton(!success);
+                string msg = success ? "收藏成功" : "收藏失败";
+                Common.showMsg(msg);
+            }
+        }
+
+        private FavoriteForumModel CreateCurrentForumModel()
+        {
+            if (bbsId > 0)
+            {
+                FavoriteForumModel model = new FavoriteForumModel();
+                model.ID = bbsId;
+                model.Name = bbsName;
+                model.Type = bbsType;
+                model.Time = DateTime.Now.ToString();
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private void setFavoriteButton(bool? addFavorite = null)
+        {
+            switch (this.piv.SelectedIndex)
+            {
+                case 0://车型，收藏车系
+                    var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                    if (this.carSeries == null)
+                    {
+                        favoriteBtn.IsEnabled = false;
+                    }
+                    else
+                    {
+                        bool add;
+                        if (addFavorite.HasValue)
+                        {
+                            add = addFavorite.Value;
+                        }
+                        else
+                        {
+                            var exist = ViewModels.Me.FavoriteViewModel.SingleInstance.Exist(FavoriteType.CarSeries, this.carSeries.ID);
+                            add = !exist;
+                        }
+                        string iconUrl = add ? "/Images/favs.addto.png" : "/Images/favs.png";
+                        favoriteBtn.IconUri = new Uri(iconUrl, UriKind.Relative);
+                        favoriteBtn.Text = add ? "收藏" : "取消收藏";
+                        favoriteBtn.IsEnabled = true;
+                    }
+                    break;
+                case 3://论坛，收藏论坛
+                    {
+                        var favoriteItem = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+                        if (bbsId <= 0)
+                        {
+                            favoriteItem.IsEnabled = false;
+                        }
+                        else
+                        {
+                            bool add;
+                            if (addFavorite.HasValue)
+                            {
+                                add = addFavorite.Value;
+                            }
+                            else
+                            {
+                                var exist = ViewModels.Me.FavoriteViewModel.SingleInstance.Exist(FavoriteType.Forum, bbsId);
+                                add = !exist;
+                            }
+                            favoriteItem.Text = add ? "收藏" : "取消收藏";
+                            favoriteItem.IsEnabled = true;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region 浏览历史
+
+        private void AddRecentsCarSeries()
+        {
+            ViewModels.Me.ViewHistoryViewModel.SingleInstance.AddItem(FavoriteType.CarSeries, this.carSeries);
+        }
+
+        private void AddRecentsForum()
+        {
+            var model = CreateCurrentForumModel();
+            ViewModels.Me.ViewHistoryViewModel.SingleInstance.AddItem(FavoriteType.Forum, model);
+        }
+
+        #endregion
     }
 }

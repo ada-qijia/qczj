@@ -1,5 +1,4 @@
-﻿<phone:PhoneApplicationPage
-    x:Class="AutoWP7.View.Me.DraftBox"
+﻿<utils:MultiSelectablePage
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -8,14 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:utils="clr-namespace:AutoWP7.Utils"
+    xmlns:toolkitPrimitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls.Toolkit"
+   xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
+    x:Class="AutoWP7.View.Me.DraftBox"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
 
-    <phone:PhoneApplicationPage.Resources>
+    <utils:MultiSelectablePage.Resources>
         <utils:DraftTitleConverter x:Key="DraftTitleConverter"/>
         <utils:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
-    </phone:PhoneApplicationPage.Resources>
+    </utils:MultiSelectablePage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="White">
@@ -24,37 +26,37 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel Grid.Row="0" Margin="12,17,0,16">
             <TextBlock x:Name="PageTitle" Text="草稿箱"  Foreground="{StaticResource App_Theme_Color}" HorizontalAlignment="Left" FontSize="72"  Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1">
             <toolkit:LongListMultiSelector x:Name="DraftList" ItemsSource="{Binding DraftList}" LayoutMode="List" Background="Purple">
+                <toolkit:LongListMultiSelector.Resources>
+                    <Style TargetType="CheckBox" BasedOn="{StaticResource CheckBoxThemeStyle}"/>
+                </toolkit:LongListMultiSelector.Resources>
                 <toolkit:LongListMultiSelector.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0 12">
+                        <Grid Background="Transparent" Margin="0 12" Height="70" Width="{StaticResource ContentWidth}" Tap="Draft_Tap">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding Converter={StaticResource DraftTitleConverter}}" Style="{StaticResource TitleLargeTextStyle}" MaxHeight="35" TextTrimming="WordEllipsis"/>
-                            <TextBlock Grid.Column="1" Text="{Binding SavedTime,Converter={StaticResource DateTimeToStringConverter},ConverterParameter='MM-dd hh:mm'}" Style="{StaticResource ContentTextStyle}" HorizontalAlignment="Right" FontFamily="Portable User Interface" Margin="0 0 12 0"/>
-                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Content}" Style="{StaticResource ContentTextStyle}"/>
+                            <TextBlock Text="{Binding Converter={StaticResource DraftTitleConverter}}" Style="{StaticResource TitleLargeTextStyle}" TextTrimming="WordEllipsis"/>
+                            <TextBlock Grid.Column="1" Text="{Binding SavedTime, ConverterParameter=MM-dd hh:mm, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource ContentTextStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Content}" Style="{StaticResource ContentTextStyle}" VerticalAlignment="Bottom"/>
                         </Grid>
                     </DataTemplate>
                 </toolkit:LongListMultiSelector.ItemTemplate>
             </toolkit:LongListMultiSelector>
+
+            <ucSearchResult:NoResultView x:Name="NoResultUC" Visibility="Collapsed"/>
         </Grid>
     </Grid>
-
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsMenuEnabled="True">
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
-</phone:PhoneApplicationPage>
+</utils:MultiSelectablePage>

@@ -16,25 +16,27 @@
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="730"/>
-
         </Grid.RowDefinitions>
-        
-            <phone:WebBrowser x:Name="wb"  NavigationFailed="wb_NavigationFailed_1" ScriptNotify="wb_ScriptNotify" Navigating="wb_Navigating" Navigated="wb_Navigated" Margin="0,0,0,-70"/>
-            <ProgressBar Foreground="Blue" x:Name="ProgBar" Visibility="Collapsed" IsIndeterminate="True" Height="4" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />
 
-            <TextBlock x:Name="prompt" Visibility="Collapsed" Text="您的网络不可用~请检查连接设置" Height="200" Width="400" VerticalAlignment="Center" Foreground="LightGray" FontSize="26"/>
-            <Button x:Name="refreshButton" Content="点击刷新" Height="100" VerticalAlignment='Center' 
+        <phone:WebBrowser x:Name="wb"  NavigationFailed="wb_NavigationFailed_1" ScriptNotify="wb_ScriptNotify" Navigating="wb_Navigating" Navigated="wb_Navigated" Margin="0,0,0,-70"/>
+        <ProgressBar Foreground="Blue" x:Name="ProgBar" Visibility="Collapsed" IsIndeterminate="True" Height="4" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />
+
+        <TextBlock x:Name="prompt" Visibility="Collapsed" Text="您的网络不可用~请检查连接设置" Height="200" Width="400" VerticalAlignment="Center" Foreground="LightGray" FontSize="26"/>
+        <Button x:Name="refreshButton" Content="点击刷新" Height="100" VerticalAlignment='Center' 
                     HorizontalAlignment="Center" Width="160"  Tap="refreshButton_Tap_1"
                     Background="#3cadeb" Foreground="White" Visibility="Collapsed"  />
-        
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" IsVisible="True" Opacity="0.8"  IsMenuEnabled="False">
-            <shell:ApplicationBarIconButton x:Name="partPage" Click="partPage_Click" IconUri="Images/bar_paging.png" Text="分页"/>
-            <shell:ApplicationBarIconButton x:Name="checkComment" Click="checkComment_Click" IconUri="Images/bar_checkComment.png" Text="查看评论"/>
-            <!--<shell:ApplicationBarIconButton x:Name="nextPage" Click="nextPage_Click" IconUri="Images/bar_next.png" Text="下页"/>-->
-
+        <shell:ApplicationBar BackgroundColor="Black" ForegroundColor="White" IsVisible="True" Opacity="0.8"  IsMenuEnabled="True">
+            <shell:ApplicationBar.Buttons>
+                <shell:ApplicationBarIconButton x:Name="favorite" Click="favorite_Click" IconUri="Images/favs.addto.png" Text="收藏"/>
+                <shell:ApplicationBarIconButton x:Name="partPage" Click="partPage_Click" IconUri="Images/bar_paging.png" Text="分页"/>
+                <shell:ApplicationBarIconButton x:Name="checkComment" Click="checkComment_Click" IconUri="Images/bar_checkComment.png" Text="查看评论"/>
+            </shell:ApplicationBar.Buttons>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="小图模式" Click="ImageMode_Click"/>
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
 
     </phone:PhoneApplicationPage.ApplicationBar>

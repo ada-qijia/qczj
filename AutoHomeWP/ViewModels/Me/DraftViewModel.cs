@@ -1,5 +1,6 @@
 ﻿using CommonLayer;
 using Model.Me;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -64,6 +65,7 @@ namespace ViewModels.Me
         //add item and save file
         public bool AddDraft(DraftModel model)
         {
+            this.UnReadCount++;
             this.DraftList.Insert(0, model);
             return SaveDraft();
         }
@@ -78,7 +80,7 @@ namespace ViewModels.Me
             return SaveDraft();
         }
 
-        private bool SaveDraft()
+        public bool SaveDraft()
         {
             string content = JsonHelper.Serialize(this.DraftList);
             bool result = IsolatedStorageFileHelper.WriteIsoFile(FilePath, content, System.IO.FileMode.Create);

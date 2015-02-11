@@ -11,6 +11,8 @@ using ViewModels.Handler;
 using System.Windows.Navigation;
 using System.Collections;
 using System.Collections.Generic;
+using Model.Me;
+using System.Linq;
 
 namespace AutoWP7.View.Forum
 {
@@ -63,6 +65,7 @@ namespace AutoWP7.View.Forum
                         if (PhoneApplicationService.Current.State.ContainsKey("TopicTitle"))
                         {
                             topicTitle = PhoneApplicationService.Current.State["TopicTitle"].ToString();
+                            PhoneApplicationService.Current.State.Remove("TopicTitle");
                         }
 
                         if (this.NavigationContext.QueryString.ContainsKey("from"))
@@ -98,6 +101,9 @@ namespace AutoWP7.View.Forum
                         urlSource = new Uri(url, UriKind.Absolute);
 
                         LoadData();
+
+                        //添加浏览历史
+                        AddRecents();
                     }
                     break;
                 case System.Windows.Navigation.NavigationMode.Back:
@@ -130,8 +136,6 @@ namespace AutoWP7.View.Forum
                                 LoadData();
                             }
                         }
-
-                        PhoneApplicationService.Current.State["TopicTitle"] = string.Empty;
                     }
 
                     break;
@@ -141,6 +145,13 @@ namespace AutoWP7.View.Forum
             ApplicationBarIconButton abbtn = this.ApplicationBar.Buttons[2] as ApplicationBarIconButton;
             abbtn.Text = isOnlyOwner == 0 ? "只看楼主" : "查看全部";
             abbtn.IconUri = isOnlyOwner == 0 ? new Uri("/Images/bar_louzhu.png", UriKind.Relative) : new Uri("/Images/bar_all.png", UriKind.Relative);
+
+            //设置收藏按钮状态
+            setFavoriteButton();
+
+            //设置小图模式开关
+            bool isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode();
+            SetImageModeMenuItem(isSmallImageMode);
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -326,7 +337,8 @@ namespace AutoWP7.View.Forum
         /// <returns></returns>
         private string CreateTopicView(int pageIndex, bool jumpFloor)
         {
-            return AppUrlMgr.TopicWebViewUrl(Convert.ToInt64(topicId), isOnlyOwner, pageIndex, 20, 1, 0, 0, 0, floor, 0, issend);
+            int isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode() ? 1 : 0;
+            return AppUrlMgr.TopicWebViewUrl(Convert.ToInt64(topicId), isOnlyOwner, pageIndex, 20, 1, 0, 0, isSmallImageMode, floor, 0, issend);
         }
 
         private void onlyowner_Click_1(object sender, EventArgs e)
@@ -336,17 +348,98 @@ namespace AutoWP7.View.Forum
             this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
 
-        //收藏
+        #region 收藏管理
+
+        //收藏帖子
         private void favorite_Click(object sender, EventArgs e)
+        {
+            var favoriteBtn = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+
+            if (favoriteBtn.Text.Contains("取消"))
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Topic, new List<int> { int.Parse(topicId) });
+                setFavoriteButton(success);
+                string msg = success ? "取消收藏成功" : "取消收藏失败";
+                Common.showMsg(msg);
+            }
+            else
+            {
+                Model.Me.FavoriteTopicModel model = CreateCurrentTopicModel();
+
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Topic, model);
+                setFavoriteButton(!success);
+                string msg = success ? "收藏成功" : "收藏失败";
+                Common.showMsg(msg);
+            }
+        }
+
+        private void setFavoriteButton(bool? addFavorite = null)
+        {
+            var favoriteBtn = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+
+            int id = int.Parse(topicId);
+            bool add;
+            if (addFavorite.HasValue)
+            {
+                add = addFavorite.Value;
+            }
+            else
+            {
+                var exist = ViewModels.Me.FavoriteViewModel.SingleInstance.Exist(FavoriteType.Topic, id);
+                add = !exist;
+            }
+            favoriteBtn.Text = add ? "收藏" : "取消收藏";
+        }
+
+        private Model.Me.FavoriteTopicModel CreateCurrentTopicModel()
         {
             Model.Me.FavoriteTopicModel model = new Model.Me.FavoriteTopicModel();
             model.BBSID = bbsId;
             model.BBSType = bbsType;
             model.ID = int.Parse(topicId);
             model.Title = topicTitle;
-
-            ViewModels.Me.FavoriteViewModel.SingleInstance.Add(Model.Me.FavoriteType.Topic, model);
+            return model;
         }
+
+        #endregion
+
+        #region 大图小图模式
+
+        //刷新
+        private void Refresh()
+        {
+            string url = CreateTopicView(1, false);
+            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute));
+        }
+
+        //切换大图小图模式
+        private void ImageMode_Click(object sender, EventArgs e)
+        {
+            var menuItem = this.ApplicationBar.MenuItems[1] as ApplicationBarMenuItem;
+            bool toSmallMode = menuItem.Text.Contains("小");
+            System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings[Utils.MeHelper.SmallImageModeKey] = toSmallMode;
+
+            SetImageModeMenuItem(toSmallMode);
+            Refresh();
+        }
+
+        private void SetImageModeMenuItem(bool isSmallImageMode)
+        {
+            var menuItem = this.ApplicationBar.MenuItems[1] as ApplicationBarMenuItem;
+            menuItem.Text = isSmallImageMode ? "大图模式" : "小图模式";
+        }
+
+        #endregion
+
+        #region 浏览历史
+
+        private void AddRecents()
+        {
+            var model = this.CreateCurrentTopicModel();
+            ViewModels.Me.ViewHistoryViewModel.SingleInstance.AddItem(FavoriteType.Topic, model);
+        }
+
+        #endregion
     }
 
 

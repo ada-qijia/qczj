@@ -32,8 +32,8 @@ namespace AutoWP7.UcControl.SearchResult
             //只有一条记录时导航到找车-车系车型页
             if (this.SearchResultVM.RowCount == 1)
             {
-                var model = this.GetFavoriteModel(this.SearchResultVM.CarSeriesList[0]);
-                View.Car.CarSeriesDetailPage.ShareModel(model);
+                //var model = this.GetFavoriteModel(this.SearchResultVM.CarSeriesList[0]);
+                //View.Car.CarSeriesDetailPage.ShareModel(model);
                 string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", this.SearchResultVM.CarSeriesList[0].ID);
                 this.Navigate(url);
             }
@@ -69,8 +69,8 @@ namespace AutoWP7.UcControl.SearchResult
             CarSeriesSearchModel model = (sender as FrameworkElement).DataContext as CarSeriesSearchModel;
             if (model != null)
             {
-                var favorite = this.GetFavoriteModel(model);
-                View.Car.CarSeriesDetailPage.ShareModel(favorite);
+                //var favorite = this.GetFavoriteModel(model);
+                //View.Car.CarSeriesDetailPage.ShareModel(favorite);
                 string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", model.ID);
                 this.Navigate(url);
             }
@@ -82,23 +82,23 @@ namespace AutoWP7.UcControl.SearchResult
             frame.Navigate(new Uri(relativeUrl, UriKind.Relative));
         }
 
-        private Model.Me.FavoriteCarSeriesModel GetFavoriteModel(CarSeriesSearchModel searchModel)
-        {
-            if (searchModel == null)
-            {
-                return null;
-            }
-            else
-            {
-                Model.Me.FavoriteCarSeriesModel model = new Model.Me.FavoriteCarSeriesModel();
-                model.ID = searchModel.ID;
-                model.Img = searchModel.Img;
-                model.Level = searchModel.Level;
-                model.Name = searchModel.Name;
-                model.PriceBetween = searchModel.PriceBetween;
+        //private Model.Me.FavoriteCarSeriesModel GetFavoriteModel(CarSeriesSearchModel searchModel)
+        //{
+        //    if (searchModel == null)
+        //    {
+        //        return null;
+        //    }
+        //    else
+        //    {
+        //        Model.Me.FavoriteCarSeriesModel model = new Model.Me.FavoriteCarSeriesModel();
+        //        model.ID = searchModel.ID;
+        //        model.Img = searchModel.Img;
+        //        model.Level = searchModel.Level;
+        //        model.Name = searchModel.Name;
+        //        model.PriceBetween = searchModel.PriceBetween;
 
-                return model;
-            }
-        }
+        //        return model;
+        //    }
+        //}
     }
 }

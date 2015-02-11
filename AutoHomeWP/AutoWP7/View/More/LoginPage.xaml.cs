@@ -2,16 +2,18 @@
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
-using ViewModels;
-using System.Security.Cryptography;
-using System.Text;
+using System.IO.IsolatedStorage;
 using System.Net;
-using ViewModels.Handler;
-using Newtonsoft.Json;
+using System.Threading;
+using System.Windows;
+using ViewModels;
+using ViewModels.Me;
+using WeiboSdk;
+using WeiboSdk.PageViews;
 
 
 namespace AutoWP7.View.More
@@ -24,6 +26,9 @@ namespace AutoWP7.View.More
         public LoginPage()
         {
             InitializeComponent();
+
+            thirdPartyLoginVM = new ThirdPartyLoginViewModel();
+            thirdPartyLoginVM.ThirdPartyLoginCompleted += thirdPartyLoginVM_ThirdPartyLoginCompleted;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -41,10 +46,20 @@ namespace AutoWP7.View.More
         public ObservableCollection<MyForumModel> UserInfoDataSource = new ObservableCollection<MyForumModel>();
         private void login_Click(object sender, EventArgs e)
         {
+            if (this.LoginPivot.SelectedIndex == 0)
+            {
+                this.Login();
+            }
+            else
+            {
+                this.Register();
+            }
+        }
+
+        private void Login()
+        {
             if (isLogining == false)
             {
-
-
                 string userName = account.Text;
                 string pwd = password.Password;
                 if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pwd))
@@ -59,20 +74,18 @@ namespace AutoWP7.View.More
                     Icon.IsEnabled = false;
 
                     string postData = userName + "|" + AutoWP7.Handler.MD5.GetMd5String(pwd);
-                  
+
                     GlobalIndicator.Instance.Text = "正在登录中...";
                     GlobalIndicator.Instance.IsBusy = true;
 
                     tr = new Thread(new ThreadStart(delegate()
-                   {
-                       UserInfoDataSource.Clear();
+                    {
+                        UserInfoDataSource.Clear();
 
-                       LoadData(App.loginUrl + "/login/applogin?userInfo=1&isAutho=0&imei=wp&encoding=gb2312", postData);
-                   }));
+                        LoadData(App.loginUrl + "/login/applogin?userInfo=1&isAutho=0&imei=wp&encoding=gb2312", postData);
+                    }));
                     tr.IsBackground = true;
                     tr.Start();
-
-
                 }
             }
         }
@@ -82,18 +95,13 @@ namespace AutoWP7.View.More
             throw new NotImplementedException();
         }
 
-
-        
         //登录验证
         LoginViewModel loginVM = null;
         public void LoadData(string url, string postData)
         {
             try
             {
-                
                 loginVM = new LoginViewModel();
-
-                loginVM.LoadDataAsync(url, postData);
 
                 loginVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<MyForumModel>>>((ss, ee) =>
                 {
@@ -101,7 +109,7 @@ namespace AutoWP7.View.More
                     {
                         GlobalIndicator.Instance.Text = "";
                         GlobalIndicator.Instance.IsBusy = false;
-                        IApplicationBarIconButton Icon = this.ApplicationBar.Buttons[0] as IApplicationBarIconButton; 
+                        IApplicationBarIconButton Icon = this.ApplicationBar.Buttons[0] as IApplicationBarIconButton;
                         Icon.IsEnabled = true;
                         isLogining = false;
                         if (ee.Error != null)
@@ -129,9 +137,9 @@ namespace AutoWP7.View.More
                             UserInfoDataSource.Clear();
                         }
                     });
-
-
                 });
+
+                loginVM.LoadDataAsync(url, postData);
             }
             catch (Exception ex)
             {
@@ -139,9 +147,166 @@ namespace AutoWP7.View.More
             }
         }
 
+        #region 注册
 
+        private void Register()
+        {
+            bool checkSuccess = this.UpdateSelfInfoPanel.CheckData();
+            if (checkSuccess)
+            {
+                //接口验证
+                string format = "_appid={0}&autohomeua={1}&nickname={2}&userpwd={3}mobile={4}&area={5}&validcode={6}";
+                string data = string.Format(format, "app.wp", AutoWP7.Handler.Common.GetAutoHomeUA());
+                data = Utils.MeHelper.SortURLParamAsc(data);
+                string sign = Common.GetSignStr(data);
+                data += "&_sign=" + sign;
 
+                UpStreamViewModel upstreamVM = UpStreamViewModel.SingleInstance;
+                upstreamVM.UploadAsyncWithSharedClient(Utils.MeHelper.UserRegisterUrl, data, wc_UploadStringCompleted);
+            }
+        }
 
+        void wc_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
+        {
+            try
+            {
+                if (e.Error is WebException)
+                {
+                    Common.showMsg("当前网络不可用，请检查网络设置");
+                }
+                else if (e.Error == null && e.Cancelled == false)
+                {
+                    JObject json = JObject.Parse(e.Result);
+                    int resultCode = (int)json.SelectToken("resultcode");
+                    string message = json.SelectToken("message").ToString();
+                    //成功
+                    if (resultCode == 0)
+                    {
+                        JToken resultToken = json.SelectToken("result");
+                        if (resultToken != null)
+                        {
+                            Model.Me.RegisterResultModel resultVM = JsonHelper.Deserialise<Model.Me.RegisterResultModel>(resultToken.ToString());
 
+                            if (resultVM != null)
+                            {
+                                //存入文件
+                                var model = new MyForumModel();
+                                model.Success = 1;
+                                model.Message = message;
+                                model.UserID = resultVM.ID;
+                                model.UserName = resultVM.UserName;
+                                model.Authorization = resultVM.Auth;
+
+                                var setting = IsolatedStorageSettings.ApplicationSettings;
+                                setting["userInfo"] = model;
+                                setting.Save();
+                            }
+
+                            //返回登录页面
+                            Common.showMsg("注册成功");
+                            this.LoginPivot.SelectedIndex = 0;
+                        }
+                    }
+                    else
+                    {
+                        string msg = string.IsNullOrEmpty(message) ? "注册失败" : message;
+                        Common.showMsg(msg);
+                    }
+                }
+            }
+            catch
+            { }
+        }
+
+        #endregion
+
+        #region 第三方登录
+
+        ThirdPartyLoginViewModel thirdPartyLoginVM;
+
+        void thirdPartyLoginVM_ThirdPartyLoginCompleted(object sender, int e)
+        {
+            //绑定成功，判断账号授权情况
+            if (e == 0)
+            {
+                throw new NotImplementedException();
+            }
+            //未绑定车网账号
+            else if (e == 2013022)
+            {
+                this.NavigationService.Navigate(new Uri("/View/Me/CompleteMyInfo.xaml", UriKind.Relative));
+            }
+            else//其他错误
+            {
+                Common.showMsg("登录失败");
+            }
+        }
+
+        #region weibo login
+
+        private void Weibo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //http://open.weibo.com/wiki/Oauth2/authorize
+            //set account info
+            SdkData.AppKey = "2351935287";
+            SdkData.AppSecret = "120cb25307676b0273a0dc433ab45a6f";
+            SdkData.RedirectUri = "http://account.autohome.com.cn/oauth/SinaoauthResult";
+
+            AuthenticationView.OAuth2VerifyCompleted = (e1, e2, e3) => VerifyBack(e1, e2, e3);
+            AuthenticationView.OBrowserCancelled = new EventHandler(cancleEvent);
+
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                NavigationService.Navigate(new Uri("/WeiboSdk;component/PageViews/AuthenticationView.xaml"
+                    , UriKind.Relative));
+            });
+        }
+
+        private void VerifyBack(bool isSucess, SdkAuthError errCode, SdkAuth2Res response)
+        {
+            var settings = IsolatedStorageSettings.ApplicationSettings;
+            if (errCode.errCode == SdkErrCode.SUCCESS && response != null)
+            {
+                settings[Utils.MeHelper.WeiboAccessTokenKey] = response.accesssToken;
+                settings[Utils.MeHelper.WeiboRefreshTokenKey] = response.refleshToken;
+
+                //汽车之家第三方登录接口
+                string dataFormat = "_appid={0}&autohomeua={1}&openid={2}&plantFormId={3}&token={4}&position={5}&refreshToken={6}&_timeStamp={7}";
+                string data = string.Format(dataFormat, "app.wp", AutoWP7.Handler.Common.GetAutoHomeUA(), "", 16, response.accesssToken, App.CityId, response.refleshToken, Common.GetTimeStamp());
+                string sign = Common.GetSignStr(data);
+                data += "&_sign=" + sign;
+                thirdPartyLoginVM.ThirdPartyLoginAsync(Utils.MeHelper.ThirdPartyLoginUrl, data);
+            }
+            else
+            {
+                settings[Utils.MeHelper.WeiboAccessTokenKey] = null;
+                settings[Utils.MeHelper.WeiboRefreshTokenKey] = null;
+                Common.showMsg("授权失败");
+            }
+
+            settings.Save();
+        }
+
+        private void cancleEvent(object sender, EventArgs e)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                NavigationService.GoBack();
+            });
+        }
+
+        #endregion
+
+        #region QQ login
+
+        private void QQ_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var qqAuthVM = Me.QQ.AuthenticationViewModel.SingleInstance;
+            qqAuthVM.Login();
+        }
+
+        #endregion
+
+        #endregion
     }
 }

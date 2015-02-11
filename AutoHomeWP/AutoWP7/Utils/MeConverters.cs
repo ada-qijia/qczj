@@ -212,7 +212,7 @@ namespace AutoWP7.Utils
                 switch (model.RelationType)
                 {
                     case 0:
-                        return "未绑定";
+                        return "立即绑定";
                     case 1:
                         return "已经绑定";
                     case 2:
@@ -250,6 +250,25 @@ namespace AutoWP7.Utils
 
     #endregion
 
+    public class CommentReplyToReplyVisibilityConverter:IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var model = value as CommentReplyModel;
+            if (model!=null)
+            {
+                bool isReplyable = model.ReplyType == 1 && model.ImgID==0;
+                return isReplyable ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+    }
+
     public class ForumReplyToMyTopicTextConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -260,11 +279,11 @@ namespace AutoWP7.Utils
                 switch (replyModel.ReplyType)
                 {
                     case 1:
-                        return "回复我的帖子:" + replyModel.Title;
+                        return "回复我的帖子: " + replyModel.Title;
                     case 2:
-                        return "我的回复：" + replyModel.MidReplyCotent;
+                        return "我的回复: " + replyModel.MidReplyCotent;
                     case 3:
-                        return replyModel.MidReplyName + "的回复:" + replyModel.MidReplyCotent;
+                        return replyModel.MidReplyName + "的回复: " + replyModel.MidReplyCotent;
                     default:
                         break;
                 }
@@ -277,4 +296,44 @@ namespace AutoWP7.Utils
             return value;
         }
     }
+
+#region private message
+
+    public class TimeStampToStringConverter:IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null)
+            {
+                double seconds;
+                if (double.TryParse(value.ToString(), out seconds))
+                {
+                    var startTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                    var realTime = startTime.AddSeconds(seconds).ToLocalTime();
+                    var now=DateTime.Now;
+                    if(realTime.Date==now.Date)
+                    {
+                        return realTime.ToString("HH:mm");
+                    }
+                    else if(realTime.Year==now.Year)
+                    {
+                        return realTime.ToString("MM-dd");
+                    }
+                    else
+                    {
+                        return realTime.ToString("yyyy-MM-dd");
+                    }
+                }
+            }
+
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+    }
+
+#endregion
 }

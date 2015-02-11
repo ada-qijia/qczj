@@ -93,6 +93,10 @@ namespace AutoWP7.View.Car
                     }
                     break;
             }
+
+            //设置小图模式开关
+            bool isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode();
+            SetImageModeMenuItem(isSmallImageMode);
         }
         #region 首次加载
 
@@ -253,7 +257,36 @@ namespace AutoWP7.View.Car
 
         private string CreateTopicViewUrl(int pageIndex)
         {
-            return AppUrlMgr.TopicWebViewUrl(Convert.ToInt64(topicId), 0, pageIndex, 20, 1, 0, 0, 0, 0, 0,issend);
+            int isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode() ? 1 : 0;
+            return AppUrlMgr.TopicWebViewUrl(Convert.ToInt64(topicId), 0, pageIndex, 20, 1, 0, 0, isSmallImageMode, 0, 0,issend);
         }
+
+        #region 大图小图模式
+
+        //刷新
+        private void Refresh()
+        {
+            string url = CreateTopicViewUrl(1);
+            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute));
+        }
+
+        //切换大图小图模式
+        private void ImageMode_Click(object sender, EventArgs e)
+        {
+            var menuItem = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+            bool toSmallMode = menuItem.Text.Contains("小");
+            System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings[Utils.MeHelper.SmallImageModeKey] = toSmallMode;
+
+            SetImageModeMenuItem(toSmallMode);
+            Refresh();
+        }
+
+        private void SetImageModeMenuItem(bool isSmallImageMode)
+        {
+            var menuItem = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+            menuItem.Text = isSmallImageMode ? "大图模式" : "小图模式";
+        }
+
+        #endregion
     }
 }

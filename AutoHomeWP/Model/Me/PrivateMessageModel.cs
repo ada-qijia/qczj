@@ -26,7 +26,7 @@ namespace Model.Me
         public string LastMessage { get; set; }
 
         [DataMember(Name = "lastpostdate")]
-        public DateTime LastPostDate { get; set; }
+        public string LastPostDate { get; set; }
 
         [DataMember(Name = "isbusinessauth")]
         public bool IsBusinessAuth { get; set; }
@@ -45,7 +45,7 @@ namespace Model.Me
         public int ID { get; set; }
 
         [DataMember(Name = "lastpostdate")]
-        public DateTime LastPostDate { get; set; }
+        public string LastPostDate { get; set; }
     }
 
     [DataContract]
@@ -55,6 +55,6 @@ namespace Model.Me
         public List<PrivateMessageFriendModel> Friends { get; set; }
 
         [DataMember]
-        public Dictionary<int, PrivateMessageModel> Messages { get; set; }
+        public Dictionary<int, List<PrivateMessageModel>> Messages { get; set; }
     }
 }

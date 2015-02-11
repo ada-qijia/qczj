@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
+﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System.IO.IsolatedStorage;
-using ViewModels.Handler;
 using Model;
-using AutoWP7.Handler;
+using System;
+using System.IO.IsolatedStorage;
+using System.Linq;
+using System.Windows.Navigation;
+using ViewModels.Handler;
 
 namespace AutoWP7.View.Me
 {
@@ -32,42 +27,61 @@ namespace AutoWP7.View.Me
             {
                 model = appState[Utils.MeHelper.MyInfoStateKey] as Model.Me.MeModel;
                 this.DataContext = model;
+                PhoneApplicationService.Current.State.Remove(Utils.MeHelper.MyInfoStateKey);
             }
         }
 
 
         private void Logout_Click(object sender, EventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("你确定要退出登录吗？", null, MessageBoxButton.OKCancel);
-            if (result == MessageBoxResult.OK)
+            CustomMessageBox messageBox = new CustomMessageBox()
             {
-                var setting = IsolatedStorageSettings.ApplicationSettings;
-                string key = "userInfo";
-                if (setting.Contains(key))//已经登录
+                Caption = "退出登录",
+                Message = "你确定要退出登录吗？",
+                LeftButtonContent = "确定",
+                RightButtonContent = "取消",
+                IsFullScreen = false
+            };
+
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
                 {
-                    setting.Remove(key);
-                    setting.Clear();
+                    case CustomMessageBoxResult.LeftButton:
+                        var setting = IsolatedStorageSettings.ApplicationSettings;
+                        string key = "userInfo";
+                        if (setting.Contains(key))//已经登录
+                        {
+                            setting.Remove(key);
+                            setting.Clear();
+                        }
+
+                        //清除我的论坛
+                        using (LocalDataContext ldc = new LocalDataContext())
+                        {
+                            try
+                            {
+                                var deleteAllItem = from d in ldc.myForum where d.Id > 0 select d;
+                                ldc.GetTable<MyForumModel>().DeleteAllOnSubmit(deleteAllItem);
+                                ldc.SubmitChanges();
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
+
+                        NavigationService.GoBack();
+                        // Common.showMsg("退出登录成功");
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        break;
+                    default:
+                        break;
                 }
+            };
 
-
-
-                //清除我的论坛
-                using (LocalDataContext ldc = new LocalDataContext())
-                {
-                    try
-                    {
-                        var deleteAllItem = from d in ldc.myForum where d.Id > 0 select d;
-                        ldc.GetTable<MyForumModel>().DeleteAllOnSubmit(deleteAllItem);
-                        ldc.SubmitChanges();
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                }
-
-                Common.showMsg("退出登录成功");
-            }
+            messageBox.Show();
         }
     }
 }

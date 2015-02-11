@@ -12,14 +12,11 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
     shell:SystemTray.IsVisible="False">
-   
-        <Grid x:Name="ContentPanel"  Background="White">
+
+    <Grid x:Name="ContentPanel"  Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="730"/>
         </Grid.RowDefinitions>
-
-
-
 
         <phone:WebBrowser Visibility="Visible" x:Name="wb" NavigationFailed="wb_NavigationFailed"  Navigated="wb_Navigated" Navigating="wb_Navigating"  Margin="0,0,0,-70"  />
         <ProgressBar Foreground="#3cadeb" x:Name="ProgBar" Visibility="Visible" IsIndeterminate="True" Height="10" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />
@@ -29,7 +26,6 @@
                 HorizontalAlignment="Center" Width="160"  Tap="refreshButton_Tap_1"
                 Background="#3cadeb" Foreground="White" Visibility="Collapsed"  />
     </Grid>
-
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar x:Name="appBar" BackgroundColor="Black" ForegroundColor="White" IsVisible="True" Opacity="0.8"  IsMenuEnabled="False">

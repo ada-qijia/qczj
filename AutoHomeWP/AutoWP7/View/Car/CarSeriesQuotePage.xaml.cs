@@ -11,6 +11,7 @@ using Model;
 using ViewModels;
 using ViewModels.Handler;
 using System.Windows;
+using Model.Me;
 
 namespace AutoWP7.View.Car
 {
@@ -24,6 +25,14 @@ namespace AutoWP7.View.Car
             InitializeComponent();
             koubeiListBox.ItemsSource = koubeiList;
         }
+
+        public static void ShareModel(Model.Me.FavoriteCarSpecModel model)
+        {
+            PhoneApplicationService.Current.State[Utils.MeHelper.FavoriteStateKey] = model;
+        }
+
+        //共享车型
+        Model.Me.FavoriteCarSpecModel carSpec;
         //车系id
         string seriesID = string.Empty;
         //车型id
@@ -70,6 +79,12 @@ namespace AutoWP7.View.Car
             {
                 case System.Windows.Navigation.NavigationMode.New:
                     {
+                        if (PhoneApplicationService.Current.State.ContainsKey(Utils.MeHelper.FavoriteStateKey))
+                        {
+                            this.carSpec = PhoneApplicationService.Current.State[Utils.MeHelper.FavoriteStateKey] as Model.Me.FavoriteCarSpecModel;
+                            PhoneApplicationService.Current.State.Remove(Utils.MeHelper.FavoriteStateKey);
+                        }
+
                         App.timerId++;
                         //将车型id存放于全局
                         App.CarTypeId = this.NavigationContext.QueryString["carId"];
@@ -82,12 +97,19 @@ namespace AutoWP7.View.Car
                         cityId = App.CityId;
 
                         //车系名
-                        using (LocalDataContext ldc = new LocalDataContext())
+                        if (this.NavigationContext.QueryString.ContainsKey("seriesName"))
                         {
-                            var name = from s in ldc.carQuotes where s.Id == int.Parse(carId) select s.Name;
-                            foreach (var n in name)
+                            carTypeName.Text = this.NavigationContext.QueryString["seriesName"];
+                        }
+                        else
+                        {
+                            using (LocalDataContext ldc = new LocalDataContext())
                             {
-                                carTypeName.Text = n;
+                                var name = from s in ldc.carQuotes where s.Id == int.Parse(carId) select s.Name;
+                                foreach (var n in name)
+                                {
+                                    carTypeName.Text = n;
+                                }
                             }
                         }
 
@@ -109,6 +131,9 @@ namespace AutoWP7.View.Car
                                     break;
                             }
                         }
+
+                        //添加浏览历史
+                        AddRecents();
                     }
                     break;
                 case System.Windows.Navigation.NavigationMode.Back:
@@ -183,12 +208,6 @@ namespace AutoWP7.View.Car
             { }
         }
 
-        //收藏
-        private void favorite_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         //标志是否加载数据
         bool isDealerLoaded = false;
         bool isCarSeriesConfigLoaded = false;
@@ -198,6 +217,7 @@ namespace AutoWP7.View.Car
         {
             this.ApplicationBar.Buttons.Clear();
             this.ApplicationBar.IsVisible = true;
+
             //商用车specid>1000000和不显示参数配置paramIsShow=0的车型不能对比
             if (!string.IsNullOrEmpty(carId) && Convert.ToInt32(carId) < 1000000 && paramIsShow == 1)
             {
@@ -239,6 +259,9 @@ namespace AutoWP7.View.Car
                     this.ApplicationBar.IsVisible = false;
                     break;
             }
+
+            //设置收藏按钮状态
+            setFavoriteButton();
         }
 
         #region 配置参数
@@ -546,6 +569,78 @@ namespace AutoWP7.View.Car
             {
                 this.NavigationService.Navigate(new Uri(string.Format("/View/Car/AlibiDetailPage.xaml?id={0}&koubeiImage={1}", koubei.ID, koubei.MedalImage), UriKind.Relative));
             }
+        }
+
+        #endregion
+
+        #region 收藏管理
+
+        //收藏车型
+        private void favorite_Click(object sender, EventArgs e)
+        {
+            var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+
+            if (favoriteBtn.Text.Contains("取消"))
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSpec, new List<int> { this.carSpec.ID });
+                setFavoriteButton(success);
+                string msg = success ? "取消收藏成功" : "取消收藏失败";
+                Common.showMsg(msg);
+            }
+            else
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.CarSpec, this.carSpec);
+                setFavoriteButton(!success);
+                string msg = success ? "收藏成功" : "收藏失败";
+                Common.showMsg(msg);
+            }
+        }
+
+        private void setFavoriteButton(bool? addFavorite = null)
+        {
+            if (this.piv.SelectedIndex == 0)//经销商
+            {
+                if (!this.ApplicationBar.Buttons.Contains(addFavorite))
+                {
+                    this.ApplicationBar.Buttons.Insert(0, AddFavorite);
+                }
+
+                if (this.carSpec == null)
+                {
+                    AddFavorite.IsEnabled = false;
+                }
+                else
+                {
+                    bool add;
+                    if (addFavorite.HasValue)
+                    {
+                        add = addFavorite.Value;
+                    }
+                    else
+                    {
+                        var exist = ViewModels.Me.FavoriteViewModel.SingleInstance.Exist(FavoriteType.CarSpec, this.carSpec.ID);
+                        add = !exist;
+                    }
+                    string iconUrl = add ? "/Images/favs.addto.png" : "/Images/favs.png";
+                    AddFavorite.IconUri = new Uri(iconUrl, UriKind.Relative);
+                    AddFavorite.Text = add ? "收藏" : "取消收藏";
+                    AddFavorite.IsEnabled = true;
+                }
+            }
+            else if (this.ApplicationBar.Buttons.Count > 2)
+            {
+                //移除收藏按钮
+                this.ApplicationBar.Buttons.Remove(AddFavorite);
+            }
+        }
+
+        #endregion
+
+        #region 浏览历史
+
+        private void AddRecents()
+        {
+            ViewModels.Me.ViewHistoryViewModel.SingleInstance.AddItem(FavoriteType.CarSpec, this.carSpec);
         }
 
         #endregion

@@ -9,6 +9,7 @@ using System.Net;
 using System.Windows;
 using Model.Me;
 using ViewModels.Me;
+using System.Linq;
 
 namespace AutoWP7.View.Forum
 {
@@ -23,6 +24,7 @@ namespace AutoWP7.View.Forum
 
         }
 
+        DraftModel sharedModel;
         string topicTitle = string.Empty;
         //论坛id
         string bbsId = string.Empty;
@@ -48,7 +50,7 @@ namespace AutoWP7.View.Forum
                         bbsId = this.NavigationContext.QueryString["bbsId"];
                         bbsType = this.NavigationContext.QueryString["bbsType"];
                         topicId = this.NavigationContext.QueryString["topicId"];
-                        topicTitle=this.NavigationContext.QueryString["title"];
+                        topicTitle = this.NavigationContext.QueryString["title"];
                         targetReplyId = this.NavigationContext.QueryString["targetReplyId"];
                         url = this.NavigationContext.QueryString["url"];
                         pageindex = this.NavigationContext.QueryString["pageindex"];
@@ -57,8 +59,21 @@ namespace AutoWP7.View.Forum
                         {
                             this.NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.Relative));
                         }
+
+                        //this is a draft
+                        if (this.NavigationContext.QueryString.ContainsKey("savedTime"))
+                        {
+                            string savedTime = this.NavigationContext.QueryString["savedTime"];
+                            var draftList = DraftViewModel.SingleInstance.DraftList;
+                            sharedModel = draftList.FirstOrDefault(item => item.SavedTime.ToString() == savedTime);
+                            if (sharedModel != null)
+                            {
+                                this.replyContent.Text = sharedModel.Content;
+                            }
+                        }
+
+                        break;
                     }
-                    break;
                 case System.Windows.Navigation.NavigationMode.Back:
                     {
 
@@ -166,7 +181,8 @@ namespace AutoWP7.View.Forum
                             int topicId = (int)json.SelectToken("result").SelectToken("topicid");
                             int replyid = (int)json.SelectToken("result").SelectToken("replyid");
                             int pageIndex = (int)json.SelectToken("result").SelectToken("pageindex");
-                            App.TopicUrl = AppUrlMgr.TopicWebViewUrl(Convert.ToInt64(topicId), 0, pageIndex, 20, 1, 0, 0, 0, replyid, 480,0);
+                            int isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode() ? 1 : 0;
+                            App.TopicUrl = AppUrlMgr.TopicWebViewUrl(Convert.ToInt64(topicId), 0, pageIndex, 20, 1, 0, 0, isSmallImageMode, replyid, 480, 0);
                             App.pageIndex = pageIndex;
                             if (pageindex != pageIndex.ToString())
                                 App.IsLoadTag = false;
@@ -191,16 +207,25 @@ namespace AutoWP7.View.Forum
         {
             if (MessageBox.Show("尚未发送，是否保存到草稿箱？", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
-                DraftModel model = new DraftModel();
-                model.Title = topicTitle;
-                model.BBSID = bbsId;
-                model.Content = replyContent.Text;
-                model.SavedTime = DateTime.Now;
-                model.TopicID = topicId;
-                model.TargetReplyID = targetReplyId;
-                DraftViewModel.SingleInstance.AddDraft(model);
+                if (sharedModel != null)//update
+                {
+                    sharedModel.Content = replyContent.Text;
+                    sharedModel.SavedTime = DateTime.Now;
+                    DraftViewModel.SingleInstance.SaveDraft();
+                }
+                else
+                {
+                    DraftModel model = new DraftModel();
+                    model.Title = topicTitle;
+                    model.BBSID = bbsId;
+                    model.BBSType = bbsType;
+                    model.Content = replyContent.Text;
+                    model.SavedTime = DateTime.Now;
+                    model.TopicID = topicId;
+                    model.TargetReplyID = targetReplyId;
+                    DraftViewModel.SingleInstance.AddDraft(model);
+                }
             }
-
             base.OnBackKeyPress(e);
         }
 

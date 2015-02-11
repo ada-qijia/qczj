@@ -27,6 +27,7 @@ namespace AutoWP7
             InitializeComponent();
 
             CreateApplicationBarItems();
+            this.UnreadDraftBorder.DataContext = DraftViewModel.SingleInstance;
         }
 
         //最新资讯集合
@@ -62,7 +63,7 @@ namespace AutoWP7
 
                         //  UpdateLocalCity();
                         //设置AppBar搜索按钮可见
-                        setAppBarSearchButtonVisible(true);
+                        ResetAppBar();
                     }
                     break;
                 case System.Windows.Navigation.NavigationMode.Back:
@@ -71,18 +72,12 @@ namespace AutoWP7
                         UpdateLocalCity();
 
                         HandleSaleFilterSelection();
-
-                        //update me
-                        UpdateMeInfo();
                     }
                     break;
             }
 
-            //update me
-            if (PhoneApplicationService.Current.State.Keys.Contains(Utils.MeHelper.MyInfoStateKey))
-            {
-                PhoneApplicationService.Current.State.Remove(Utils.MeHelper.MyInfoStateKey);
-            }
+            //更新登录状态
+            UpdateMeInfo();
         }
 
         bool isLoaded = false;
@@ -116,11 +111,8 @@ namespace AutoWP7
                     break;
             }
 
-            //为我设置AppBar
-            setAppBarMeVisible(pano.SelectedIndex == 5);
-            //为最新和论坛设置AppBar搜索按钮
-            bool searchButtonVisible = pano.SelectedIndex == 0 || pano.SelectedIndex == 2 || pano.SelectedIndex == 4;
-            setAppBarSearchButtonVisible(searchButtonVisible);
+            //设置AppBar
+            ResetAppBar();
         }
 
         // 更新本地城市
@@ -374,6 +366,8 @@ namespace AutoWP7
                 if (mediatype == 1 || mediatype == 2)//文章 和 说客 按同一种类型处理
                 {
                     pageindex = news.pageIndex;
+                    //共享文章
+                    this.ShareNewsWithNewsEndPage(news);
                     this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + pageindex + "&pageType=" + mediatype, UriKind.Relative));
                 }
                 else if (mediatype == 3)
@@ -382,22 +376,6 @@ namespace AutoWP7
                 }
             }
             return;
-
-            /**************************************
-             
-            Grid gg = (Grid)sender;
-            var news = ldc.newestModels.Where(o => o.id == (int)gg.Tag).FirstOrDefault();
-            string pageIndex = "1";
-            string newstype = string.Empty;
-            if (news != null)
-            {
-                //取得文章类型（新闻or说客）
-                newstype = news.type;
-                pageIndex = news.pageIndex;
-            }
-            this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=" + pageIndex + "&newsType=" + newstype, UriKind.Relative));
-        
-             **************************************/
         }
 
         // 焦点图
@@ -409,6 +387,8 @@ namespace AutoWP7
                 int mediatype = news.mediatype;
                 if (mediatype == 1 || mediatype == 3)//文章 和 说客 按同一种类型处理
                 {
+                    //共享文章
+                    this.ShareNewsWithNewsEndPage(news);
                     this.NavigationService.Navigate(new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + news.id + "&pageIndex=" + focusImagePageIndex + "&pageType=" + mediatype, UriKind.Relative));
                 }
                 else if (mediatype == 2)
@@ -416,7 +396,21 @@ namespace AutoWP7
                     this.NavigationService.Navigate(new Uri("/View/Channel/News/VideoEndPage.xaml?videoid=" + news.id, UriKind.Relative));
                 }
             }
-            //this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + img.Tag + "&pageIndex=" + focusImagePageIndex + "&newsType=", UriKind.Relative));
+        }
+
+        private void ShareNewsWithNewsEndPage(NewsModel news)
+        {
+            Model.Me.FavoriteArticleModel favoriteModel = new Model.Me.FavoriteArticleModel();
+            favoriteModel.ID = news.id;
+            favoriteModel.Img = news.imgurl;
+            favoriteModel.Title = news.title;
+            favoriteModel.PublishTime = news.time;
+            int reply;
+            if (int.TryParse(news.replycount, out reply))
+            {
+                favoriteModel.ReplyCount = reply;
+            }
+            View.Channel.News.NewsEndPage.ShareState(favoriteModel);
         }
 
         //刷新状态
@@ -1004,27 +998,51 @@ namespace AutoWP7
 
         #region 设置AppBar搜索按钮
 
-        private void setAppBarSearchButtonVisible(bool isVisible)
+        ApplicationBarIconButton searchButton;
+        ApplicationBarMenuItem settingItem;
+        ApplicationBarIconButton refreshButton;
+
+        private void CreateApplicationBarItems()
         {
-            if (isVisible)
+            refreshButton = new ApplicationBarIconButton();
+            refreshButton.IconUri = new Uri("/Images/refresh.png", UriKind.Relative);
+            refreshButton.Text = "刷新";
+            refreshButton.Click += refresh_Click;
+
+            settingItem = new ApplicationBarMenuItem();
+            settingItem.Text = "设置";
+            settingItem.Click += settingItem_Click;
+
+            searchButton = new ApplicationBarIconButton();
+            searchButton.IconUri = new Uri("/Images/bar_search.png", UriKind.Relative);
+            searchButton.Text = "搜索";
+            searchButton.Click += searchButton_Click;
+        }
+
+        private void ResetAppBar()
+        {
+            ApplicationBar.Buttons.Clear();
+            ApplicationBar.MenuItems.Clear();
+
+            //为最新和论坛设置AppBar搜索按钮
+            bool searchButtonVisible = pano.SelectedIndex == 0 || pano.SelectedIndex == 2 || pano.SelectedIndex == 4;
+            if (searchButtonVisible)
             {
-                if (ApplicationBar.Buttons.Count == 0)
+                ApplicationBar.Buttons.Add(searchButton);
+                ApplicationBar.Mode = ApplicationBarMode.Default;
+            }
+            else if (pano.SelectedIndex == 5)//我
+            {
+                if (Common.isLogin())
                 {
-                    ApplicationBarIconButton searchButton = new ApplicationBarIconButton();
-                    searchButton.IconUri = new Uri("/Images/bar_search.png", UriKind.Relative);
-                    searchButton.Text = "搜索";
-                    searchButton.Click += searchButton_Click;
-                    ApplicationBar.Buttons.Add(searchButton);
-                    ApplicationBar.Mode = ApplicationBarMode.Default;
+                    ApplicationBar.Buttons.Add(refreshButton);
                 }
+                ApplicationBar.MenuItems.Add(settingItem);
+                ApplicationBar.Mode = ApplicationBarMode.Default;
             }
             else
             {
-                if (ApplicationBar.Buttons.Count == 1)
-                {
-                    ApplicationBar.Buttons.RemoveAt(0);
-                    ApplicationBar.Mode = ApplicationBarMode.Minimized;
-                }
+                ApplicationBar.Mode = ApplicationBarMode.Minimized;
             }
         }
 
@@ -1066,16 +1084,13 @@ namespace AutoWP7
                 this.MePanoItem.DataContext = MeVM;
             }
 
-            var settings = IsolatedStorageSettings.ApplicationSettings;
-            if (Common.isLogin() )
+            if (Common.isLogin())
             {
-                //if (MeVM.Model == null)
+                if (MeVM.Model == null)
                 {
                     GlobalIndicator.Instance.Text = "正在获取中...";
                     GlobalIndicator.Instance.IsBusy = true;
 
-                    //var userInfoModel = settings["userInfo"] as MyForumModel;
-                    //string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetUserInfo.ashx?a=2&pm=3&v=1.7.0&au={0}&u={1}&p=1&s=4",userInfoModel.Authorization,userInfoModel.Id);
                     string url = MeHelper.GetUserInfoUrl();
                     MeVM.LoadDataAysnc(url);
                 }
@@ -1085,54 +1100,15 @@ namespace AutoWP7
                 MeVM.ClearData();
             }
 
-            setAppBarMeVisible(pano.SelectedIndex == 5);
-            this.NotLoginGrid.Visibility = this.NotLoginGrid.DataContext == null ? Visibility.Visible : Visibility.Collapsed;
-            this.IsLoginGrid.Visibility = this.NotLoginGrid.DataContext != null ? Visibility.Visible : Visibility.Collapsed;
+            ResetAppBar();
         }
 
         void MeVM_LoadDataCompleted(object sender, EventArgs e)
         {
-            this.NotLoginGrid.Visibility = this.NotLoginGrid.DataContext == null ? Visibility.Visible : Visibility.Collapsed;
-            this.IsLoginGrid.Visibility = this.NotLoginGrid.DataContext != null ? Visibility.Visible : Visibility.Collapsed;
+            ResetAppBar();
 
             GlobalIndicator.Instance.Text = "";
-            GlobalIndicator.Instance.IsBusy = false; 
-        }
-
-        ApplicationBarIconButton refreshButton;
-        ApplicationBarMenuItem settingItem;
-
-        private void CreateApplicationBarItems()
-        {
-            refreshButton = new ApplicationBarIconButton();
-            refreshButton.IconUri = new Uri("/Images/refresh.png", UriKind.Relative);
-            refreshButton.Text = "刷新";
-            refreshButton.Click += refresh_Click;
-
-            settingItem = new ApplicationBarMenuItem();
-            settingItem.Text = "设置";
-            settingItem.Click += settingItem_Click;
-        }
-
-        private void setAppBarMeVisible(bool isVisible)
-        {
-            if (isVisible)
-            {
-                ApplicationBar.Buttons.Clear();
-                if (Common.isLogin())
-                {
-                    ApplicationBar.Buttons.Add(refreshButton);
-                    ApplicationBar.Mode = ApplicationBarMode.Default;
-                }
-
-                ApplicationBar.MenuItems.Clear();
-                ApplicationBar.MenuItems.Add(settingItem);
-            }
-            else
-            {
-                ApplicationBar.Buttons.Clear();
-                ApplicationBar.MenuItems.Clear();
-            }
+            GlobalIndicator.Instance.IsBusy = false;
         }
 
         private void settingItem_Click(object sender, EventArgs e)
@@ -1142,6 +1118,10 @@ namespace AutoWP7
 
         private void refresh_Click(object sender, EventArgs e)
         {
+            if (MeVM != null)
+            {
+                MeVM.ClearData();
+            }
             UpdateMeInfo();
         }
 
@@ -1170,9 +1150,10 @@ namespace AutoWP7
             this.NavigationService.Navigate(new Uri("/View/Me/MyForumReply.xaml", UriKind.Relative));
         }
 
+        //私信
         private void PrivateMessage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            this.NavigationService.Navigate(new Uri("/View/Me/PrivateMessageFriends.xaml", UriKind.Relative));
         }
 
         private void MyCollection_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -1182,8 +1163,7 @@ namespace AutoWP7
 
         private void MyTritan_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("/View/Me/MyForumReply.xaml", UriKind.Relative));
-           // this.NavigationService.Navigate(new Uri("/View/Me/MyTritan.xaml", UriKind.Relative));
+            this.NavigationService.Navigate(new Uri("/View/Me/MyTritan.xaml", UriKind.Relative));
         }
 
         private void DraftBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)

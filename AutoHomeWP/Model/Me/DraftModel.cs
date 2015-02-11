@@ -9,6 +9,9 @@ namespace Model.Me
         [DataMember]
         public string BBSID { get; set; }
 
+        [DataMember]
+        public string BBSType { get; set; }
+
         /// <summary>
         /// if null, this draft is a post, otherwise a reply.
         /// </summary>

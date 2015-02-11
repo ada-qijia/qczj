@@ -6,27 +6,238 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:utils="clr-namespace:AutoWP7.Utils"
+    xmlns:ucSearchResult="clr-namespace:AutoWP7.UcControl.SearchResult"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="False">
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <!--Pivot Control-->
-        <phone:Pivot Title="">
-            <!--Pivot item one-->
-            <phone:PivotItem Header="浏览的车系">
-                <Grid/>
+    <phone:PhoneApplicationPage.Resources>
+        <utils:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
+        <DataTemplate x:Key="CarSeriesItemTemplate">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12" Tap="CarSeriesItem_Tap">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.RowSpan="2" >
+                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                    <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                </Grid>
+
+                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Level}" Style="{StaticResource FooterLargeTextStyle}" FontSize="20"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PriceBetween}" Style="{StaticResource PriceRedTextStyle}"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="CarSpecItemTemplate">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12" Tap="CarSpecItem_Tap">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.RowSpan="2" >
+                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                    <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                </Grid>
+
+                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SeriesName}" Style="{StaticResource FooterLargeTextStyle}" FontSize="20"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding LowPrice}" Style="{StaticResource PriceRedTextStyle}"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ArticleItemTemplate">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12" Tap="ArticleItem_Tap">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.RowSpan="2" >
+                    <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
+                    <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                </Grid>
+
+                <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Title}" Style="{StaticResource TitleLargeTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PublishTime}" Style="{StaticResource FooterLargeTextStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}评'}" Style="{StaticResource FooterLargeTextStyle}"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ForumItemTemplate">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12 0 24" Tap="ForumItem_Tap">
+                <TextBlock Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" MaxHeight="70"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="TopicItemTemplate">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12 0 24" Tap="TopicItem_Tap">
+                <TextBlock Text="{Binding Title}"  Style="{StaticResource TitleLargeTextStyle}" MaxHeight="70"/>
+            </Grid>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="White">
+        <phone:Pivot x:Name="FavoritePivot" Foreground="Black">
+            <phone:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <TextBlock Text="{Binding}" Foreground="#3cadeb"/>
+                    </Grid>
+                </DataTemplate>
+            </phone:Pivot.HeaderTemplate>
+
+            <!--车系-->
+            <phone:PivotItem Header="浏览的车系" Margin="24 18 12 0">
+                <Grid>
+                    <ListBox x:Name="CarSeriesList" ItemsSource="{Binding CarSeriesList}" Visibility="{Binding CarSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource CarSeriesItemTemplate}">
+                                    <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreCarSeries_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </utils:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <ucSearchResult:NoResultView x:Name="NoCarSeriesResultView" Visibility="{Binding CarSeriesList.Count,Converter={StaticResource EmptyToVisibilityConverter},ConverterParameter=1}"/>
+                </Grid>
             </phone:PivotItem>
 
-            <!--Pivot item two-->
-            <phone:PivotItem Header="浏览的车型">
-                <Grid/>
+            <!--车型-->
+            <phone:PivotItem Header="浏览的车型" Margin="24 18 12 0">
+                <Grid>
+                    <ListBox x:Name="CarSpecList" ItemsSource="{Binding CarSpecList}" Visibility="{Binding CarSpecList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource CarSpecItemTemplate}">
+                                    <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreCarSpec_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </utils:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <ucSearchResult:NoResultView x:Name="NoCarSpecResultView" Visibility="{Binding CarSpecList.Count,Converter={StaticResource EmptyToVisibilityConverter},ConverterParameter=1}"/>
+                </Grid>
+            </phone:PivotItem>
+
+            <!--文章-->
+            <phone:PivotItem Header="浏览的文章" Margin="24 18 12 0">
+                <Grid>
+                    <ListBox x:Name="ArticleList" ItemsSource="{Binding ArticleList}" Visibility="{Binding ArticleList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource ArticleItemTemplate}">
+                                    <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreArticle_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </utils:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <ucSearchResult:NoResultView x:Name="NoArticleResultView" Visibility="{Binding ArticleList.Count,Converter={StaticResource EmptyToVisibilityConverter},ConverterParameter=1}"/>
+                </Grid>
+            </phone:PivotItem>
+
+            <!--论坛-->
+            <phone:PivotItem Header="浏览的论坛" Margin="24 18 12 0">
+                <Grid>
+                    <ListBox x:Name="ForumList" ItemsSource="{Binding ForumList}" Visibility="{Binding ForumList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource ForumItemTemplate}">
+                                    <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreForum_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </utils:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                    <ucSearchResult:NoResultView x:Name="NoForumResultView" Visibility="{Binding ForumList.Count,Converter={StaticResource EmptyToVisibilityConverter},ConverterParameter=1}"/>
+                </Grid>
+            </phone:PivotItem>
+
+            <!--帖子-->
+            <phone:PivotItem Header="浏览的帖子" Margin="24 18 12 0">
+                <Grid>
+                    <ListBox x:Name="TopicList" ItemsSource="{Binding TopicList}" Visibility="{Binding TopicList,Converter={StaticResource EmptyToVisibilityConverter}}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource TopicItemTemplate}">
+                                    <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreTopic_Tap">
+                                                <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
+                                </utils:LoadMoreDataTemplateSelector>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <ucSearchResult:NoResultView x:Name="NoTopicResultView" Visibility="{Binding TopicList.Count,Converter={StaticResource EmptyToVisibilityConverter},ConverterParameter=1}"/>
+                </Grid>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>
-    
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar BackgroundColor="Black">
+            <shell:ApplicationBarIconButton Text="清空" IconUri="\Images\car_del.png" Click="DeleteAll_Click"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
 </phone:PhoneApplicationPage>

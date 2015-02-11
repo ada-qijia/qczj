@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace ViewModels.Me
 {
-    class PrivateMessageFriendViewModel:Search.SearchResultViewModelBase
+    public class PrivateMessageFriendViewModel : Search.SearchResultViewModelBase
     {
         public PrivateMessageFriendViewModel()
         {
-            this.MessageList = new ObservableCollection<PrivateMessageFriendModel>();
+            this.FriendList = new ObservableCollection<PrivateMessageFriendModel>();
 
             this.LoadMoreButtonItem = new PrivateMessageFriendModel() { IsLoadMore = true };
             this.DownloadStringCompleted += ViewModel_DownloadStringCompleted;
@@ -22,7 +22,14 @@ namespace ViewModels.Me
 
         #region properties
 
-        public ObservableCollection<PrivateMessageFriendModel> MessageList { get; private set; }
+        public ObservableCollection<PrivateMessageFriendModel> FriendList { get; private set; }
+
+        private int _returnCode;
+        public int ReturnCode
+        {
+            get { return _returnCode; }
+            set { SetProperty<int>(ref _returnCode, value); }
+        }
 
         #endregion
 
@@ -53,6 +60,7 @@ namespace ViewModels.Me
                     //返回的json数据
                     JObject json = JObject.Parse(e.Result);
                     JToken resultToken = json.SelectToken("result");
+                    this.ReturnCode = json.SelectToken("returncode").Value<int>();
 
                     #region 用返回结果填充每个版块
 
@@ -62,16 +70,21 @@ namespace ViewModels.Me
 
                     JToken blockToken;
 
-                    //文章列表
+                    //用户列表
+                    if(this.PageIndex==1)
+                    {
+                        this.FriendList.Clear();
+                    }
+
                     blockToken = resultToken.SelectToken("list");
                     if (blockToken.HasValues)
                     {
-                        var topicList = JsonHelper.DeserializeOrDefault<List<PrivateMessageFriendModel>>(blockToken.ToString());
-                        if (topicList != null)
+                        var friendsList = JsonHelper.DeserializeOrDefault<List<PrivateMessageFriendModel>>(blockToken.ToString());
+                        if (friendsList != null)
                         {
-                            foreach (var model in topicList)
+                            foreach (var model in friendsList)
                             {
-                                this.MessageList.Add(model);
+                                this.FriendList.Add(model);
                             }
                         }
                     }
@@ -100,7 +113,7 @@ namespace ViewModels.Me
             this.PageIndex = 0;
             this.PageCount = 0;
 
-            this.MessageList.Clear();
+            this.FriendList.Clear();
         }
 
         #endregion
@@ -108,17 +121,17 @@ namespace ViewModels.Me
         #region base class override
         protected override void EnsureMoreButton()
         {
-            if (!this.IsEndPage && !this.MessageList.Contains(this.LoadMoreButtonItem))
+            if (!this.IsEndPage && !this.FriendList.Contains(this.LoadMoreButtonItem))
             {
-                this.MessageList.Add((PrivateMessageFriendModel)this.LoadMoreButtonItem);
+                this.FriendList.Add((PrivateMessageFriendModel)this.LoadMoreButtonItem);
             }
         }
 
         protected override void TryRemoveMoreButton()
         {
-            if (this.MessageList.Contains(this.LoadMoreButtonItem))
+            if (this.FriendList.Contains(this.LoadMoreButtonItem))
             {
-                this.MessageList.Remove((PrivateMessageFriendModel)this.LoadMoreButtonItem);
+                this.FriendList.Remove((PrivateMessageFriendModel)this.LoadMoreButtonItem);
             }
         }
         #endregion

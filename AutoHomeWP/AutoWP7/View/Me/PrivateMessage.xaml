@@ -1,0 +1,141 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="AutoWP7.View.Me.PrivateMessage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:util="clr-namespace:AutoWP7.Utils"
+    x:Name="PrivateMessagePage"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+        <util:TimeStampToStringConverter x:Key="TimeStampToStringConverter"/>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="PageTitle" Text="" Tag="" Foreground="{StaticResource App_Theme_Color}" HorizontalAlignment="Left" FontSize="72"  Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox x:Name="MessageListBox" Grid.ColumnSpan="2" Margin="12,0,12,0" ItemsSource="{Binding MessageList}" ManipulationCompleted="MessageListBox_ManipulationCompleted" ManipulationStarted="MessageListBox_ManipulationStarted">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <util:PrivateMessageDataTemplateSelector Content="{Binding}" FriendID="{Binding FriendID,ElementName=PrivateMessagePage}" HorizontalAlignment="Stretch" FontFamily="Portable User Interface">
+                            <toolkit:ContextMenuService.ContextMenu>
+                                <toolkit:ContextMenu>
+                                    <!-- You can suppress tilt on indivudal menu items with TiltEffect.SuppressTilt="True" -->
+                                    <toolkit:MenuItem Header="复制" Click="Copy_Click"/>
+                                    <toolkit:MenuItem Header="删除" Click="Delete_Click"/>
+                                </toolkit:ContextMenu>
+                            </toolkit:ContextMenuService.ContextMenu>
+
+                            <util:PrivateMessageDataTemplateSelector.MeItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="0 12">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.ColumnSpan="4" Text="{Binding LastPostDate,Converter={StaticResource TimeStampToStringConverter}}" Style="{StaticResource ContentTextStyle}" HorizontalAlignment="Center" Margin="12" FontFamily="Portable User Interface"/>
+                                        <!--current Status-->
+                                        <Image VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+                                        <Border Grid.Row="1" Grid.Column="1" Background="White" HorizontalAlignment="Right" VerticalAlignment="Top" MaxWidth="360">
+                                            <TextBlock Text="{Binding Content}" Style="{StaticResource TitleNormalTextStyle}" Margin="18" MaxHeight="Infinity" FontFamily="Portable User Interface"/>
+                                        </Border>
+
+                                        <Image Grid.Row="1" Grid.Column="2" Width="15" VerticalAlignment="Top" Source="/Images/Me/meMessageTriangle.png"/>
+
+                                        <Grid Grid.Row="1" Grid.Column="3">
+                                            <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageUserSmallStyle}" Margin="12 0 0 0"/>
+                                            <Image Source="{Binding MeImg, ElementName=PrivateMessagePage}" Style="{StaticResource ImageUserSmallStyle}" Margin="12 0 0 0"/>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </util:PrivateMessageDataTemplateSelector.MeItemTemplate>
+
+                            <util:PrivateMessageDataTemplateSelector.FriendItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="0 12">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.ColumnSpan="3" Text="{Binding LastPostDate,Converter={StaticResource TimeStampToStringConverter}}" Style="{StaticResource ContentTextStyle}" HorizontalAlignment="Center" Margin="12"/>
+
+                                        <Border Grid.Row="1" Grid.Column="2" Background="{StaticResource App_Theme_Color}" HorizontalAlignment="Left" VerticalAlignment="Top" MaxWidth="360">
+                                            <TextBlock Text="{Binding Content}" Style="{StaticResource TitleNormalTextStyle}" Margin="18" MaxHeight="Infinity"/>
+                                        </Border>
+
+                                        <Image Grid.Row="1" Grid.Column="1" Width="15" VerticalAlignment="Top" Source="/Images/Me/friendMessageTriangle.png"/>
+
+                                        <Grid Grid.Row="1">
+                                            <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageUserSmallStyle}"/>
+                                            <Image Source="{Binding FriendImg,ElementName=PrivateMessagePage}" Style="{StaticResource ImageUserSmallStyle}"/>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </util:PrivateMessageDataTemplateSelector.FriendItemTemplate>
+
+                            <util:PrivateMessageDataTemplateSelector.LoadMoreTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMore_Tap">
+                                        <TextBlock Foreground="Black" FontSize="28"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                           Text="点击加载更多..."/>
+                                    </Border>
+                                </DataTemplate>
+                            </util:PrivateMessageDataTemplateSelector.LoadMoreTemplate>
+                        </util:PrivateMessageDataTemplateSelector>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Rectangle Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource SplitBar_Horizontal_Style}"/>
+
+            <toolkit:PhoneTextBox x:Name="ReplyTextBox" Grid.Row="2" Hint="回复私信" TextWrapping="Wrap" Text="" MaxHeight="110" TextChanged="ReplyTextBox_TextChanged"/>
+
+            <StackPanel Grid.Row="2" Grid.Column="1" Margin="0 0 12 0"  VerticalAlignment="Center">
+                <TextBlock x:Name="LetterNumTextBlock" Text="" Visibility="Collapsed" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Center" Margin="0 6 0 0"/>
+                <TextBlock x:Name="ReplyTextBlock" Text="回复" Style="{StaticResource TitleLargeTextStyle}" HorizontalAlignment="Center" Foreground="{StaticResource App_Theme_Color}" Tap="Reply_Tap"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>

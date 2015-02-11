@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ViewModels.Me
 {
@@ -19,18 +20,11 @@ namespace ViewModels.Me
 
         private ViewHistoryViewModel()
         {
-            this.CarSeriesList = new ObservableCollection<ViewHistoryCarSeriesModel>();
-            this.CarSpecList = new ObservableCollection<ViewHistoryCarSpecModel>();
-            this.ArticleList = new ObservableCollection<ViewHistoryArticleModel>();
-            this.ForumList = new ObservableCollection<ViewHistoryForumModel>();
-            this.TopicList = new ObservableCollection<ViewHistoryTopicModel>();
-
-            this.currentPageIndex = new Dictionary<FavoriteType, int>(5);
-            currentPageIndex.Add(FavoriteType.CarSeries, 0);
-            currentPageIndex.Add(FavoriteType.CarSpec, 0);
-            currentPageIndex.Add(FavoriteType.Article, 0);
-            currentPageIndex.Add(FavoriteType.Forum, 0);
-            currentPageIndex.Add(FavoriteType.Topic, 0);
+            this.CarSeriesList = new ObservableCollection<FavoriteCarSeriesModel>();
+            this.CarSpecList = new ObservableCollection<FavoriteCarSpecModel>();
+            this.ArticleList = new ObservableCollection<FavoriteArticleModel>();
+            this.ForumList = new ObservableCollection<FavoriteForumModel>();
+            this.TopicList = new ObservableCollection<FavoriteTopicModel>();
         }
 
         #region single instance
@@ -43,7 +37,7 @@ namespace ViewModels.Me
                 if (_singleInstance == null)
                 {
                     _singleInstance = new ViewHistoryViewModel();
-                    _singleInstance.Initialize();
+                    _singleInstance.LoadLocally();
                 }
                 return _singleInstance;
             }
@@ -53,34 +47,19 @@ namespace ViewModels.Me
 
         #region properties
 
-        public ObservableCollection<ViewHistoryCarSeriesModel> CarSeriesList { get; private set; }
+        public ObservableCollection<FavoriteCarSeriesModel> CarSeriesList { get; private set; }
 
-        public ObservableCollection<ViewHistoryCarSpecModel> CarSpecList { get; private set; }
+        public ObservableCollection<FavoriteCarSpecModel> CarSpecList { get; private set; }
 
-        public ObservableCollection<ViewHistoryArticleModel> ArticleList { get; private set; }
+        public ObservableCollection<FavoriteArticleModel> ArticleList { get; private set; }
 
-        public ObservableCollection<ViewHistoryForumModel> ForumList { get; private set; }
+        public ObservableCollection<FavoriteForumModel> ForumList { get; private set; }
 
-        public ObservableCollection<ViewHistoryTopicModel> TopicList { get; private set; }
-
-        public Dictionary<FavoriteType, int> currentPageIndex { get; private set; }
+        public ObservableCollection<FavoriteTopicModel> TopicList { get; private set; }
 
         #endregion
 
         #region public methods
-
-        public void Initialize()
-        {
-            string content = IsolatedStorageFileHelper.ReadIsoFile(FilePath);
-            viewHistoryModel = JsonHelper.DeserializeOrDefault<ViewHistoryModel>(content);
-
-            viewHistoryModel = viewHistoryModel ?? new ViewHistoryModel();
-            viewHistoryModel.CarSeriesList = viewHistoryModel.CarSeriesList ?? new List<ViewHistoryCarSeriesModel>();
-            viewHistoryModel.CarSpecList = viewHistoryModel.CarSpecList ?? new List<ViewHistoryCarSpecModel>();
-            viewHistoryModel.ForumList = viewHistoryModel.ForumList ?? new List<ViewHistoryForumModel>();
-            viewHistoryModel.ArticleList = viewHistoryModel.ArticleList ?? new List<ViewHistoryArticleModel>();
-            viewHistoryModel.TopicList = viewHistoryModel.TopicList ?? new List<ViewHistoryTopicModel>();
-        }
 
         //Save change locally, update related view to first page.
         public bool AddItem(FavoriteType type, object historyModel)
@@ -89,22 +68,33 @@ namespace ViewModels.Me
             switch (type)
             {
                 case FavoriteType.CarSeries:
-                    var carSeriesModel = historyModel as ViewHistoryCarSeriesModel;
+                    var carSeriesModel = historyModel as FavoriteCarSeriesModel;
                     if (carSeriesModel != null)
                     {
-                        if (this.viewHistoryModel.CarSeriesList.Count == maxCount)
+                        var find = this.viewHistoryModel.CarSeriesList.FirstOrDefault(item => item.ID == carSeriesModel.ID);
+                        if (find != null)
+                        {
+                            this.viewHistoryModel.CarSeriesList.Remove(find);
+                        }
+                        else if (this.viewHistoryModel.CarSeriesList.Count == maxCount)
                         {
                             this.viewHistoryModel.CarSeriesList.RemoveAt(maxCount - 1);
                         }
+
                         this.viewHistoryModel.CarSeriesList.Insert(0, carSeriesModel);
                         changed = true;
                     }
                     break;
                 case FavoriteType.CarSpec:
-                    var carSpecModel = historyModel as ViewHistoryCarSpecModel;
+                    var carSpecModel = historyModel as FavoriteCarSpecModel;
                     if (carSpecModel != null)
                     {
-                        if (this.viewHistoryModel.CarSpecList.Count == maxCount)
+                        var find = this.viewHistoryModel.CarSpecList.FirstOrDefault(item => item.ID == carSpecModel.ID);
+                        if (find != null)
+                        {
+                            this.viewHistoryModel.CarSpecList.Remove(find);
+                        }
+                        else if (this.viewHistoryModel.CarSpecList.Count == maxCount)
                         {
                             this.viewHistoryModel.CarSpecList.RemoveAt(maxCount - 1);
                         }
@@ -113,10 +103,15 @@ namespace ViewModels.Me
                     }
                     break;
                 case FavoriteType.Article:
-                    var articleModel = historyModel as ViewHistoryArticleModel;
+                    var articleModel = historyModel as FavoriteArticleModel;
                     if (articleModel != null)
                     {
-                        if (this.viewHistoryModel.ArticleList.Count == maxCount)
+                        var find = this.viewHistoryModel.ArticleList.FirstOrDefault(item => item.ID == articleModel.ID);
+                        if (find != null)
+                        {
+                            this.viewHistoryModel.ArticleList.Remove(find);
+                        }
+                        else if (this.viewHistoryModel.ArticleList.Count == maxCount)
                         {
                             this.viewHistoryModel.ArticleList.RemoveAt(maxCount - 1);
                         }
@@ -125,10 +120,15 @@ namespace ViewModels.Me
                     }
                     break;
                 case FavoriteType.Forum:
-                    var forumModel = historyModel as ViewHistoryForumModel;
+                    var forumModel = historyModel as FavoriteForumModel;
                     if (forumModel != null)
                     {
-                        if (this.viewHistoryModel.ForumList.Count == maxCount)
+                        var find = this.viewHistoryModel.ForumList.FirstOrDefault(item => item.ID == forumModel.ID);
+                        if (find != null)
+                        {
+                            this.viewHistoryModel.ForumList.Remove(find);
+                        }
+                        else if (this.viewHistoryModel.ForumList.Count == maxCount)
                         {
                             this.viewHistoryModel.ForumList.RemoveAt(maxCount - 1);
                         }
@@ -137,10 +137,15 @@ namespace ViewModels.Me
                     }
                     break;
                 case FavoriteType.Topic:
-                    var topicModel = historyModel as ViewHistoryTopicModel;
+                    var topicModel = historyModel as FavoriteTopicModel;
                     if (topicModel != null)
                     {
-                        if (this.viewHistoryModel.TopicList.Count == maxCount)
+                        var find = this.viewHistoryModel.TopicList.FirstOrDefault(item => item.ID == topicModel.ID);
+                        if (find != null)
+                        {
+                            this.viewHistoryModel.TopicList.Remove(find);
+                        }
+                        else if (this.viewHistoryModel.TopicList.Count == maxCount)
                         {
                             this.viewHistoryModel.TopicList.RemoveAt(maxCount - 1);
                         }
@@ -152,21 +157,11 @@ namespace ViewModels.Me
                     break;
             }
 
-            if (changed)
-            {
-                this.Refresh(type);
-            }
-
             return changed ? this.SaveLocally() : false;
         }
 
         public bool DeleteAll()
         {
-            foreach(var key in this.currentPageIndex.Keys)
-            {
-                this.currentPageIndex[key] = 0;
-            }
-
             this.CarSeriesList.Clear();
             this.CarSpecList.Clear();
             this.ArticleList.Clear();
@@ -182,7 +177,20 @@ namespace ViewModels.Me
             return this.SaveLocally();
         }
 
-        public bool SaveLocally()
+        private void LoadLocally()
+        {
+            string content = IsolatedStorageFileHelper.ReadIsoFile(FilePath);
+            viewHistoryModel = JsonHelper.DeserializeOrDefault<ViewHistoryModel>(content);
+
+            viewHistoryModel = viewHistoryModel ?? new ViewHistoryModel();
+            viewHistoryModel.CarSeriesList = viewHistoryModel.CarSeriesList ?? new List<FavoriteCarSeriesModel>();
+            viewHistoryModel.CarSpecList = viewHistoryModel.CarSpecList ?? new List<FavoriteCarSpecModel>();
+            viewHistoryModel.ForumList = viewHistoryModel.ForumList ?? new List<FavoriteForumModel>();
+            viewHistoryModel.ArticleList = viewHistoryModel.ArticleList ?? new List<FavoriteArticleModel>();
+            viewHistoryModel.TopicList = viewHistoryModel.TopicList ?? new List<FavoriteTopicModel>();
+        }
+
+        private bool SaveLocally()
         {
             string content = JsonHelper.Serialize(viewHistoryModel);
             bool result = IsolatedStorageFileHelper.WriteIsoFile(FilePath, content, System.IO.FileMode.Create);
@@ -190,44 +198,44 @@ namespace ViewModels.Me
         }
 
         /// <summary>
-        /// Reload the first page.
+        /// Reload the first page. support all.
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">support all.</param>
         public void Refresh(FavoriteType type)
         {
             switch (type)
             {
                 case FavoriteType.CarSeries:
                     this.CarSeriesList.Clear();
-                    this.LoadMore(type, 0);
+                    this.LoadMore(type);
                     break;
                 case FavoriteType.CarSpec:
                     this.CarSpecList.Clear();
-                    this.LoadMore(type, 0);
+                    this.LoadMore(type);
                     break;
                 case FavoriteType.Article:
                     this.ArticleList.Clear();
-                    this.LoadMore(type, 0);
+                    this.LoadMore(type);
                     break;
                 case FavoriteType.Forum:
                     this.ForumList.Clear();
-                    this.LoadMore(type, 0);
+                    this.LoadMore(type);
                     break;
                 case FavoriteType.Topic:
                     this.TopicList.Clear();
-                    this.LoadMore(type, 0);
+                    this.LoadMore(type);
                     break;
                 case FavoriteType.All:
                     this.CarSeriesList.Clear();
-                    this.LoadMore(FavoriteType.CarSeries, 0);
+                    this.LoadMore(FavoriteType.CarSeries);
                     this.CarSpecList.Clear();
-                    this.LoadMore(FavoriteType.CarSpec, 0);
+                    this.LoadMore(FavoriteType.CarSpec);
                     this.ArticleList.Clear();
-                    this.LoadMore(FavoriteType.Article, 0);
+                    this.LoadMore(FavoriteType.Article);
                     this.ForumList.Clear();
-                    this.LoadMore(FavoriteType.Forum, 0);
+                    this.LoadMore(FavoriteType.Forum);
                     this.TopicList.Clear();
-                    this.LoadMore(FavoriteType.Topic, 0);
+                    this.LoadMore(FavoriteType.Topic);
                     break;
                 default:
                     break;
@@ -239,32 +247,27 @@ namespace ViewModels.Me
         /// </summary>
         /// <param name="type"></param>
         /// <param name="toPageIndex"></param>
-        public void LoadMore(FavoriteType type, int toPageIndex)
+        public void LoadMore(FavoriteType type)
         {
             switch (type)
             {
                 case FavoriteType.CarSeries:
-                    this.loadMore(this.CarSeriesList, this.viewHistoryModel.CarSeriesList, toPageIndex);
+                    this.loadMore(this.CarSeriesList, this.viewHistoryModel.CarSeriesList, LoadMoreCarSeriesItem);
                     break;
                 case FavoriteType.CarSpec:
-                    this.loadMore(this.CarSpecList, this.viewHistoryModel.CarSpecList, toPageIndex);
+                    this.loadMore(this.CarSpecList, this.viewHistoryModel.CarSpecList, LoadMoreCarSpecItem);
                     break;
                 case FavoriteType.Article:
-                    this.loadMore(this.ArticleList, this.viewHistoryModel.ArticleList, toPageIndex);
+                    this.loadMore(this.ArticleList, this.viewHistoryModel.ArticleList, LoadMoreArticleItem);
                     break;
                 case FavoriteType.Forum:
-                    this.loadMore(this.ForumList, this.viewHistoryModel.ForumList, toPageIndex);
+                    this.loadMore(this.ForumList, this.viewHistoryModel.ForumList, LoadMoreForumItem);
                     break;
                 case FavoriteType.Topic:
-                    this.loadMore(this.TopicList, this.viewHistoryModel.TopicList, toPageIndex);
+                    this.loadMore(this.TopicList, this.viewHistoryModel.TopicList, LoadMoreTopicItem);
                     break;
                 default:
                     break;
-            }
-
-            if (type > FavoriteType.All)
-            {
-                this.currentPageIndex[type] = toPageIndex;
             }
         }
 
@@ -272,36 +275,44 @@ namespace ViewModels.Me
 
         #region 多页
 
-        public LoadMoreItem LoadMoreButtonItem { get; set; }
+        public FavoriteForumModel LoadMoreForumItem = new FavoriteForumModel { IsLoadMore = true };
 
-        private void loadMore(IList toList, IList fromList, int toPageIndex)
+        public FavoriteCarSeriesModel LoadMoreCarSeriesItem = new FavoriteCarSeriesModel { IsLoadMore = true };
+
+        public FavoriteCarSpecModel LoadMoreCarSpecItem = new FavoriteCarSpecModel { IsLoadMore = true };
+
+        public FavoriteArticleModel LoadMoreArticleItem = new FavoriteArticleModel { IsLoadMore = true };
+
+        public FavoriteTopicModel LoadMoreTopicItem = new FavoriteTopicModel { IsLoadMore = true };
+
+        private void loadMore(IList toList, IList fromList, LoadMoreItem loadMoreItem)
         {
-            this.TryRemoveMoreButton(toList);
-            int endIndex = Math.Min((toPageIndex + 1) * pageCount, fromList.Count);
+            this.TryRemoveMoreButton(toList, loadMoreItem);
+            int endIndex = Math.Min(toList.Count + pageCount, fromList.Count);
             for (int i = toList.Count; i < endIndex; i++)
             {
                 toList.Add(fromList[i]);
             }
-            this.EnsureMoreButton(toList, fromList);
+            this.EnsureMoreButton(toList, fromList, loadMoreItem);
         }
 
-        private void EnsureMoreButton(IList inList, IList sourceList)
+        private void EnsureMoreButton(IList inList, IList sourceList, LoadMoreItem loadMoreItem)
         {
-            if (!inList.Contains(this.LoadMoreButtonItem))
+            if (!inList.Contains(loadMoreItem))
             {
                 bool isEndPage = inList.Count >= sourceList.Count;
                 if (!isEndPage)
                 {
-                    inList.Add(this.LoadMoreButtonItem);
+                    inList.Add(loadMoreItem);
                 }
             }
         }
 
-        private void TryRemoveMoreButton(IList fromList)
+        private void TryRemoveMoreButton(IList fromList, LoadMoreItem loadMoreItem)
         {
-            if (fromList != null && fromList.Contains(this.LoadMoreButtonItem))
+            if (fromList != null && fromList.Contains(loadMoreItem))
             {
-                fromList.Remove(this.LoadMoreButtonItem);
+                fromList.Remove(loadMoreItem);
             }
         }
 

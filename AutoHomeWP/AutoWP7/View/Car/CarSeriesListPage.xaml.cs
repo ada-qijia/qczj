@@ -133,6 +133,17 @@ namespace AutoWP7.View.Car
         private void carSeriesGird_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             Grid gg = (Grid)sender;
+
+            //共享车系
+            var model = gg.DataContext as CarSeriesModel;
+            Model.Me.FavoriteCarSeriesModel favoriteModel = new Model.Me.FavoriteCarSeriesModel();
+            favoriteModel.ID = model.Id;
+            favoriteModel.Img = model.ImgUrl;
+            favoriteModel.Level = model.Level;
+            favoriteModel.Name = model.Name;
+            favoriteModel.PriceBetween = model.PriceBetween;
+            View.Car.CarSeriesDetailPage.ShareModel(favoriteModel);
+
             this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId=" + gg.Tag, UriKind.Relative));
         }
 
