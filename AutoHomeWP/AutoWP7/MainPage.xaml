@@ -822,6 +822,14 @@
             </Button>
         </Grid>
 
+        <!--push notification - system message-->
+        <Grid x:Name="SystemMsgGrid" Background="White" Visibility="Collapsed">
+            <ProgressBar Foreground="#3cadeb" x:Name="ProgBar" IsIndeterminate="True" Height="10" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />
+            <phone:WebBrowser x:Name="wb" NavigationFailed="wb_NavigationFailed"  Navigated="wb_Navigated" Navigating="wb_Navigating"  Margin="0,0,0,-70"  />
+            <TextBlock x:Name="failPrompt" Visibility="Collapsed" Text="您的网络不可用~请检查连接设置" Height="200" Width="400" VerticalAlignment="Center" Foreground="LightGray" FontSize="26"/>
+            <Image Source="/Images/close.png" Width="48" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="12" Tap="CloseBrowser_Tap"/>
+        </Grid>
+
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>

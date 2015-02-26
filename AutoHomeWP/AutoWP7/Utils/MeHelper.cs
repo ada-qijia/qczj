@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModels.Handler;
 
 namespace AutoWP7.Utils
 {
@@ -20,8 +21,7 @@ namespace AutoWP7.Utils
         public const string SmallImageModeKey = "SmallImageMode";
 
         //微博Token,保存到IsolatedStorageSettings
-        public const string WeiboAccessTokenKey = "WeiboAccessToken";
-        public const string WeiboRefreshTokenKey = "WeiboRefreshToken";
+        public const string weiboAccountKey = "WeiboAccount";
         public const string QQAuthResultKey = "QQAuthResultKey";
 
         //Pass data from page to page using PhoneApplicationService state.
@@ -39,10 +39,12 @@ namespace AutoWP7.Utils
 
         public static string UTF8ToGB2312(string content)
         {
-            byte[] fromBytes = Encoding.UTF8.GetBytes(content);
-            byte[] toBytes = Encoding.Convert(Encoding.UTF8, Encoding.GetEncoding("gb2312"), fromBytes);
+            var gb2312Encoding = DBCSEncoding.GetDBCSEncoding("gb2312");
 
-            string toString = Encoding.GetEncoding("gb2312").GetString(toBytes, 0, toBytes.Length);
+            byte[] fromBytes = Encoding.UTF8.GetBytes(content);
+            byte[] toBytes = Encoding.Convert(Encoding.UTF8, gb2312Encoding, fromBytes);
+
+            string toString = gb2312Encoding.GetString(toBytes, 0, toBytes.Length);
             return toString;
         }
 
@@ -71,11 +73,6 @@ namespace AutoWP7.Utils
             }
         }
 
-        public static string SortURLParamAsc(string urlParam)
-        {
-            throw new NotImplementedException();
-        }
-
         public static void PrepareUploadClientHeaders(ref WebClient wc)
         {
             wc.Headers["Accept-Charset"] = "utf-8";
@@ -87,17 +84,19 @@ namespace AutoWP7.Utils
         #region url
 
         public const string ThirdPartyLoginUrl = "http://i.api.autohome.com.cn/api/Login/OAuthLogin";
+        public const string ThirdPartyRegisterUrl = "http://i.api.autohome.com.cn/api/Register/OAuthRegister";
         public const string ServiceProtocolUrl = "http://account.m.autohome.com.cn/RegisterAgreement.html";
         public const string ConnectAccountUrl = "http://i.api.autohome.com.cn/api/OpenPlatform/BindOpenPlantRelation";
         public const string UserRegisterUrl = "http://i.api.autohome.com.cn/api/Register/index";
         public const string SendPrivateMessageUrl = "http://i.api.autohome.com.cn/api/privateletter/sendprivateletter";
         public const string SyncFavoriteCarUrl = "http://club.api.autohome.com.cn/api/user/AppSyncCar";
         public const string SyncFavoriteCollectionUrl = "http://i.api.autohome.com.cn/api/collection/AppSyncCollection";
+        public const string SyncPrivateMessageFriendsUrl = "http://i.api.autohome.com.cn/api/privateletter/privateletterdelete";
 
         /// <param name="userID">if null, means me</param>
         public static string GetUserInfoUrl(string userID = null, int pageIndex = 1)
         {
-            var userInfoModel = IsolatedStorageSettings.ApplicationSettings["userInfo"] as MyForumModel;
+            var userInfoModel = GetMyInfoModel();
             string auth = string.IsNullOrEmpty(userID) ? userInfoModel.Authorization : string.Empty;
             string id = string.IsNullOrEmpty(userID) ? userInfoModel.UserID.ToString() : userID;
             string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetUserInfo.ashx?a=2&pm=3&v=1.7.0&au={0}&u={1}&p={2}&s=20", auth, id, pageIndex);
@@ -106,43 +105,46 @@ namespace AutoWP7.Utils
 
         public static string GetThirdPartyBindingUrl()
         {
-            var userInfoModel = IsolatedStorageSettings.ApplicationSettings["userInfo"] as MyForumModel;
+            var userInfoModel = GetMyInfoModel();
             string url = string.Format("http://221.192.136.99:804/wpv1.7/user/GetUserOpenPlats.ashx?a=2&pm=3&v=1.7.0&au={0}&pfids={1}", userInfoModel.Authorization, "15,16");
             return url;
         }
 
-        public static string GetFavoriteUrl(int type=0, int pageIndex = 1)
+        public static string GetFavoriteUrl(int type = 0, int pageIndex = 1)
         {
-            var userInfoModel = IsolatedStorageSettings.ApplicationSettings["userInfo"] as MyForumModel;
+            var userInfoModel = GetMyInfoModel();
             string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetCollectList.ashx?a=2&pm=3&v=1.7.0&p={0}&s=20&type={1}&au={2}", pageIndex, type, userInfoModel.Authorization);
             return url;
         }
 
         public static string GetMyTritanUrl(int pageIndex = 1)
         {
-            var userInfoModel = IsolatedStorageSettings.ApplicationSettings["userInfo"] as MyForumModel;
+            var userInfoModel = GetMyInfoModel();
             string url = string.Format("http://221.192.136.99:804/wpv1.7/User/usermainpost-a2-pm3-v1.7.0-u{0}-p{1}-s20.html", userInfoModel.UserID, pageIndex);
             return url;
         }
 
+        /// <returns>null if user not login.</returns>
         public static string GetMyCommentReplyUrl(int pageIndex = 1)
         {
-            var userInfoModel = IsolatedStorageSettings.ApplicationSettings["userInfo"] as MyForumModel;
-            string url = string.Format("http://221.192.136.99:804/wpv1.7/User/ReCommentReply.ashx?a=2&pm=3&v=1.7.0&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex);
+            var userInfoModel = GetMyInfoModel();
+            string url = userInfoModel == null ? null : string.Format("http://221.192.136.99:804/wpv1.7/User/ReCommentReply.ashx?a=2&pm=3&v=1.7.0&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex);
             return url;
         }
 
+        /// <returns>null if user not login.</returns>
         public static string GetMyForumReplyUrl(int pageIndex = 1)
         {
-            var userInfoModel = IsolatedStorageSettings.ApplicationSettings["userInfo"] as MyForumModel;
-            string url = string.Format("http://221.192.136.99:804/wpv1.7/User/ReForumReply.ashx?a=2&pm=3&v=1.7.0&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex);
+            var userInfoModel = GetMyInfoModel();
+            string url = userInfoModel == null ? null : string.Format("http://221.192.136.99:804/wpv1.7/User/ReForumReply.ashx?a=2&pm=3&v=1.7.0&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex);
             return url;
         }
 
+        /// <returns>null if user not login.</returns>
         public static string GetPrivateMessageFriendsUrl(int pageIndex = 1)
         {
-            var userInfoModel = IsolatedStorageSettings.ApplicationSettings["userInfo"] as MyForumModel;
-            string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetPrivateLetterUserList.ashx?a=2&pm=3&v=1.7.0&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex);
+            var userInfoModel = GetMyInfoModel();
+            string url = userInfoModel == null ? null : string.Format("http://221.192.136.99:804/wpv1.7/User/GetPrivateLetterUserList.ashx?a=2&pm=3&v=1.7.0&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex);
             return url;
         }
 
@@ -152,8 +154,8 @@ namespace AutoWP7.Utils
         /// <param name="sort">0,desc, 1, asc</param>
         public static string GetPrivateMessageUrl(int friendID, int baseMessageID, int range = 1, int sort = 1)
         {
-            var userInfoModel = IsolatedStorageSettings.ApplicationSettings["userInfo"] as MyForumModel;
-            string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetPrivateLetterListContainSelf.ashx?a=2&pm=3&v=1.7.0&au={0}&tid={1}&mid={2}&t={3}&o={4}&s=50", userInfoModel.Authorization, friendID, baseMessageID, range, sort);
+            var userInfoModel = GetMyInfoModel();
+            string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetPrivateLetterListContainSelf.ashx?a=2&pm=3&v=1.7.0&au={0}&tid={1}&mid={2}&t={3}&o={4}&s=5", userInfoModel.Authorization, friendID, baseMessageID, range, sort);
             return url;
         }
 

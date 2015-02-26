@@ -16,7 +16,7 @@ namespace ViewModels.Me
         #region properties
 
         private ThirdPartyLoginResultModel _loginResult;
-        private ThirdPartyLoginResultModel LoginResult
+        public ThirdPartyLoginResultModel LoginResult
         {
             get { return _loginResult; }
             set { SetProperty<ThirdPartyLoginResultModel>(ref _loginResult, value); }
@@ -31,7 +31,6 @@ namespace ViewModels.Me
 
         #endregion
 
-        private bool isLoading = false;
         WebClient wc = new WebClient();
 
         public event EventHandler<int> ThirdPartyLoginCompleted;
@@ -50,10 +49,10 @@ namespace ViewModels.Me
                 wc.UploadStringAsync(new Uri(url), "POST", postData);
                 wc.UploadStringCompleted += new UploadStringCompletedEventHandler((ss, ee) =>
                 {
+                    int returnCode = int.MinValue;
                     try
                     {
-                        int returnCode = int.MinValue;
-                        if (ee.Error== null && ee.Cancelled==false)
+                        if (ee.Error == null && ee.Cancelled == false)
                         {
                             JObject json = JObject.Parse(ee.Result);
                             returnCode = json.SelectToken("returncode").Value<int>();
@@ -61,13 +60,13 @@ namespace ViewModels.Me
 
                             this.LoginResult = JsonHelper.DeserializeOrDefault<ThirdPartyLoginResultModel>(resultToken.ToString());
                         }
-
-                        if (this.ThirdPartyLoginCompleted != null)
-                        {
-                            this.ThirdPartyLoginCompleted(this, returnCode);
-                        }
                     }
                     catch { }
+
+                    if (this.ThirdPartyLoginCompleted != null)
+                    {
+                        this.ThirdPartyLoginCompleted(this, returnCode);
+                    }
                 });
             }
         }

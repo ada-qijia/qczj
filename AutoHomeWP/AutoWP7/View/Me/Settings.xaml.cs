@@ -36,7 +36,7 @@ namespace AutoWP7.View.Me
         //推送设置
         private void NotificationSetting_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            throw new NotImplementedException();
+            this.NavigationService.Navigate(new Uri("/View/Me/PushNotificationSetting.xaml", UriKind.Relative));
         }
 
         //小图模式开关

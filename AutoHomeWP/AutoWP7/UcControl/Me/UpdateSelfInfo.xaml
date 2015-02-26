@@ -30,7 +30,7 @@
                 </toolkit:ListPicker.ItemTemplate>
                 <toolkit:ListPicker.FullModeItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextTitle2Style}" Margin="12" FontFamily="Portable User Interface"/>
+                        <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextTitle2Style}" Margin="12"/>
                     </DataTemplate>
                 </toolkit:ListPicker.FullModeItemTemplate>
             </toolkit:ListPicker>

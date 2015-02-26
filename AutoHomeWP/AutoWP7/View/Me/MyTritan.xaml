@@ -47,7 +47,7 @@
 
                                         <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding PostDate}" Style="{StaticResource FooterSmallTextStyle}"/>
                                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ReplyCount,StringFormat='\{0}回复'}" Style="{StaticResource FooterLargeTextStyle}" Margin="12 0" HorizontalAlignment="Center"/>
-                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0" FontFamily="Portable User Interface"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
                                     </Grid>
                                 </DataTemplate>
                             </util:LoadMoreDataTemplateSelector.ItemTemplate>

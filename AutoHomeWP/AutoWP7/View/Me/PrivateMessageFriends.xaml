@@ -26,13 +26,13 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <Grid Grid.Row="0" Margin="12,17,12,16">
+        <Grid Grid.Row="0" Margin="12,17,12,24">
             <TextBlock x:Name="PageTitle" Text="私信"  Foreground="{StaticResource App_Theme_Color}" HorizontalAlignment="Left" FontSize="72"  Style="{StaticResource PhoneTextTitle1Style}"/>
             <Image HorizontalAlignment="Right" Stretch="None" Source="/AutoWP7;component/Images/MainRefresh.png"  Tap="refresh_Tap"/>
         </Grid>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="-12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1">
             <toolkit:LongListMultiSelector x:Name="FriendsListBox" ItemsSource="{Binding FriendList}" LayoutMode="List" Background="Purple">
                 <toolkit:LongListMultiSelector.Resources>
                     <Style TargetType="CheckBox" BasedOn="{StaticResource CheckBoxThemeStyle}"/>
@@ -43,7 +43,7 @@
                         <util:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch">
                             <util:LoadMoreDataTemplateSelector.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="0 12" Tap="Friend_Tap">
+                                    <Grid Background="Transparent" Width="{StaticResource ContentWidth}" Margin="-24 -8 0 32" Tap="Friend_Tap">
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
                                             <RowDefinition />
@@ -58,8 +58,8 @@
                                             <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageUserSmallStyle}"/>
                                             <Image Source="{Binding Img}" Style="{StaticResource ImageUserSmallStyle}"/>
                                         </Grid>
-                                        <TextBlock Grid.Column="1" Text="{Binding UserName}"  Style="{StaticResource TitleLargeTextStyle}" VerticalAlignment="Top" TextWrapping="NoWrap"/>
-                                        <TextBlock Grid.Column="2" Text="{Binding LastPostDate,Converter={StaticResource TimeStampToStringConverter}}" Style="{StaticResource ContentTextStyle}" VerticalAlignment="Top" FontFamily="Portable User Interface"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding UserName}"  Style="{StaticResource TitleLargeTextStyle}" VerticalAlignment="Center" TextWrapping="NoWrap"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding LastPostDate,Converter={StaticResource TimeStampToStringConverter}}" Style="{StaticResource ContentTextStyle}" VerticalAlignment="Center"/>
 
                                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LastMessage}" Style="{StaticResource ContentTextStyle}" Margin="0 6" Height="35" TextTrimming="WordEllipsis" TextWrapping="NoWrap"/>
 

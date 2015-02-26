@@ -119,14 +119,8 @@
     <Reference Include="RestSharp.WindowsPhone">
       <HintPath>..\packages\RestSharp.104.1\lib\sl4-wp71\RestSharp.WindowsPhone.dll</HintPath>
     </Reference>
-    <Reference Include="SinaBase">
-      <HintPath>..\..\..\AutoHome\codeResource\weibowp7sdk-19622\SDKLibrary\SinaBase.dll</HintPath>
-    </Reference>
     <Reference Include="UmengClassLibrary, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WaterTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="WeiboSdk">
-      <HintPath>..\..\..\AutoHome\codeResource\weibowp7sdk-19622\SDKLibrary\WeiboSdk.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -209,6 +203,7 @@
     <Compile Include="Utils\MeHelper.cs" />
     <Compile Include="Utils\MultiSelectablePage.cs" />
     <Compile Include="Utils\PrivateMessageDataTemplateSelector.cs" />
+    <Compile Include="Utils\PushNotificationHelper.cs" />
     <Compile Include="View\CarSearch\CarSearchResultPage.xaml.cs">
       <DependentUpon>CarSearchResultPage.xaml</DependentUpon>
     </Compile>
@@ -321,6 +316,9 @@
     </Compile>
     <Compile Include="View\Me\PrivateMessageFriends.xaml.cs">
       <DependentUpon>PrivateMessageFriends.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Me\PushNotificationSetting.xaml.cs">
+      <DependentUpon>PushNotificationSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Me\QQ\AuthenticationPage.xaml.cs">
       <DependentUpon>AuthenticationPage.xaml</DependentUpon>
@@ -632,6 +630,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Me\PushNotificationSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Me\QQ\AuthenticationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -734,6 +736,8 @@
     <Resource Include="qzone.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Resource Include="Images\CallPrice.jpg" />
     <Resource Include="Images\detail1.jpg" />
     <Resource Include="Images\Tiles\ShuoKe.png" />
@@ -768,6 +772,7 @@
     <Content Include="Images\Me\carOwner.png" />
     <Content Include="Images\Me\commentReply.png" />
     <Content Include="Images\Me\draftbox.png" />
+    <Content Include="Images\Me\failed.png" />
     <Content Include="Images\Me\forumReply.png" />
     <Content Include="Images\Me\friendMessageTriangle.png" />
     <Content Include="Images\Me\meMessageTriangle.png" />
@@ -889,6 +894,10 @@
     <ProjectReference Include="..\ViewModels\ViewModels.csproj">
       <Project>{8738F857-7357-4D7E-9ADF-7F69D534E14A}</Project>
       <Name>ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WeiboSdk\WeiboSdk.csproj">
+      <Project>{c8bba7e0-7d2a-491f-abd9-2144335a3d9d}</Project>
+      <Name>WeiboSdk</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

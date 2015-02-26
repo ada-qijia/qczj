@@ -94,7 +94,7 @@
                     </Grid>
                 </DataTemplate>
             </controls:Pivot.HeaderTemplate>
-            
+
             <!--经销商-->
             <controls:PivotItem Header="经销商">
                 <Grid>
@@ -122,12 +122,12 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="50"></RowDefinition>
                                             <RowDefinition Height="50"></RowDefinition>
-                                            
+
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="220"></ColumnDefinition>
                                             <ColumnDefinition Width="220"></ColumnDefinition>
-                                            
+
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.ColumnSpan="2" Grid.Column="0" 
                                                    Grid.Row="0"
@@ -135,7 +135,7 @@
                                            FontSize="28"
                                            Foreground="Black" 
                                            Text="{Binding name}"/>
-                                        
+
                                         <Image  Tag="{Binding id}"
                                                 Grid.ColumnSpan="2"
                                                  
@@ -165,7 +165,7 @@
                                     <Grid Margin="0,10,0,0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition  Height="50"></RowDefinition>
-                                            
+
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="150"></ColumnDefinition>
@@ -278,18 +278,19 @@
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
-                                                    <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="/Images/DefaultUserIcon.png"/>
-                                                    <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" 
-                                                           Source="{Binding UserPic}"/>
+                                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Tap="OthersHome_Tap">
+                                                        <Image Width="64" Height="64" Source="/Images/DefaultUserIcon.png"/>
+                                                        <Image Width="64" Height="64" Source="{Binding UserPic}"/>
+                                                    </Grid>
 
                                                     <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="{Binding UserName}" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0"/>
+                                                        <TextBlock Text="{Binding UserName}" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0" Tap="OthersHome_Tap"/>
                                                         <TextBlock Text="{Binding PostTime}" FontSize="20" Foreground="#ff808080" Margin="0,0,0,0"/>
                                                     </StackPanel>
-                                                    
+
                                                     <Image Width="64" Height="64" Grid.Column="1" HorizontalAlignment="Right" Stretch="Uniform"
                                                            Source="{Binding MedalImage}"/>
-                                                    
+
                                                     <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,0,0,4"
                                                                FontSize="22" Foreground="#ff000000" TextWrapping="Wrap" TextTrimming="WordEllipsis"
                                                                Text="{Binding Content}" MaxHeight="300"/>

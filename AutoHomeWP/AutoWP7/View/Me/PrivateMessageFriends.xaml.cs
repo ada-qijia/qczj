@@ -1,16 +1,15 @@
-﻿using System;
+﻿using AutoWP7.Handler;
+using AutoWP7.Utils;
+using Microsoft.Phone.Controls;
+using Model.Me;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using ViewModels.Me;
-using AutoWP7.Utils;
-using Model.Me;
-using System.Collections;
 
 namespace AutoWP7.View.Me
 {
@@ -27,13 +26,25 @@ namespace AutoWP7.View.Me
             this.FriendsVM = new PrivateMessageFriendViewModel();
             this.FriendsVM.LoadDataCompleted += FriendsVM_LoadDataCompleted;
             this.DataContext = this.FriendsVM;
-            this.LoadLocally();
+            //this.FriendsListBox.Loaded += (sender, e) => { AddScrollEvent(); };
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            this.LoadMore(true);
+
+            var userInfo = Utils.MeHelper.GetMyInfoModel();
+
+            if (userInfo == null && e.NavigationMode == NavigationMode.New)
+            {
+                //未登录，跳转到登录页
+                this.NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.Relative));
+            }
+            else if(userInfo!= null)
+            {
+                this.LoadLocally();
+                this.LoadMore(true);
+            }
         }
 
         #region load data
@@ -68,7 +79,7 @@ namespace AutoWP7.View.Me
             GlobalIndicator.Instance.Text = "";
             GlobalIndicator.Instance.IsBusy = false;
 
-            if (this.FriendsVM.ReturnCode != 0)
+            if (this.FriendsVM.ReturnCode == 10001 || this.FriendsVM.ReturnCode == 10002)
             {
                 CustomMessageBox messageBox = new CustomMessageBox()
                 {
@@ -84,7 +95,7 @@ namespace AutoWP7.View.Me
                     switch (e1.Result)
                     {
                         case CustomMessageBoxResult.LeftButton:
-                            NavigationService.Navigate(new Uri("View/More/LoginPage.xaml", UriKind.RelativeOrAbsolute));
+                            NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.RelativeOrAbsolute));
                             break;
                         case CustomMessageBoxResult.RightButton:
                             //返回未登录下我的主页
@@ -97,7 +108,7 @@ namespace AutoWP7.View.Me
 
                 messageBox.Show();
             }
-            else
+            else if (this.FriendsVM.ReturnCode == 0)
             {
                 bool noResult = this.FriendsVM.RowCount == 0;
                 if (noResult)
@@ -127,7 +138,10 @@ namespace AutoWP7.View.Me
             }
 
             string url = Utils.MeHelper.GetPrivateMessageFriendsUrl(nextPageIndex);
-            this.FriendsVM.LoadDataAysnc(url);
+            if (url != null)
+            {
+                this.FriendsVM.LoadDataAysnc(url);
+            }
         }
 
         #endregion
@@ -167,11 +181,48 @@ namespace AutoWP7.View.Me
 
         public override void AfterDeleteItems(IList selectedItems)
         {
-            base.AfterDeleteItems(selectedItems);
+            //上传
+            var userInfoModel = Utils.MeHelper.GetMyInfoModel();
+            if (userInfoModel != null)
+            {
+                string url = Utils.MeHelper.SyncPrivateMessageFriendsUrl;
+                foreach (PrivateMessageFriendModel item in selectedItems)
+                {
+                    string data = string.Format("_appid=app.wp&authorization={0}&targetuserid={1}&_timestamp={2}&autohomeua={3}", userInfoModel.Authorization, item.ID, Common.GetTimeStamp(), Common.GetAutoHomeUA());
+                    data = Handler.Common.SortURLParamAsc(data);
+                    string sign = Handler.Common.GetSignStr(data);
+                    data += "&_sign=" + sign;
 
+                    UpStreamViewModel.SingleInstance.UploadAsyncWithOneoffClient(url, data, null);
+                }
+            }
+
+            base.AfterDeleteItems(selectedItems);
             this.SaveLocally();
         }
 
+        #endregion
+
+        #region 滚动到顶端自动加载，未启用,有问题
+
+        private void AddScrollEvent()
+        {
+            var scrollbar = AutoWP7.Handler.Common.FindChildOfType<ScrollBar>(this.FriendsListBox);
+            if (scrollbar != null)
+            {
+                scrollbar.ValueChanged += scrollbarV_ValueChanged;
+            }
+        }
+
+        void scrollbarV_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var scrollbar = sender as ScrollBar;
+            if (scrollbar.Value <= scrollbar.Minimum)
+            {
+                //refresh
+                this.LoadMore(true);
+            }
+        }
         #endregion
     }
 }

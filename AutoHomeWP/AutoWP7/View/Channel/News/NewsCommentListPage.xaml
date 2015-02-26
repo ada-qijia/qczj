@@ -62,7 +62,7 @@
                                 <TextBlock Foreground="#3cadeb"  Text="{Binding floor}" FontSize="22"/>
                                 <TextBlock Foreground="#3cadeb"  FontSize="22" Text=" 楼" 
                                            Visibility="{Binding ShowData}"/>
-                                <TextBlock Foreground="#3cadeb" FontSize="22"  Margin="20,-1" Text="{Binding name}"/>
+                                <TextBlock Foreground="#3cadeb" FontSize="22"  Margin="20,-1" Text="{Binding name}" Tap="OthersHome_Tap"/>
                             </StackPanel>
                             <TextBlock FontSize="22" Foreground="Gray" 
                                        Grid.Column="1" Grid.Row="0" Text="{Binding time}"/>

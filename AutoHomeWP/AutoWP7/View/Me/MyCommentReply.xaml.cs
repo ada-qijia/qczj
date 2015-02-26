@@ -16,6 +16,7 @@ namespace AutoWP7.View.Me
     public partial class MyCommentReply : PhoneApplicationPage
     {
         private CommentReplyViewModel ReplyVM;
+        private bool isLogin;
 
         public MyCommentReply()
         {
@@ -24,7 +25,34 @@ namespace AutoWP7.View.Me
             this.ReplyVM = new CommentReplyViewModel();
             this.ReplyVM.LoadDataCompleted += ReplyVM_LoadDataCompleted;
             this.DataContext = this.ReplyVM;
-            this.LoadMore(true);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                this.isLogin = Utils.MeHelper.GetMyInfoModel()!=null;
+                if (this.isLogin)
+                {
+                    this.LoadMore(true);
+                }
+                else
+                {
+                    //未登录，跳转到登录页
+                    this.NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.Relative));
+                }
+            }
+            else if (e.NavigationMode == NavigationMode.Back)
+            {
+                bool isNewLogin = isLogin == false && Utils.MeHelper.GetMyInfoModel() != null;
+                if (isNewLogin)
+                {
+                    isLogin = true;
+                    this.LoadMore(true);
+                }
+            }
         }
 
         private void ReplyVM_LoadDataCompleted(object sender, EventArgs e)
@@ -77,13 +105,10 @@ namespace AutoWP7.View.Me
             if (model != null && model.ReplyType == 1)
             {
                 //导航到文章评论列表页
-                if(model.ImgID==0)
+                if (model.ImgID == 0)
                 {
                     UmengSDK.UmengAnalytics.onEvent("ArticleEndPageActivity", "评论页的访问量");
                     this.NavigationService.Navigate(new Uri("/View/Channel/Newest/CommentListPage.xaml?newsid=" + model.ID + "&pageType=1", UriKind.Relative));
-                }
-                else//导航到图片评论列表页
-                {
                 }
             }
         }
@@ -99,10 +124,13 @@ namespace AutoWP7.View.Me
             Model.Me.CommentReplyModel model = (sender as FrameworkElement).DataContext as Model.Me.CommentReplyModel;
             if (model != null)
             {
-                var userInfoModel = IsolatedStorageSettings.ApplicationSettings["userInfo"] as Model.MyForumModel;
-                this.NavigationService.Navigate(new Uri("/View/Channel/Newest/CommentPage.xaml?newsid=" +
-                      model.ID + "&replyid=" + model.ReplyID + "&userid=" + userInfoModel.UserName + "&authorization=" + userInfoModel.Authorization
-                      + "&pageType=" + model.ReplyType, UriKind.Relative));
+                var userInfoModel = Utils.MeHelper.GetMyInfoModel();
+                if (userInfoModel != null)
+                {
+                    this.NavigationService.Navigate(new Uri("/View/Channel/Newest/CommentPage.xaml?newsid=" +
+                          model.ID + "&replyid=" + model.ReplyID + "&userid=" + userInfoModel.UserName + "&authorization=" + userInfoModel.Authorization
+                          + "&pageType=" + model.ReplyType, UriKind.Relative));
+                }
             }
         }
 

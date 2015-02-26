@@ -27,7 +27,7 @@ namespace ViewModels.Me
         private WebClient uploadWC;
         private UploadStringCompletedEventHandler UploadCompletedHandler;
 
-        public void UploadAsyncWithSharedClient(string url, string data, UploadStringCompletedEventHandler uploadCompleted)
+        public void UploadAsyncWithSharedClient(string url, string data, UploadStringCompletedEventHandler uploadCompleted, object userState = null)
         {
             if (uploadWC == null)
             {
@@ -36,13 +36,13 @@ namespace ViewModels.Me
                 uploadWC.Headers["Accept-Charset"] = "utf-8";
                 uploadWC.Headers["Referer"] = "http://www.autohome.com.cn/china";
                 uploadWC.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                //registerWC.Headers["User-Agent"] = AutoWP7.Handler.Common.GetAutoHomeUA();
+                //uploadWC.Headers["User-Agent"] = "WindowsPhone\t8\tautohome\t1.6.0";
             }
 
             if (!uploadWC.IsBusy)
             {
                 this.UploadCompletedHandler = uploadCompleted;
-                uploadWC.UploadStringAsync(new Uri(url), "POST", data);
+                uploadWC.UploadStringAsync(new Uri(url, UriKind.Absolute), "POST", data, userState);
             }
         }
 

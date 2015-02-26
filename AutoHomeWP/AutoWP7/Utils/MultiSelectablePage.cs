@@ -2,7 +2,6 @@
 using Microsoft.Phone.Shell;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Media;
 
@@ -18,18 +17,22 @@ namespace AutoWP7.Utils
             get { return _currentList; }
             set
             {
-                if (_currentList != null)
+                if (_currentList != value)
                 {
-                    _currentList.SelectionChanged -= _currentList_SelectionChanged;
-                    _currentList.SelectedItems.Clear();
-                    _currentList.IsSelectionEnabled = false;
-                }
+                    //clear old state
+                    if (_currentList != null)
+                    {
+                        _currentList.SelectionChanged -= _currentList_SelectionChanged;
+                        _currentList.IsSelectionEnabled = false;
+                    }
 
-                if (_currentList != value && value != null)
-                {
                     _currentList = value;
-                    _currentList.SelectionChanged += _currentList_SelectionChanged;
-                    SetupApplicationBar(MultiSelectionState.Ready);
+                    if (_currentList != null)
+                    {
+                        _currentList.SelectionChanged += _currentList_SelectionChanged;
+                        _currentList.SelectedItems.Clear();
+                        SetupApplicationBar(MultiSelectionState.Ready);
+                    }
                 }
             }
         }
@@ -37,15 +40,16 @@ namespace AutoWP7.Utils
         private void _currentList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             bool hasSelection = ((CurrentList.SelectedItems != null) && (CurrentList.SelectedItems.Count > 0));
-            bool allSelected = CurrentList.SelectedItems.Count == CurrentList.ItemsSource.Count;
+            bool allSelected = CurrentList.ItemsSource != null && CurrentList.SelectedItems.Count == CurrentList.ItemsSource.Count;
 
-            if (hasSelection && allSelected)
+            if (hasSelection)
             {
-                SetupApplicationBar(MultiSelectionState.SelectedAll);
+                var newState = allSelected ? MultiSelectionState.SelectedAll : MultiSelectionState.Selecting;
+                SetupApplicationBar(newState);
             }
             else
             {
-                SetupApplicationBar(MultiSelectionState.Selecting);
+                SetupApplicationBar(MultiSelectionState.Ready);
             }
         }
 
@@ -104,10 +108,10 @@ namespace AutoWP7.Utils
 
                 if (ApplicationBar == null)
                 {
-                    ApplicationBar = new ApplicationBar() {BackgroundColor = Colors.Black, Opacity = 0.8};
+                    ApplicationBar = new ApplicationBar() { BackgroundColor = Colors.Black };
                 }
 
-                ApplicationBar.IsVisible = true;
+                ApplicationBar.IsVisible = this.CurrentList != null;
                 //clear applicationbar
                 ApplicationBar.Buttons.Clear();
                 ApplicationBar.MenuItems.Clear();
@@ -115,41 +119,34 @@ namespace AutoWP7.Utils
                 switch (state)
                 {
                     case MultiSelectionState.Ready:
+                        this.CurrentList.IsSelectionEnabled = false;
                         ApplicationBar.Buttons.Add(select);
+                        //select.IsEnabled = CurrentList.ItemsSource != null && CurrentList.ItemsSource.Count > 0;
                         break;
                     case MultiSelectionState.Selecting:
+                        this.CurrentList.IsSelectionEnabled = true;
                         ApplicationBar.Buttons.Add(delete);
                         ApplicationBar.MenuItems.Add(selectAll);
                         break;
                     case MultiSelectionState.SelectedAll:
+                        this.CurrentList.IsSelectionEnabled = true;
                         ApplicationBar.Buttons.Add(delete);
                         ApplicationBar.MenuItems.Add(cancelSelectAll);
                         break;
                     default:
                         break;
                 }
-
-                if (this.CurrentList.IsSelectionEnabled)
-                {
-                    bool hasSelection = ((CurrentList.SelectedItems != null) && (CurrentList.SelectedItems.Count > 0));
-                    bool allSelected = CurrentList.SelectedItems.Count == CurrentList.ItemsSource.Count;
-                    select.IsEnabled = CurrentList.ItemsSource.Count > 0;
-                    delete.IsEnabled = hasSelection;
-                    selectAll.IsEnabled = !allSelected;
-                    cancelSelectAll.IsEnabled = allSelected;
-                }
-                else
-                {
-                 
-                }
             }
+
+            delete.IsEnabled = CurrentList.SelectedItems.Count > 0;
+            selectAll.IsEnabled = CurrentList.ItemsSource != null && CurrentList.SelectedItems.Count != CurrentList.ItemsSource.Count;
+            cancelSelectAll.IsEnabled = CurrentList.ItemsSource != null && CurrentList.SelectedItems.Count == CurrentList.ItemsSource.Count;
         }
 
         #endregion
 
         void OnSelectClick(object sender, EventArgs e)
         {
-            CurrentList.IsSelectionEnabled = true;
             SetupApplicationBar(MultiSelectionState.Selecting);
         }
 
@@ -166,7 +163,7 @@ namespace AutoWP7.Utils
 
         public virtual void AfterDeleteItems(IList selectedItems)
         {
-            if (selectedItems != null)
+            if (selectedItems != null && CurrentList.ItemsSource != null)
             {
                 while (selectedItems.Count > 0)
                 {
@@ -177,17 +174,20 @@ namespace AutoWP7.Utils
 
         void OnSelectAllClick(object sender, EventArgs e)
         {
-            foreach (var item in CurrentList.ItemsSource)
+            if (CurrentList.ItemsSource != null)
             {
-                if (!CurrentList.SelectedItems.Contains(item))
-                { CurrentList.SelectedItems.Add(item); }
+                foreach (var item in CurrentList.ItemsSource)
+                {
+                    if (!CurrentList.SelectedItems.Contains(item))
+                    { CurrentList.SelectedItems.Add(item); }
+                }
             }
         }
 
         void OnCancelSelectAllClick(object sender, EventArgs e)
         {
             CurrentList.SelectedItems.Clear();
-            CurrentList.IsSelectionEnabled = false;
+            SetupApplicationBar(MultiSelectionState.Ready);
         }
 
         protected override void OnBackKeyPress(CancelEventArgs e)
@@ -195,7 +195,6 @@ namespace AutoWP7.Utils
             if (CurrentList != null && CurrentList.IsSelectionEnabled)
             {
                 CurrentList.SelectedItems.Clear();
-                this.CurrentList.IsSelectionEnabled = false;
                 SetupApplicationBar(MultiSelectionState.Ready);
 
                 e.Cancel = true;

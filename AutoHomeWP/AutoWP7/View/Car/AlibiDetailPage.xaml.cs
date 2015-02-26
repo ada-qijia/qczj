@@ -101,5 +101,15 @@ namespace AutoWP7.View.Car
             this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
 
+        private void OthersHome_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var model = (sender as FrameworkElement).DataContext as AlibiDetailModel;
+            if (model != null)
+            {
+                string url = string.Format("/View/Me/OthersHomePage.xaml?userID={0}", model.memberid);
+                this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
+            }
+        }
+
     }
 }

@@ -1018,7 +1018,7 @@ namespace AutoWP7.View.Car
                 favoriteModel.ReplyCount = reply;
             }
             Channel.Newest.ArticleEndPage.ShareState(favoriteModel);
-            string url = "/View/Channel/News/NewsEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=1" + "&pageType=" + model.mediatype;
+            string url = "/View/Channel/News/NewsEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=1" + "&pageType=1";
             this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
             //this.NavigationService.Navigate(new Uri("/View/Channel/Newest/ArticleEndPage.xaml?newsid=" + gg.Tag + "&pageIndex=1", UriKind.Relative));
         }

@@ -29,7 +29,7 @@
                                 <TextBlock  FontSize="25" Foreground="White" Text="第"/>
                                 <TextBlock  FontSize="25" Foreground="White" Text="{Binding Id}"/>
                                 <TextBlock   FontSize="25" Foreground="White" Text="页 :  "/>
-                                <TextBlock  FontSize="25" Foreground="White" TextTrimming="WordEllipsis" Text="{Binding PageTitle}" FontFamily="Portable User Interface" />
+                                <TextBlock  FontSize="25" Foreground="White" TextTrimming="WordEllipsis" Text="{Binding PageTitle}" />
                             </StackPanel>
                             <!--</Border>-->
 

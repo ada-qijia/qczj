@@ -15,6 +15,7 @@
 
     <phone:PhoneApplicationPage.Resources>
         <util:TimeStampToStringConverter x:Key="TimeStampToStringConverter"/>
+        <util:SendingStateToVisibilityConverter x:Key="SendingStateToVisibilityConverter"/>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -41,15 +42,14 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <ListBox x:Name="MessageListBox" Grid.ColumnSpan="2" Margin="12,0,12,0" ItemsSource="{Binding MessageList}" ManipulationCompleted="MessageListBox_ManipulationCompleted" ManipulationStarted="MessageListBox_ManipulationStarted">
+            <ListBox x:Name="MessageListBox" Grid.ColumnSpan="2" Margin="12,0,12,0" ItemsSource="{Binding MessageList}" ManipulationStarted="MessageListBox_ManipulationStarted">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <util:PrivateMessageDataTemplateSelector Content="{Binding}" FriendID="{Binding FriendID,ElementName=PrivateMessagePage}" HorizontalAlignment="Stretch" FontFamily="Portable User Interface">
+                        <util:PrivateMessageDataTemplateSelector Content="{Binding}" FriendID="{Binding FriendID,ElementName=PrivateMessagePage}" HorizontalAlignment="Stretch">
                             <toolkit:ContextMenuService.ContextMenu>
                                 <toolkit:ContextMenu>
-                                    <!-- You can suppress tilt on indivudal menu items with TiltEffect.SuppressTilt="True" -->
                                     <toolkit:MenuItem Header="复制" Click="Copy_Click"/>
-                                    <toolkit:MenuItem Header="删除" Click="Delete_Click"/>
+                                    <!--<toolkit:MenuItem Header="删除" Click="Delete_Click"/>-->
                                 </toolkit:ContextMenu>
                             </toolkit:ContextMenuService.ContextMenu>
 
@@ -64,20 +64,27 @@
                                             <ColumnDefinition/>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.ColumnSpan="4" Text="{Binding LastPostDate,Converter={StaticResource TimeStampToStringConverter}}" Style="{StaticResource ContentTextStyle}" HorizontalAlignment="Center" Margin="12" FontFamily="Portable User Interface"/>
-                                        <!--current Status-->
-                                        <Image VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        <TextBlock Grid.ColumnSpan="4" Text="{Binding LastPostDate,Converter={StaticResource TimeStampToStringConverter}}" Style="{StaticResource ContentTextStyle}" HorizontalAlignment="Center" Margin="12"/>
+                                        <StackPanel Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
+                                            <!--current Status-->
+                                            <Image Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="40" Margin="6" Visibility="{Binding SendingState, Converter={StaticResource SendingStateToVisibilityConverter}, TargetNullValue=Collapsed,FallbackValue=Collapsed}" Source="/Images/Me/failed.png">
+                                                <toolkit:ContextMenuService.ContextMenu>
+                                                    <toolkit:ContextMenu>
+                                                        <toolkit:MenuItem Header="重新发送" Click="ReSend_Click" />
+                                                        <toolkit:MenuItem Header="取消"/>
+                                                    </toolkit:ContextMenu>
+                                                </toolkit:ContextMenuService.ContextMenu>
+                                            </Image>
 
-                                        <Border Grid.Row="1" Grid.Column="1" Background="White" HorizontalAlignment="Right" VerticalAlignment="Top" MaxWidth="360">
-                                            <TextBlock Text="{Binding Content}" Style="{StaticResource TitleNormalTextStyle}" Margin="18" MaxHeight="Infinity" FontFamily="Portable User Interface"/>
-                                        </Border>
+                                            <Border Background="White" MaxWidth="360">
+                                                <TextBlock Text="{Binding Content}" Style="{StaticResource TitleNormalTextStyle}" Margin="18" MaxHeight="Infinity"/>
+                                            </Border>
+                                        </StackPanel>
+                                        <Image Grid.Row="1" Grid.Column="1" Width="12" VerticalAlignment="Top" Margin="0 12 0 0" Source="/Images/Me/meMessageTriangle.png"/>
 
-                                        <Image Grid.Row="1" Grid.Column="2" Width="15" VerticalAlignment="Top" Source="/Images/Me/meMessageTriangle.png"/>
-
-                                        <Grid Grid.Row="1" Grid.Column="3">
+                                        <Grid Grid.Row="1" Grid.Column="2" VerticalAlignment="Top">
                                             <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageUserSmallStyle}" Margin="12 0 0 0"/>
                                             <Image Source="{Binding MeImg, ElementName=PrivateMessagePage}" Style="{StaticResource ImageUserSmallStyle}" Margin="12 0 0 0"/>
                                         </Grid>
@@ -104,9 +111,9 @@
                                             <TextBlock Text="{Binding Content}" Style="{StaticResource TitleNormalTextStyle}" Margin="18" MaxHeight="Infinity"/>
                                         </Border>
 
-                                        <Image Grid.Row="1" Grid.Column="1" Width="15" VerticalAlignment="Top" Source="/Images/Me/friendMessageTriangle.png"/>
+                                        <Image Grid.Row="1" Grid.Column="1" Width="12" VerticalAlignment="Top" Margin="0 12 0 0" Source="/Images/Me/friendMessageTriangle.png"/>
 
-                                        <Grid Grid.Row="1">
+                                        <Grid Grid.Row="1" VerticalAlignment="Top">
                                             <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageUserSmallStyle}"/>
                                             <Image Source="{Binding FriendImg,ElementName=PrivateMessagePage}" Style="{StaticResource ImageUserSmallStyle}"/>
                                         </Grid>
@@ -114,7 +121,7 @@
                                 </DataTemplate>
                             </util:PrivateMessageDataTemplateSelector.FriendItemTemplate>
 
-                            <util:PrivateMessageDataTemplateSelector.LoadMoreTemplate>
+                            <!--<util:PrivateMessageDataTemplateSelector.LoadMoreTemplate>
                                 <DataTemplate>
                                     <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMore_Tap">
                                         <TextBlock Foreground="Black" FontSize="28"
@@ -122,7 +129,7 @@
                                                            Text="点击加载更多..."/>
                                     </Border>
                                 </DataTemplate>
-                            </util:PrivateMessageDataTemplateSelector.LoadMoreTemplate>
+                            </util:PrivateMessageDataTemplateSelector.LoadMoreTemplate>-->
                         </util:PrivateMessageDataTemplateSelector>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

@@ -30,7 +30,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1">
             <ScrollViewer>
-                <StackPanel Margin="24 0">
+                <StackPanel Margin="24 0 12 0">
                     <StackPanel.Resources>
                         <Style TargetType="StackPanel">
                             <Setter Property="Margin" Value="0 12"/>
@@ -58,7 +58,7 @@
 
                             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0">
                                 <TextBlock Text="{Binding UserName}" Style="{StaticResource TitleLargeTextStyle}" VerticalAlignment="Bottom" Margin="0"/>
-                                <Image Source="/Images/Me/carOwner.png" Visibility="{Binding IsCarOwner,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" Stretch="None" VerticalAlignment="Bottom"/>
+                                <Image Source="/Images/Me/carOwner.png" Width="20" Visibility="{Binding IsCarOwner,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" VerticalAlignment="Bottom"/>
                             </StackPanel>
 
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Score, StringFormat='积分：{0}'}" FontSize="16" VerticalAlignment="Bottom"/>
@@ -100,7 +100,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="120"/>
                                                     <ColumnDefinition />
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
@@ -108,8 +108,8 @@
                                                 <TextBlock Grid.ColumnSpan="3" Text="{Binding Title}" Style="{StaticResource TitleNormalTextStyle}"/>
 
                                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding PostDate}" Style="{StaticResource FooterSmallTextStyle}"/>
-                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ReplyCount,StringFormat='\{0}回复'}" Style="{StaticResource FooterLargeTextStyle}" HorizontalAlignment="Center" Margin="12 0"/>
-                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0" FontFamily="Portable User Interface"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BBSName, Converter={StaticResource HtmlStringToNormalConverter}}" Style="{StaticResource FooterSmallTextStyle}" HorizontalAlignment="Left" Margin="12 0"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ReplyCount,StringFormat='\{0}回复'}" Style="{StaticResource FooterLargeTextStyle}" Margin="12 0"/>
                                             </Grid>
                                         </DataTemplate>
                                     </util:LoadMoreDataTemplateSelector.ItemTemplate>

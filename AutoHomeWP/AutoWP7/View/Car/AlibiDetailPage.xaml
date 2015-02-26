@@ -24,7 +24,7 @@
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="Margin" Value="0,8,0,0"/>
         </Style>
-        
+
     </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot" Background="White">
@@ -45,19 +45,20 @@
                         <ColumnDefinition Width="76"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="/Images/DefaultUserIcon.png"/>
-                    <Image Width="64" Height="64" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" 
-                           Source="{Binding membericon}"/>
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Tap="OthersHome_Tap">
+                        <Image Width="64" Height="64" Source="/Images/DefaultUserIcon.png"/>
+                        <Image Width="64" Height="64" Source="{Binding membericon}"/>
+                    </Grid>
 
                     <StackPanel Grid.Column="1">
-                        <TextBlock Text="{Binding membername}" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding membername}" Foreground="#ff3cadeb" FontSize="22" Margin="0,0,0,0" Tap="OthersHome_Tap"/>
                         <TextBlock Text="{Binding reportdate}" FontSize="20" Foreground="#ff808080" Margin="0,0,0,0"/>
                     </StackPanel>
 
                     <Image Width="64" Height="64" Grid.Column="1" HorizontalAlignment="Right" Stretch="Uniform"
                            x:Name="medalImage" Source="{Binding}"/>
                 </Grid>
-                
+
                 <!--car info-->
                 <Grid Margin="0,12,0,0" DataContext="{Binding carinfo}">
                     <Grid.ColumnDefinitions>

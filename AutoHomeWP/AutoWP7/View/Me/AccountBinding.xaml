@@ -78,7 +78,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel Grid.Row="0" Margin="12,17,0,16">
             <TextBlock x:Name="PageTitle" Text="账号绑定"  Foreground="{StaticResource App_Theme_Color}" HorizontalAlignment="Left" FontSize="72"  Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 

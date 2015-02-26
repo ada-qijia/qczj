@@ -57,7 +57,7 @@
                                             <Image Source="{Binding ReplyUserImg}" Style="{StaticResource ImageUserSmallStyle}"/>
                                         </Grid>
                                         <TextBlock Grid.Column="1" Text="{Binding ReplyUserName}"  Style="{StaticResource TitleNormalTextStyle}" VerticalAlignment="Center" Foreground="{StaticResource App_Theme_Color}" Tap="OthersHome_Tap"/>
-                                        <TextBlock Grid.Column="2" Text="{Binding ReplyTime}" Style="{StaticResource ContentTextStyle}" VerticalAlignment="Center" FontFamily="Portable User Interface"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding ReplyTime}" Style="{StaticResource ContentTextStyle}" VerticalAlignment="Center"/>
 
                                         <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding ReplyContent}" Style="{StaticResource TitleLargeTextStyle}" MaxHeight="Infinity" Margin="0 6" TextTrimming="None"/>
 
@@ -67,7 +67,7 @@
 
                                         <TextBlock Grid.Row="3" Grid.ColumnSpan="3" Text="{Binding From}" Style="{StaticResource FooterSmallTextStyle}" Margin="6" TextWrapping="Wrap"/>
 
-                                        <StackPanel Grid.Row="4" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Background="Transparent" Visibility="{Binding Converter={StaticResource CommentReplyToReplyVisibilityConverter}}" Tap="Reply_Tap">
+                                        <StackPanel Grid.Row="4" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Background="Transparent" Visibility="{Binding NotAllowCom, Converter={StaticResource BoolToVisibleConverter},ConverterParameter=1}" Tap="Reply_Tap">
                                             <Image Source="/Images/Me/commentReply.png" Height="30" Margin="6"/>
                                             <TextBlock Text="回复" Style="{StaticResource ContentTextStyle}" Foreground="{StaticResource App_Theme_Color}" VerticalAlignment="Center"/>
                                         </StackPanel>

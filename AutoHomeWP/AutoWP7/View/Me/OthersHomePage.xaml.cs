@@ -57,9 +57,9 @@ namespace AutoWP7.View.Me
 
         #region UI interaction
 
+        //不支持导航
         private void Topic_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void LoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)

@@ -49,7 +49,7 @@
                             <Image Source="/Images/DefaultUserIcon.png"/>
                             <Image Source="{Binding Img}"/>
                         </Grid>
-                        <Image Source="/Images/Me/carOwner.png" Visibility="{Binding IsCarOwner,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" Stretch="None" VerticalAlignment="Bottom"/>
+                        <Image Source="/Images/Me/carOwner.png" Width="20" Visibility="{Binding IsCarOwner,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" VerticalAlignment="Bottom"/>
                     </StackPanel>
 
                     <StackPanel>
@@ -79,7 +79,7 @@
 
                     <StackPanel>
                         <TextBlock Text="关注" Style="{StaticResource TitleLargeTextStyle}"/>
-                        <TextBlock Text="{Binding FollowCar}" FontFamily="Portable User Interface"/>
+                        <TextBlock Text="{Binding FollowCar}"/>
                     </StackPanel>
 
                     <StackPanel>

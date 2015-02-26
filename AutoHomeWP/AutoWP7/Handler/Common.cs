@@ -12,6 +12,7 @@ using Coding4Fun.Phone.Controls;
 using System.IO.IsolatedStorage;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Info;
+using System.Linq;
 
 namespace AutoWP7.Handler
 {
@@ -152,6 +153,23 @@ namespace AutoWP7.Handler
         }
 
         /// <summary>
+        /// 对上传参数列表进行字母升序排序
+        /// </summary>
+        /// <param name="urlParam">参数名值串，例如：a=1&b=2</param>
+        public static string SortURLParamAsc(string urlParam)
+        {
+            if (urlParam != null)
+            {
+                var urlParams = urlParam.Split(new char[] { '&' }).OrderBy(p => p).ToArray();
+                return string.Join("&", urlParams);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// 获取上行接口用到的时间戳
         /// </summary>
         /// <returns></returns>
@@ -159,6 +177,30 @@ namespace AutoWP7.Handler
         {
             var stamp = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
             return stamp.ToString();
+        }
+
+        /// <summary>
+        /// 获取子控件
+        /// </summary>
+        public static T FindChildOfType<T>(DependencyObject root) where T : class
+        {
+            var queue = new System.Collections.Generic.Queue<DependencyObject>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                DependencyObject current = queue.Dequeue();
+                for (int i = VisualTreeHelper.GetChildrenCount(current) - 1; 0 <= i; i--)
+                {
+                    var child = VisualTreeHelper.GetChild(current, i);
+                    var typedChild = child as T;
+                    if (typedChild != null)
+                    {
+                        return typedChild;
+                    }
+                    queue.Enqueue(child);
+                }
+            }
+            return null;
         }
     }
 }

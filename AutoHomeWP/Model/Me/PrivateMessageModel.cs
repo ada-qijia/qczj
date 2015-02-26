@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace Model.Me
 {
     [DataContract]
-    public class PrivateMessageFriendModel:LoadMoreItem
+    public class PrivateMessageFriendModel : LoadMoreItem
     {
         [DataMember(Name = "userid")]
         public int ID { get; set; }
@@ -33,7 +34,7 @@ namespace Model.Me
     }
 
     [DataContract]
-    public class PrivateMessageModel:LoadMoreItem
+    public class PrivateMessageModel : LoadMoreItem
     {
         [DataMember(Name = "userid")]
         public int UserID { get; set; }
@@ -41,11 +42,42 @@ namespace Model.Me
         [DataMember(Name = "content")]
         public string Content { get; set; }
 
-        [DataMember(Name = "messageid")]
+        [DataMember(Name = "messsageid")]
         public int ID { get; set; }
 
         [DataMember(Name = "lastpostdate")]
         public string LastPostDate { get; set; }
+    }
+
+    [DataContract]
+    public class PrivateMessageNewModel : PrivateMessageModel, INotifyPropertyChanged
+    {
+        //属性更改完毕事件
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private int _sendingState;
+        /// <summary>
+        /// 0:发送成功, 1:发送失败, 2:发送中
+        /// </summary>
+        public int SendingState
+        {
+            get { return _sendingState; }
+            set
+            {
+                if (value != _sendingState)
+                {
+                    _sendingState = value;
+                    OnPropertyChanged("SendingState");
+                }
+            }
+        }
     }
 
     [DataContract]

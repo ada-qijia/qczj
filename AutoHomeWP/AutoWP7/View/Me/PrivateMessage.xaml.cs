@@ -3,6 +3,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Net.NetworkInformation;
 using Model;
 using Model.Me;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -95,6 +96,8 @@ namespace AutoWP7.View.Me
             this.LoadLocally();
 
             updateTimer = new Timer(UpdateMessage);
+
+            this.MessageListBox.Loaded += (sender, e) => AddScrollEvent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -151,6 +154,11 @@ namespace AutoWP7.View.Me
 
         #region load data
 
+        bool isLoading = false;
+
+        //确保加载新的后页面不滚动
+        PrivateMessageModel visibleItem;
+
         /// <summary>
         /// Load cached data.
         /// </summary>
@@ -173,34 +181,89 @@ namespace AutoWP7.View.Me
             GlobalIndicator.Instance.Text = "";
             GlobalIndicator.Instance.IsBusy = false;
 
-            //update local cache.
-            int cnt = this.MessageVM.MessageList.Count;
-            if (cnt > 0)
+            if (visibleItem != null)
             {
-                var cacheModel = PrivateMessageCacheViewModel.SingleInstance.CacheModel;
-                if (cacheModel.Messages.ContainsKey(this.FriendID))
-                {
-                    var messages = cacheModel.Messages[this.FriendID];
-                    if (messages != null && messages.Count > 0 && this.MessageVM.MessageList[cnt - 1].ID <= messages.Last().ID)
-                    {
-                        return;
-                    }
-                }
-
-                List<PrivateMessageModel> latest = this.MessageVM.MessageList.Where((model, index) => index >= cnt - 50).ToList();
-                PrivateMessageCacheViewModel.SingleInstance.UpdateMessages(this.FriendID, latest);
+                this.MessageListBox.UpdateLayout();
+                this.MessageListBox.ScrollIntoView(visibleItem);
             }
+
+            if (this.MessageVM.ReturnCode == 10001 || this.MessageVM.ReturnCode == 10002)
+            {
+                CustomMessageBox messageBox = new CustomMessageBox()
+                {
+                    Caption = "",
+                    Message = "密码检验失败",
+                    LeftButtonContent = "取消",
+                    RightButtonContent = "重新登录",
+                    IsFullScreen = false
+                };
+
+                messageBox.Dismissed += (s1, e1) =>
+                {
+                    switch (e1.Result)
+                    {
+                        case CustomMessageBoxResult.LeftButton:
+                            NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.RelativeOrAbsolute));
+                            break;
+                        case CustomMessageBoxResult.RightButton:
+                            //返回未登录下我的主页
+                            NavigationService.GoBack();
+                            break;
+                        default:
+                            break;
+                    }
+                };
+
+                messageBox.Show();
+            }
+            else if (this.MessageVM.ReturnCode == 0)
+            {
+                //update local cache.
+                int cnt = this.MessageVM.MessageList.Count;
+                if (cnt > 0)
+                {
+                    var cacheModel = PrivateMessageCacheViewModel.SingleInstance.CacheModel;
+                    if (cacheModel.Messages.ContainsKey(this.FriendID))
+                    {
+                        var messages = cacheModel.Messages[this.FriendID];
+                        if (messages != null && messages.Count > 0 && this.MessageVM.MessageList[cnt - 1].ID <= messages.Last().ID)
+                        {
+                            isLoading = false;
+                            return;
+                        }
+                    }
+
+                    List<PrivateMessageModel> latest = this.MessageVM.MessageList.Where((model, index) => index >= cnt - 50).ToList();
+                    PrivateMessageCacheViewModel.SingleInstance.UpdateMessages(this.FriendID, latest);
+                }
+            }
+
+            isLoading = false;
         }
 
         //load history.
         private void LoadMore(bool restart)
         {
-            GlobalIndicator.Instance.Text = "正在获取中...";
-            GlobalIndicator.Instance.IsBusy = true;
+            if (this.MessageVM.RowCount > 0 && this.MessageVM.MessageList.Count >= this.MessageVM.RowCount)
+            {
+                Common.showMsg("没有更早的私信了。");
+            }
+            else if (!isLoading)
+            {
+                isLoading = true;
 
-            int baseMessageID = restart ? int.MaxValue : this.MessageVM.MessageList[0].ID;
-            string url = Utils.MeHelper.GetPrivateMessageUrl(this.FriendID, baseMessageID, 1, 1);
-            this.MessageVM.LoadDataAysnc(url);
+                GlobalIndicator.Instance.Text = "正在获取中...";
+                GlobalIndicator.Instance.IsBusy = true;
+
+                int baseMessageID = restart ? int.MaxValue : this.MessageVM.MessageList[0].ID;
+                string url = Utils.MeHelper.GetPrivateMessageUrl(this.FriendID, baseMessageID, 1, 1);
+                this.MessageVM.LoadDataAysnc(url);
+
+                if (this.MessageVM.MessageList.Count > 0)
+                {
+                    visibleItem = this.MessageVM.MessageList[0];
+                }
+            }
         }
 
         #endregion
@@ -218,18 +281,28 @@ namespace AutoWP7.View.Me
             this.Focus();
         }
 
-        //load more.
-        private void MessageListBox_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
+        #region 滚动到顶端自动加载
+
+        private void AddScrollEvent()
         {
-            if (e.TotalManipulation.Translation.Y > e.TotalManipulation.Translation.X && e.TotalManipulation.Translation.Y > 5)
+            var scrollviewer = AutoWP7.Handler.Common.FindChildOfType<ScrollViewer>(this.MessageListBox);
+            if (scrollviewer != null)
             {
-                var scrollViewer = e.ManipulationContainer as ScrollViewer;
-                if (scrollViewer != null && scrollViewer.VerticalOffset == 0)
-                {
-                    this.LoadMore(false);
-                }
+                scrollviewer.MouseMove += scrollviewer_MouseMove;
             }
         }
+
+        //加载更多.
+        void scrollviewer_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var scrollviewer = sender as ScrollViewer;
+            if (scrollviewer.VerticalOffset <= 0.1)
+            {
+                this.LoadMore(false);
+            }
+        }
+
+        #endregion
 
         //复制到剪贴板
         private void Copy_Click(object sender, RoutedEventArgs e)
@@ -242,7 +315,7 @@ namespace AutoWP7.View.Me
             }
         }
 
-        //清空剪贴板
+        //清空剪贴板,没用到
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             var element = sender as FrameworkElement;
@@ -256,7 +329,7 @@ namespace AutoWP7.View.Me
         //超过一行时显示汉字数
         private void ReplyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            int inputLength = this.LetterNumTextBlock.Text.Length;
+            int inputLength = (int)CommonLayer.StringHelper.GetStringChLength(this.ReplyTextBox.Text);
             int showLength = inputLength > maxReplyLength ? maxReplyLength - inputLength : inputLength;
             this.LetterNumTextBlock.Text = string.Format("{0}/{1}", showLength, maxReplyLength);
             this.LetterNumTextBlock.Foreground = showLength < 0 ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black);
@@ -267,68 +340,125 @@ namespace AutoWP7.View.Me
             this.LetterNumTextBlock.Visibility = multiLine ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        #region 发送私信
+
         private bool isSending = false;
 
         //发送私信
         private void Reply_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.ReplyTextBox.Text) && this.ReplyTextBlock.Text.Length <= maxReplyLength)
+            if (!string.IsNullOrEmpty(this.ReplyTextBox.Text) && this.ReplyTextBox.Text.Length <= maxReplyLength)
             {
                 //发送文字
                 if (!isSending)
                 {
-                    var setting = IsolatedStorageSettings.ApplicationSettings;
-                    if (setting.Contains("userInfo"))
+                    var userInfoModel = Utils.MeHelper.GetMyInfoModel();
+                    if (userInfoModel!=null)
                     {
                         var content = this.ReplyTextBox.Text;
-                        var userInfoModel = setting["userInfo"] as Model.MyForumModel;
                         var timeStamp = Common.GetTimeStamp();
-                        string strData = "_appid=app.wp"
-                                + "&authorization=" + userInfoModel.Authorization
-                                + "&acceptmemberid=" + FriendID
-                                + "&acceptname=" + friendName
-                                + "&lettercontent=" + Utils.MeHelper.UTF8ToGB2312(content)
-                                + "&_timestamp=" + timeStamp//时间戳
-                                + "&autohomeua=" + Common.GetAutoHomeUA(); //设备类型\t系统版本号\tautohome\t客户端版本号
-                        //生成_sign
-                        string sign = Common.GetSignStr(strData);
-                        strData += "&_sign=" + sign;
-                        this.SendData(strData);
+
+                        //add new item to listbox
+                        var model = new PrivateMessageNewModel();
+                        model.Content = content;
+                        model.LastPostDate = timeStamp;
+                        model.UserID = userInfoModel.Id;
+                        model.SendingState = 2;
+                        this.MessageVM.MessageList.Add(model);
+
+                        //发送
+                        this.SendMessage(model);
 
                         this.ReplyTextBox.Text = string.Empty;
                         this.ReplyTextBox.Focus();
 
-                        //add new item to listbox
-                        PrivateMessageModel model = new PrivateMessageModel();
-                        model.Content = content;
-                        model.LastPostDate = timeStamp;
-                        model.UserID = FriendID;
-                        this.MessageVM.MessageList.Add(model);
+                        this.MessageListBox.UpdateLayout();
+                        this.MessageListBox.ScrollIntoView(model);
                     }
                 }
             }
         }
 
-        private void SendData(string strData)
+        private void SendData(string strData, object userState)
         {
             string url = Utils.MeHelper.SendPrivateMessageUrl;
 
             ViewModels.Me.UpStreamViewModel upstreamVM = ViewModels.Me.UpStreamViewModel.SingleInstance;
-            upstreamVM.UploadAsyncWithSharedClient(url, strData, wc_UploadStringCompleted);
+            upstreamVM.UploadAsyncWithSharedClient(url, strData, wc_UploadStringCompleted, userState);
         }
 
-        private void wc_UploadStringCompleted(object sender, UploadStringCompletedEventArgs ee)
+        private void wc_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
         {
-            if (ee.Error != null)
+            var model = e.UserState as PrivateMessageNewModel;
+            if (model != null)
             {
-                //红圆叹号
+                if (e.Error == null && e.Result != null)
+                {
+                    try
+                    {
+                        //返回的json数据
+                        JObject json = JObject.Parse(e.Result);
+                        JToken resultToken = json.SelectToken("result");
+                        var returnCode = json.SelectToken("returncode").Value<int>();
+
+                        if (returnCode == 0)
+                        {
+                            //成功
+                            int letterid = json.SelectToken("letterid").Value<int>();
+                            string postDate = json.SelectToken("time").ToString();
+                            model.ID = letterid;
+                            model.LastPostDate = postDate;
+                            model.SendingState = 0;
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+
+                model.SendingState = 1;
             }
-            else
-            {
-                //图标消失
-            }
+
             isSending = false;
         }
+
+        private void ReSend_Click(object sender, RoutedEventArgs e)
+        {
+            var model = (sender as FrameworkElement).DataContext as PrivateMessageNewModel;
+            if (model != null && model.SendingState == 1)
+            {
+                var setting = IsolatedStorageSettings.ApplicationSettings;
+                if (setting.Contains("userInfo"))
+                {
+                    model.SendingState = 2;
+                    this.SendMessage(model);
+                }
+            }
+        }
+
+        private void SendMessage(PrivateMessageNewModel model)
+        {
+            var userInfoModel = Utils.MeHelper.GetMyInfoModel();
+            if (userInfoModel!=null)
+            {
+                model.SendingState = 2;
+                string strData = "_appid=app.wp"
+                                   + "&authorization=" + userInfoModel.Authorization
+                                   + "&acceptmemberid=" + FriendID
+                                   + "&acceptname=" + friendName
+                                   + "&lettercontent=" + Utils.MeHelper.UTF8ToGB2312(model.Content)
+                                   + "&_timestamp=" + Common.GetTimeStamp()//时间戳
+                                   + "&autohomeua=" + Common.GetAutoHomeUA(); //设备类型\t系统版本号\tautohome\t客户端版本号
+                strData = Common.SortURLParamAsc(strData);
+                //生成_sign
+                string sign = Common.GetSignStr(strData);
+                strData += "&_sign=" + sign;
+                this.SendData(strData, model);
+            }
+        }
+
+        #endregion
 
         #endregion
     }

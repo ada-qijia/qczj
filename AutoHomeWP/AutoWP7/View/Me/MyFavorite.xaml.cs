@@ -49,13 +49,12 @@ namespace AutoWP7.View.Me
             var specs = this.FavoriteVM.GetUnsyncedItems(FavoriteType.CarSpec);
             var specStr = specs == null || specs.Count == 0 ? null : CommonLayer.JsonHelper.Serialize(specs);
 
-            //var seriesStr = this.FavoriteVM.GetUnsyncedItemsInJson(FavoriteType.CarSeries);
-            //var specStr = this.FavoriteVM.GetUnsyncedItemsInJson(FavoriteType.CarSpec);
-            if (seriesStr != null || specStr != null)
+            var userInfoModel = Utils.MeHelper.GetMyInfoModel();
+            if (userInfoModel != null && (seriesStr != null || specStr != null))
             {
                 string url = Utils.MeHelper.SyncFavoriteCarUrl;
-                string data = string.Format("_appid=app.wp&uc_ticket={0}&seriesStr={1}&specStr={2}&_timestamp={3}&autohomeua={4}");
-                data = Utils.MeHelper.SortURLParamAsc(data);
+                string data = string.Format("_appid=app.wp&uc_ticket={0}&seriesStr={1}&specStr={2}&_timestamp={3}&autohomeua={4}", userInfoModel.Authorization, seriesStr, specStr, Common.GetTimeStamp(), Common.GetAutoHomeUA());
+                data = Common.SortURLParamAsc(data);
                 string sign = Common.GetSignStr(data);
                 data += "&_sign=" + sign;
                 this.FavoriteVM.UploadCar(url, data, null, series, specs);
@@ -72,14 +71,12 @@ namespace AutoWP7.View.Me
             var articles = this.FavoriteVM.GetUnsyncedItems(FavoriteType.Article);
             var articleStr = articles == null || articles.Count == 0 ? null : CommonLayer.JsonHelper.Serialize(articles);
 
-            //var bbslist = this.FavoriteVM.GetUnsyncedItemsInJson(FavoriteType.Forum);
-            //var topiclist = this.FavoriteVM.GetUnsyncedItemsInJson(FavoriteType.Topic);
-            //var articlelist = this.FavoriteVM.GetUnsyncedItemsInJson(FavoriteType.Article);
-            if (bbsStr != null || topicStr != null || articleStr != null)
+            var userInfoModel = Utils.MeHelper.GetMyInfoModel();
+            if (userInfoModel != null && (bbsStr != null || topicStr != null || articleStr != null))
             {
                 string url = Utils.MeHelper.SyncFavoriteCollectionUrl;
-                string data = string.Format("_appid=app.wp&authorization={0}&bbslist={1}&topiclist={2}&articlelist={3}&_timestamp={4}&autohomeua={5}");
-                data = Utils.MeHelper.SortURLParamAsc(data);
+                string data = string.Format("_appid=app.wp&authorization={0}&bbslist={1}&topiclist={2}&articlelist={3}&_timestamp={4}&autohomeua={5}",userInfoModel.Authorization,bbsStr,topicStr,articleStr,Common.GetTimeStamp(),Common.GetAutoHomeUA());
+                data = Common.SortURLParamAsc(data);
                 string sign = Common.GetSignStr(data);
                 data += "&_sign=" + sign;
                 this.FavoriteVM.UploadOthers(url, data, null, bbslist, topics, articles);
@@ -120,7 +117,7 @@ namespace AutoWP7.View.Me
         public override void AfterDeleteItems(System.Collections.IList selectedItems)
         {
             base.AfterDeleteItems(selectedItems);
-          //  this.FavoriteVM.Remove();
+            //  this.FavoriteVM.Remove();
         }
 
         #endregion

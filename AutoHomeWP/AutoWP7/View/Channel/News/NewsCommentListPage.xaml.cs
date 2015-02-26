@@ -198,5 +198,16 @@ namespace AutoWP7.View.Channel.News
                 this.NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.Relative));
             }
         }
+
+        //导航到他的主页
+        private void OthersHome_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var model = (sender as FrameworkElement).DataContext as CommentModel;
+            if (model != null)
+            {
+                string url = string.Format("/View/Me/OthersHomePage.xaml?userID={0}", model.id);
+                this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
+            }
+        }
     }
 }

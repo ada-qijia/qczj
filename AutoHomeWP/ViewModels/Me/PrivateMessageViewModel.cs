@@ -24,6 +24,13 @@ namespace ViewModels.Me
 
         #region properties
 
+        private int _returnCode;
+        public int ReturnCode
+        {
+            get { return _returnCode; }
+            set { SetProperty<int>(ref _returnCode, value); }
+        }
+
         public ObservableCollection<PrivateMessageModel> MessageList { get; private set; }
 
         #endregion
@@ -55,6 +62,7 @@ namespace ViewModels.Me
                     //返回的json数据
                     JObject json = JObject.Parse(e.Result);
                     JToken resultToken = json.SelectToken("result");
+                    this.ReturnCode = json.SelectToken("returncode").Value<int>();
 
                     #region 用返回结果填充每个版块
 
@@ -86,7 +94,7 @@ namespace ViewModels.Me
                             }
                             else
                             {
-                                for (int i = topicList.Count - 1; i >= 0; i++)
+                                for (int i = topicList.Count - 1; i >= 0; i--)
                                 {
                                     this.MessageList.Insert(0, topicList[i]);
                                 }

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using ViewModels.Me;
+﻿using Microsoft.Phone.Controls;
 using QConnectSDK.Exceptions;
+using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Navigation;
 using ViewModels.Handler;
+using ViewModels.Me;
 
 namespace AutoWP7.View.Me
 {
@@ -58,7 +54,7 @@ namespace AutoWP7.View.Me
                      switch (e1.Result)
                      {
                          case CustomMessageBoxResult.RightButton:
-                             NavigationService.Navigate(new Uri("View/More/LoginPage.xaml", UriKind.RelativeOrAbsolute));
+                             NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.RelativeOrAbsolute));
                              break;
                          case CustomMessageBoxResult.LeftButton:
                              //go back to me page.

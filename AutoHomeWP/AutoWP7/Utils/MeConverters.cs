@@ -209,14 +209,21 @@ namespace AutoWP7.Utils
             var model = value as ThirdPartyBindingModel;
             if (model != null)
             {
-                switch (model.RelationType)
+                if (model.IsExpired)
                 {
-                    case 0:
-                        return "立即绑定";
-                    case 1:
-                        return "已经绑定";
-                    case 2:
-                        return "重新绑定";
+                    return "重新绑定";
+                }
+                else
+                {
+                    switch (model.RelationType)
+                    {
+                        case 0:
+                            return "立即绑定";
+                        case 1:
+                            return "已经绑定";
+                        case 2:
+                            return "重新绑定";
+                    }
                 }
             }
 
@@ -236,7 +243,7 @@ namespace AutoWP7.Utils
             var model = value as ThirdPartyBindingModel;
             if (model != null)
             {
-                return model.RelationType != 1;
+                return model.RelationType != 1 || model.IsExpired;
             }
 
             return true;
@@ -250,15 +257,15 @@ namespace AutoWP7.Utils
 
     #endregion
 
-    public class CommentReplyToReplyVisibilityConverter:IValueConverter
+    public class CommentReplyToReplyVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var model = value as CommentReplyModel;
-            if (model!=null)
+            if (model != null)
             {
-                bool isReplyable = model.ReplyType == 1 && model.ImgID==0;
-                return isReplyable ? Visibility.Visible : Visibility.Collapsed;
+                //bool isReplyable = model.ReplyType == 1 && model.ImgID==0;
+                return model.NotAllowCom ? Visibility.Collapsed : Visibility.Visible;
             }
             return Visibility.Collapsed;
         }
@@ -297,9 +304,9 @@ namespace AutoWP7.Utils
         }
     }
 
-#region private message
+    #region private message
 
-    public class TimeStampToStringConverter:IValueConverter
+    public class TimeStampToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -310,12 +317,12 @@ namespace AutoWP7.Utils
                 {
                     var startTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                     var realTime = startTime.AddSeconds(seconds).ToLocalTime();
-                    var now=DateTime.Now;
-                    if(realTime.Date==now.Date)
+                    var now = DateTime.Now;
+                    if (realTime.Date == now.Date)
                     {
                         return realTime.ToString("HH:mm");
                     }
-                    else if(realTime.Year==now.Year)
+                    else if (realTime.Year == now.Year)
                     {
                         return realTime.ToString("MM-dd");
                     }
@@ -335,5 +342,24 @@ namespace AutoWP7.Utils
         }
     }
 
-#endregion
+    public class SendingStateToVisibilityConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int)
+            {
+                var state = (int)value;
+                return state == 1 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    #endregion
 }

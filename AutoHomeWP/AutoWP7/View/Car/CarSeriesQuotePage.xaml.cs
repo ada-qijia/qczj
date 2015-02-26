@@ -571,6 +571,17 @@ namespace AutoWP7.View.Car
             }
         }
 
+
+        private void OthersHome_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var model = (sender as FrameworkElement).DataContext as KoubeiModel;
+            if (model != null)
+            {
+                string url = string.Format("/View/Me/OthersHomePage.xaml?userID={0}", model.UserID);
+                this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
+            }
+        }
+
         #endregion
 
         #region 收藏管理
@@ -644,6 +655,5 @@ namespace AutoWP7.View.Car
         }
 
         #endregion
-
     }
 }

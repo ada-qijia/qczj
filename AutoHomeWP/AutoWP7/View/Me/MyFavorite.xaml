@@ -17,7 +17,7 @@
     <utils:MultiSelectablePage.Resources>
         <utils:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter"/>
         <DataTemplate x:Key="CarSeriesItemTemplate">
-            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12" Tap="CarSeriesItem_Tap">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="-24 -6 0 30" Tap="CarSeriesItem_Tap">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
@@ -29,7 +29,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.RowSpan="2" >
+                <Grid Grid.RowSpan="2">
                     <Image Source="Images/smallImage.jpg" Style="{StaticResource ImageLeftStyle}"/>
                     <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
                 </Grid>
@@ -40,7 +40,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="CarSpecItemTemplate">
-            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12" Tap="CarSpecItem_Tap">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="-24 -6 0 30" Tap="CarSpecItem_Tap">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
@@ -62,7 +62,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ArticleItemTemplate">
-            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12" Tap="ArticleItem_Tap">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="-24 -6 0 30" Tap="ArticleItem_Tap">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
@@ -84,12 +84,12 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ForumItemTemplate">
-            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12 0 24" Tap="ForumItem_Tap">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="-18 -6 0 36" Tap="ForumItem_Tap">
                 <TextBlock Text="{Binding Name}" Style="{StaticResource TitleLargeTextStyle}" MaxHeight="70"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="TopicItemTemplate">
-            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="0 12 0 24" Tap="TopicItem_Tap">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="-24 -6 0 36" Tap="TopicItem_Tap">
                 <TextBlock Text="{Binding Title}"  Style="{StaticResource TitleLargeTextStyle}" MaxHeight="70"/>
             </Grid>
         </DataTemplate>
@@ -106,7 +106,7 @@
             </phone:Pivot.HeaderTemplate>
 
             <!--车系-->
-            <phone:PivotItem Header="收藏车系" Margin="12 18 12 0">
+            <phone:PivotItem Header="收藏车系" Margin="0 24 0 0">
                 <Grid>
                     <toolkit:LongListMultiSelector x:Name="CarSeriesList" ItemsSource="{Binding CarSeriesList}" LayoutMode="List" Visibility="{Binding CarSeriesList,Converter={StaticResource EmptyToVisibilityConverter}}">
                         <toolkit:LongListMultiSelector.Resources>
@@ -135,7 +135,7 @@
             </phone:PivotItem>
 
             <!--车型-->
-            <phone:PivotItem Header="收藏车型" Margin="12 18 12 0">
+            <phone:PivotItem Header="收藏车型" Margin="0 24 0 0">
                 <Grid>
                     <toolkit:LongListMultiSelector x:Name="CarSpecList" ItemsSource="{Binding CarSpecList}" LayoutMode="List" Visibility="{Binding CarSpecList,Converter={StaticResource EmptyToVisibilityConverter}}">
                         <toolkit:LongListMultiSelector.Resources>
@@ -164,7 +164,7 @@
             </phone:PivotItem>
 
             <!--文章-->
-            <phone:PivotItem Header="收藏文章" Margin="12 18 12 0">
+            <phone:PivotItem Header="收藏文章" Margin="0 24 0 0">
                 <Grid>
                     <toolkit:LongListMultiSelector x:Name="ArticleList" ItemsSource="{Binding ArticleList}"
                                                 LayoutMode="List" Visibility="{Binding ArticleList,Converter={StaticResource EmptyToVisibilityConverter}}">
@@ -194,7 +194,7 @@
             </phone:PivotItem>
 
             <!--论坛-->
-            <phone:PivotItem Header="收藏论坛" Margin="12 18 12 0">
+            <phone:PivotItem Header="收藏论坛" Margin="0 24 12 0">
                 <Grid>
                     <toolkit:LongListMultiSelector x:Name="ForumList" ItemsSource="{Binding ForumList}"
                                                 LayoutMode="List" Visibility="{Binding ForumList,Converter={StaticResource EmptyToVisibilityConverter}}">
@@ -225,7 +225,7 @@
             </phone:PivotItem>
 
             <!--帖子-->
-            <phone:PivotItem Header="收藏帖子" Margin="12 18 12 0">
+            <phone:PivotItem Header="收藏帖子" Margin="0 24 12 0">
                 <Grid>
                     <toolkit:LongListMultiSelector x:Name="TopicList" ItemsSource="{Binding TopicList}" LayoutMode="List" Visibility="{Binding TopicList,Converter={StaticResource EmptyToVisibilityConverter}}">
                         <toolkit:LongListMultiSelector.Resources>

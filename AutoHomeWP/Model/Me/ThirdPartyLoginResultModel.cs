@@ -11,7 +11,7 @@ namespace Model.Me
     public class ThirdPartyLoginResultModel
     {
         [DataMember(Name = "UserId")]
-        public string ID { get; set; }
+        public int ID { get; set; }
 
         [DataMember(Name = "UserName")]
         public string UserName { get; set; }

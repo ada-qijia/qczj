@@ -1,21 +1,22 @@
-﻿using System;
+﻿using AutoWP7.Handler;
+using AutoWP7.Utils;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
+using Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using System.Windows.Threading;
-using AutoWP7.Handler;
-using Microsoft.Phone.Controls;
-using Model;
 using ViewModels;
 using ViewModels.Handler;
-using System.ComponentModel;
-using Microsoft.Phone.Shell;
-using AutoWP7.Utils;
-using Microsoft.Phone.Tasks;
 using ViewModels.Me;
 
 namespace AutoWP7
@@ -28,6 +29,10 @@ namespace AutoWP7
 
             CreateApplicationBarItems();
             this.UnreadDraftBorder.DataContext = DraftViewModel.SingleInstance;
+
+            //推送通知
+            Utils.PushNotificationHelper.ToastNotificationReceived += PushNotificationHelper_ToastNotificationReceived;
+            Utils.PushNotificationHelper.OpenChannel();
         }
 
         //最新资讯集合
@@ -42,11 +47,16 @@ namespace AutoWP7
         {
             base.OnNavigatedTo(e);
 
+            //点击推送进入
+            if (this.NavigationContext.QueryString.ContainsKey("a"))
+            {
+                this.ToastNavigate(this.NavigationContext.QueryString);
+            }
+
             switch (e.NavigationMode)
             {
                 case System.Windows.Navigation.NavigationMode.New:
                     {
-
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "最新点击量");
 
                         // 最新资讯
@@ -1183,5 +1193,93 @@ namespace AutoWP7
         }
 
         #endregion
+
+        #region 推送通知
+
+        private void PushNotificationHelper_ToastNotificationReceived(object sender, ToastNotificationEventArgs e)
+        {
+            System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    if (MessageBox.Show(e.Subtitle, e.Title, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        var argArray = e.CustomParam.Split(new char[] { '?', '&', '=' });
+                        if (argArray.Length > 1)
+                        {
+                            Dictionary<string, string> args = new Dictionary<string, string>();
+                            for (int i = 1; i < argArray.Length - 1; i = i + 2)
+                            {
+                                args.Add(argArray[i], argArray[i + 1]);
+                            }
+                            ToastNavigate(args);
+                        }
+                    }
+                });
+        }
+
+        private void ToastNavigate(IDictionary<string, string> args)
+        {
+            //分析参数，导航到各页面
+            if (args.ContainsKey("t"))
+            {
+                switch (args["t"])
+                {
+                    //评论 回复
+                    case "1":
+                        NavigationService.Navigate(new Uri("/View/Me/MyCommentReply.xaml", UriKind.Relative));
+                        break;
+                    //论坛 回复
+                    case "2":
+                        NavigationService.Navigate(new Uri("/View/Me/MyForumReply.xaml", UriKind.Relative));
+                        break;
+                    //系统消息
+                    case "3":
+                        //浏览器打开url
+                        if (args.ContainsKey("p1") && (!string.IsNullOrEmpty(args["p1"])))
+                        {
+                            string url = UrlDecoder.UrlDecode(args["p1"]);
+                            this.wb.Navigate(new Uri(url, UriKind.Absolute));
+                            this.SystemMsgGrid.Visibility = Visibility.Visible;
+                            this.ApplicationBar.IsVisible = false;
+                        }
+                        break;
+                    //私信
+                    case "5":
+                        NavigationService.Navigate(new Uri("/View/Me/PrivateMessageFriends.xaml", UriKind.Relative));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        //关闭浏览器
+        private void CloseBrowser_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.SystemMsgGrid.Visibility = Visibility.Collapsed;
+            this.ApplicationBar.IsVisible = true;
+        }
+
+        //页面加载中
+        private void wb_Navigating(object sender, NavigatingEventArgs e)
+        {
+            this.failPrompt.Visibility = Visibility.Collapsed;
+            this.ProgBar.Visibility = Visibility.Visible;
+        }
+
+        //页面加载完成
+        private void wb_Navigated(object sender, NavigationEventArgs e)
+        {
+            this.ProgBar.Visibility = Visibility.Collapsed;
+        }
+
+        //加载失败
+        private void wb_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            this.ProgBar.Visibility = Visibility.Collapsed;
+            this.failPrompt.Visibility = Visibility.Visible;
+        }
+
+        #endregion
+
     }
 }

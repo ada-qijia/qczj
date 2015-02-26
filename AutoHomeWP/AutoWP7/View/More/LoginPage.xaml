@@ -93,12 +93,12 @@
                             <TextBlock Text="新浪微博"/>
                         </StackPanel>
 
-                        <StackPanel Margin="12 0" Tap="QQ_Tap">
+                        <!--<StackPanel Margin="12 0" Tap="QQ_Tap">
                             <Border>
                                 <Image Source="/Images/Me/qq.png" />
                             </Border>
                             <TextBlock Text="腾讯QQ"/>
-                        </StackPanel>
+                        </StackPanel>-->
                     </StackPanel>
 
                 </Grid>

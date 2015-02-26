@@ -28,6 +28,13 @@ namespace AutoWP7.UcControl.Me
             this.CountryVM.LoadDataCompleted += CountryVM_LoadDataCompleted;
             this.CountryListPicker.DataContext = this.CountryVM;
 
+            //设置默认为中国
+            var china = this.CountryVM.CountryList.FirstOrDefault(item => item.CountryCode == 86);
+            if (china != null)
+            {
+                this.CountryListPicker.SelectedItem = china;
+            }
+
             this.Loaded += UpdateSelfInfo_Loaded;
         }
 
@@ -107,11 +114,14 @@ namespace AutoWP7.UcControl.Me
             }
             else
             {
-                string data = string.Format("a=2&pm=3&v={0}&phonenum={1}&countrycode={2}&phonelength={3}&type=1");
-                string url = Utils.MeHelper.GetSendCheckCodeUrl();
-
-                ViewModels.Me.UpStreamViewModel upstreamVM = ViewModels.Me.UpStreamViewModel.SingleInstance;
-                upstreamVM.UploadAsyncWithSharedClient(url, data, wc_UploadStringCompleted);
+                var selectedCountry=this.CountryListPicker.SelectedItem as CountryModel;
+                if (selectedCountry != null)
+                {
+                    string data = string.Format("a=2&pm=3&v={0}&phonenum={1}&countrycode={2}&phonelength={3}&type=1", App.version, this.PhoneNoTextBox.Text, selectedCountry.CountryCode, selectedCountry.PhoneLength, 1);
+                    string url = Utils.MeHelper.GetSendCheckCodeUrl();
+                    ViewModels.Me.UpStreamViewModel upstreamVM = ViewModels.Me.UpStreamViewModel.SingleInstance;
+                    upstreamVM.UploadAsyncWithOneoffClient(url, data, wc_UploadStringCompleted);
+                }
             }
         }
 
@@ -126,7 +136,7 @@ namespace AutoWP7.UcControl.Me
                 else
                 {
                     JObject json = JObject.Parse(ee.Result);
-                    int resultCode = (int)json.SelectToken("resultcode");
+                    int resultCode = (int)json.SelectToken("returncode");
                     string message = json.SelectToken("message").ToString();
                     switch (resultCode)
                     {
@@ -170,7 +180,7 @@ namespace AutoWP7.UcControl.Me
                 //数字，字母，符号（非中文和回车）
                 //Regex reg1 = new Regex("(^[^(\u4e00-\u9fa5|\n)][6,25]$)");
                 //不能全是字母，数字或符号
-                Regex reg2 = new Regex(@"^((.*?\d)(?=.*?[A-Za-z])|(?=.*?\d)(?=.*?[\W_])|(?=.*?[A-Za-z])(?=.*?[\W_]))[^(\u4e00-\u9fa5|\n)])");
+                Regex reg2 = new Regex(@"^((.*?\d)(?=.*?[A-Za-z])|(?=.*?\d)(?=.*?[\W_])|(?=.*?[A-Za-z])(?=.*?[\W_]))[^(\u4e00-\u9fa5|\n)]");
                 if (string.IsNullOrEmpty(passcode))
                 {
                     Common.showMsg("请输入密码");
@@ -179,7 +189,7 @@ namespace AutoWP7.UcControl.Me
                 {
                     Common.showMsg("密码不能为纯数字、纯字母、纯符号");
                 }
-                else if (passcode != this.UsernameTextbox.Text.Trim())
+                else if (passcode == this.UsernameTextbox.Text.Trim())
                 {
                     Common.showMsg("密码不能和用户名相同");
                 }
