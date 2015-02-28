@@ -70,79 +70,85 @@ namespace AutoWP7.View.Car
         {
             base.OnNavigatedTo(e);
 
-            InitBtn();
-
-            switch (e.NavigationMode)
+            try
             {
-                case System.Windows.Navigation.NavigationMode.New:
-                    {
-                        //车系id
-                        carSeriesId = NavigationContext.QueryString["carSeriesId"];
-                        //全局化
-                        App.CarSeriesId = carSeriesId;
+                InitBtn();
 
-                        if (string.IsNullOrEmpty(App.CityId)) //默认北京
+                switch (e.NavigationMode)
+                {
+                    case System.Windows.Navigation.NavigationMode.New:
                         {
-                            cityId = "110100";
-                        }
-                        else
-                        {
-                            cityId = App.CityId;
-                        }
+                            //车系id
+                            carSeriesId = NavigationContext.QueryString["carSeriesId"];
+                            //全局化
+                            App.CarSeriesId = carSeriesId;
 
-                        //车系名
-                        using (LocalDataContext ldc = new LocalDataContext())
-                        {
-                            var name = from s in ldc.carSeries where s.Id == int.Parse(carSeriesId) select s.Name;
-                            foreach (var n in name)
+                            if (string.IsNullOrEmpty(App.CityId)) //默认北京
                             {
-                                App.CarSeriesName = n;
-                                autoName.Text = n;
+                                cityId = "110100";
                             }
-                        }
+                            else
+                            {
+                                cityId = App.CityId;
+                            }
 
-                        //导航到的具体页码
-                        indexId = NavigationContext.QueryString["indexId"];
-                        if (!string.IsNullOrEmpty(indexId))
-                        {
-                            piv.SelectedIndex = int.Parse(indexId);
-                        }
-                    }
-                    break;
-                case System.Windows.Navigation.NavigationMode.Back:
-                    {
-                        if (!string.IsNullOrEmpty(App.CityId))
-                        {
-                            //更新城市id
-                            cityId = App.CityId;
+                            //车系名
                             using (LocalDataContext ldc = new LocalDataContext())
                             {
-                                var result = from s in ldc.provinces where s.Id == int.Parse(App.CityId) select s.Name;
-                                foreach (var name in result)
+                                var name = from s in ldc.carSeries where s.Id == int.Parse(carSeriesId) select s.Name;
+                                foreach (var n in name)
                                 {
-                                    detailChooseCity.Content = name;
+                                    App.CarSeriesName = n;
+                                    autoName.Text = n;
                                 }
                             }
 
-                            // DealerLoadData();
-                        }
-
-                        ////更新城市id
-                        cityId = App.CityId;
-                        var tag = (piv.SelectedItem as PivotItem).Tag.ToString();
-                        if(tag == "dealer")// (piv.SelectedIndex == 3)
-                        {
-                            //更新城市id
-                            if (!string.IsNullOrEmpty(App.CityId))
+                            //导航到的具体页码
+                            indexId = NavigationContext.QueryString["indexId"];
+                            if (!string.IsNullOrEmpty(indexId))
                             {
-                                //重新加载经销商数据
-                                DealerLoadData();
+                                piv.SelectedIndex = int.Parse(indexId);
                             }
                         }
-                        if (tag == "quote")//(piv.SelectedIndex == 0)
-                            InitSeriesSpecsInfo();
-                    }
-                    break;
+                        break;
+                    case System.Windows.Navigation.NavigationMode.Back:
+                        {
+                            if (!string.IsNullOrEmpty(App.CityId))
+                            {
+                                //更新城市id
+                                cityId = App.CityId;
+                                using (LocalDataContext ldc = new LocalDataContext())
+                                {
+                                    var result = from s in ldc.provinces where s.Id == int.Parse(App.CityId) select s.Name;
+                                    foreach (var name in result)
+                                    {
+                                        detailChooseCity.Content = name;
+                                    }
+                                }
+
+                                // DealerLoadData();
+                            }
+
+                            ////更新城市id
+                            cityId = App.CityId;
+                            var tag = (piv.SelectedItem as PivotItem).Tag.ToString();
+                            if (tag == "dealer")// (piv.SelectedIndex == 3)
+                            {
+                                //更新城市id
+                                if (!string.IsNullOrEmpty(App.CityId))
+                                {
+                                    //重新加载经销商数据
+                                    DealerLoadData();
+                                }
+                            }
+                            if (tag == "quote")//(piv.SelectedIndex == 0)
+                                InitSeriesSpecsInfo();
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
             }
         }
 
@@ -496,7 +502,7 @@ namespace AutoWP7.View.Car
             }
             GlobalIndicator.Instance.Text = "正在获取中......";
             GlobalIndicator.Instance.IsBusy = true;
-            if (carSeriesArticleVM==null)
+            if (carSeriesArticleVM == null)
             {
                 carSeriesArticleVM = new CarSeriesActicleViewModel();
                 carSeriesArticleVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(comm_LoadDataCompleted);
@@ -600,7 +606,7 @@ namespace AutoWP7.View.Car
                         GlobalIndicator.Instance.Text = "正在获取中...";
                         GlobalIndicator.Instance.IsBusy = true;
 
-                        if (DealerVM==null)
+                        if (DealerVM == null)
                         {
                             DealerVM = new DealerViewModel();
                             DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
@@ -671,7 +677,7 @@ namespace AutoWP7.View.Car
             {
                 forumPageIndex = 1;
             }
-            if (forumVM==null)
+            if (forumVM == null)
             {
                 forumVM = new CarSeriesForumViewModel();
                 forumVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<ForumModel>>>(forumVM_LoadDataCompleted);
@@ -714,7 +720,7 @@ namespace AutoWP7.View.Car
                             forumListbox.Visibility = Visibility.Visible;
 
                             ForumDataSource = (ObservableCollection<ForumModel>)e.Result;
-                            if (ForumDataSource.Count>0)
+                            if (ForumDataSource.Count > 0)
                             {
                                 bbsId = ForumDataSource[0].bbsId;
                                 bbsType = ForumDataSource[0].bbsType;
@@ -783,14 +789,14 @@ namespace AutoWP7.View.Car
                 carSeriesAlibiDataSource = e.Result;
                 alibiPanel.DataContext = carSeriesAlibiDataSource;
                 var groups = new ObservableCollection<CarSeriesAlibiSpecGroupModel>();
-                if (carSeriesAlibiDataSource.SpecGroupList!=null)
+                if (carSeriesAlibiDataSource.SpecGroupList != null)
                 {
                     foreach (var groupList in carSeriesAlibiDataSource.SpecGroupList)
                     {
                         groups.Add(groupList);
                     }
                 }
-                
+
                 carSeriesAlibiListSelector.ItemsSource = groups;
             }
         }
