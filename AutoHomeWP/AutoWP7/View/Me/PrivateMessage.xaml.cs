@@ -397,9 +397,9 @@ namespace AutoWP7.View.Me
             var model = e.UserState as PrivateMessageNewModel;
             if (model != null)
             {
-                if (e.Error == null && e.Result != null)
+                try
                 {
-                    try
+                    if (e.Error == null && e.Result != null)
                     {
                         //返回的json数据
                         JObject json = JObject.Parse(e.Result);
@@ -417,15 +417,12 @@ namespace AutoWP7.View.Me
                             return;
                         }
                     }
-                    catch
-                    {
-                    }
                 }
+                catch
+                { }
 
                 model.SendingState = 1;
             }
-
-
         }
 
         private void ReSend_Click(object sender, RoutedEventArgs e)

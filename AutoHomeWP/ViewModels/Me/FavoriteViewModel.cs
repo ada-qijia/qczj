@@ -741,9 +741,9 @@ namespace ViewModels.Me
 
         void uploadClient_UploadCarCompleted(object sender, UploadStringCompletedEventArgs e)
         {
-            if (e.Error == null && e.Result != null)
+            try
             {
-                try
+                if (e.Error == null && e.Result != null)
                 {
                     JObject json = JObject.Parse(e.Result);
                     int resultCode = (int)json.SelectToken("returncode");
@@ -803,11 +803,9 @@ namespace ViewModels.Me
                             break;
                     }
                 }
-                catch
-                {
-
-                }
             }
+            catch
+            { }
 
             if (uploadCarCompletedHandler != null)
             {
@@ -817,9 +815,9 @@ namespace ViewModels.Me
 
         void uploadClient_UploadOthersCompleted(object sender, UploadStringCompletedEventArgs e)
         {
-            if (e.Error == null && e.Result != null)
+            try
             {
-                try
+                if (e.Error == null && e.Result != null)
                 {
                     JObject json = JObject.Parse(e.Result);
                     int resultCode = (int)json.SelectToken("returncode");
@@ -897,11 +895,9 @@ namespace ViewModels.Me
                             break;
                     }
                 }
-                catch
-                {
-
-                }
             }
+            catch
+            { }
 
             if (this.uploadOthersCompletedHandler != null)
             {
