@@ -121,7 +121,7 @@
     </Reference>
     <Reference Include="SinaBase, Version=1.0.0.803, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\AutoHome\codeResource\weibowp7sdk-19622\SDKLibrary\SinaBase.dll</HintPath>
+      <HintPath>lib\SinaBase.dll</HintPath>
     </Reference>
     <Reference Include="UmengClassLibrary, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="WaterTextBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
@@ -740,6 +740,7 @@
     <Resource Include="qzone.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lib\SinaBase.dll" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Resource Include="Images\CallPrice.jpg" />
@@ -804,7 +805,6 @@
     <Content Include="Images\Tiles\VideoHubTile.png" />
     <Content Include="lib\DBCS.dll" />
     <Content Include="lib\HtmlAgilityPack.dll" />
-    <Content Include="lib\Microsoft.Phone.Controls.Toolkit.pdb" />
     <Content Include="lib\Microsoft.Phone.Controls.Toolkit.XML">
       <SubType>Designer</SubType>
     </Content>
