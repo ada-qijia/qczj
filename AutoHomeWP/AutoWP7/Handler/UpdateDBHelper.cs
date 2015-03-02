@@ -57,7 +57,7 @@ namespace AutoWP7.Handler
                     {
                         dbUpdate.Execute();
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         //捕获异常，不处理
                         //原因：修改数据，在卸载安装App时，时有版本号归1情况出现（实际数据库表结构已修改），如果再次修改，则报错->闪退，暂未查明原因。

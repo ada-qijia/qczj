@@ -172,15 +172,9 @@ namespace AutoWP7.View.Forum
 
                 });
             }
-            catch (Exception ex)
-            {
-
-            }
-
-
+            catch 
+            {}
         }
-
-
 
         private ObservableCollection<byte[]> imgDataSource = new ObservableCollection<byte[]>();
         public byte[] StreamToBytes(Stream stream)

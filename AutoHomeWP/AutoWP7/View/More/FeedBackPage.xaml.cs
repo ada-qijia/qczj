@@ -113,7 +113,7 @@ namespace AutoWP7.View.More
                         userInfoModel = setting[key] as MyForumModel;
                         userName = userInfoModel.UserName;
                     }
-                    strContent = strContent.Replace('"', '“').Replace(':','：');
+                    strContent = strContent.Replace('"', '“').Replace(':', '：');
 
 
                     //设备唯一标识
@@ -144,7 +144,7 @@ namespace AutoWP7.View.More
             {
                 GlobalIndicator.Instance.Text = "正在发送中...";
                 GlobalIndicator.Instance.IsBusy = true;
-                
+
                 if (wc == null)
                 {
                     wc = new WebClient();
@@ -192,12 +192,9 @@ namespace AutoWP7.View.More
 
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
-
-        }     
+            catch
+            { }
+        }
     }
 
 

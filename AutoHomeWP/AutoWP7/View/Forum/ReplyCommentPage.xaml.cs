@@ -36,7 +36,7 @@ namespace AutoWP7.View.Forum
         string targetReplyId = string.Empty;
         //要请求的URL地址
         string url = string.Empty;
-        string replyId = "0";
+        //string replyId = "0";
         string pageindex = "0";
         WebClient wc = null;
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -195,10 +195,8 @@ namespace AutoWP7.View.Forum
                     isSending = false;
                 });
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
 
         #region 取消发帖时询问是否保存到草稿箱

@@ -81,9 +81,9 @@ namespace ViewModels
         {
             WebClient wc = new WebClient();
             wc.Headers["Accept-Charset"] = "utf-8";
-           // wc.Encoding = DBCSEncoding.GetDBCSEncoding("gb2312");
+            // wc.Encoding = DBCSEncoding.GetDBCSEncoding("gb2312");
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
-            Uri urlSource = new Uri(url+"&" + Guid.NewGuid().ToString(), UriKind.Absolute);
+            Uri urlSource = new Uri(url + "&" + Guid.NewGuid().ToString(), UriKind.Absolute);
             wc.DownloadStringAsync(urlSource);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
             {
@@ -131,10 +131,8 @@ namespace ViewModels
                         model.bbsId = (int)forumJson[0].SelectToken("bbsid");
                         ForumCarSeriesDataSource.Add(model);
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
+                    catch
+                    { }
 
                     //注意
                     apiArgs.Result = ForumCarSeriesDataSource;

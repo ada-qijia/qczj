@@ -85,10 +85,10 @@ namespace ViewModels
                 return;
             }
 
-          //  wc.Encoding = new Gb2312Encoding();
+            //  wc.Encoding = new Gb2312Encoding();
             wc.Headers["Accept-Charset"] = "utf-8";
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
-            Uri urlSource = new Uri(url+"&a="+Guid.NewGuid().ToString(), UriKind.Absolute);
+            Uri urlSource = new Uri(url + "&a=" + Guid.NewGuid().ToString(), UriKind.Absolute);
             wc.DownloadStringAsync(urlSource);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
             {
@@ -143,11 +143,8 @@ namespace ViewModels
                             }
                         }
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
-
+                    catch
+                    { }
                 }
 
                 //注意

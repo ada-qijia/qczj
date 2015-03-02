@@ -139,10 +139,8 @@ namespace AutoWP7.View.More
 
                 loginVM.LoadDataAsync(url, postData);
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
 
         #region 注册

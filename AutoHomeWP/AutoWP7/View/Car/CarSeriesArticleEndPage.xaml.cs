@@ -286,7 +286,7 @@ namespace AutoWP7.View.Car
                         newsId = strArrary[0];
                         pageIndex = Convert.ToInt32(strArrary[1]);
 
-                        urlSource = new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + newsId+ "&pageIndex="+pageIndex + "&pageType=1",UriKind.Relative);
+                        urlSource = new Uri("/View/Channel/News/NewsEndPage.xaml?newsid=" + newsId + "&pageIndex=" + pageIndex + "&pageType=1", UriKind.Relative);
                         //urlSource = new Uri("/View/Channel/Newest/ArticleEndPage.xaml?" + new Guid().ToString() + "&newsid=" + newsId + "&pageIndex=" + pageIndex, UriKind.Relative);
                         this.NavigationService.Navigate(urlSource);
 
@@ -301,16 +301,14 @@ namespace AutoWP7.View.Car
                     }
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
 
         private string CreateNewsViewUrl(int pageIndex)
         {
             int isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode() ? 1 : 0;
-            return AppUrlMgr.NewsWebViewUrl(Convert.ToInt32(newsId), 1, isSmallImageMode, 0, 1, pageIndex, 1, 0,0);
+            return AppUrlMgr.NewsWebViewUrl(Convert.ToInt32(newsId), 1, isSmallImageMode, 0, 1, pageIndex, 1, 0, 0);
         }
     }
 }

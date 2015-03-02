@@ -86,8 +86,8 @@ namespace ViewModels
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
             wc.Headers["Accept-Charset"] = "utf-8";
             wc.Headers["User-Agent"] = "WP\t8\tautohome\t1.6.0\tWP";
-           // wc.Encoding = new Gb2312Encoding();
-            Uri urlSource = new Uri(url +"&" + Guid.NewGuid().ToString(), UriKind.Absolute);
+            // wc.Encoding = new Gb2312Encoding();
+            Uri urlSource = new Uri(url + "&" + Guid.NewGuid().ToString(), UriKind.Absolute);
             wc.DownloadStringAsync(urlSource);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
             {
@@ -130,10 +130,9 @@ namespace ViewModels
                     }
 
                 }
-                catch (Exception ex)
-                {
+                catch
+                { }
 
-                }
                 apiArgs.Result = newsCommentDataSource;
                 if (LoadDataCompleted != null)
                 {

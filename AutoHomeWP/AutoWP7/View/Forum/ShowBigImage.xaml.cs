@@ -88,10 +88,8 @@ namespace AutoWP7.View.Forum
                     }
                     isF = true;
                 }
-                catch (Exception ex)
-                {
-
-                }
+                catch
+                { }
             }
             if (img.Count > 0)
             {

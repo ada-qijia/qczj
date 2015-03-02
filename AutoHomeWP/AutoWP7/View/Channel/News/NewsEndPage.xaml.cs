@@ -334,10 +334,8 @@ namespace AutoWP7.View.Channel.News
                     }
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
 
         //加载失败
@@ -380,7 +378,7 @@ namespace AutoWP7.View.Channel.News
 
             if (favoriteBtn.Text.Contains("取消"))
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int>{ news.ID});
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int> { news.ID });
                 setFavoriteButton(success);
                 string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);

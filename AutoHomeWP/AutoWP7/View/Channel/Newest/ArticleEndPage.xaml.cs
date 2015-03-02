@@ -39,7 +39,7 @@ namespace AutoWP7.View.Channel.Newest
         int pageCount;
         //评论数
         static int replyCount;
-        bool isLoaded = false;
+        //bool isLoaded = false;
         int buttomCount = 2;
         string newsType = string.Empty;
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -140,11 +140,8 @@ namespace AutoWP7.View.Channel.Newest
                     }
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
-
+            catch
+            { }
         }
 
         //分页集合
@@ -424,7 +421,7 @@ namespace AutoWP7.View.Channel.Newest
 
             if (favoriteBtn.Text.Contains("取消"))
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int>{ news.ID});
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int> { news.ID });
                 setFavoriteButton(success);
                 string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);

@@ -29,10 +29,10 @@ namespace ViewModels.Handler
             HttpWebRequest request = result.AsyncState as HttpWebRequest;
             Stream requestStream = request.EndGetRequestStream(result);
             //写入数据
-           // requestStream.Write(new byte[10]());
+            // requestStream.Write(new byte[10]());
             requestStream.Flush();
             requestStream.Close();
-            request.BeginGetRequestStream(new AsyncCallback(ResponseCallback),request);
+            request.BeginGetRequestStream(new AsyncCallback(ResponseCallback), request);
         }
 
         //接收返回的数据
@@ -52,10 +52,8 @@ namespace ViewModels.Handler
                     }
                 }
             }
-            catch(Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
     }
 }

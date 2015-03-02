@@ -37,8 +37,6 @@ namespace AutoWP7.View.Car
         //共享车系
         Model.Me.FavoriteCarSeriesModel carSeries;
 
-        bool isBack = false;
-
         //论坛id
         int bbsId = 0;
         //论坛类型
@@ -77,101 +75,100 @@ namespace AutoWP7.View.Car
 
             try
             {
-            InitBtn();
+                InitBtn();
 
-            switch (e.NavigationMode)
-            {
-                case System.Windows.Navigation.NavigationMode.New:
-                    {
-                        if (PhoneApplicationService.Current.State.ContainsKey(Utils.MeHelper.FavoriteStateKey))
+                switch (e.NavigationMode)
+                {
+                    case System.Windows.Navigation.NavigationMode.New:
                         {
-                            this.carSeries = PhoneApplicationService.Current.State[Utils.MeHelper.FavoriteStateKey] as Model.Me.FavoriteCarSeriesModel;
-                            PhoneApplicationService.Current.State.Remove(Utils.MeHelper.FavoriteStateKey);
-                        }
-
-                        //车系id
-                        carSeriesId = NavigationContext.QueryString["carSeriesId"];
-                        //全局化
-                        App.CarSeriesId = carSeriesId;
-
-                        if (string.IsNullOrEmpty(App.CityId)) //默认北京
-                        {
-                            cityId = "110100";
-                        }
-                        else
-                        {
-                            cityId = App.CityId;
-                        }
-
-                        //车系名
-                        if (this.carSeries != null)
-                        {
-                            App.CarSeriesName = this.carSeries.Name;
-                            autoName.Text = App.CarSeriesName;
-                        }
-                        else
-                        {
-                        using (LocalDataContext ldc = new LocalDataContext())
-                        {
-                            var name = from s in ldc.carSeries where s.Id == int.Parse(carSeriesId) select s.Name;
-                            foreach (var n in name)
+                            if (PhoneApplicationService.Current.State.ContainsKey(Utils.MeHelper.FavoriteStateKey))
                             {
-                                App.CarSeriesName = n;
-                                autoName.Text = n;
+                                this.carSeries = PhoneApplicationService.Current.State[Utils.MeHelper.FavoriteStateKey] as Model.Me.FavoriteCarSeriesModel;
+                                PhoneApplicationService.Current.State.Remove(Utils.MeHelper.FavoriteStateKey);
                             }
-                        }
-                        }
 
-                        //导航到的具体页码
-                        indexId = NavigationContext.QueryString["indexId"];
-                        if (!string.IsNullOrEmpty(indexId))
-                        {
-                            piv.SelectedIndex = int.Parse(indexId);
-                        }
+                            //车系id
+                            carSeriesId = NavigationContext.QueryString["carSeriesId"];
+                            //全局化
+                            App.CarSeriesId = carSeriesId;
 
-                        //添加浏览历史
-                        AddRecentsCarSeries();
-                    }
-                    break;
-                case System.Windows.Navigation.NavigationMode.Back:
-                    {
-                        if (!string.IsNullOrEmpty(App.CityId))
-                        {
-                            //更新城市id
-                            cityId = App.CityId;
-                            using (LocalDataContext ldc = new LocalDataContext())
+                            if (string.IsNullOrEmpty(App.CityId)) //默认北京
                             {
-                                var result = from s in ldc.provinces where s.Id == int.Parse(App.CityId) select s.Name;
-                                foreach (var name in result)
+                                cityId = "110100";
+                            }
+                            else
+                            {
+                                cityId = App.CityId;
+                            }
+
+                            //车系名
+                            if (this.carSeries != null)
+                            {
+                                App.CarSeriesName = this.carSeries.Name;
+                                autoName.Text = App.CarSeriesName;
+                            }
+                            else
+                            {
+                                using (LocalDataContext ldc = new LocalDataContext())
                                 {
-                                    detailChooseCity.Content = name;
+                                    var name = from s in ldc.carSeries where s.Id == int.Parse(carSeriesId) select s.Name;
+                                    foreach (var n in name)
+                                    {
+                                        App.CarSeriesName = n;
+                                        autoName.Text = n;
+                                    }
                                 }
                             }
 
-                            // DealerLoadData();
-                        }
+                            //导航到的具体页码
+                            indexId = NavigationContext.QueryString["indexId"];
+                            if (!string.IsNullOrEmpty(indexId))
+                            {
+                                piv.SelectedIndex = int.Parse(indexId);
+                            }
 
-                        ////更新城市id
-                        cityId = App.CityId;
-                        var tag = (piv.SelectedItem as PivotItem).Tag.ToString();
-                            if (tag == "dealer")// (piv.SelectedIndex == 3)
+                            //添加浏览历史
+                            AddRecentsCarSeries();
+                        }
+                        break;
+                    case System.Windows.Navigation.NavigationMode.Back:
                         {
-                            //更新城市id
                             if (!string.IsNullOrEmpty(App.CityId))
                             {
-                                //重新加载经销商数据
-                                DealerLoadData();
+                                //更新城市id
+                                cityId = App.CityId;
+                                using (LocalDataContext ldc = new LocalDataContext())
+                                {
+                                    var result = from s in ldc.provinces where s.Id == int.Parse(App.CityId) select s.Name;
+                                    foreach (var name in result)
+                                    {
+                                        detailChooseCity.Content = name;
+                                    }
+                                }
+
+                                // DealerLoadData();
                             }
+
+                            ////更新城市id
+                            cityId = App.CityId;
+                            var tag = (piv.SelectedItem as PivotItem).Tag.ToString();
+                            if (tag == "dealer")// (piv.SelectedIndex == 3)
+                            {
+                                //更新城市id
+                                if (!string.IsNullOrEmpty(App.CityId))
+                                {
+                                    //重新加载经销商数据
+                                    DealerLoadData();
+                                }
+                            }
+                            if (tag == "quote")//(piv.SelectedIndex == 0)
+                                InitSeriesSpecsInfo();
                         }
-                        if (tag == "quote")//(piv.SelectedIndex == 0)
-                            InitSeriesSpecsInfo();
-                    }
-                    break;
+                        break;
+                }
             }
-        }
-            catch (Exception ex)
-            {
-            }
+            catch
+            { }
         }
 
         private void InitSeriesSpecsInfo()
@@ -601,10 +598,8 @@ namespace AutoWP7.View.Car
                         carSeriesActicleListbox.ItemsSource = acticleDataSource;
                     }
                 }
-                catch (Exception ex)
-                {
-
-                }
+                catch
+                { }
             }
         }
 
@@ -651,12 +646,8 @@ namespace AutoWP7.View.Car
                     }
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
-
-
+            catch
+            { }
         }
 
         void DealerVM_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<DealerModel>> e)
@@ -763,7 +754,7 @@ namespace AutoWP7.View.Car
                                 this.setFavoriteButton();
 
                                 //添加浏览记录
-                                if(forumPageIndex==1)
+                                if (forumPageIndex == 1)
                                 {
                                     AddRecentsForum();
                                 }
@@ -779,10 +770,8 @@ namespace AutoWP7.View.Car
                     }
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
 
         // 分页加载
@@ -839,7 +828,7 @@ namespace AutoWP7.View.Car
                         groups.Add(groupList);
                     }
                 }
-                
+
                 carSeriesAlibiListSelector.ItemsSource = groups;
             }
         }

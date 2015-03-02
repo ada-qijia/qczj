@@ -276,6 +276,6 @@ namespace AutoWP7.UcControl.UcListBox
         /// <summary>
         /// load more data (load next page data)
         /// </summary>
-        public event EventHandler LoadMoreData;
+        //public event EventHandler LoadMoreData;
     }
 }

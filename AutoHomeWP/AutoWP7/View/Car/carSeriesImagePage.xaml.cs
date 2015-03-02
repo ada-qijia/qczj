@@ -251,10 +251,8 @@ namespace AutoWP7.View.Car
                     }
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
         //分页加载
         private void loadMoreWheel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -320,9 +318,8 @@ namespace AutoWP7.View.Car
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
-
             }
         }
 
@@ -389,10 +386,8 @@ namespace AutoWP7.View.Car
                     }
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
 
         private void loadMoreElseDetail_Tap(object sender, System.Windows.Input.GestureEventArgs e)

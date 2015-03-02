@@ -123,7 +123,7 @@ namespace AutoWP7.View.Channel.Newest
                                 commentDataSource.Add(model);
                                 total = model.Total;
                             }
-                        
+
                             //标志是否正在刷新,重置标志位
                             isRefreshing = false;
                             comment.ItemsSource = commentDataSource;
@@ -131,12 +131,8 @@ namespace AutoWP7.View.Channel.Newest
                     }
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
-
-       
+            catch
+            { }
         }
 
         //分页加载
@@ -145,7 +141,6 @@ namespace AutoWP7.View.Channel.Newest
             commentDataSource.RemoveAt(commentDataSource.Count - 1);
             commentPageIndex++;
             CommentLoadData(commentPageIndex, commentPageSize);
-
         }
 
         #endregion

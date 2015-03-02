@@ -32,7 +32,7 @@ namespace AutoWP7.View.Channel
         bool isCultureLoaded = false;
         bool isChangeLoaded = false;
         bool isCompetionLoaded = false;
-        bool isShuokeLoaded = false;
+       // bool isShuokeLoaded = false;
         bool isTravelsLoaded = false;
         bool isTechnologyLoaded = false;
         bool isOriginalVideoLoaded = false;
@@ -189,7 +189,7 @@ namespace AutoWP7.View.Channel
                         if (isCompetionLoaded == false)
                         {
                             ShuokeLoadData(1, loadPageSize);
-                            isShuokeLoaded = true;
+                            //isShuokeLoaded = true;
                         }
                     }
                     break;

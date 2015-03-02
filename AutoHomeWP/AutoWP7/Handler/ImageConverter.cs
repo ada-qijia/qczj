@@ -18,14 +18,13 @@ namespace AutoWP7
                 if (value != null && value.ToString() != "")
                 {
                     ImageSource source = new StorageCachedImage(new Uri(value.ToString(), UriKind.Absolute));
-                    
+
                     return source;
                 }
             }
-            catch(Exception ex)
-            {
+            catch
+            { }
 
-            }
             return null;
         }
 
@@ -48,7 +47,7 @@ namespace AutoWP7
                     ImageSource source = new StorageCachedImage(new Uri(value.ToString(), UriKind.Absolute));
 
                     return source;
-                    
+
                 }
                 else
                 {
@@ -56,10 +55,9 @@ namespace AutoWP7
                     return new BitmapImage(new Uri(@"Images/bg.png", UriKind.Relative));
                 }
             }
-            catch (Exception ex)
-            {
+            catch
+            { }
 
-            }
             return null;
         }
 
@@ -78,7 +76,7 @@ namespace AutoWP7
 
             if (value != null && value.ToString() != "")
             {
-                if (value.ToString()== "头条")
+                if (value.ToString() == "头条")
                 {
                     return Visibility.Visible;
                 }

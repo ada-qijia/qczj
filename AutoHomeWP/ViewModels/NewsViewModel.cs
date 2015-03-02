@@ -78,7 +78,7 @@ namespace ViewModels
         /// </summary>
         /// <param name="url">请求的地址url</param>
         /// <param name="datatype">数据类型，1-文章类数据（默认），2-说客，3-视频</param>
-        public void LoadDataAysnc(string url,int datatype=1)
+        public void LoadDataAysnc(string url, int datatype = 1)
         {
             WebClient wc = new WebClient();
             if (wc.IsBusy != false)
@@ -86,11 +86,11 @@ namespace ViewModels
                 wc.CancelAsync();
                 return;
             }
-            
+
             //wc.Encoding = new Gb2312Encoding();
             wc.Headers["Accept-Charset"] = "utf-8";
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
-            Uri urlSource = new Uri(url+"&"+Guid.NewGuid().ToString(), UriKind.Absolute);
+            Uri urlSource = new Uri(url + "&" + Guid.NewGuid().ToString(), UriKind.Absolute);
             wc.DownloadStringAsync(urlSource);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
             {
@@ -102,7 +102,7 @@ namespace ViewModels
                 else
                 {
                     //清除旧的数据
-                   // newestDataSource.Clear();
+                    // newestDataSource.Clear();
                     try
                     {
                         //返回的json数据
@@ -197,14 +197,10 @@ namespace ViewModels
                                 newestDataSource[i].bitmap = new StorageCachedImage(new Uri(newestDataSource[i].smallpic, UriKind.Absolute));
                             }
                         }
-
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
+                    catch
+                    { }
                 }
-              
 
                 //注意
                 apiArgs.Result = newestDataSource;

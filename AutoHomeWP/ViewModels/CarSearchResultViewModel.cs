@@ -144,10 +144,8 @@ namespace ViewModels
 
                     EnsureMoreButton();
                 }
-                catch (Exception ex)
-                {
-
-                }
+                catch 
+                {}
             }
 
             apiArgs.Result = DataSource;

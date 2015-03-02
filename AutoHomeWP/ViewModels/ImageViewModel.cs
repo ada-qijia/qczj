@@ -85,7 +85,7 @@ namespace ViewModels
             wc.Encoding = new Gb2312Encoding();
 
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
-            Uri urlSource = new Uri(url , UriKind.Absolute);
+            Uri urlSource = new Uri(url, UriKind.Absolute);
             wc.DownloadStringAsync(urlSource);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
             {
@@ -168,10 +168,9 @@ namespace ViewModels
                             #endregion
                         }
                     }
-                    catch (Exception ex)
-                    {
+                    catch
+                    { }
 
-                    }
                     //注意
                     apiArgs.Result = ImageDataSource;
 

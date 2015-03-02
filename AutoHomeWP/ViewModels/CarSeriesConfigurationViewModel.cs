@@ -17,7 +17,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ViewModels
 {
-    public class CarSeriesConfigurationViewModel: INotifyPropertyChanged, INotifyPropertyChanging
+    public class CarSeriesConfigurationViewModel : INotifyPropertyChanged, INotifyPropertyChanging
     {
 
         public CarSeriesConfigurationViewModel()
@@ -83,7 +83,7 @@ namespace ViewModels
                 return;
             }
             wc.Headers["Accept-Charset"] = "utf-8";
-           // wc.Encoding = new Gb2312Encoding();
+            // wc.Encoding = new Gb2312Encoding();
             wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
             Uri urlSource = new Uri(url, UriKind.Absolute);
             wc.DownloadStringAsync(urlSource);
@@ -127,10 +127,8 @@ namespace ViewModels
 
                     }
                 }
-                catch (Exception ex)
-                {
-                    
-                }
+                catch
+                { }
 
                 //返回结果集
                 apiArgs.Result = CarSeriesConfigurationDataSource;
@@ -141,7 +139,7 @@ namespace ViewModels
                 }
             });
         }
-    
+
 
     }
 }

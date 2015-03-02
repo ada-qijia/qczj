@@ -73,10 +73,8 @@ namespace AutoWP7.View.Me
                                 ldc.GetTable<MyForumModel>().DeleteAllOnSubmit(deleteAllItem);
                                 ldc.SubmitChanges();
                             }
-                            catch (Exception ex)
-                            {
-
-                            }
+                            catch
+                            { }
                         }
 
                         NavigationService.GoBack();

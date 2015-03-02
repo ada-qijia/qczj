@@ -88,7 +88,7 @@ namespace ViewModels
             // wc.Encoding = new Gb2312Encoding();
             wc.Headers["Accept-Charset"] = "utf-8";
             wc.Headers["User-Agent"] = "WP\t8\tautohome\t1.6.0\tWP";
-            Uri urlSource = new Uri(url +  "&" + Guid.NewGuid().ToString(), UriKind.Absolute);
+            Uri urlSource = new Uri(url + "&" + Guid.NewGuid().ToString(), UriKind.Absolute);
             wc.DownloadStringAsync(urlSource);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
             {
@@ -118,7 +118,7 @@ namespace ViewModels
                                 model.id = ((int)commentJson[i].SelectToken("id")).ToString();
                                 model.floor = ((int)commentJson[i].SelectToken("floor")).ToString();
                                 model.name = (string)commentJson[i].SelectToken("name");
-                                model.isadd = ((bool )commentJson[i].SelectToken("isadd")).ToString();
+                                model.isadd = ((bool)commentJson[i].SelectToken("isadd")).ToString();
                                 model.time = (string)commentJson[i].SelectToken("time");
                                 model.content = (string)commentJson[i].SelectToken("content");
                                 model.SourceId = ((int)commentJson[i].SelectToken("sourcenameid")).ToString();
@@ -138,10 +138,8 @@ namespace ViewModels
                             }
                         }
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
+                    catch
+                    { }
 
                     //注意
                     apiArgs.Result = newestCommentDataSource;

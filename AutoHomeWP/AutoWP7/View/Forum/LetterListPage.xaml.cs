@@ -34,7 +34,7 @@ namespace AutoWP7.View.Forum
         //标识加载状态（false 未加载 true 正在加载）
         bool isLoading = false;
         //加载页容量
-        int loadPageSize = 20;
+        //int loadPageSize = 20;
         string currentPage = "-p1-";
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {

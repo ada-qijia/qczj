@@ -217,7 +217,7 @@ namespace AutoWP7
             {
                 if (value != _replyCount)
                 {
-                    replyCount = value;
+                    _replyCount = value;
                 }
             }
         }

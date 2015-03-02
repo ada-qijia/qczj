@@ -30,7 +30,7 @@ namespace AutoWP7.View.Car
         int pageCount;
         //初始楼数
         int pageIndex = 1;
-        int pageSize = 20;
+        //int pageSize = 20;
         Uri urlSource;
         int issend = 0;//是否是发帖后马上加载最终页（1-是，加载写库数据；0-否，加载读库数据，会有延迟）
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -81,10 +81,8 @@ namespace AutoWP7.View.Car
                                 urlSource = new Uri(url, UriKind.Absolute);
 
                             }
-                            catch (Exception ex)
-                            {
-
-                            }
+                            catch
+                            { }
                             finally
                             {
                                 LoadData();
@@ -258,7 +256,7 @@ namespace AutoWP7.View.Car
         private string CreateTopicViewUrl(int pageIndex)
         {
             int isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode() ? 1 : 0;
-            return AppUrlMgr.TopicWebViewUrl(Convert.ToInt64(topicId), 0, pageIndex, 20, 1, 0, 0, isSmallImageMode, 0, 0,issend);
+            return AppUrlMgr.TopicWebViewUrl(Convert.ToInt64(topicId), 0, pageIndex, 20, 1, 0, 0, isSmallImageMode, 0, 0, issend);
         }
 
         #region 大图小图模式

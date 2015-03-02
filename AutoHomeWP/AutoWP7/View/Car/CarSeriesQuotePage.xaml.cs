@@ -97,7 +97,7 @@ namespace AutoWP7.View.Car
                         cityId = App.CityId;
 
                         //车型名
-                        if (this.carSpec!=null)
+                        if (this.carSpec != null)
                         {
                             carTypeName.Text = this.carSpec.Name;
                         }
@@ -333,10 +333,8 @@ namespace AutoWP7.View.Car
                     carSeriesConfigListGropus.ItemsSource = carSeriesConfigSource;
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
 
         #endregion

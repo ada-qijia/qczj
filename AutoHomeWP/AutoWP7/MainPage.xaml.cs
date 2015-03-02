@@ -148,10 +148,8 @@ namespace AutoWP7
                     App.CityId = setting[key].ToString();
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
 
         //标识找车字母索引是否打开
@@ -230,13 +228,10 @@ namespace AutoWP7
                         timer.Tick += new EventHandler(timer_Tick);
                         timer.Start();
                     });
-
-
                 }
             }
-            catch (Exception ex)
+            catch
             {
-
             }
         }
         //更新本地数据
@@ -356,9 +351,8 @@ namespace AutoWP7
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                }
+                catch
+                { }
             });
         }
 
@@ -545,10 +539,8 @@ namespace AutoWP7
                 carVM.LoadDataAysnc(url);
                 carVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarBrandModel>>>(carVM_LoadDataCompleted);
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch
+            { }
         }
         Dictionary<string, IList<CarBrandModel>> dic = new Dictionary<string, IList<CarBrandModel>>();
         void carVM_LoadDataCompleted(object sender, APIEventArgs<IEnumerable<CarBrandModel>> e)

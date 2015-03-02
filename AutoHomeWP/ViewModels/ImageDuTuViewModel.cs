@@ -110,10 +110,8 @@ namespace ViewModels
                             #endregion
                         }
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
+                    catch
+                    { }
                     //注意
                     apiArgs.Result = ImageDataSource;
 

@@ -18,7 +18,7 @@ namespace AutoWP7.View.Car
     {
         double initialScaleX;
         double initialScaleY;
-        private Point point;
+        //private Point point;
         double centerX;
         double centerY;
 
@@ -136,10 +136,8 @@ namespace AutoWP7.View.Car
                     //加载当前图片
                     LoadImage(currentModel);
                 }
-                catch (Exception ex)
-                {
-
-                }
+                catch
+                { }
             });
         }
 

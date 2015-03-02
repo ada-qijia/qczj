@@ -198,14 +198,9 @@ namespace ViewModels
                                             {
                                                 ldc.newestModels.InsertOnSubmit(model);
                                             }
-                                            catch (Exception ex)
-                                            {
-
-                                            }
+                                            catch
+                                            { }
                                         }
-
-
-
                                     }
 
                                     model = new NewsModel();

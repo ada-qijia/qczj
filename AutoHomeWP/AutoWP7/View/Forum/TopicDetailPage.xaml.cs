@@ -45,7 +45,7 @@ namespace AutoWP7.View.Forum
         int pageCount;
         //初始页码
         int pageIndex = 1;
-        int pageSize = 20;
+        //int pageSize = 20;
         int floor = 0;
         int isOnlyOwner = 0;
         int issend = 0;//是否是发帖后马上加载最终页（1-是，加载写库数据；0-否，加载读库数据，会有延迟）
@@ -127,10 +127,8 @@ namespace AutoWP7.View.Forum
                                 string url = App.TopicUrl;
                                 urlSource = new Uri(url + "?data=" + DateTime.Now, UriKind.Absolute);
                             }
-                            catch (Exception ex)
-                            {
-
-                            }
+                            catch
+                            { }
                             finally
                             {
                                 LoadData();

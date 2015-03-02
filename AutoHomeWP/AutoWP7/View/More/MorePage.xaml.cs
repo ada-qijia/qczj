@@ -76,10 +76,8 @@ namespace AutoWP7.View.More
                         ldc.GetTable<MyForumModel>().DeleteAllOnSubmit(deleteAllItem);
                         ldc.SubmitChanges();
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
+                    catch 
+                    {}
                 }
 
                 Common.showMsg("退出登录成功");

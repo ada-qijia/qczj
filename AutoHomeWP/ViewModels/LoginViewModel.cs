@@ -221,10 +221,8 @@ namespace ViewModels
 
                         }
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
+                    catch 
+                    {}
 
                     if (LoadDataCompleted != null)
                     {

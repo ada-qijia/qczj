@@ -23,10 +23,10 @@ namespace AutoWP7.View.Channel.Newest
         }
 
 
-        double initialAngle;
+        //double initialAngle;
         double initialScaleX;
         double initialScaleY;
-        private Point point;
+        //private Point point;
         double centerX;
         double centerY;
 
@@ -75,7 +75,7 @@ namespace AutoWP7.View.Channel.Newest
 
         }
 
-        bool isF = false;
+        //bool isF = false;
         int curIndex = 0;
         Dictionary<int, string> img = new Dictionary<int, string>();
         ImageDuTuViewModel imageDuTuViewModel;
@@ -116,12 +116,10 @@ namespace AutoWP7.View.Channel.Newest
                             curIndex = model.Index;
                         img.Add(model.Index, model.Url);
                     }
-                    isF = true;
+                    //isF = true;
                 }
-                catch (Exception ex)
-                {
-
-                }
+                catch
+                {}
             }
             if (img.Count > 0)
             {

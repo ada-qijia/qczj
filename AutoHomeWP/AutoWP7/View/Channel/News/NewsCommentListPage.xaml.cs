@@ -132,7 +132,7 @@ namespace AutoWP7.View.Channel.News
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 notDataPropmt.Visibility=Visibility.Visible;
                 comment.Visibility=Visibility.Collapsed;
