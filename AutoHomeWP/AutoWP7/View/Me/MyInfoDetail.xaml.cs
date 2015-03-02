@@ -60,8 +60,8 @@ namespace AutoWP7.View.Me
                         string key = "userInfo";
                         if (setting.Contains(key))//已经登录
                         {
-                            setting.Remove(key);
                             setting.Clear();
+                            setting.Save();
                         }
 
                         //清除我的论坛

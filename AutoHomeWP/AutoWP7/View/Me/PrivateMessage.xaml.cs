@@ -181,64 +181,67 @@ namespace AutoWP7.View.Me
             GlobalIndicator.Instance.Text = "";
             GlobalIndicator.Instance.IsBusy = false;
 
-            if (visibleItem != null)
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                this.MessageListBox.UpdateLayout();
-                this.MessageListBox.ScrollIntoView(visibleItem);
-            }
-
-            if (this.MessageVM.ReturnCode == 10001 || this.MessageVM.ReturnCode == 10002)
-            {
-                CustomMessageBox messageBox = new CustomMessageBox()
+                if (visibleItem != null)
                 {
-                    Caption = "",
-                    Message = "密码检验失败",
-                    LeftButtonContent = "取消",
-                    RightButtonContent = "重新登录",
-                    IsFullScreen = false
-                };
-
-                messageBox.Dismissed += (s1, e1) =>
-                {
-                    switch (e1.Result)
-                    {
-                        case CustomMessageBoxResult.LeftButton:
-                            NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.RelativeOrAbsolute));
-                            break;
-                        case CustomMessageBoxResult.RightButton:
-                            //返回未登录下我的主页
-                            NavigationService.GoBack();
-                            break;
-                        default:
-                            break;
-                    }
-                };
-
-                messageBox.Show();
-            }
-            else if (this.MessageVM.ReturnCode == 0)
-            {
-                //update local cache.
-                int cnt = this.MessageVM.MessageList.Count;
-                if (cnt > 0)
-                {
-                    var cacheModel = PrivateMessageCacheViewModel.SingleInstance.CacheModel;
-                    if (cacheModel.Messages.ContainsKey(this.FriendID))
-                    {
-                        var messages = cacheModel.Messages[this.FriendID];
-                        if (messages != null && messages.Count > 0 && this.MessageVM.MessageList[cnt - 1].ID <= messages.Last().ID)
-                        {
-                            isLoading = false;
-                            return;
-                        }
-                    }
-
-                    List<PrivateMessageModel> latest = this.MessageVM.MessageList.Where((model, index) => index >= cnt - 50).ToList();
-                    PrivateMessageCacheViewModel.SingleInstance.UpdateMessages(this.FriendID, latest);
+                    this.MessageListBox.UpdateLayout();
+                    this.MessageListBox.ScrollIntoView(visibleItem);
                 }
-            }
 
-            isLoading = false;
+                if (this.MessageVM.ReturnCode == 10001 || this.MessageVM.ReturnCode == 10002)
+                {
+                    CustomMessageBox messageBox = new CustomMessageBox()
+                    {
+                        Caption = "",
+                        Message = "密码检验失败",
+                        LeftButtonContent = "取消",
+                        RightButtonContent = "重新登录",
+                        IsFullScreen = false
+                    };
+
+                    messageBox.Dismissed += (s1, e1) =>
+                    {
+                        switch (e1.Result)
+                        {
+                            case CustomMessageBoxResult.LeftButton:
+                                NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.RelativeOrAbsolute));
+                                break;
+                            case CustomMessageBoxResult.RightButton:
+                                //返回未登录下我的主页
+                                NavigationService.GoBack();
+                                break;
+                            default:
+                                break;
+                        }
+                    };
+
+                    messageBox.Show();
+                }
+                else if (this.MessageVM.ReturnCode == 0)
+                {
+                    //update local cache.
+                    int cnt = this.MessageVM.MessageList.Count;
+                    if (cnt > 0)
+                    {
+                        var cacheModel = PrivateMessageCacheViewModel.SingleInstance.CacheModel;
+                        if (cacheModel.Messages.ContainsKey(this.FriendID))
+                        {
+                            var messages = cacheModel.Messages[this.FriendID];
+                            if (messages != null && messages.Count > 0 && this.MessageVM.MessageList[cnt - 1].ID <= messages.Last().ID)
+                            {
+                                isLoading = false;
+                                return;
+                            }
+                        }
+
+                        List<PrivateMessageModel> latest = this.MessageVM.MessageList.Where((model, index) => index >= cnt - 50).ToList();
+                        PrivateMessageCacheViewModel.SingleInstance.UpdateMessages(this.FriendID, latest);
+                    }
+                }
+
+                isLoading = false;
+            });
         }
 
         //load history.
@@ -353,7 +356,7 @@ namespace AutoWP7.View.Me
                 if (!isSending)
                 {
                     var userInfoModel = Utils.MeHelper.GetMyInfoModel();
-                    if (userInfoModel!=null)
+                    if (userInfoModel != null)
                     {
                         var content = this.ReplyTextBox.Text;
                         var timeStamp = Common.GetTimeStamp();
@@ -384,11 +387,13 @@ namespace AutoWP7.View.Me
             string url = Utils.MeHelper.SendPrivateMessageUrl;
 
             ViewModels.Me.UpStreamViewModel upstreamVM = ViewModels.Me.UpStreamViewModel.SingleInstance;
-            upstreamVM.UploadAsyncWithSharedClient(url, strData, wc_UploadStringCompleted, userState);
+            upstreamVM.UploadAsync(url, strData, wc_UploadStringCompleted, userState);
         }
 
         private void wc_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
         {
+            isSending = false;
+
             var model = e.UserState as PrivateMessageNewModel;
             if (model != null)
             {
@@ -404,8 +409,8 @@ namespace AutoWP7.View.Me
                         if (returnCode == 0)
                         {
                             //成功
-                            int letterid = json.SelectToken("letterid").Value<int>();
-                            string postDate = json.SelectToken("time").ToString();
+                            int letterid = resultToken.SelectToken("letterid").Value<int>();
+                            string postDate = resultToken.SelectToken("time").ToString();
                             model.ID = letterid;
                             model.LastPostDate = postDate;
                             model.SendingState = 0;
@@ -420,7 +425,7 @@ namespace AutoWP7.View.Me
                 model.SendingState = 1;
             }
 
-            isSending = false;
+
         }
 
         private void ReSend_Click(object sender, RoutedEventArgs e)
@@ -440,16 +445,16 @@ namespace AutoWP7.View.Me
         private void SendMessage(PrivateMessageNewModel model)
         {
             var userInfoModel = Utils.MeHelper.GetMyInfoModel();
-            if (userInfoModel!=null)
+            if (userInfoModel != null)
             {
                 model.SendingState = 2;
-                string strData = "_appid=app.wp"
+                string strData = "_appid=" + Utils.MeHelper.appID
                                    + "&authorization=" + userInfoModel.Authorization
                                    + "&acceptmemberid=" + FriendID
                                    + "&acceptname=" + friendName
                                    + "&lettercontent=" + Utils.MeHelper.UTF8ToGB2312(model.Content)
                                    + "&_timestamp=" + Common.GetTimeStamp()//时间戳
-                                   + "&autohomeua=" + Common.GetAutoHomeUA(); //设备类型\t系统版本号\tautohome\t客户端版本号
+                                   + "&autohomeua=" + Common.GetAutoHomeUA();//设备类型\t系统版本号\tautohome\t客户端版本号
                 strData = Common.SortURLParamAsc(strData);
                 //生成_sign
                 string sign = Common.GetSignStr(strData);

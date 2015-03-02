@@ -36,9 +36,13 @@ namespace AutoWP7.View.Me
 
         private void syncData()
         {
-            this.uploadCarData();
-            this.uploadOthersData();
-            this.downloadFavorite();
+            var userInfo = Utils.MeHelper.GetMyInfoModel();
+            if (userInfo != null)
+            {
+                this.uploadCarData();
+                this.uploadOthersData();
+                this.downloadFavorite();
+            }
         }
 
         private void uploadCarData()
@@ -53,7 +57,7 @@ namespace AutoWP7.View.Me
             if (userInfoModel != null && (seriesStr != null || specStr != null))
             {
                 string url = Utils.MeHelper.SyncFavoriteCarUrl;
-                string data = string.Format("_appid=app.wp&uc_ticket={0}&seriesStr={1}&specStr={2}&_timestamp={3}&autohomeua={4}", userInfoModel.Authorization, seriesStr, specStr, Common.GetTimeStamp(), Common.GetAutoHomeUA());
+                string data = string.Format("_appid={5}&uc_ticket={0}&seriesStr={1}&specStr={2}&_timestamp={3}&autohomeua={4}", userInfoModel.Authorization, seriesStr, specStr, Common.GetTimeStamp(), Common.GetAutoHomeUA(),Utils.MeHelper.appID);
                 data = Common.SortURLParamAsc(data);
                 string sign = Common.GetSignStr(data);
                 data += "&_sign=" + sign;
@@ -75,7 +79,8 @@ namespace AutoWP7.View.Me
             if (userInfoModel != null && (bbsStr != null || topicStr != null || articleStr != null))
             {
                 string url = Utils.MeHelper.SyncFavoriteCollectionUrl;
-                string data = string.Format("_appid=app.wp&authorization={0}&bbslist={1}&topiclist={2}&articlelist={3}&_timestamp={4}&autohomeua={5}",userInfoModel.Authorization,bbsStr,topicStr,articleStr,Common.GetTimeStamp(),Common.GetAutoHomeUA());
+                var ua = Common.GetAutoHomeUA();
+                string data = string.Format("_appid={6}&authorization={0}&bbslist={1}&topiclist={2}&articlelist={3}&_timestamp={4}&autohomeua={5}", userInfoModel.Authorization, bbsStr, topicStr, articleStr, Common.GetTimeStamp(), ua, Utils.MeHelper.appID);
                 data = Common.SortURLParamAsc(data);
                 string sign = Common.GetSignStr(data);
                 data += "&_sign=" + sign;
@@ -145,7 +150,7 @@ namespace AutoWP7.View.Me
             if (model != null)
             {
                 View.Car.CarSeriesQuotePage.ShareModel(model);
-                string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}&selectedPage={1}&seriesName={2}", model.ID, "dealer", model.SeriesName);
+                string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}&selectedPage={1}", model.ID, "dealer");
                 NavigationService.Navigate(new Uri(url, UriKind.Relative));
             }
         }

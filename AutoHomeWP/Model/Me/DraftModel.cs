@@ -1,11 +1,22 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace Model.Me
 {
     [DataContract]
-    public class DraftModel
+    public class DraftModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
         [DataMember]
         public string BBSID { get; set; }
 
@@ -21,11 +32,35 @@ namespace Model.Me
         [DataMember]
         public string TargetReplyID { get; set; }
 
+        private string _title;
         [DataMember]
-        public string Title { get; set; }
+        public string Title
+        {
+            get { return _title; }
+            set
+            {
+                if (_title != value)
+                {
+                    _title = value;
+                    OnPropertyChanged("Title");
+                }
+            }
+        }
 
+        private string _content;
         [DataMember]
-        public string Content { get; set; }
+        public string Content
+        {
+            get { return _content; }
+            set
+            {
+                if (_content != value)
+                {
+                    _content = value;
+                    OnPropertyChanged("Content");
+                }
+            }
+        }
 
         /// <summary>
         /// use this as the model ID.

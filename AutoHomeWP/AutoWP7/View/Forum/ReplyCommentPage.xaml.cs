@@ -205,15 +205,15 @@ namespace AutoWP7.View.Forum
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            if (MessageBox.Show("尚未发送，是否保存到草稿箱？", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            if (sharedModel != null)//更新草稿
             {
-                if (sharedModel != null)//update
-                {
-                    sharedModel.Content = replyContent.Text;
-                    sharedModel.SavedTime = DateTime.Now;
-                    DraftViewModel.SingleInstance.SaveDraft();
-                }
-                else
+                sharedModel.Content = replyContent.Text;
+                sharedModel.SavedTime = DateTime.Now;
+                DraftViewModel.SingleInstance.SaveDraft();
+            }
+            else
+            {
+                if (MessageBox.Show("尚未发送，是否保存到草稿箱？", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
                     DraftModel model = new DraftModel();
                     model.Title = topicTitle;

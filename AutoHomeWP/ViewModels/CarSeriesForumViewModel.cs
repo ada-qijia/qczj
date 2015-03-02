@@ -118,6 +118,7 @@ namespace ViewModels
                             model.bbsId = (int)forumJson[i].SelectToken("bbsid");
                             model.IsView = (int)forumJson[i].SelectToken("isview");
                             model.IsClosed = (int)forumJson[i].SelectToken("isclosed");
+                            model.BBSName = forumJson[i].SelectToken("bbsname").ToString();
                             model.ShowData = "Visible";
                             ForumCarSeriesDataSource.Add(model);
                         }

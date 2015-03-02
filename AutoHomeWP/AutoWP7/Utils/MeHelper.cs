@@ -12,6 +12,9 @@ namespace AutoWP7.Utils
 {
     public class MeHelper
     {
+        public const string appID = "app";
+        //发帖回帖，注册和第三方注册
+        public const string appIDWp = "app.wp";
         public const string MyFavoriteFileName = "MyFavorite.json";
         public const string DraftBoxFileName = "DraftBox.json";
         public const string RecentFileName = "Recent.json";
@@ -28,6 +31,12 @@ namespace AutoWP7.Utils
         public const string MyInfoStateKey = "MyInfo";
         //用来在页面间共享要收藏的信息
         public const string FavoriteStateKey = "Favorite";
+
+        public const int QQPlatformID = 15;
+        public const int WeiboPlatformID = 16;
+        public const string WeiboAppKey = "2351935287";
+        public const string WeiboAppSecret = "120cb25307676b0273a0dc433ab45a6f";
+        public const string WeiboRedirectUri = "http://account.autohome.com.cn/oauth/SinaoauthResult";
 
         public static void InitalizeMePersistence()
         {
@@ -73,18 +82,11 @@ namespace AutoWP7.Utils
             }
         }
 
-        public static void PrepareUploadClientHeaders(ref WebClient wc)
-        {
-            wc.Headers["Accept-Charset"] = "utf-8";
-            wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
-            wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-            wc.Headers["User-Agent"] = AutoWP7.Handler.Common.GetAutoHomeUA();
-        }
-
         #region url
 
         public const string ThirdPartyLoginUrl = "http://i.api.autohome.com.cn/api/Login/OAuthLogin";
         public const string ThirdPartyRegisterUrl = "http://i.api.autohome.com.cn/api/Register/OAuthRegister";
+        public const string ThirdPartyUpdateTokenUrl = "http://i.api.autohome.com.cn/api/openplatform/updatetoken";
         public const string ServiceProtocolUrl = "http://account.m.autohome.com.cn/RegisterAgreement.html";
         public const string ConnectAccountUrl = "http://i.api.autohome.com.cn/api/OpenPlatform/BindOpenPlantRelation";
         public const string UserRegisterUrl = "http://i.api.autohome.com.cn/api/Register/index";
@@ -92,35 +94,37 @@ namespace AutoWP7.Utils
         public const string SyncFavoriteCarUrl = "http://club.api.autohome.com.cn/api/user/AppSyncCar";
         public const string SyncFavoriteCollectionUrl = "http://i.api.autohome.com.cn/api/collection/AppSyncCollection";
         public const string SyncPrivateMessageFriendsUrl = "http://i.api.autohome.com.cn/api/privateletter/privateletterdelete";
+        public const string ServerTimestampUrl = "http://club.api.autohome.com.cn/api/system/timestamp";
+        public const string ThirdPartyBindingStateUrl ="http://221.192.136.99:804/wpv1.7/user/GetUserOpenPlats.ashx";// "http://app.api.autohome.com.cn/wpv1.7/user/GetUserOpenPlats.ashx";
 
         /// <param name="userID">if null, means me</param>
         public static string GetUserInfoUrl(string userID = null, int pageIndex = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string auth = string.IsNullOrEmpty(userID) ? userInfoModel.Authorization : string.Empty;
-            string id = string.IsNullOrEmpty(userID) ? userInfoModel.UserID.ToString() : userID;
-            string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetUserInfo.ashx?a=2&pm=3&v=1.7.0&au={0}&u={1}&p={2}&s=20", auth, id, pageIndex);
-            return url;
-        }
-
-        public static string GetThirdPartyBindingUrl()
-        {
-            var userInfoModel = GetMyInfoModel();
-            string url = string.Format("http://221.192.136.99:804/wpv1.7/user/GetUserOpenPlats.ashx?a=2&pm=3&v=1.7.0&au={0}&pfids={1}", userInfoModel.Authorization, "15,16");
-            return url;
+            if (userInfoModel != null)
+            {
+                string auth = string.IsNullOrEmpty(userID) ? userInfoModel.Authorization : string.Empty;
+                string id = string.IsNullOrEmpty(userID) ? userInfoModel.UserID.ToString() : userID;
+                string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetUserInfo.ashx?a=2&pm=3&v=1.7.0&au={0}&u={1}&p={2}&s=20", auth, id, pageIndex);
+                return url;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public static string GetFavoriteUrl(int type = 0, int pageIndex = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetCollectList.ashx?a=2&pm=3&v=1.7.0&p={0}&s=20&type={1}&au={2}", pageIndex, type, userInfoModel.Authorization);
+            string url = userInfoModel == null ? null : string.Format("http://221.192.136.99:804/wpv1.7/User/GetCollectList.ashx?a=2&pm=3&v=1.7.0&p={0}&s=20&type={1}&au={2}", pageIndex, type, userInfoModel.Authorization);
             return url;
         }
 
         public static string GetMyTritanUrl(int pageIndex = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string url = string.Format("http://221.192.136.99:804/wpv1.7/User/usermainpost-a2-pm3-v1.7.0-u{0}-p{1}-s20.html", userInfoModel.UserID, pageIndex);
+            string url = userInfoModel == null ? null : string.Format("http://221.192.136.99:804/wpv1.7/User/usermainpost-a2-pm3-v1.7.0-u{0}-p{1}-s20.html", userInfoModel.UserID, pageIndex);
             return url;
         }
 
@@ -155,7 +159,7 @@ namespace AutoWP7.Utils
         public static string GetPrivateMessageUrl(int friendID, int baseMessageID, int range = 1, int sort = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string url = string.Format("http://221.192.136.99:804/wpv1.7/User/GetPrivateLetterListContainSelf.ashx?a=2&pm=3&v=1.7.0&au={0}&tid={1}&mid={2}&t={3}&o={4}&s=5", userInfoModel.Authorization, friendID, baseMessageID, range, sort);
+            string url = userInfoModel == null ? null : string.Format("http://221.192.136.99:804/wpv1.7/User/GetPrivateLetterListContainSelf.ashx?a=2&pm=3&v=1.7.0&au={0}&tid={1}&mid={2}&t={3}&o={4}&s=5", userInfoModel.Authorization, friendID, baseMessageID, range, sort);
             return url;
         }
 

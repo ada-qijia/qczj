@@ -102,13 +102,21 @@ namespace AutoWP7.View.Car
                         }
 
                         //车系名
-                        using (LocalDataContext ldc = new LocalDataContext())
+                        if (this.carSeries != null)
                         {
-                            var name = from s in ldc.carSeries where s.Id == int.Parse(carSeriesId) select s.Name;
-                            foreach (var n in name)
+                            App.CarSeriesName = this.carSeries.Name;
+                            autoName.Text = App.CarSeriesName;
+                        }
+                        else
+                        {
+                            using (LocalDataContext ldc = new LocalDataContext())
                             {
-                                App.CarSeriesName = n;
-                                autoName.Text = n;
+                                var name = from s in ldc.carSeries where s.Id == int.Parse(carSeriesId) select s.Name;
+                                foreach (var n in name)
+                                {
+                                    App.CarSeriesName = n;
+                                    autoName.Text = n;
+                                }
                             }
                         }
 
@@ -502,8 +510,7 @@ namespace AutoWP7.View.Car
             favoriteModel.SeriesName = this.autoName.Text;
             CarSeriesQuotePage.ShareModel(favoriteModel);
 
-            string seriesName = this.carSeries == null ? string.Empty : this.carSeries.Name;
-            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&paramisshow=" + paramIsShow + "&seriesName=" + seriesName, UriKind.Relative));
+            this.NavigationService.Navigate(new Uri("/View/Car/CarSeriesQuotePage.xaml?carId=" + gg.Tag + "&paramisshow=" + paramIsShow, UriKind.Relative));
         }
 
         #endregion

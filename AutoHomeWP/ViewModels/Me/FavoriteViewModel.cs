@@ -724,7 +724,7 @@ namespace ViewModels.Me
             var userState = new Dictionary<FavoriteType, List<FavoriteSyncItem>>();
             userState[FavoriteType.CarSeries] = carseries;
             userState[FavoriteType.CarSpec] = carspecs;
-            UpStreamViewModel.SingleInstance.UploadAsyncWithOneoffClient(url, data, uploadClient_UploadCarCompleted, userState);
+            UpStreamViewModel.SingleInstance.UploadAsync(url, data, uploadClient_UploadCarCompleted, userState);
         }
 
         private UploadStringCompletedEventHandler uploadOthersCompletedHandler;
@@ -736,7 +736,7 @@ namespace ViewModels.Me
             userState[FavoriteType.Forum] = forums;
             userState[FavoriteType.Topic] = topics;
             userState[FavoriteType.Article] = articles;
-            UpStreamViewModel.SingleInstance.UploadAsyncWithOneoffClient(url, data, uploadClient_UploadOthersCompleted, userState);
+            UpStreamViewModel.SingleInstance.UploadAsync(url, data, uploadClient_UploadOthersCompleted, userState);
         }
 
         void uploadClient_UploadCarCompleted(object sender, UploadStringCompletedEventArgs e)

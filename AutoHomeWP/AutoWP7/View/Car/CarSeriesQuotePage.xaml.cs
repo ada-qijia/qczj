@@ -96,10 +96,10 @@ namespace AutoWP7.View.Car
                         }
                         cityId = App.CityId;
 
-                        //车系名
-                        if (this.NavigationContext.QueryString.ContainsKey("seriesName"))
+                        //车型名
+                        if (this.carSpec!=null)
                         {
-                            carTypeName.Text = this.NavigationContext.QueryString["seriesName"];
+                            carTypeName.Text = this.carSpec.Name;
                         }
                         else
                         {

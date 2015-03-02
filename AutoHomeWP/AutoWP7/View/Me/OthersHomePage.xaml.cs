@@ -1,5 +1,7 @@
 ﻿using Microsoft.Phone.Controls;
+using Model.Me;
 using System;
+using System.Windows;
 using ViewModels.Me;
 
 namespace AutoWP7.View.Me
@@ -57,9 +59,16 @@ namespace AutoWP7.View.Me
 
         #region UI interaction
 
-        //不支持导航
+        //导航到帖子详情页
         private void Topic_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            TritanModel model = (sender as FrameworkElement).DataContext as TritanModel;
+            if (model != null)
+            {
+                View.Forum.TopicDetailPage.ShareTitle(model.Title);
+                string url = string.Format("/View/Forum/TopicDetailPage.xaml?from=0&bbsId={0}&topicId={1}&bbsType={2}", model.BBSID, model.ID, model.BBSType);
+                this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
+            }
         }
 
         private void LoadMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)

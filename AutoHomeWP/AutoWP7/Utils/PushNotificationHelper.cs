@@ -171,7 +171,7 @@ namespace AutoWP7.Utils
         {
             if (!string.IsNullOrEmpty(ChannelUrl))
             {
-                var deviceName = ViewModels.Handler.UrlEncoder.Encode(Handler.Common.GetAutoHomeUA());
+                var deviceName = Handler.Common.GetAutoHomeUA();
                 var allowSys = allowSystem ? 0 : 1;
                 var allowPer = allowPerson ? 0 : 1;
                 string saveUrl = string.Format("{0}?appId=100010&deviceType=5&deviceToken={1}&deviceName={2}&userId={3}&allowSystem={4}&allowPerson={5}&startTime={6}&endTime={7}",

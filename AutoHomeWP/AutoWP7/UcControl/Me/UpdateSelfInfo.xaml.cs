@@ -114,13 +114,13 @@ namespace AutoWP7.UcControl.Me
             }
             else
             {
-                var selectedCountry=this.CountryListPicker.SelectedItem as CountryModel;
+                var selectedCountry = this.CountryListPicker.SelectedItem as CountryModel;
                 if (selectedCountry != null)
                 {
                     string data = string.Format("a=2&pm=3&v={0}&phonenum={1}&countrycode={2}&phonelength={3}&type=1", App.version, this.PhoneNoTextBox.Text, selectedCountry.CountryCode, selectedCountry.PhoneLength, 1);
                     string url = Utils.MeHelper.GetSendCheckCodeUrl();
                     ViewModels.Me.UpStreamViewModel upstreamVM = ViewModels.Me.UpStreamViewModel.SingleInstance;
-                    upstreamVM.UploadAsyncWithOneoffClient(url, data, wc_UploadStringCompleted);
+                    upstreamVM.UploadAsync(url, data, wc_UploadStringCompleted);
                 }
             }
         }

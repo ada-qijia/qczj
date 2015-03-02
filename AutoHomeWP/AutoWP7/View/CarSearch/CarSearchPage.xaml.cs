@@ -549,7 +549,7 @@ namespace AutoWP7.View.CarSearch
             Car.CarSeriesQuotePage.ShareModel(favoriteModel);
 
             string seriesName = carSeries == null ? string.Empty : carSeries.name;
-            string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}"+ "&seriesName=" + seriesName, spec.id);
+            string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}", spec.id);
             this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
         }
 

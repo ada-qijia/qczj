@@ -306,7 +306,7 @@ namespace Model
                 if (value != _bbsName)
                 {
                     OnPropertyChanging("BBSName");
-                    _loadMore = value;
+                    _bbsName = value;
                     OnPropertyChanged("BBSName");
                 }
             }

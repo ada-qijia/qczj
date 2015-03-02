@@ -41,22 +41,25 @@ namespace CommonLayer
 
         public static void DownloadStringAsync(string url,DownloadStringCompletedEventHandler completedHandler)
         {
-            WebClient wc = new WebClient();
-
-            wc.Encoding = System.Text.Encoding.UTF8;
-            wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
-
-            var downloadStringCompleted = completedHandler;
-            wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((obj, e) =>
+            if (!string.IsNullOrEmpty(url))
             {
-                if (downloadStringCompleted != null)
-                {
-                    downloadStringCompleted(null, e);
-                }
-            });
+                WebClient wc = new WebClient();
 
-            Uri urlSource = new Uri(url + "&" + Guid.NewGuid().ToString(), UriKind.Absolute);
-            wc.DownloadStringAsync(urlSource);
+                wc.Encoding = System.Text.Encoding.UTF8;
+                wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
+
+                var downloadStringCompleted = completedHandler;
+                wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((obj, e) =>
+                {
+                    if (downloadStringCompleted != null)
+                    {
+                        downloadStringCompleted(null, e);
+                    }
+                });
+
+                Uri urlSource = new Uri(url + "&" + Guid.NewGuid().ToString(), UriKind.Absolute);
+                wc.DownloadStringAsync(urlSource);
+            }
         }
 
         public static void UploadStringAsync(string url,string data, UploadStringCompletedEventHandler completedHandler)

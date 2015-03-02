@@ -140,9 +140,9 @@ namespace AutoWP7.Utils
                 int id = (int)value;
                 switch (id)
                 {
-                    case 2:
+                    case MeHelper.QQPlatformID:
                         return "/Images/Me/qq.png";
-                    case 8:
+                    case MeHelper.WeiboPlatformID:
                         return "/Images/Me/weibo.png";
                 }
             }
@@ -166,9 +166,9 @@ namespace AutoWP7.Utils
                 int id = (int)value;
                 switch (id)
                 {
-                    case 2:
+                    case MeHelper.QQPlatformID:
                         return "腾讯QQ";
-                    case 8:
+                    case MeHelper.WeiboPlatformID:
                         return "新浪微博";
                 }
             }

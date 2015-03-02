@@ -55,7 +55,7 @@ namespace AutoWP7.View.Me
             if (model != null)
             {
                 View.Car.CarSeriesQuotePage.ShareModel(model);
-                string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}&selectedPage={1}&seriesName={2}", model.ID, "dealer", model.SeriesName);
+                string url = string.Format("/View/Car/CarSeriesQuotePage.xaml?carId={0}&selectedPage={1}", model.ID, "dealer");
                 NavigationService.Navigate(new Uri(url, UriKind.Relative));
             }
         }

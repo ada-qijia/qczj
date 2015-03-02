@@ -1098,11 +1098,23 @@ namespace AutoWP7
             {
                 if (MeVM.Model == null)
                 {
-                    GlobalIndicator.Instance.Text = "正在获取中...";
-                    GlobalIndicator.Instance.IsBusy = true;
+                    var userInfo = Utils.MeHelper.GetMyInfoModel();
+                    if (userInfo != null)
+                    {
+                        //先用本地缓存填充
+                        var me = new Model.Me.MeModel();
+                        me.ID = userInfo.UserID.ToString();
+                        me.UserName = userInfo.UserName;
+                        me.Img = userInfo.UserPic;
+                        me.LoggedIn = true;
+                        MeVM.Model = me;
 
-                    string url = MeHelper.GetUserInfoUrl();
-                    MeVM.LoadDataAysnc(url);
+                        //GlobalIndicator.Instance.Text = "正在获取中...";
+                        //GlobalIndicator.Instance.IsBusy = true;
+
+                        string url = MeHelper.GetUserInfoUrl();
+                        MeVM.LoadDataAysnc(url);
+                    }
                 }
             }
             else

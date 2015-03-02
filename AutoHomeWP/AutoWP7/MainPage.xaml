@@ -37,6 +37,7 @@
         <local:NewsestShuoKeImgConverter x:Name="NewsestShuoKeImgConverter"/>
         <local:NewsestHeadImgConverter x:Name="NewsestHeadImgConverter"/>
         <util:EmptyToVisibilityConverter x:Name="EmptyToVisibilityConverter"/>
+        <util:BoolToVisibleConverter x:Name="BoolToVisibleConverter"/>
         <util:UnreadCountTextConverter x:Name="UnreadCountTextConverter"/>
         <util:UnreadVisibilityConverter x:Name="UnreadVisibilityConverter"/>
         <!--头-->
@@ -637,7 +638,7 @@
 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding UserName}" Style="{StaticResource ButtonWhiteTextStyle}" VerticalAlignment="Bottom" Margin="0"/>
-                                    <Image Source="/Images/Me/carOwner.png" Width="20" Visibility="{Binding IsCarOwner,Converter={StaticResource EmptyToVisibilityConverter},FallbackValue=Collapsed}" VerticalAlignment="Bottom"/>
+                                    <Image Source="/Images/Me/carOwner.png" Width="20" Visibility="{Binding IsCarOwner,Converter={StaticResource BoolToVisibleConverter},FallbackValue=Collapsed}" VerticalAlignment="Bottom"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" Margin="0 6">

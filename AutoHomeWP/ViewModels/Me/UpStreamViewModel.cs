@@ -24,37 +24,7 @@ namespace ViewModels.Me
 
         #region 网络实现
 
-        private WebClient uploadWC;
-        private UploadStringCompletedEventHandler UploadCompletedHandler;
-
-        public void UploadAsyncWithSharedClient(string url, string data, UploadStringCompletedEventHandler uploadCompleted, object userState = null)
-        {
-            if (uploadWC == null)
-            {
-                uploadWC = new WebClient();
-                uploadWC.UploadStringCompleted += wc_UploadStringCompleted;
-                uploadWC.Headers["Accept-Charset"] = "utf-8";
-                uploadWC.Headers["Referer"] = "http://www.autohome.com.cn/china";
-                uploadWC.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                //uploadWC.Headers["User-Agent"] = "WindowsPhone\t8\tautohome\t1.6.0";
-            }
-
-            if (!uploadWC.IsBusy)
-            {
-                this.UploadCompletedHandler = uploadCompleted;
-                uploadWC.UploadStringAsync(new Uri(url, UriKind.Absolute), "POST", data, userState);
-            }
-        }
-
-        private void wc_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
-        {
-            if (UploadCompletedHandler != null)
-            {
-                UploadCompletedHandler(sender, e);
-            }
-        }
-
-        public void UploadAsyncWithOneoffClient(string url, string data, UploadStringCompletedEventHandler uploadCompleted, object userState = null)
+        public void UploadAsync(string url, string data, UploadStringCompletedEventHandler uploadCompleted, object userState = null)
         {
             WebClient client = new WebClient();
             client.Headers["Accept-Charset"] = "utf-8";
@@ -68,7 +38,7 @@ namespace ViewModels.Me
                     uploadCompleted(this, e);
                 }
             };
-            client.UploadStringAsync(new Uri(url), "POST", data, userState);
+            client.UploadStringAsync(new Uri(url,UriKind.Absolute), "POST", data, userState);
         }
 
         #endregion

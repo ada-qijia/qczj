@@ -2,10 +2,12 @@
 using AutoWP7.Utils;
 using Microsoft.Phone.Controls;
 using Model.Me;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
@@ -40,9 +42,12 @@ namespace AutoWP7.View.Me
                 //未登录，跳转到登录页
                 this.NavigationService.Navigate(new Uri("/View/More/LoginPage.xaml", UriKind.Relative));
             }
-            else if(userInfo!= null)
+            else if (userInfo != null)
             {
-                this.LoadLocally();
+                if (this.FriendsVM.FriendList.Count == 0)
+                {
+                    this.LoadLocally();
+                }
                 this.LoadMore(true);
             }
         }
@@ -188,17 +193,42 @@ namespace AutoWP7.View.Me
                 string url = Utils.MeHelper.SyncPrivateMessageFriendsUrl;
                 foreach (PrivateMessageFriendModel item in selectedItems)
                 {
-                    string data = string.Format("_appid=app.wp&authorization={0}&targetuserid={1}&_timestamp={2}&autohomeua={3}", userInfoModel.Authorization, item.ID, Common.GetTimeStamp(), Common.GetAutoHomeUA());
+                    string data = string.Format("_appid={4}&authorization={0}&targetuserid={1}&_timestamp={2}&autohomeua={3}", userInfoModel.Authorization, item.ID, Common.GetTimeStamp(), Common.GetAutoHomeUA(), Utils.MeHelper.appID);
                     data = Handler.Common.SortURLParamAsc(data);
                     string sign = Handler.Common.GetSignStr(data);
                     data += "&_sign=" + sign;
 
-                    UpStreamViewModel.SingleInstance.UploadAsyncWithOneoffClient(url, data, null);
+                    UpStreamViewModel.SingleInstance.UploadAsync(url, data, deleteAsyncCompleted, item);
                 }
             }
+        }
 
-            base.AfterDeleteItems(selectedItems);
-            this.SaveLocally();
+        private void deleteAsyncCompleted(object sender, UploadStringCompletedEventArgs e)
+        {
+            bool success = false;
+            var item = e.UserState as PrivateMessageFriendModel;
+            try
+            {
+                if (e.Error == null && e.Cancelled == false)
+                {
+                    JObject json = JObject.Parse(e.Result);
+                    int resultCode = (int)json.SelectToken("returncode");
+                    //string message = json.SelectToken("message").ToString();
+                    if (resultCode == 0)
+                    {
+                        this.FriendsVM.FriendList.Remove(item);
+                        this.SaveLocally();
+                        success = true;
+                    }
+                }
+            }
+            catch
+            { }
+
+            if (!success)
+            {
+                string message = string.Format("删除{0}失败", item.UserName);
+            }
         }
 
         #endregion

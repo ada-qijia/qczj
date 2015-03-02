@@ -32,43 +32,31 @@ namespace ViewModels.Me
         #endregion
 
         WebClient wc = new WebClient();
-
-        public event EventHandler<int> ThirdPartyLoginCompleted;
-        public void ThirdPartyLoginAsync(string url, string postData)
+        public void ThirdPartyLoginAsync(string url, string postData,EventHandler<int> loginCompleted)
         {
-            if (wc == null)
+            var completed=new UploadStringCompletedEventHandler((ss, ee) =>
             {
-                wc = new WebClient();
-            }
-
-            if (!wc.IsBusy)
-            {
-                wc.Encoding = DBCSEncoding.GetDBCSEncoding("gb2312");
-                wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-
-                wc.UploadStringAsync(new Uri(url), "POST", postData);
-                wc.UploadStringCompleted += new UploadStringCompletedEventHandler((ss, ee) =>
+                int returnCode = int.MinValue;
+                try
                 {
-                    int returnCode = int.MinValue;
-                    try
+                    if (ee.Error == null && ee.Cancelled == false)
                     {
-                        if (ee.Error == null && ee.Cancelled == false)
-                        {
-                            JObject json = JObject.Parse(ee.Result);
-                            returnCode = json.SelectToken("returncode").Value<int>();
-                            JToken resultToken = json.SelectToken("result");
+                        JObject json = JObject.Parse(ee.Result);
+                        returnCode = json.SelectToken("returncode").Value<int>();
+                        JToken resultToken = json.SelectToken("result");
 
-                            this.LoginResult = JsonHelper.DeserializeOrDefault<ThirdPartyLoginResultModel>(resultToken.ToString());
-                        }
+                        this.LoginResult = JsonHelper.DeserializeOrDefault<ThirdPartyLoginResultModel>(resultToken.ToString());
                     }
-                    catch { }
+                }
+                catch { }
 
-                    if (this.ThirdPartyLoginCompleted != null)
-                    {
-                        this.ThirdPartyLoginCompleted(this, returnCode);
-                    }
-                });
-            }
+                if (loginCompleted != null)
+                {
+                    loginCompleted(this, returnCode);
+                }
+            });
+
+            UpStreamViewModel.SingleInstance.UploadAsync(url, postData, completed);
         }
     }
 }

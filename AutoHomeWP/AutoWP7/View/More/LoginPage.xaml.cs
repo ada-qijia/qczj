@@ -27,7 +27,6 @@ namespace AutoWP7.View.More
             InitializeComponent();
 
             thirdPartyLoginVM = new ThirdPartyLoginViewModel();
-            thirdPartyLoginVM.ThirdPartyLoginCompleted += thirdPartyLoginVM_ThirdPartyLoginCompleted;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -156,18 +155,19 @@ namespace AutoWP7.View.More
             if (checkSuccess)
             {
                 //接口注册
-                string nickname =ViewModels.Handler.UrlEncoder.Encode(this.UpdateSelfInfoPanel.UsernameTextbox.Text);
+                string nickname = HttpUtility.UrlEncode(this.UpdateSelfInfoPanel.UsernameTextbox.Text);
                 string password = Handler.MD5.GetMd5String(this.UpdateSelfInfoPanel.PasswordPanel.Password);
                 string mobile = this.UpdateSelfInfoPanel.PhoneNoTextBox.Text;
                 string validcode = this.UpdateSelfInfoPanel.CodeTextbox.Text;
+                string ua = AutoWP7.Handler.Common.GetAutoHomeUA();
                 string format = "_appid={0}&autohomeua={1}&nickname={2}&userpwd={3}&mobile={4}&validcode={5}&_timestamp={6}";
-                string data = string.Format(format, "app.wp", AutoWP7.Handler.Common.GetAutoHomeUA(), nickname, password, mobile, validcode,Common.GetTimeStamp());
+                string data = string.Format(format, Utils.MeHelper.appIDWp, ua, nickname, password, mobile, validcode, Common.GetTimeStamp());
                 data = Common.SortURLParamAsc(data);
                 string sign = Common.GetSignStr(data);
                 data += "&_sign=" + sign;
 
                 UpStreamViewModel upstreamVM = UpStreamViewModel.SingleInstance;
-                upstreamVM.UploadAsyncWithSharedClient(Utils.MeHelper.UserRegisterUrl, data, wc_UploadStringCompleted);
+                upstreamVM.UploadAsync(Utils.MeHelper.UserRegisterUrl, data, wc_UploadStringCompleted);
             }
         }
 
@@ -207,9 +207,9 @@ namespace AutoWP7.View.More
                                 setting.Save();
                             }
 
-                            //返回登录页面
+                            //返回登录前页面
                             Common.showMsg("注册成功");
-                            this.LoginPivot.SelectedIndex = 0;
+                            this.NavigationService.GoBack();
                         }
                     }
                     else
@@ -229,41 +229,44 @@ namespace AutoWP7.View.More
 
         ThirdPartyLoginViewModel thirdPartyLoginVM;
 
+        //weibo
         void thirdPartyLoginVM_ThirdPartyLoginCompleted(object sender, int e)
         {
-            //绑定成功，判断账号授权情况
-            if (e == 0)
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                var result = this.thirdPartyLoginVM.LoginResult;
-                if (result != null)
+                //绑定成功，判断账号授权情况
+                if (e == 0)
                 {
-                    //存入文件
-                    var model = new MyForumModel();
-                    model.Success = 1;
+                    var result = this.thirdPartyLoginVM.LoginResult;
+                    if (result != null)
+                    {
+                        //存入文件
+                        var model = new MyForumModel();
+                        model.Success = 1;
 
-                    model.UserID = result.ID;
-                    model.UserName = result.UserName;
-                    model.Authorization = result.Auth;
-                    model.WeiWang = result.Prestige.ToString();
-                    model.UserPic = result.Img;
+                        model.UserID = result.ID;
+                        model.UserName = result.UserName;
+                        model.Authorization = result.Auth;
+                        model.WeiWang = result.Prestige.ToString();
+                        model.UserPic = result.Img;
 
-                    var setting = IsolatedStorageSettings.ApplicationSettings;
-                    setting["userInfo"] = model;
-                    setting.Save();
+                        var setting = IsolatedStorageSettings.ApplicationSettings;
+                        setting["userInfo"] = model;
+                        setting.Save();
+                    }
+
+                    this.NavigationService.GoBack();
                 }
-
-                this.NavigationService.GoBack();
-            }
-            //未绑定车网账号
-            else if (e == 2013022)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-               this.NavigationService.Navigate(new Uri("/View/Me/CompleteMyInfo.xaml?platformId=16", UriKind.Relative)));
-            }
-            else//其他错误
-            {
-                Common.showMsg("登录失败");
-            }
+                //未绑定车网账号
+                else if (e == 2013022)
+                {
+                    this.NavigationService.Navigate(new Uri("/View/Me/CompleteMyInfo.xaml?platformId=16", UriKind.Relative));
+                }
+                else//其他错误
+                {
+                    Common.showMsg("登录失败");
+                }
+            });
         }
 
         #region weibo login
@@ -272,9 +275,9 @@ namespace AutoWP7.View.More
         {
             //http://open.weibo.com/wiki/Oauth2/authorize
             //set account info
-            SdkData.AppKey = "2351935287";
-            SdkData.AppSecret = "120cb25307676b0273a0dc433ab45a6f";
-            SdkData.RedirectUri = "http://account.autohome.com.cn/oauth/SinaoauthResult";
+            SdkData.AppKey = Utils.MeHelper.WeiboAppKey;
+            SdkData.AppSecret = Utils.MeHelper.WeiboAppSecret;
+            SdkData.RedirectUri = Utils.MeHelper.WeiboRedirectUri;
 
             AuthenticationView.OAuth2VerifyCompleted = (e1, e2, e3) => VerifyBack(e1, e2, e3);
             AuthenticationView.OBrowserCancelled = new EventHandler(cancelEvent);
@@ -300,11 +303,11 @@ namespace AutoWP7.View.More
 
                 //汽车之家第三方登录接口
                 string dataFormat = "_appid={0}&autohomeua={1}&openid={2}&plantFormId={3}&token={4}&position={5}&refreshToken={6}&_timeStamp={7}";
-                string data = string.Format(dataFormat, "app.wp", AutoWP7.Handler.Common.GetAutoHomeUA(), response.UserId, 16, response.accesssToken, App.CityId, response.refleshToken, Common.GetTimeStamp());
+                string data = string.Format(dataFormat, Utils.MeHelper.appID, AutoWP7.Handler.Common.GetAutoHomeUA(), response.UserId, Utils.MeHelper.WeiboPlatformID, response.accesssToken, App.CityId, response.refleshToken, Common.GetTimeStamp());
                 data = Common.SortURLParamAsc(data);
                 string sign = Common.GetSignStr(data);
                 data += "&_sign=" + sign;
-                thirdPartyLoginVM.ThirdPartyLoginAsync(Utils.MeHelper.ThirdPartyLoginUrl, data);
+                thirdPartyLoginVM.ThirdPartyLoginAsync(Utils.MeHelper.ThirdPartyLoginUrl, data, thirdPartyLoginVM_ThirdPartyLoginCompleted);
             }
             else
             {
