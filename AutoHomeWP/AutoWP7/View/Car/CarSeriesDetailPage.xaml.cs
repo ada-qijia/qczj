@@ -75,6 +75,8 @@ namespace AutoWP7.View.Car
         {
             base.OnNavigatedTo(e);
 
+            try
+            {
             InitBtn();
 
             switch (e.NavigationMode)
@@ -109,15 +111,15 @@ namespace AutoWP7.View.Car
                         }
                         else
                         {
-                            using (LocalDataContext ldc = new LocalDataContext())
+                        using (LocalDataContext ldc = new LocalDataContext())
+                        {
+                            var name = from s in ldc.carSeries where s.Id == int.Parse(carSeriesId) select s.Name;
+                            foreach (var n in name)
                             {
-                                var name = from s in ldc.carSeries where s.Id == int.Parse(carSeriesId) select s.Name;
-                                foreach (var n in name)
-                                {
-                                    App.CarSeriesName = n;
-                                    autoName.Text = n;
-                                }
+                                App.CarSeriesName = n;
+                                autoName.Text = n;
                             }
+                        }
                         }
 
                         //导航到的具体页码
@@ -152,7 +154,7 @@ namespace AutoWP7.View.Car
                         ////更新城市id
                         cityId = App.CityId;
                         var tag = (piv.SelectedItem as PivotItem).Tag.ToString();
-                        if (tag == "dealer")// (piv.SelectedIndex == 3)
+                            if (tag == "dealer")// (piv.SelectedIndex == 3)
                         {
                             //更新城市id
                             if (!string.IsNullOrEmpty(App.CityId))
@@ -165,6 +167,10 @@ namespace AutoWP7.View.Car
                             InitSeriesSpecsInfo();
                     }
                     break;
+            }
+        }
+            catch (Exception ex)
+            {
             }
         }
 
@@ -833,7 +839,7 @@ namespace AutoWP7.View.Car
                         groups.Add(groupList);
                     }
                 }
-
+                
                 carSeriesAlibiListSelector.ItemsSource = groups;
             }
         }
