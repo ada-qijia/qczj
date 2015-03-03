@@ -89,11 +89,11 @@ namespace AutoWP7.View.Channel.Newest
             string url = string.Empty;
             if (useType == UseTypeEnum.Club)
             {
-                url = string.Format("{0}{3}/forum/club/appdutu-a2-pm3-v1.6.0-t{1}-r0-h{2}.html", App.topicPageDomain, Id, imgUrl, App.versionStr);
+                url = string.Format("{0}{3}/forum/club/appdutu-a2-pm3-v1.6.2-t{1}-r0-h{2}.html", App.topicPageDomain, Id, imgUrl, App.versionStr);
             }
             else if (useType == UseTypeEnum.News)
             {
-                url = string.Format("{0}{3}/content/news/newsimgall-a1-pm1-v1.6.0-n{1}-h{2}.html", App.newsPageDomain, Id, imgUrl, App.versionStr);
+                url = string.Format("{0}{3}/content/news/newsimgall-a1-pm1-v1.6.2-n{1}-h{2}.html", App.newsPageDomain, Id, imgUrl, App.versionStr);
             }
             imageDuTuViewModel.LoadDataAysnc(url, (int)useType);
         }

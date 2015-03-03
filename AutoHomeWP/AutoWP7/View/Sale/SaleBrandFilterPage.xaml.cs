@@ -153,7 +153,7 @@ namespace AutoWP7.View.Sale
                 carSeriesVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<CarSeriesModel>>>(carSeriesVM_LoadDataCompleted);
             }
 
-            //http://221.192.136.99:804/wpv1.6/cars/seriesprice-a2-pm3-v1.6.0-b33-t1.html
+            //http://221.192.136.99:804/wpv1.6/cars/seriesprice-a2-pm3-v1.6.2-b33-t1.html
             string url = string.Format("{0}{1}/cars/seriesprice-{2}-b{3}-t1.html", App.appUrl, App.versionStr, App.AppInfo, bid);
             carSeriesVM.LoadDataAysnc(url);
         }
@@ -240,7 +240,7 @@ namespace AutoWP7.View.Sale
                 carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(carSeriesQuoteVM_LoadDataCompleted);
             }
 
-            //http://221.192.136.99:804/wpv1.6/cars/specslist-a2-pm3-v1.6.0-t0x000c-ss18.html
+            //http://221.192.136.99:804/wpv1.6/cars/specslist-a2-pm3-v1.6.2-t0x000c-ss18.html
             string url = string.Format("{0}{1}/cars/specslist-{2}-t0x000c-ss{3}.html", App.appUrl, App.versionStr, App.AppInfo, sid);
             carSeriesQuoteVM.LoadDataAysnc(url, false);
         }

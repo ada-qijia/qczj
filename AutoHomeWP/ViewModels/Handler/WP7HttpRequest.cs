@@ -135,7 +135,7 @@ namespace ViewModels.Handler
             webRequest.Method = "POST";
             webRequest.Headers["Referer"] = "http://www.autohome.com.cn/china";
             webRequest.Headers["Accept-Charset"] = "RequestCodeType";
-            webRequest.Headers["User-Agent"] ="WP\t8\tautohome\t1.6.0\tWP";
+            webRequest.Headers["User-Agent"] ="WP\t8\tautohome\t1.6.2\tWP";
            // webRequest.ContentType = "multipart/form-data;boundary=" + boundary;
            // webRequest.ContentType = "image/pjpeg";
             webRequest.BeginGetRequestStream(new AsyncCallback(handlePostReady), webRequest);

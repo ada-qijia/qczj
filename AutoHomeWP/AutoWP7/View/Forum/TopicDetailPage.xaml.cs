@@ -161,7 +161,7 @@ namespace AutoWP7.View.Forum
                 wc = new WebClient();
             }
 
-            Uri url = new Uri(string.Format("{0}{2}/forum/club/topicinfo-a2-pm3-v1.6.0-t{1}-i0.html", App.topicPageDomain, topicId, App.versionStr), UriKind.Absolute);
+            Uri url = new Uri(string.Format("{0}{2}/forum/club/topicinfo-a2-pm3-v1.6.2-t{1}-i0.html", App.topicPageDomain, topicId, App.versionStr), UriKind.Absolute);
 
             wc.DownloadStringAsync(url);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>

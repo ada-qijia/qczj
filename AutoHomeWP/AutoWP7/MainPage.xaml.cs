@@ -629,7 +629,7 @@ namespace AutoWP7
 
             int page_index = reload ? 1 : saleVM.PageIndex + 1;
 
-            //http://221.192.136.99:804/wpv1.6/dealer/pdspecs-a2-pm3-v1.6.0-pi0-c0-o0-b0-ss0-sp0-p1-s20-l0-minp10-maxp20.html
+            //http://221.192.136.99:804/wpv1.6/dealer/pdspecs-a2-pm3-v1.6.2-pi0-c0-o0-b0-ss0-sp0-p1-s20-l0-minp10-maxp20.html
             string format = App.appUrl + App.versionStr + "/dealer/pdspecs-" + App.AppInfo + "-pi{0}-c{1}-o{2}-b{3}-ss{4}-sp{5}-p{6}-s{7}-l{8}-minp{9}-maxp{10}.html";
             string url = string.Format(format, sale_param_pi, sale_param_c, sale_param_o, sale_param_b,
                 sale_param_ss, sale_param_sp, page_index, saleVM.PageSize, sale_param_l, sale_param_minp, sale_param_maxp);
