@@ -24,8 +24,8 @@
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="24 0">
             <StackPanel>
                 <TextBlock Text="推送内容" Style="{StaticResource TitleNormalTextStyle}" Foreground="Gray" Margin="0 12"/>
-                <toolkit:ToggleSwitch x:Name="SystemNotificationSwitch" BorderBrush="{StaticResource App_Theme_Color}" Content="系统消息" IsChecked="true" Margin="0 12" Style="{StaticResource ToggleSwitchThemeStyle}" Click="SystemNotificationSwitch_Click" />
-                <toolkit:ToggleSwitch x:Name="PersonalNotificationSwitch" BorderBrush="{StaticResource App_Theme_Color}" Content="个人消息" IsChecked="true" Margin="0 12" Style="{StaticResource ToggleSwitchThemeStyle}" Click="PersonalNotificationSwitch_Click"/>
+                <toolkit:ToggleSwitch x:Name="SystemNotificationSwitch" BorderBrush="{StaticResource App_Theme_Color}" Content="系统消息" IsChecked="true" Margin="0 12" Style="{StaticResource ToggleSwitchThemeStyle}"/>
+                <toolkit:ToggleSwitch x:Name="PersonalNotificationSwitch" BorderBrush="{StaticResource App_Theme_Color}" Content="个人消息" IsChecked="true" Margin="0 12" Style="{StaticResource ToggleSwitchThemeStyle}"/>
             </StackPanel>
 
             <StackPanel Margin="0 24">
@@ -33,8 +33,8 @@
                 <Grid>
                     <TextBlock Text="推送接受时间" Style="{StaticResource TitleLargeTextStyle}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 -20 0">
-                        <toolkit:TimePicker x:Name="StartTimePicker" ValueStringFormat="{}{0:每日HH:mm}" Value="6:00" Foreground="Gray" BorderThickness="0" Height="50" Margin="-15 -12 -20 0" ValueChanged="StartTimePicker_ValueChanged"/>
-                        <toolkit:TimePicker x:Name="EndTimePicker" ValueStringFormat="{}{0:-  HH:mm}" Value="23:00" Foreground="Gray" BorderThickness="0" Height="50" Margin="-10 -12 0 0" ValueChanged="EndTimePicker_ValueChanged"/>
+                        <toolkit:TimePicker x:Name="StartTimePicker" ValueStringFormat="{}{0:每日HH:mm}" Value="6:00" Foreground="Gray" BorderThickness="0" Height="50" Margin="-15 -12 -20 0"/>
+                        <toolkit:TimePicker x:Name="EndTimePicker" ValueStringFormat="{}{0:-  HH:mm}" Value="23:00" Foreground="Gray" BorderThickness="0" Height="50" Margin="-10 -12 0 0"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>

@@ -10,8 +10,22 @@ namespace AutoWP7.View.Me
         public PushNotificationSetting()
         {
             InitializeComponent();
-            SetPushSetting();
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if(e.NavigationMode==NavigationMode.New)
+            {
+                this.SystemNotificationSwitch.Click += SystemNotificationSwitch_Click;
+                this.PersonalNotificationSwitch.Click += PersonalNotificationSwitch_Click;
+                this.StartTimePicker.ValueChanged += StartTimePicker_ValueChanged;
+                this.EndTimePicker.ValueChanged += EndTimePicker_ValueChanged;
+
+                SetPushSetting();
+            }
+        }
+
 
         #region 推送设置
 
@@ -42,13 +56,13 @@ namespace AutoWP7.View.Me
             var userInfo = Utils.MeHelper.GetMyInfoModel();
             if (userInfo != null)
             {
-                Utils.PushNotificationHelper.SaveUserSetting(userInfo.UserID.ToString(), !notAllowSystem, !notAllowPerson, startTime, endTime,SaveUserSettingCompleted);
+                Utils.PushNotificationHelper.SaveUserSetting(userInfo.UserID.ToString(), !notAllowSystem, !notAllowPerson, startTime, endTime, SaveUserSettingCompleted);
             }
         }
 
         private void SaveUserSettingCompleted(object sender, bool result)
         {
-            string msg=result?"保存成功":"保存失败";
+            string msg = result ? "保存成功" : "保存失败";
             Handler.Common.showMsg(msg);
         }
 

@@ -1101,8 +1101,8 @@ namespace AutoWP7
                         me.LoggedIn = true;
                         MeVM.Model = me;
 
-                        //GlobalIndicator.Instance.Text = "正在获取中...";
-                        //GlobalIndicator.Instance.IsBusy = true;
+                        GlobalIndicator.Instance.Text = "正在获取中...";
+                        GlobalIndicator.Instance.IsBusy = true;
 
                         string url = MeHelper.GetUserInfoUrl();
                         MeVM.LoadDataAysnc(url);
