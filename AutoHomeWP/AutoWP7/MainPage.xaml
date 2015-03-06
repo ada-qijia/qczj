@@ -115,16 +115,15 @@
         </Style>
 
         <Style x:Key="BadgeBorderStyle" TargetType="Border">
-            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="CornerRadius" Value="13"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="Background" Value="Red"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Margin" Value="75 3 0 0"/>
-            <Setter Property="Height" Value="22"/>
-            <Setter Property="MinWidth" Value="22"/>
-            <Setter Property="MaxWidth" Value="50"/>
+            <Setter Property="Margin" Value="75 0 0 0"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="MinWidth" Value="26"/>
         </Style>
 
         <Style x:Key="BadgeTextStyle" TargetType="TextBlock">
@@ -132,6 +131,7 @@
             <Setter Property="Margin" Value="2"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="16"/>
         </Style>
 
         <SolidColorBrush x:Key="TransBorderBrush" Color="#33ffffff"/>
@@ -822,15 +822,6 @@
                 </Button.Projection>
             </Button>
         </Grid>
-
-        <!--push notification - system message-->
-        <Grid x:Name="SystemMsgGrid" Background="White" Visibility="Collapsed">
-            <ProgressBar Foreground="#3cadeb" x:Name="ProgBar" IsIndeterminate="True" Height="10" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />
-            <phone:WebBrowser x:Name="wb" NavigationFailed="wb_NavigationFailed"  Navigated="wb_Navigated" Navigating="wb_Navigating"  Margin="0,0,0,-70"  />
-            <TextBlock x:Name="failPrompt" Visibility="Collapsed" Text="您的网络不可用~请检查连接设置" Height="200" Width="400" VerticalAlignment="Center" Foreground="LightGray" FontSize="26"/>
-            <Image Source="/Images/close.png" Width="48" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="12" Tap="CloseBrowser_Tap"/>
-        </Grid>
-
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>

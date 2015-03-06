@@ -12,10 +12,14 @@ namespace AutoWP7.Utils
     {
         public const string channelName = "autohomeChannel";
         public const string pushSettingKey = "pushSetting";
+
+        const int AppID = 100010;
+        const int DeviceType = 5;
         const string RegisterBaseUrl = "http://push.app.autohome.com.cn/user/reg";
         const string SaveSettingBaseUrl = "http://push.app.autohome.com.cn/user/clientsetting/save";
         const string GetSettingBaseUrl = "http://push.app.autohome.com.cn/user/clientsetting/get";
         const string UnRegisterBaseUrl = "http://push.app.autohome.com.cn/user/unreg";
+        const string SampleBaseUrl = "http://push.app.autohome.com.cn/history/postmessage";
 
         public static event EventHandler<ToastNotificationEventArgs> ToastNotificationReceived;
 
@@ -98,7 +102,7 @@ namespace AutoWP7.Utils
                 }
             }
 
-            if(ToastNotificationReceived!=null)
+            if (ToastNotificationReceived != null)
             {
                 ToastNotificationReceived(sender, args);
             }
@@ -126,7 +130,7 @@ namespace AutoWP7.Utils
             if (!string.IsNullOrEmpty(ChannelUrl))
             {
                 var deviceName = Handler.Common.GetAutoHomeUA();
-                string regUrl = string.Format(RegisterBaseUrl + "?appId=100010&deviceType=5&deviceToken={0}&deviceName={1}&userId={2}", ChannelUrl, deviceName, userId);
+                string regUrl = string.Format(RegisterBaseUrl + "?appId={0}&deviceType={1}&deviceToken={2}&deviceName={3}&userId={4}", AppID, DeviceType, ChannelUrl, deviceName, userId);
 
                 WebClient wc = new WebClient();
                 wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
@@ -167,15 +171,15 @@ namespace AutoWP7.Utils
         /// <summary>
         /// 提交客户端的推送设置
         /// </summary>
-        public static void SaveUserSetting(string userId, bool allowSystem, bool allowPerson, int startTime, int endTime, EventHandler<bool> saveCompleted=null)
+        public static void SaveUserSetting(string userId, bool allowSystem, bool allowPerson, int startTime, int endTime, EventHandler<bool> saveCompleted = null)
         {
             if (!string.IsNullOrEmpty(ChannelUrl))
             {
                 var deviceName = Handler.Common.GetAutoHomeUA();
                 var allowSys = allowSystem ? 0 : 1;
                 var allowPer = allowPerson ? 0 : 1;
-                string saveUrl = string.Format("{0}?appId=100010&deviceType=5&deviceToken={1}&deviceName={2}&userId={3}&allowSystem={4}&allowPerson={5}&startTime={6}&endTime={7}",
-                    SaveSettingBaseUrl, ChannelUrl, deviceName, userId, allowSys, allowPer, startTime, endTime);
+                string saveUrl = string.Format("{0}?appId={1}&deviceType={2}&deviceToken={3}&deviceName={4}&userId={5}&allowSystem={6}&allowPerson={7}&startTime={8}&endTime={9}",
+                    SaveSettingBaseUrl, AppID, DeviceType, ChannelUrl, deviceName, userId, allowSys, allowPer, startTime, endTime);
 
                 WebClient wc = new WebClient();
                 wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
@@ -215,7 +219,7 @@ namespace AutoWP7.Utils
                         catch
                         { }
 
-                        if(saveCompleted!=null)
+                        if (saveCompleted != null)
                         {
                             saveCompleted(sender, saveSuccess);
                         }
@@ -232,11 +236,9 @@ namespace AutoWP7.Utils
             if (!string.IsNullOrEmpty(ChannelUrl))
             {
                 var deviceName = Handler.Common.GetAutoHomeUA();
-                string getUrl = string.Format("{0}?appId=100010&deviceType=5&deviceToken={0}&deviceName={1}&userId={2}", GetSettingBaseUrl, ChannelUrl, deviceName, userId);
+                string getUrl = string.Format("{0}?appId={1}&deviceType={2}&deviceToken={3}&deviceName={4}&userId={5}", GetSettingBaseUrl, AppID, DeviceType, ChannelUrl, deviceName, userId);
 
                 WebClient wcGetting = new WebClient();
-                wcGetting.Headers["Referer"] = "http://www.autohome.com.cn/china";
-                wcGetting.Headers["Accept-Charset"] = "utf-8";
                 wcGetting.DownloadStringCompleted += wc_DownloadStringCompleted;
                 wcGetting.DownloadStringAsync(new Uri(getUrl, UriKind.Absolute));
             }
@@ -250,7 +252,7 @@ namespace AutoWP7.Utils
             if (!string.IsNullOrEmpty(ChannelUrl))
             {
                 var deviceName = Handler.Common.GetAutoHomeUA();
-                string unregisterUrl = string.Format("{0}?appId=100010&deviceType=5&deviceToken={0}&deviceName={1}&userId={2}", UnRegisterBaseUrl, ChannelUrl, deviceName, userId);
+                string unregisterUrl = string.Format("{0}?appId={1}&deviceType={2}&deviceToken={3}&deviceName={4}&userId={5}", UnRegisterBaseUrl, AppID, DeviceType, ChannelUrl, deviceName, userId);
 
                 WebClient wc = new WebClient();
                 wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
@@ -264,6 +266,20 @@ namespace AutoWP7.Utils
                     settings.Save();
                 }
             }
+        }
+
+        /// <summary>
+        /// 采样日志
+        /// </summary>
+        /// <param name="result">9客户端接收到推送通知时，10客户端在通知中心通过点击或滑动操作进行处理时</param>
+        public static void SampleLog(string categoryID, string messageID, string result, string userID)
+        {
+            string appVersion = Handler.Common.GetSysVersion();
+            string deviceID = Handler.Common.GetDeviceID();
+            string getUrl = string.Format("{0}?appId={1}&CategoryId={2}&OID={3}&DeviceType={4}&DeviceToken={5}&Result={6}&Version={7}&userId={8}&CityId={9}&DeviceId={10}", SampleBaseUrl, AppID, categoryID, messageID, DeviceType, ChannelUrl, result, appVersion, userID, App.CityId, deviceID);
+
+            WebClient wcGetting = new WebClient();
+            wcGetting.DownloadStringAsync(new Uri(getUrl, UriKind.Absolute));
         }
 
         #endregion

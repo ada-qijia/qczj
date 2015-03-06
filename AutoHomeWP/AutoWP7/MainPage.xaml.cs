@@ -50,6 +50,7 @@ namespace AutoWP7
             //点击推送进入
             if (this.NavigationContext.QueryString.ContainsKey("a"))
             {
+                this.SendSampleLog(this.NavigationContext.QueryString, false);
                 this.ToastNavigate(this.NavigationContext.QueryString);
             }
 
@@ -1202,22 +1203,24 @@ namespace AutoWP7
 
         private void PushNotificationHelper_ToastNotificationReceived(object sender, ToastNotificationEventArgs e)
         {
-            System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
+            var argArray = e.CustomParam.Split(new char[] { '?', '&', '=' });
+            if (argArray.Length > 1)
+            {
+                Dictionary<string, string> args = new Dictionary<string, string>();
+                for (int i = 1; i < argArray.Length - 1; i = i + 2)
+                {
+                    args.Add(argArray[i], argArray[i + 1]);
+                }
+
+                this.SendSampleLog(args, true);
+                System.Windows.Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     if (MessageBox.Show(e.Subtitle, e.Title, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                     {
-                        var argArray = e.CustomParam.Split(new char[] { '?', '&', '=' });
-                        if (argArray.Length > 1)
-                        {
-                            Dictionary<string, string> args = new Dictionary<string, string>();
-                            for (int i = 1; i < argArray.Length - 1; i = i + 2)
-                            {
-                                args.Add(argArray[i], argArray[i + 1]);
-                            }
-                            ToastNavigate(args);
-                        }
+                        ToastNavigate(args);
                     }
                 });
+            }
         }
 
         private void ToastNavigate(IDictionary<string, string> args)
@@ -1240,10 +1243,15 @@ namespace AutoWP7
                         //浏览器打开url
                         if (args.ContainsKey("p1") && (!string.IsNullOrEmpty(args["p1"])))
                         {
-                            string url = UrlDecoder.UrlDecode(args["p1"]);
-                            this.wb.Navigate(new Uri(url, UriKind.Absolute));
-                            this.SystemMsgGrid.Visibility = Visibility.Visible;
-                            this.ApplicationBar.IsVisible = false;
+                            try
+                            {
+                                string url = UrlDecoder.UrlDecode(args["p1"]);
+                                WebBrowserTask task = new WebBrowserTask();
+                                task.Uri = new Uri(url, UriKind.Absolute);
+                                task.Show();
+                            }
+                            catch
+                            { }
                         }
                         break;
                     //私信
@@ -1256,34 +1264,20 @@ namespace AutoWP7
             }
         }
 
-        //关闭浏览器
-        private void CloseBrowser_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        //采样日志
+        private void SendSampleLog(IDictionary<string, string> args, bool toastInApp)
         {
-            this.SystemMsgGrid.Visibility = Visibility.Collapsed;
-            this.ApplicationBar.IsVisible = true;
-        }
-
-        //页面加载中
-        private void wb_Navigating(object sender, NavigatingEventArgs e)
-        {
-            this.failPrompt.Visibility = Visibility.Collapsed;
-            this.ProgBar.Visibility = Visibility.Visible;
-        }
-
-        //页面加载完成
-        private void wb_Navigated(object sender, NavigationEventArgs e)
-        {
-            this.ProgBar.Visibility = Visibility.Collapsed;
-        }
-
-        //加载失败
-        private void wb_NavigationFailed(object sender, NavigationFailedEventArgs e)
-        {
-            this.ProgBar.Visibility = Visibility.Collapsed;
-            this.failPrompt.Visibility = Visibility.Visible;
+            if (args.ContainsKey("l") && args["l"] == "1")
+            {
+                var userInfo = Utils.MeHelper.GetMyInfoModel();
+                string userID = userInfo == null ? string.Empty : userInfo.UserID.ToString();
+                string result = toastInApp ? "9" : "10";
+                string categoryID = args.ContainsKey("t") ? args["t"] : string.Empty;
+                string messageID = args.ContainsKey("id") ? args["id"] : string.Empty;
+                PushNotificationHelper.SampleLog(categoryID, messageID, result, userID);
+            }
         }
 
         #endregion
-
     }
 }
