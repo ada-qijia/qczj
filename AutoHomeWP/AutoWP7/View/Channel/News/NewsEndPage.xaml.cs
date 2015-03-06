@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using ViewModels;
 
@@ -374,20 +375,66 @@ namespace AutoWP7.View.Channel.News
         //收藏文章
         private void favorite_Click(object sender, EventArgs e)
         {
-            var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-
-            if (favoriteBtn.Text.Contains("取消"))
+            if (this.news != null)
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int> { news.ID });
-                setFavoriteButton(success);
-                string msg = success ? "取消收藏成功" : "取消收藏失败";
-                Common.showMsg(msg);
+                var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                bool add = !favoriteBtn.Text.Contains("取消");
+                this.uploadFavoriteArticle(add);
             }
-            else
+        }
+
+        private void uploadFavoriteArticle(bool add)
+        {
+            var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
+            var model = new ViewModels.Me.FavoriteViewModel.FavoriteSyncItem() { id = news.ID, time = curTime, action = add ? 0 : 1 };
+            List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem> series = new List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem>();
+            series.Add(model);
+            var articlesStr = CommonLayer.JsonHelper.Serialize(series);
+
+            var userInfoModel = Utils.MeHelper.GetMyInfoModel();
+            if (userInfoModel != null)
+            {
+                string url = Utils.MeHelper.SyncFavoriteCollectionUrl;
+                var ua = Common.GetAutoHomeUA();
+                string data = string.Format("_appid={6}&authorization={0}&bbslist={1}&topiclist={2}&articlelist={3}&_timestamp={4}&autohomeua={5}", userInfoModel.Authorization, null, null, articlesStr, Common.GetTimeStamp(), ua, Utils.MeHelper.appID);
+                data = Common.SortURLParamAsc(data);
+                string sign = Common.GetSignStr(data);
+                data += "&_sign=" + sign;
+
+                var favoriteVM = ViewModels.Me.FavoriteViewModel.SingleInstance;
+                UploadStringCompletedEventHandler uploadClient_UploadCompleted = (object sender, UploadStringCompletedEventArgs e) =>
+                {
+                    var success = favoriteVM.UploadFavoriteSuccess(e);
+                    if (success)
+                    {
+                        setFavoriteButton(!add);
+                        string msg = add ? "收藏成功" : "取消收藏成功";
+                        Common.showMsg(msg);
+                    }
+                    else
+                    {
+                        saveFavoriteArticleLocally(add);
+                    }
+                };
+
+                favoriteVM.UploadOthers(url, data, uploadClient_UploadCompleted, null, null, series);
+            }
+        }
+
+        private void saveFavoriteArticleLocally(bool add)
+        {
+            if (add)
             {
                 bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Article, news);
                 setFavoriteButton(!success);
                 string msg = success ? "收藏成功" : "收藏失败";
+                Common.showMsg(msg);
+            }
+            else
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int> { news.ID });
+                setFavoriteButton(success);
+                string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);
             }
         }

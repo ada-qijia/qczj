@@ -16,6 +16,8 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 using Model.Me;
+using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace AutoWP7.View.Car
 {
@@ -1153,47 +1155,142 @@ namespace AutoWP7.View.Car
         #region 收藏管理
 
         /// <summary>
-        /// 收藏车系
+        /// 收藏车系 this.carSeries
         /// </summary>
         private void FavoriteCarSeries_Click(object sender, EventArgs e)
         {
-            var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-
-            if (favoriteBtn.Text.Contains("取消"))
+            if (this.carSeries != null)
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSeries, new List<int> { this.carSeries.ID });
-                setFavoriteButton(success);
-                string msg = success ? "取消收藏成功" : "取消收藏失败";
-                Common.showMsg(msg);
+                var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                bool add = !favoriteBtn.Text.Contains("取消");
+                this.uploadFavoriteCarSeries(add);
             }
-            else
+        }
+
+        /// <summary>
+        /// 上传车系收藏
+        /// </summary>
+        /// <param name="model"></param>
+        private void uploadFavoriteCarSeries(bool add)
+        {
+            var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
+            var model = new ViewModels.Me.FavoriteViewModel.FavoriteSyncItem() { id = this.carSeries.ID, time = curTime, action = add ? 0 : 1 };
+            List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem> series = new List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem>();
+            series.Add(model);
+            var seriesStr = CommonLayer.JsonHelper.Serialize(series);
+
+            var userInfoModel = Utils.MeHelper.GetMyInfoModel();
+            if (userInfoModel != null)
+            {
+                string url = Utils.MeHelper.SyncFavoriteCarUrl;
+                string data = string.Format("_appid={5}&uc_ticket={0}&seriesStr={1}&specStr={2}&_timestamp={3}&autohomeua={4}", userInfoModel.Authorization, seriesStr, null, Common.GetTimeStamp(), Common.GetAutoHomeUA(), Utils.MeHelper.appID);
+                data = Common.SortURLParamAsc(data);
+                string sign = Common.GetSignStr(data);
+                data += "&_sign=" + sign;
+
+                var favoriteVM = ViewModels.Me.FavoriteViewModel.SingleInstance;
+                UploadStringCompletedEventHandler uploadClient_UploadCompleted = (object sender, UploadStringCompletedEventArgs e) =>
+                    {
+                        var success = favoriteVM.UploadFavoriteSuccess(e);
+                        if (success)
+                        {
+                            setFavoriteButton(!add);
+                            string msg = add ? "收藏成功" : "取消收藏成功";
+                            Common.showMsg(msg);
+                        }
+                        else
+                        {
+                            saveFavoriteCarSeriesLocally(add);
+                        }
+                    };
+                favoriteVM.UploadCar(url, data, uploadClient_UploadCompleted, series, null);
+            }
+        }
+
+        private void saveFavoriteCarSeriesLocally(bool add)
+        {
+            if (add)
             {
                 bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.CarSeries, this.carSeries);
                 setFavoriteButton(!success);
                 string msg = success ? "收藏成功" : "收藏失败";
                 Common.showMsg(msg);
             }
-        }
-
-        //收藏论坛
-        private void favoriteForum_Click(object sender, EventArgs e)
-        {
-            var favoriteBtn = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
-
-            if (favoriteBtn.Text.Contains("取消"))
+            else
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Forum, new List<int> { bbsId });
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSeries, new List<int> { this.carSeries.ID });
                 setFavoriteButton(success);
                 string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);
             }
-            else
+        }
+
+        /// <summary>
+        /// 收藏论坛, bbsId
+        /// </summary>
+        private void favoriteForum_Click(object sender, EventArgs e)
+        {
+            if (bbsId > 0)
+            {
+                var favoriteBtn = this.ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+                bool add = !favoriteBtn.Text.Contains("取消");
+                this.uploadFavoriteForum(add);
+            }
+        }
+
+        private void uploadFavoriteForum(bool add)
+        {
+            var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
+            var model = new ViewModels.Me.FavoriteViewModel.FavoriteSyncItem() { id = bbsId, time = curTime, action = add ? 0 : 1 };
+            List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem> series = new List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem>();
+            series.Add(model);
+            var forumStr = CommonLayer.JsonHelper.Serialize(series);
+
+            var userInfoModel = Utils.MeHelper.GetMyInfoModel();
+            if (userInfoModel != null)
+            {
+                string url = Utils.MeHelper.SyncFavoriteCollectionUrl;
+                var ua = Common.GetAutoHomeUA();
+                string data = string.Format("_appid={6}&authorization={0}&bbslist={1}&topiclist={2}&articlelist={3}&_timestamp={4}&autohomeua={5}", userInfoModel.Authorization, forumStr, null, null, Common.GetTimeStamp(), ua, Utils.MeHelper.appID);
+                data = Common.SortURLParamAsc(data);
+                string sign = Common.GetSignStr(data);
+                data += "&_sign=" + sign;
+
+                var favoriteVM = ViewModels.Me.FavoriteViewModel.SingleInstance;
+                UploadStringCompletedEventHandler uploadClient_UploadCompleted = (object sender, UploadStringCompletedEventArgs e) =>
+                {
+                    var success = favoriteVM.UploadFavoriteSuccess(e);
+                    if (success)
+                    {
+                        setFavoriteButton(!add);
+                        string msg = add ? "收藏成功" : "取消收藏成功";
+                        Common.showMsg(msg);
+                    }
+                    else
+                    {
+                        saveFavoriteForumLocally(add);
+                    }
+                };
+
+                favoriteVM.UploadOthers(url, data, uploadClient_UploadCompleted, series, null, null);
+            }
+        }
+
+        private void saveFavoriteForumLocally(bool add)
+        {
+            if (add)
             {
                 FavoriteForumModel model = CreateCurrentForumModel();
-
                 bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.Forum, model);
                 setFavoriteButton(!success);
                 string msg = success ? "收藏成功" : "收藏失败";
+                Common.showMsg(msg);
+            }
+            else
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Forum, new List<int> { bbsId });
+                setFavoriteButton(success);
+                string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);
             }
         }
@@ -1206,7 +1303,7 @@ namespace AutoWP7.View.Car
                 model.ID = bbsId;
                 model.Name = bbsName;
                 model.Type = bbsType;
-                model.Time = DateTime.Now.ToString();
+                model.Time = DateTime.Now.ToString("YYYY-MM-dd HH:mm:ss");
                 return model;
             }
             else

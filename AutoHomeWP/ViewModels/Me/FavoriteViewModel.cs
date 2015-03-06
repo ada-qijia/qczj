@@ -29,6 +29,28 @@ namespace ViewModels.Me
             this.FavoriteBlockHeaders = new Dictionary<FavoriteType, FavoriteBlockInfo>();
         }
 
+        #region public methods
+
+        public bool UploadFavoriteSuccess(UploadStringCompletedEventArgs e)
+        {
+            bool success = false;
+            try
+            {
+                if (e.Error == null && e.Result != null)
+                {
+                    JObject json = JObject.Parse(e.Result);
+                    int resultCode = (int)json.SelectToken("returncode");
+                    success = resultCode == 0;
+                }
+            }
+            catch
+            { }
+
+            return success;
+        }
+
+        #endregion
+
         #region properties
 
         private static FavoriteViewModel _singleInstance;
@@ -407,6 +429,8 @@ namespace ViewModels.Me
                     }
                     break;
             }
+
+            this.ReloadLocally(type);
         }
 
         /// <summary>

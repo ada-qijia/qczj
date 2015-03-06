@@ -12,6 +12,7 @@ using ViewModels;
 using ViewModels.Handler;
 using System.Windows;
 using Model.Me;
+using System.Net;
 
 namespace AutoWP7.View.Car
 {
@@ -587,20 +588,67 @@ namespace AutoWP7.View.Car
         //收藏车型
         private void favorite_Click(object sender, EventArgs e)
         {
-            var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-
-            if (favoriteBtn.Text.Contains("取消"))
+            if (this.carSpec != null)
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSpec, new List<int> { this.carSpec.ID });
-                setFavoriteButton(success);
-                string msg = success ? "取消收藏成功" : "取消收藏失败";
-                Common.showMsg(msg);
+                var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                bool add = !favoriteBtn.Text.Contains("取消");
+                this.uploadFavoriteCarSpec(add);
             }
-            else
+        }
+
+        /// <summary>
+        /// 上传车型收藏
+        /// </summary>
+        private void uploadFavoriteCarSpec(bool add)
+        {
+            var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
+            var model = new ViewModels.Me.FavoriteViewModel.FavoriteSyncItem() { id = this.carSpec.ID, time = curTime, action = add ? 0 : 1 };
+            List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem> specs = new List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem>();
+            specs.Add(model);
+            var specStr = CommonLayer.JsonHelper.Serialize(specs);
+
+            var userInfoModel = Utils.MeHelper.GetMyInfoModel();
+            if (userInfoModel != null)
+            {
+                string url = Utils.MeHelper.SyncFavoriteCarUrl;
+                string data = string.Format("_appid={5}&uc_ticket={0}&seriesStr={1}&specStr={2}&_timestamp={3}&autohomeua={4}", userInfoModel.Authorization, null, specStr, Common.GetTimeStamp(), Common.GetAutoHomeUA(), Utils.MeHelper.appID);
+                data = Common.SortURLParamAsc(data);
+                string sign = Common.GetSignStr(data);
+                data += "&_sign=" + sign;
+
+                var favoriteVM = ViewModels.Me.FavoriteViewModel.SingleInstance;
+                UploadStringCompletedEventHandler uploadClient_UploadCompleted = (object sender, UploadStringCompletedEventArgs e) =>
+                {
+                    var success = favoriteVM.UploadFavoriteSuccess(e);
+                    if (success)
+                    {
+                        setFavoriteButton(!add);
+                        string msg = add ? "收藏成功" : "取消收藏成功";
+                        Common.showMsg(msg);
+                    }
+                    else
+                    {
+                        saveFavoriteCarSpecLocally(add);
+                    }
+                };
+                favoriteVM.UploadCar(url, data, uploadClient_UploadCompleted, null, specs);
+            }
+        }
+
+        private void saveFavoriteCarSpecLocally(bool add)
+        {
+            if (add)
             {
                 bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Add(FavoriteType.CarSpec, this.carSpec);
                 setFavoriteButton(!success);
                 string msg = success ? "收藏成功" : "收藏失败";
+                Common.showMsg(msg);
+            }
+            else
+            {
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSpec, new List<int> { this.carSpec.ID });
+                setFavoriteButton(success);
+                string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);
             }
         }
@@ -609,7 +657,7 @@ namespace AutoWP7.View.Car
         {
             if (this.piv.SelectedIndex == 0)//经销商
             {
-                if (!this.ApplicationBar.Buttons.Contains(addFavorite))
+                if (!this.ApplicationBar.Buttons.Contains(AddFavorite))
                 {
                     this.ApplicationBar.Buttons.Insert(0, AddFavorite);
                 }
