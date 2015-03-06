@@ -38,6 +38,8 @@ namespace AutoWP7.Utils
         public const string WeiboAppSecret = "120cb25307676b0273a0dc433ab45a6f";
         public const string WeiboRedirectUri = "http://account.autohome.com.cn/oauth/SinaoauthResult";
 
+        public const string FavoriteTimeFormat = "yyyy-MM-dd HH:mm:ss";
+
         public static void InitalizeMePersistence()
         {
             ViewModels.Me.FavoriteViewModel.FilePath = MyFavoriteFileName;
