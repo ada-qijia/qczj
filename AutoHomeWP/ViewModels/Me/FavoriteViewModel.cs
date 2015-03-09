@@ -531,10 +531,16 @@ namespace ViewModels.Me
                             var clublist = JsonHelper.DeserializeOrDefault<List<FavoriteForumModel>>(blockToken.SelectToken("list").ToString());
                             foreach (var item in clublist)
                             {
-                                if (this.model.ForumList.FirstOrDefault(m => m.ID == item.ID) == null)
+                                var found = this.model.ForumList.FirstOrDefault(m => m.ID == item.ID);
+                                if (found == null)
                                 {
                                     this.model.ForumList.Add(item);
                                 }
+                                else
+                                {
+                                    found.Action = 0;
+                                }
+
                                 if (this.ForumList.FirstOrDefault(m => m.ID == item.ID) == null)
                                 {
                                     this.ForumList.Add(item);
@@ -543,7 +549,6 @@ namespace ViewModels.Me
 
                             this.EnsureMoreButton(FavoriteType.Forum, this.ForumList, LoadMoreForumItem);
                         }
-
 
                         #endregion
 
@@ -558,10 +563,16 @@ namespace ViewModels.Me
                             var itemlist = JsonHelper.DeserializeOrDefault<List<FavoriteTopicModel>>(blockToken.SelectToken("list").ToString());
                             foreach (var item in itemlist)
                             {
-                                if (this.model.TopicList.FirstOrDefault(m => m.ID == item.ID) == null)
+                                var found = this.model.ForumList.FirstOrDefault(m => m.ID == item.ID);
+                                if (found == null)
                                 {
                                     this.model.TopicList.Add(item);
                                 }
+                                else
+                                {
+                                    found.Action = 0;
+                                }
+
                                 if (this.TopicList.FirstOrDefault(m => m.ID == item.ID) == null)
                                 {
                                     this.TopicList.Add(item);
@@ -571,7 +582,6 @@ namespace ViewModels.Me
                             this.EnsureMoreButton(FavoriteType.Topic, this.TopicList, LoadMoreTopicItem);
                         }
 
-                        //添加加载更多
                         #endregion
 
                         #region 文章列表
@@ -585,10 +595,16 @@ namespace ViewModels.Me
                             var itemlist = JsonHelper.DeserializeOrDefault<List<FavoriteArticleModel>>(blockToken.SelectToken("list").ToString());
                             foreach (var item in itemlist)
                             {
-                                if (this.model.ArticleList.FirstOrDefault(m => m.ID == item.ID) == null)
+                                var found = this.model.ForumList.FirstOrDefault(m => m.ID == item.ID);
+                                if (found == null)
                                 {
                                     this.model.ArticleList.Add(item);
                                 }
+                                else
+                                {
+                                    found.Action = 0;
+                                }
+
                                 if (this.ArticleList.FirstOrDefault(m => m.ID == item.ID) == null)
                                 {
                                     this.ArticleList.Add(item);
@@ -611,10 +627,16 @@ namespace ViewModels.Me
                             var itemlist = JsonHelper.DeserializeOrDefault<List<FavoriteCarSeriesModel>>(blockToken.SelectToken("list").ToString());
                             foreach (var item in itemlist)
                             {
-                                if (this.model.CarSeriesList.FirstOrDefault(m => m.ID == item.ID) == null)
+                                var found = this.model.ForumList.FirstOrDefault(m => m.ID == item.ID);
+                                if (found == null)
                                 {
                                     this.model.CarSeriesList.Add(item);
                                 }
+                                else
+                                {
+                                    found.Action = 0;
+                                }
+
                                 if (this.CarSeriesList.FirstOrDefault(m => m.ID == item.ID) == null)
                                 {
                                     this.CarSeriesList.Add(item);
@@ -636,10 +658,16 @@ namespace ViewModels.Me
                             var itemlist = JsonHelper.DeserializeOrDefault<List<FavoriteCarSpecModel>>(blockToken.SelectToken("list").ToString());
                             foreach (var item in itemlist)
                             {
-                                if (this.model.CarSpecList.FirstOrDefault(m => m.ID == item.ID) == null)
+                                var found = this.model.ForumList.FirstOrDefault(m => m.ID == item.ID);
+                                if (found == null)
                                 {
                                     this.model.CarSpecList.Add(item);
                                 }
+                                else
+                                {
+                                    found.Action = 0;
+                                }
+
                                 if (this.CarSpecList.FirstOrDefault(m => m.ID == item.ID) == null)
                                 {
                                     this.CarSpecList.Add(item);
@@ -948,7 +976,7 @@ namespace ViewModels.Me
         private void EnsureMoreButton(FavoriteType type, IList collection, LoadMoreItem item)
         {
             var blockInfo = this.FavoriteBlockHeaders[type];
-            if (blockInfo != null && blockInfo.PageIndex < blockInfo.RowCount)
+            if (blockInfo != null && blockInfo.PageIndex < blockInfo.PageCount)
             {
                 collection.Add(item);
             }

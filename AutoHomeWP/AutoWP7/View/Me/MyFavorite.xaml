@@ -40,7 +40,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="CarSpecItemTemplate">
-            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="-24 -6 0 30" Tap="CarSpecItem_Tap">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="-30 -6 0 30" Tap="CarSpecItem_Tap">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
@@ -62,7 +62,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ArticleItemTemplate">
-            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="-24 -6 0 30" Tap="ArticleItem_Tap">
+            <Grid Width="{StaticResource ContentWidth}" Background="Transparent" Margin="-30 -6 6 30" Tap="ArticleItem_Tap">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
@@ -118,7 +118,7 @@
                                 <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource CarSeriesItemTemplate}">
                                     <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
                                         <DataTemplate>
-                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreCarSeries_Tap">
+                                            <Border Margin="-24,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreCarSeries_Tap">
                                                 <TextBlock Foreground="Black" FontSize="28"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                            Text="点击加载更多..."/>
@@ -147,7 +147,7 @@
                                 <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource CarSpecItemTemplate}">
                                     <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
                                         <DataTemplate>
-                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreCarSpec_Tap">
+                                            <Border Margin="-30,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreCarSpec_Tap">
                                                 <TextBlock Foreground="Black" FontSize="28"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                            Text="点击加载更多..."/>
@@ -177,7 +177,7 @@
                                 <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource ArticleItemTemplate}">
                                     <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
                                         <DataTemplate>
-                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreArticle_Tap">
+                                            <Border Margin="-30,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreArticle_Tap">
                                                 <TextBlock Foreground="Black" FontSize="28"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                            Text="点击加载更多..."/>
@@ -207,7 +207,7 @@
                                 <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource ForumItemTemplate}">
                                     <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
                                         <DataTemplate>
-                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreForum_Tap">
+                                            <Border Margin="-24,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreForum_Tap">
                                                 <TextBlock Foreground="Black" FontSize="28"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                            Text="点击加载更多..."/>
@@ -237,7 +237,7 @@
                                 <utils:LoadMoreDataTemplateSelector Content="{Binding}" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource TopicItemTemplate}">
                                     <utils:LoadMoreDataTemplateSelector.LoadMoreTemplate>
                                         <DataTemplate>
-                                            <Border Margin="0,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreTopic_Tap">
+                                            <Border Margin="-24,10,0,16"  Background="LightGray" Height="60" Width="{StaticResource ContentWidth}" Tap="LoadMoreTopic_Tap">
                                                 <TextBlock Foreground="Black" FontSize="28"
                                                            HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                            Text="点击加载更多..."/>

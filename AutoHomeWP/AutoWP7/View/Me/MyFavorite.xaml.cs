@@ -2,6 +2,7 @@
 using Microsoft.Phone.Controls;
 using Model.Me;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -121,8 +122,56 @@ namespace AutoWP7.View.Me
 
         public override void AfterDeleteItems(System.Collections.IList selectedItems)
         {
-            base.AfterDeleteItems(selectedItems);
-            //  this.FavoriteVM.Remove();
+            List<int> removedIds = new List<int>();
+
+            if (selectedItems.Count > 0)
+            {
+                if (selectedItems[0] is FavoriteCarSeriesModel)
+                {
+                    foreach (FavoriteCarSeriesModel item in selectedItems)
+                    {
+                        removedIds.Add(item.ID);
+                    }
+                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSeries, removedIds);
+                    this.uploadCarData();
+                }
+                else if(selectedItems[0] is FavoriteCarSpecModel)
+                {
+                    foreach (FavoriteCarSpecModel item in selectedItems)
+                    {
+                        removedIds.Add(item.ID);
+                    }
+                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSpec, removedIds);
+                    this.uploadCarData();
+                }
+                else if (selectedItems[0] is FavoriteForumModel)
+                {
+                    foreach (FavoriteForumModel item in selectedItems)
+                    {
+                        removedIds.Add(item.ID);
+                    }
+                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Forum, removedIds);
+                    this.uploadOthersData();
+                }
+                else if (selectedItems[0] is FavoriteTopicModel)
+                {
+                    foreach (FavoriteTopicModel item in selectedItems)
+                    {
+                        removedIds.Add(item.ID);
+                    }
+                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Topic, removedIds);
+                    this.uploadOthersData();
+                }
+                else if (selectedItems[0] is FavoriteArticleModel)
+                {
+                    foreach (FavoriteArticleModel item in selectedItems)
+                    {
+                        removedIds.Add(item.ID);
+                    }
+                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, removedIds);
+                    this.uploadOthersData();
+                }
+            }
         }
 
         #endregion
