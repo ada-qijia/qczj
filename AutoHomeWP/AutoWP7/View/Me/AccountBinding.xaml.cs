@@ -8,6 +8,7 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 using ViewModels.Me;
 using WeiboSdk;
@@ -93,14 +94,15 @@ namespace AutoWP7.View.Me
             var settings = IsolatedStorageSettings.ApplicationSettings;
 
             //weibo, http://open.weibo.com/wiki/Oauth2/get_token_info?sudaref=open.weibo.com
-            if (settings.Contains(Utils.MeHelper.weiboAccountKey) && settings[Utils.MeHelper.weiboAccountKey] is ThirdPartyAccountModel)
+            var weibo = this.BindingVM.BindingList.FirstOrDefault(item => item.ThirdPartyID == Utils.MeHelper.WeiboPlatformID);
+            if (weibo != null)
             {
-                //使用第三方账号登录
-            }
-            else
-            {
-                var weibo = this.BindingVM.BindingList.FirstOrDefault(item => item.ThirdPartyID == Utils.MeHelper.WeiboPlatformID);
-                if (weibo != null && !string.IsNullOrEmpty(weibo.Token))
+                if (settings.Contains(Utils.MeHelper.weiboAccountKey) && settings[Utils.MeHelper.weiboAccountKey] is ThirdPartyAccountModel)
+                {
+                    weibo.RelationType = 1;
+                    weibo.IsExpired = false;
+                }
+                else if (!string.IsNullOrEmpty(weibo.Token))
                 {
                     var client = new Hammock.RestClient();
                     client.Authority = "https://api.weibo.com";
@@ -153,11 +155,15 @@ namespace AutoWP7.View.Me
                                     return;
                                 }
                             }
-                            weibo.IsExpired = false;
-
-                            //update binding
-                            this.DataContext = null;
-                            this.DataContext = this.BindingVM;
+                            else
+                            {
+                                int expireIn = json.SelectToken("expire_in").Value<int>();
+                                if (expireIn < 0)
+                                {
+                                    weibo.IsExpired = true;
+                                    return;
+                                }
+                            }
                         }
                     });
             }
@@ -218,18 +224,41 @@ namespace AutoWP7.View.Me
             if (errCode.errCode == SdkErrCode.SUCCESS && response != null)
             {
                 var weiboModel = new Model.Me.ThirdPartyAccountModel();
+                weiboModel.PlatformId = Utils.MeHelper.WeiboPlatformID;
                 weiboModel.AccessToken = response.accesssToken;
                 weiboModel.RefreshToken = response.refleshToken;
-                weiboModel.ExpiresIn = DateTime.Now.AddSeconds(int.Parse(response.expriesIn));
+                weiboModel.ExpiresIn = int.Parse(response.expriesIn);
                 weiboModel.OpenId = response.UserId;
                 IsolatedStorageSettings.ApplicationSettings[Utils.MeHelper.weiboAccountKey] = weiboModel;
 
-                var meInfo = Utils.MeHelper.GetMyInfoModel();
-                string data = string.Format("token={0}&userid={1}&platformid={2}&_appid={3}&autohomeua={4}&_timestamp={5}", response.accesssToken, meInfo.UserID, Utils.MeHelper.WeiboPlatformID, Utils.MeHelper.appIDWp, Handler.Common.GetAutoHomeUA(), Handler.Common.GetTimeStamp());// meInfo.UserID);
-                data = Handler.Common.SortURLParamAsc(data);
-                string sign = Handler.Common.GetSignStr(data);
-                data += "&_sign=" + sign;
-                ViewModels.Me.UpStreamViewModel.SingleInstance.UploadAsync(Utils.MeHelper.ThirdPartyUpdateTokenUrl, data, updateTokenCompleted);
+                var weibo = this.BindingVM.BindingList.FirstOrDefault(item => item.ThirdPartyID == Utils.MeHelper.WeiboPlatformID);
+                //过期绑定，更新Token
+                if (weibo.IsExpired)
+                {
+                    var meInfo = Utils.MeHelper.GetMyInfoModel();
+                    string data = string.Format("token={0}&userid={1}&platformid={2}&_appid={3}&autohomeua={4}&_timestamp={5}", response.accesssToken, meInfo.UserID, weiboModel.PlatformId, Utils.MeHelper.appIDWp, Handler.Common.GetAutoHomeUA(), Handler.Common.GetTimeStamp());
+                    data = Handler.Common.SortURLParamAsc(data);
+                    string sign = Handler.Common.GetSignStr(data);
+                    data += "&_sign=" + sign;
+                    ViewModels.Me.UpStreamViewModel.SingleInstance.UploadAsync(Utils.MeHelper.ThirdPartyUpdateTokenUrl, data, updateTokenCompleted, weiboModel);
+                }
+                else//首次绑定,关联账号
+                {
+                    EventHandler<string> getNicknameCompleted = (object s, string e) =>
+                        {
+                            var meInfo = Utils.MeHelper.GetMyInfoModel();
+                            if (meInfo != null)
+                            {
+                                string format = "_appid={0}&_timeStamp={1}&autohomeua={2}&pcpopclub={3}&platformid={4}&openId={5}&token={6}&tokenSecret={7}&orginalName={8}";
+                                string data = string.Format(format, Utils.MeHelper.appID, Handler.Common.GetTimeStamp(), AutoWP7.Handler.Common.GetAutoHomeUA(), meInfo.Authorization, weiboModel.PlatformId, weiboModel.OpenId, weiboModel.AccessToken, Utils.MeHelper.WeiboAppSecret, e);
+                                data = Handler.Common.SortURLParamAsc(data);
+                                string sign = Handler.Common.GetSignStr(data);
+                                data += "&_sign=" + sign;
+                                UpStreamViewModel.SingleInstance.UploadAsync(Utils.MeHelper.ConnectAccountUrl, data, connectAccountCompleted, weiboModel);
+                            }
+                        };
+                    Utils.MeHelper.GetWeiboUserNickname(weiboModel.AccessToken, weiboModel.OpenId, getNicknameCompleted);
+                }
             }
             else
             {
@@ -243,15 +272,60 @@ namespace AutoWP7.View.Me
             {
                 if (e.Error == null && e.Cancelled == false)
                 {
+                    JObject json = JObject.Parse(e.Result);
+                    var returnCode = json.SelectToken("returncode").Value<int>();
+                    if (returnCode == 0 && e.UserState is Model.Me.ThirdPartyAccountModel)
+                    {
+                        var weiboModel = e.UserState as Model.Me.ThirdPartyAccountModel;
+                        var weibo = this.BindingVM.BindingList.FirstOrDefault(item => item.ThirdPartyID == weiboModel.PlatformId);
+                        if (weibo != null)
+                        {
+                            weibo.IsExpired = false;
+                            weibo.RelationType = 1;
+                            var result = json.SelectToken("result");
+                            if (result != null)
+                            {
+                                weibo.UserID = result.SelectToken("UserId").Value<int>();
+                                weibo.Token = result.SelectToken("Token").ToString();
+                                weibo.OriginalID = result.SelectToken("OpenId").ToString();
+                            }
+                        }
+                    }
                 }
             }
             catch
             { }
+        }
 
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
+        private void connectAccountCompleted(object sender, UploadStringCompletedEventArgs e)
+        {
+            try
             {
-                NavigationService.GoBack();
-            });
+                if (e.Error == null && e.Cancelled == false)
+                {
+                    JObject json = JObject.Parse(e.Result);
+                    var returnCode = json.SelectToken("returncode").Value<int>();
+                    if (returnCode == 0 && e.UserState is Model.Me.ThirdPartyAccountModel)
+                    {
+                        var weiboModel = e.UserState as Model.Me.ThirdPartyAccountModel;
+                        var weibo = this.BindingVM.BindingList.FirstOrDefault(item => item.ThirdPartyID == weiboModel.PlatformId);
+                        if (weibo != null)
+                        {
+                            weibo.IsExpired = false;
+                            weibo.RelationType = 1;
+                            var result = json.SelectToken("result");
+                            if (result != null)
+                            {
+                                weibo.UserID = result.SelectToken("UserId").Value<int>();
+                                weibo.Token = weiboModel.AccessToken;
+                                weibo.OriginalID = weiboModel.OpenId;
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            { }
         }
 
         private void cancelEvent(object sender, EventArgs e)

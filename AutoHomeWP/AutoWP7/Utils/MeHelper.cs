@@ -1,4 +1,5 @@
 ﻿using Model;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
@@ -34,6 +35,9 @@ namespace AutoWP7.Utils
 
         public const int QQPlatformID = 15;
         public const int WeiboPlatformID = 16;
+        public const string QQAppKey = "100372335";
+        public const string QQAppSecret = "767c3b0b69635ea72353a0019fbb6e2e";
+        public const string QQRedirectUri = "http://account.autohome.com.cn";
         public const string WeiboAppKey = "2351935287";
         public const string WeiboAppSecret = "120cb25307676b0273a0dc433ab45a6f";
         public const string WeiboRedirectUri = "http://account.autohome.com.cn/oauth/SinaoauthResult";
@@ -83,6 +87,37 @@ namespace AutoWP7.Utils
                 return null;
             }
         }
+
+        #region weibo
+
+        public static void GetWeiboUserNickname(string accessToken, string userId, EventHandler<string> completed = null)
+        {
+            string url = string.Format("https://api.weibo.com/2/users/show.json?access_token={0}&uid={1}", accessToken, userId);
+
+            WebClient client = new WebClient();
+            client.DownloadStringCompleted += (s, e) =>
+            {
+                string nickname = null;
+                try
+                {
+                    if (e.Error == null && e.Cancelled == false)
+                    {
+                        JObject json = JObject.Parse(e.Result);
+                        nickname = json.SelectToken("screen_name").ToString();
+                    }
+                }
+                catch
+                { }
+
+                if (completed != null)
+                {
+                    completed(s, nickname);
+                }
+            };
+            client.DownloadStringAsync(new Uri(url, UriKind.Absolute));
+        }
+
+        #endregion
 
         #region url
 

@@ -22,7 +22,7 @@ namespace Model.Me
         public string AccessToken { get; set; }
 
         [DataMember]
-        public DateTime ExpiresIn { get; set; }
+        public int ExpiresIn { get; set; }
 
         [DataMember]
         public string RefreshToken { get; set; }

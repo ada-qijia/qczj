@@ -293,15 +293,16 @@ namespace AutoWP7.View.More
             if (errCode.errCode == SdkErrCode.SUCCESS && response != null)
             {
                 var weiboModel = new Model.Me.ThirdPartyAccountModel();
+                weiboModel.PlatformId = Utils.MeHelper.WeiboPlatformID;
                 weiboModel.AccessToken = response.accesssToken;
                 weiboModel.RefreshToken = response.refleshToken;
-                weiboModel.ExpiresIn = DateTime.Now.AddSeconds(int.Parse(response.expriesIn));
+                weiboModel.ExpiresIn = int.Parse(response.expriesIn);
                 weiboModel.OpenId = response.UserId;
                 settings[Utils.MeHelper.weiboAccountKey] = weiboModel;
 
                 //汽车之家第三方登录接口
-                string dataFormat = "_appid={0}&autohomeua={1}&openid={2}&plantFormId={3}&token={4}&position={5}&refreshToken={6}&_timeStamp={7}";
-                string data = string.Format(dataFormat, Utils.MeHelper.appID, AutoWP7.Handler.Common.GetAutoHomeUA(), response.UserId, Utils.MeHelper.WeiboPlatformID, response.accesssToken, App.CityId, response.refleshToken, Common.GetTimeStamp());
+                string dataFormat = "_appid={0}&autohomeua={1}&openid={2}&plantFormId={3}&token={4}&position={5}&_timeStamp={6}";
+                string data = string.Format(dataFormat, Utils.MeHelper.appIDWp, AutoWP7.Handler.Common.GetAutoHomeUA(), response.UserId, Utils.MeHelper.WeiboPlatformID, response.accesssToken, App.CityId, Common.GetTimeStamp());
                 data = Common.SortURLParamAsc(data);
                 string sign = Common.GetSignStr(data);
                 data += "&_sign=" + sign;

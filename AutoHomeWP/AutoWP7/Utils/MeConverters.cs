@@ -182,71 +182,17 @@ namespace AutoWP7.Utils
         }
     }
 
-    public class ThirdPartyModelToUserNameConverter : IValueConverter
-    {
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var model = value as ThirdPartyBindingModel;
-            if (model != null)
-            {
-                return model.RelationType == 0 ? "未绑定" : model.UserName;
-            }
-
-            return null;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class ThirdPartyModelToStatusTextConverter : IValueConverter
+    public class BindingStatusToEnabledConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var model = value as ThirdPartyBindingModel;
-            if (model != null)
+            if (value is string)
             {
-                if (model.IsExpired)
-                {
-                    return "重新绑定";
-                }
-                else
-                {
-                    switch (model.RelationType)
-                    {
-                        case 0:
-                            return "立即绑定";
-                        case 1:
-                            return "已经绑定";
-                        case 2:
-                            return "重新绑定";
-                    }
-                }
+                var status = value.ToString();
+                return status.Contains("立即") || status.Contains("重新");
             }
 
-            return value;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class ThirdPartyModelToEnabledConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var model = value as ThirdPartyBindingModel;
-            if (model != null)
-            {
-                return model.RelationType != 1 || model.IsExpired;
-            }
-
-            return true;
+            return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

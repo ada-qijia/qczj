@@ -66,7 +66,7 @@ namespace AutoWP7.View.Me
                 string username = HttpUtility.UrlEncode(this.ThirdPartyRegisterPanel.UsernameTextbox.Text);
                 string validcode = this.ThirdPartyRegisterPanel.CodeTextbox.Text;
                 string mobile = this.ThirdPartyRegisterPanel.PhoneNoTextBox.Text;
-                int expiresin = (thirdPartyModel.ExpiresIn - DateTime.Now).Seconds;
+                int expiresin = thirdPartyModel.ExpiresIn;
                 string ua = AutoWP7.Handler.Common.GetAutoHomeUA();
 
                 string format = "_appid={0}&autohomeua={1}&_timeStamp={2}&token={3}&openId={4}&username={5}&validcode={6}&mobile={7}&platformid={8}&expiresin={9}";//&refreshtoken={10}&area={11}
@@ -125,7 +125,8 @@ namespace AutoWP7.View.Me
 
                                 //返回登录页
                                 Common.showMsg("完善资料成功");
-                                NavigationService.GoBack();
+                                NavigationService.RemoveBackEntry();
+                                NavigationService.RemoveBackEntry();
                             }
                             break;
                         default://其他情况...

@@ -16,9 +16,7 @@
         <utils:BoolToVisibleConverter x:Key="BoolToVisibleConverter"/>
         <utils:ThirdPartyIDToImageConverter x:Key="ThirdPartyIDToImageConverter"/>
         <utils:ThirdPartyIDToTitleConverter x:Key="ThirdPartyIDToTitleConverter"/>
-        <utils:ThirdPartyModelToUserNameConverter x:Key="ThirdPartyModelToUserNameConverter"/>
-        <utils:ThirdPartyModelToStatusTextConverter x:Key="ThirdPartyModelToStatusTextConverter"/>
-        <utils:ThirdPartyModelToEnabledConverter x:Key="ThirdPartyModelToEnabledConverter"/>
+        <utils:BindingStatusToEnabledConverter x:Key="BindingStatusToEnabledConverter"/>
         <Style x:Key="ButtonStyle1" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="{StaticResource App_Theme_Color}"/>
@@ -104,8 +102,8 @@
                                     <TextBlock Text="{Binding ThirdPartyID,Converter={StaticResource ThirdPartyIDToTitleConverter}}" Style="{StaticResource TitleLargeTextStyle}"/>
                                     <TextBlock Text="(授权失效)" Style="{StaticResource TitleLargeTextStyle}" Visibility="{Binding IsExpired,Converter={StaticResource BoolToVisibleConverter}}"/>
                                 </StackPanel>
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Converter={StaticResource ThirdPartyModelToUserNameConverter}}" Style="{StaticResource ContentTextStyle}"/>
-                                <Button Grid.RowSpan="2" Grid.Column="2" Content="{Binding Converter={StaticResource ThirdPartyModelToStatusTextConverter}}" IsEnabled="{Binding Converter={StaticResource ThirdPartyModelToEnabledConverter}}" Width="150" VerticalAlignment="Center" Style="{StaticResource ButtonStyle1}" Click="ThirdPartyBinding_Click"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ShowName}" Style="{StaticResource ContentTextStyle}"/>
+                                <Button Grid.RowSpan="2" Grid.Column="2" Content="{Binding StatusName}" IsEnabled="{Binding Path=Content, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BindingStatusToEnabledConverter}}" Width="150" VerticalAlignment="Center" Style="{StaticResource ButtonStyle1}" Click="ThirdPartyBinding_Click"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

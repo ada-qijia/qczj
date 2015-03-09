@@ -54,15 +54,22 @@ namespace AutoWP7.View.Me
             {
                 string username = this.UsernameTextbox.Text;
                 string password = Handler.MD5.GetMd5String(this.PasswordTextbox.Password);
-                //关联账号
-                string format = "_appid={0}&_timeStamp={1}&autohomeua={2}&logincode={3}&userPwd={4}&openId={5}&platformid={6}&token={7}&tokenSecret={8}&orginalName={9}";
-                string data = string.Format(format, Utils.MeHelper.appID, Common.GetTimeStamp(), AutoWP7.Handler.Common.GetAutoHomeUA(), username, password, thirdPartyModel.OpenId, this.platformId, thirdPartyModel.AccessToken, string.Empty, string.Empty);
-                data = Common.SortURLParamAsc(data);
-                string sign = Common.GetSignStr(data);
-                data += "&_sign=" + sign;
 
-                UpStreamViewModel upstreamVM = UpStreamViewModel.SingleInstance;
-                upstreamVM.UploadAsync(Utils.MeHelper.ConnectAccountUrl, data, wc_UploadStringCompleted);
+                //获取昵称
+                EventHandler<string> getNicknameCompleted = (object s, string nickname) =>
+                {
+                    //关联账号
+                    string format = "_appid={0}&_timeStamp={1}&autohomeua={2}&logincode={3}&userPwd={4}&openId={5}&platformid={6}&token={7}&tokenSecret={8}&orginalName={9}";
+                    string secret = thirdPartyModel.PlatformId == Utils.MeHelper.WeiboPlatformID ? Utils.MeHelper.WeiboAppSecret : Utils.MeHelper.QQAppSecret;
+                    string data = string.Format(format, Utils.MeHelper.appID, Common.GetTimeStamp(), AutoWP7.Handler.Common.GetAutoHomeUA(), username, password, thirdPartyModel.OpenId, thirdPartyModel.PlatformId, thirdPartyModel.AccessToken, secret, nickname);
+                    data = Common.SortURLParamAsc(data);
+                    string sign = Common.GetSignStr(data);
+                    data += "&_sign=" + sign;
+
+                    UpStreamViewModel upstreamVM = UpStreamViewModel.SingleInstance;
+                    upstreamVM.UploadAsync(Utils.MeHelper.ConnectAccountUrl, data, wc_UploadStringCompleted);
+                };
+                Utils.MeHelper.GetWeiboUserNickname(thirdPartyModel.AccessToken, thirdPartyModel.OpenId, getNicknameCompleted);
             }
         }
 
