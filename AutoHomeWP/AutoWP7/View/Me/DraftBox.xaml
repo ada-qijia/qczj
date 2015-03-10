@@ -48,9 +48,9 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding Converter={StaticResource DraftTitleConverter}}" Style="{StaticResource TitleLargeTextStyle}" TextTrimming="WordEllipsis" Margin="0 -12 0 0"/>
+                            <TextBlock Text="{Binding Converter={StaticResource DraftTitleConverter}}" Style="{StaticResource TitleLargeTextStyle}" TextWrapping="NoWrap" Margin="0 -12 0 0"/>
                             <TextBlock Grid.Column="1" Text="{Binding SavedTime, ConverterParameter=MM-dd hh:mm, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource ContentTextStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 -6 0 0"/>
-                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Content}" Style="{StaticResource ContentTextStyle}" VerticalAlignment="Bottom" />
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Content}" Style="{StaticResource ContentTextStyle}" TextWrapping="NoWrap" VerticalAlignment="Bottom" />
                         </Grid>
                     </DataTemplate>
                 </toolkit:LongListMultiSelector.ItemTemplate>

@@ -115,26 +115,30 @@ namespace AutoWP7.View.Car
 
         void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
-            if (e.Error != null)
+            try
             {
-                Common.NetworkAvailablePrompt();
-            }
-            else
-            {
-                JObject json = JObject.Parse(e.Result);
-                replyCount = (int)json.SelectToken("result").SelectToken("topicinfo")[0].SelectToken("replycounts");
-
-                if (replyCount % 20 == 0)
+                if (e.Error != null)
                 {
-                    pageCount = replyCount / 20;
+                    Common.NetworkAvailablePrompt();
                 }
-                else
+                else if (e.Cancelled == false)
                 {
-                    pageCount = replyCount / 20 + 1;
-                }
-                webTopicDetail.Navigate(urlSource);
+                    JObject json = JObject.Parse(e.Result);
+                    replyCount = (int)json.SelectToken("result").SelectToken("topicinfo")[0].SelectToken("replycounts");
 
+                    if (replyCount % 20 == 0)
+                    {
+                        pageCount = replyCount / 20;
+                    }
+                    else
+                    {
+                        pageCount = replyCount / 20 + 1;
+                    }
+                    webTopicDetail.Navigate(urlSource);
+                }
             }
+            catch
+            { }
 
         }
         #endregion

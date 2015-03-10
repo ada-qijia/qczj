@@ -681,7 +681,7 @@
                                     <Grid>
                                         <Image Source="/Images/Me/commentReply.png"/>
                                         <TextBlock Text="评论回复"/>
-                                        <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=1,FallbackValue=Collapsed}">
+                                        <Border x:Name="CommentReplyBadge" Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=1,FallbackValue=Collapsed}">
                                             <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=1}" Style="{StaticResource BadgeTextStyle}"/>
                                         </Border>
                                     </Grid>
@@ -691,7 +691,7 @@
                                     <Grid>
                                         <Image Source="/Images/Me/forumReply.png"/>
                                         <TextBlock Text="论坛回复"/>
-                                        <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=2,FallbackValue=Collapsed}">
+                                        <Border x:Name="ForumReplyBadge" Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=2,FallbackValue=Collapsed}">
                                             <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=2}" Style="{StaticResource BadgeTextStyle}"/>
                                         </Border>
                                     </Grid>
@@ -701,7 +701,7 @@
                                     <Grid>
                                         <Image Source="/Images/Me/privateMessage.png"/>
                                         <TextBlock Text="私信"/>
-                                        <Border Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=2,FallbackValue=Collapsed}">
+                                        <Border x:Name="PrivateMessageBadge" Style="{StaticResource BadgeBorderStyle}" Visibility="{Binding Unread,Converter={StaticResource UnreadVisibilityConverter},ConverterParameter=5,FallbackValue=Collapsed}">
                                             <TextBlock Text="{Binding Unread,Converter={StaticResource UnreadCountTextConverter},ConverterParameter=5}" Style="{StaticResource BadgeTextStyle}"/>
                                         </Border>
                                     </Grid>

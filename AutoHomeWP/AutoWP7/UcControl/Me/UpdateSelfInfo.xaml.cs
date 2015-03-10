@@ -211,7 +211,18 @@ namespace AutoWP7.UcControl.Me
                 }
                 else
                 {
-                    return true;
+                    if (string.IsNullOrEmpty(this.PhoneNoTextBox.Text))
+                    {
+                        Common.showMsg("请您输入手机号");
+                    }
+                    else if (string.IsNullOrEmpty(this.CodeTextbox.Text))
+                    {
+                        Common.showMsg("请您输入验证码");
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
             }
             else if (string.IsNullOrEmpty(this.PhoneNoTextBox.Text))

@@ -47,18 +47,18 @@ namespace AutoWP7
         {
             base.OnNavigatedTo(e);
 
-            //点击推送进入
-            if (this.NavigationContext.QueryString.ContainsKey("a"))
-            {
-                this.SendSampleLog(this.NavigationContext.QueryString, false);
-                this.ToastNavigate(this.NavigationContext.QueryString);
-            }
-
             switch (e.NavigationMode)
             {
                 case System.Windows.Navigation.NavigationMode.New:
                     {
                         UmengSDK.UmengAnalytics.onEvent("ArticleActivity", "最新点击量");
+
+                        //点击推送进入
+                        if (this.NavigationContext.QueryString.ContainsKey("a"))
+                        {
+                            this.SendSampleLog(this.NavigationContext.QueryString, false);
+                            this.ToastNavigate(this.NavigationContext.QueryString);
+                        }
 
                         // 最新资讯
                         worker = new Thread(NewestLoadData);
@@ -1156,19 +1156,56 @@ namespace AutoWP7
         //评论回复
         private void CommentReply_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            if (CommentReplyBadge.Visibility == Visibility.Visible)
+            {
+                CommentReplyBadge.DataContext = null;
+                this.ClearUnReadCount(1);
+                CommentReplyBadge.DataContext = this.MeVM;
+            }
+
             this.NavigationService.Navigate(new Uri("/View/Me/MyCommentReply.xaml", UriKind.Relative));
         }
 
         //论坛回复
         private void ForumReply_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            if (ForumReplyBadge.Visibility == Visibility.Visible)
+            {
+                ForumReplyBadge.DataContext = null;
+                this.ClearUnReadCount(2);
+                ForumReplyBadge.DataContext = this.MeVM;
+            }
+
             this.NavigationService.Navigate(new Uri("/View/Me/MyForumReply.xaml", UriKind.Relative));
         }
 
         //私信
         private void PrivateMessage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            if (PrivateMessageBadge.Visibility == Visibility.Visible)
+            {
+                PrivateMessageBadge.DataContext = null;
+                this.ClearUnReadCount(5);
+                PrivateMessageBadge.DataContext = this.MeVM;
+            }
+
             this.NavigationService.Navigate(new Uri("/View/Me/PrivateMessageFriends.xaml", UriKind.Relative));
+        }
+
+        private void ClearUnReadCount(int typeId)
+        {
+            if (this.MeVM.Model != null && this.MeVM.Model.Unread != null)
+            {
+                var unreadItems = this.MeVM.Model.Unread.Items;
+                if (unreadItems != null)
+                {
+                    var find = unreadItems.FirstOrDefault(item => item.Type == typeId);
+                    if (find != null)
+                    {
+                        find.Count = 0;
+                    }
+                }
+            }
         }
 
         private void MyCollection_Tap(object sender, System.Windows.Input.GestureEventArgs e)

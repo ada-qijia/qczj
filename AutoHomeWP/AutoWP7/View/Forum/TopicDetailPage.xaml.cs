@@ -188,22 +188,34 @@ namespace AutoWP7.View.Forum
             wc.DownloadStringAsync(url);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
             {
-                JObject json = JObject.Parse(ee.Result);
-                if (json != null)
+                try
                 {
-                    replyCount = (int)json.SelectToken("result").SelectToken("ownerreplycount");
-
-
-                    if (replyCount % 20 == 0)
+                    if (ee.Error != null)
                     {
-                        pageCount = replyCount / 20;
+                        Common.NetworkAvailablePrompt();
                     }
-                    else
+                    else if (ee.Cancelled == false)
                     {
-                        pageCount = replyCount / 20 + 1;
+                        JObject json = JObject.Parse(ee.Result);
+                        if (json != null)
+                        {
+                            replyCount = (int)json.SelectToken("result").SelectToken("ownerreplycount");
+
+
+                            if (replyCount % 20 == 0)
+                            {
+                                pageCount = replyCount / 20;
+                            }
+                            else
+                            {
+                                pageCount = replyCount / 20 + 1;
+                            }
+                        }
+                        webTopicDetail.Navigate(urlSource);
                     }
                 }
-                webTopicDetail.Navigate(urlSource);
+                catch
+                { }
             });
         }
         #endregion

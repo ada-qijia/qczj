@@ -35,7 +35,7 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <TextBlock Text="账号绑定"  Tap="AccountBinding_Tap"/>
+                    <TextBlock Text="帐号绑定"  Tap="AccountBinding_Tap"/>
                     <TextBlock Text="推送设置" Tap="NotificationSetting_Tap"/>
                     <toolkit:ToggleSwitch x:Name="ImageModeToggleSwitch" BorderBrush="{StaticResource App_Theme_Color}" Content="小图模式" Margin="0 12" Click="ImageMode_Click" Style="{StaticResource ToggleSwitchThemeStyle}"/>
                     <!--<Grid>
