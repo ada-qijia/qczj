@@ -83,6 +83,7 @@ namespace AutoWP7
                         UpdateLocalCity();
 
                         HandleSaleFilterSelection();
+                        ResetPrivateMessageUnread();
                     }
                     break;
             }
@@ -1159,7 +1160,7 @@ namespace AutoWP7
             if (CommentReplyBadge.Visibility == Visibility.Visible)
             {
                 CommentReplyBadge.DataContext = null;
-                this.ClearUnReadCount(1);
+                this.ResetUnReadCount(1, 0);
                 CommentReplyBadge.DataContext = this.MeVM;
             }
 
@@ -1172,7 +1173,7 @@ namespace AutoWP7
             if (ForumReplyBadge.Visibility == Visibility.Visible)
             {
                 ForumReplyBadge.DataContext = null;
-                this.ClearUnReadCount(2);
+                this.ResetUnReadCount(2, 0);
                 ForumReplyBadge.DataContext = this.MeVM;
             }
 
@@ -1180,19 +1181,24 @@ namespace AutoWP7
         }
 
         //私信
+        public static int unreadMessageOpened = 0;
         private void PrivateMessage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (PrivateMessageBadge.Visibility == Visibility.Visible)
-            {
-                PrivateMessageBadge.DataContext = null;
-                this.ClearUnReadCount(5);
-                PrivateMessageBadge.DataContext = this.MeVM;
-            }
-
+            unreadMessageOpened = 0;
             this.NavigationService.Navigate(new Uri("/View/Me/PrivateMessageFriends.xaml", UriKind.Relative));
         }
 
-        private void ClearUnReadCount(int typeId)
+        private void ResetPrivateMessageUnread()
+        {
+            if (PrivateMessageBadge.Visibility == Visibility.Visible && unreadMessageOpened > 0)
+            {
+                PrivateMessageBadge.DataContext = null;
+                this.ModifyUnReadCount(5, -unreadMessageOpened);
+                PrivateMessageBadge.DataContext = this.MeVM;
+            }
+        }
+
+        private void ResetUnReadCount(int typeId, int toValue)
         {
             if (this.MeVM.Model != null && this.MeVM.Model.Unread != null)
             {
@@ -1202,7 +1208,23 @@ namespace AutoWP7
                     var find = unreadItems.FirstOrDefault(item => item.Type == typeId);
                     if (find != null)
                     {
-                        find.Count = 0;
+                        find.Count = toValue;
+                    }
+                }
+            }
+        }
+
+        private void ModifyUnReadCount(int typeId, int byValue)
+        {
+            if (this.MeVM.Model != null && this.MeVM.Model.Unread != null)
+            {
+                var unreadItems = this.MeVM.Model.Unread.Items;
+                if (unreadItems != null)
+                {
+                    var find = unreadItems.FirstOrDefault(item => item.Type == typeId);
+                    if (find != null)
+                    {
+                        find.Count += byValue;
                     }
                 }
             }
@@ -1256,6 +1278,42 @@ namespace AutoWP7
                     {
                         ToastNavigate(args);
                     }
+                    else if (args.ContainsKey("t"))//更新未读数字显示
+                    {
+                        int typeId = 0;
+                        int.TryParse(args["t"], out typeId);
+                        int newArrived = 0;
+                        switch (args["t"])
+                        {
+                            case "1":
+                                if (args.ContainsKey("p1"))
+                                {
+                                    int.TryParse(args["p1"], out newArrived);
+                                }
+                                break;
+                            case "2":
+                                if (args.ContainsKey("p2"))
+                                {
+                                    int.TryParse(args["p2"], out newArrived);
+                                }
+                                break;
+                            case "5":
+                                if (args.ContainsKey("p5"))
+                                {
+                                    int.TryParse(args["p5"], out newArrived);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (newArrived > 0 && (typeId == 1 || typeId == 2 || typeId == 5))
+                        {
+                            this.ReplyMessageGrid.DataContext = null;
+                            this.ModifyUnReadCount(typeId, newArrived);
+                            this.ReplyMessageGrid.DataContext = this.MeVM;
+                        }
+                    }
                 });
             }
         }
@@ -1293,6 +1351,7 @@ namespace AutoWP7
                         break;
                     //私信
                     case "5":
+                        unreadMessageOpened = 0;
                         NavigationService.Navigate(new Uri("/View/Me/PrivateMessageFriends.xaml", UriKind.Relative));
                         break;
                     default:

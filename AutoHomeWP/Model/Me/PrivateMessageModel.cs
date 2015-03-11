@@ -9,8 +9,18 @@ using System.ComponentModel;
 namespace Model.Me
 {
     [DataContract]
-    public class PrivateMessageFriendModel : LoadMoreItem
+    public class PrivateMessageFriendModel : LoadMoreItem, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
         [DataMember(Name = "userid")]
         public int ID { get; set; }
 
@@ -20,8 +30,21 @@ namespace Model.Me
         [DataMember(Name = "img")]
         public string Img { get; set; }
 
+        private int _unread;
+
         [DataMember(Name = "unread")]
-        public int UnRead { get; set; }
+        public int UnRead
+        {
+            get { return _unread; }
+            set
+            {
+                if (_unread != value)
+                {
+                    _unread = value;
+                    OnPropertyChanged("UnRead");
+                }
+            }
+        }
 
         [DataMember(Name = "lastmsg")]
         public string LastMessage { get; set; }

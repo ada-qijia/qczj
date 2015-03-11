@@ -168,10 +168,8 @@ namespace AutoWP7.View.Me
                 string url = string.Format("/View/Me/PrivateMessage.xaml?username={0}&userId={1}&userimg={2}", model.UserName, model.ID, model.Img);
                 this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
 
-                element.DataContext = null;
+                MainPage.unreadMessageOpened += model.UnRead;
                 model.UnRead = 0;
-                element.DataContext = model;
-                //((Grid)sender).GetBindingExpression(Grid.DataContextProperty).UpdateSource();
             }
         }
 

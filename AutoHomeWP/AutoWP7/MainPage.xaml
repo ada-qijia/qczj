@@ -649,7 +649,7 @@
                                 <Image Grid.RowSpan="2" Grid.Column="1" Source="/Images/ArrowRWhite.png" Style="{StaticResource ArrowImageStyle}" Margin="6"/>
                             </Grid>
 
-                            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                            <Grid x:Name="ReplyMessageGrid" Grid.Row="1" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
