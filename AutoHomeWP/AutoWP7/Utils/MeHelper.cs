@@ -205,7 +205,7 @@ namespace AutoWP7.Utils
         public static string GetPrivateMessageUrl(int friendID, int baseMessageID, int range = 1, int sort = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string url = userInfoModel == null ? null : string.Format("{5}/GetPrivateLetterListContainSelf.ashx?a=2&pm=3&v=1.7.0&au={0}&tid={1}&mid={2}&t={3}&o={4}&s=5", userInfoModel.Authorization, friendID, baseMessageID, range, sort, UserBaseUrl);
+            string url = userInfoModel == null ? null : string.Format("{5}/GetPrivateLetterListContainSelf.ashx?a=2&pm=3&v=1.7.0&au={0}&tid={1}&mid={2}&t={3}&o={4}&s=50", userInfoModel.Authorization, friendID, baseMessageID, range, sort, UserBaseUrl);
             return url;
         }
 

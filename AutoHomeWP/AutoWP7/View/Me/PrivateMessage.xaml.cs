@@ -129,12 +129,15 @@ namespace AutoWP7.View.Me
         //load latest
         private void UpdateMessage(object state)
         {
-            SetTimerWithNetwork();
+            if (DeviceNetworkInformation.IsNetworkAvailable)
+            {
+                int count = this.MessageVM.MessageList.Count;
+                int baseMessageID = count > 0 ? this.MessageVM.MessageList[count - 1].ID : 0;
+                string url = Utils.MeHelper.GetPrivateMessageUrl(this.FriendID, baseMessageID, 0, 1);
+                this.MessageVM.LoadDataAysnc(url);
+            }
 
-            int count = this.MessageVM.MessageList.Count;
-            int baseMessageID = count > 0 ? this.MessageVM.MessageList[count - 1].ID : 0;
-            string url = Utils.MeHelper.GetPrivateMessageUrl(this.FriendID, baseMessageID, 0, 1);
-            this.MessageVM.LoadDataAysnc(url);
+            SetTimerWithNetwork();
         }
 
         private void SetTimerWithNetwork()
@@ -142,17 +145,19 @@ namespace AutoWP7.View.Me
             //获取网络状态
             if (DeviceNetworkInformation.IsWiFiEnabled)
             {
-                this.updateTimer.Change(0, 15000);
+                this.updateTimer.Change(15000, 15000);
             }
             else if (DeviceNetworkInformation.IsCellularDataEnabled)
             {
-                this.updateTimer.Change(0, 30000);
+                this.updateTimer.Change(30000, 30000);
             }
         }
 
         #endregion
 
         #region load data
+
+        bool isFirstLoad = true;
 
         bool isLoading = false;
 
@@ -220,6 +225,13 @@ namespace AutoWP7.View.Me
                 }
                 else if (this.MessageVM.ReturnCode == 0)
                 {
+                    //首次滚动到底部
+                    if (isFirstLoad)
+                    {
+                        this.MessageListBox.ScrollIntoView(this.MessageListBox.Items[MessageListBox.Items.Count - 1]);
+                        isFirstLoad = false;
+                    }
+
                     //update local cache.
                     int cnt = this.MessageVM.MessageList.Count;
                     if (cnt > 0)
