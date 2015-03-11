@@ -9,7 +9,7 @@ namespace AutoWP7.View.More
         public AboutPage()
         {
             InitializeComponent();
-            this.VersionTextblock.Text = "V " + Common.GetSysVersion();
+            this.VersionTextblock.Text = "V " + Common.GetAssemblyVersion();
         }
 
         private void callAutohome_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)

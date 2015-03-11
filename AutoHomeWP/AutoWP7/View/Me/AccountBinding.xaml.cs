@@ -39,7 +39,7 @@ namespace AutoWP7.View.Me
                 GlobalIndicator.Instance.IsBusy = true;
 
                 //qq 15, weibo 16
-                string data = string.Format("a=2&pm=3&v={0}&au={1}&pfids={2}", Handler.Common.GetSysVersion(), userInfoModel.Authorization, Utils.MeHelper.WeiboPlatformID);// + "," + Utils.MeHelper.QQPlatformID);
+                string data = string.Format("a=2&pm=3&v={0}&au={1}&pfids={2}", Handler.Common.GetAssemblyVersion(), userInfoModel.Authorization, Utils.MeHelper.WeiboPlatformID);// + "," + Utils.MeHelper.QQPlatformID);
                 string url = Utils.MeHelper.ThirdPartyBindingStateUrl;
                 this.BindingVM.LoadDataAysnc(url, data);
             }

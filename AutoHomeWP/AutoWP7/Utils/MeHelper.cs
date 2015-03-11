@@ -88,6 +88,13 @@ namespace AutoWP7.Utils
             }
         }
 
+        public static void SaveMyInfo(MyForumModel model)
+        {
+            var settings = IsolatedStorageSettings.ApplicationSettings;
+            settings["userInfo"] = model;
+            settings.Save();
+        }
+
         #region weibo
 
         public static void GetWeiboUserNickname(string accessToken, string userId, EventHandler<string> completed = null)

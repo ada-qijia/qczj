@@ -122,7 +122,7 @@ namespace AutoWP7.Handler
         /// 获取当前系统版本
         /// </summary>
         /// <returns></returns>
-        public static string GetSysVersion()
+        public static string GetAssemblyVersion()
         {
 
             Version version = new System.Reflection.AssemblyName(System.Reflection.Assembly.GetExecutingAssembly().FullName).Version;
@@ -142,6 +142,12 @@ namespace AutoWP7.Handler
             _sign = _sign.ToUpper();
             return _sign;
         }
+
+        public static string GetSysVersion()
+        {
+            return System.Environment.OSVersion.Version.ToString();
+        }
+
         /// <summary>
         /// 获取User-Agent（设备类型\t系统版本号\tautohome\t客户端版本号）
         /// </summary>
@@ -149,7 +155,7 @@ namespace AutoWP7.Handler
         public static string GetAutoHomeUA()
         {
             //设备类型\t系统版本号\tautohome\t客户端版本号
-            return "WP\t" + Common.GetSysVersion() + "\tautohome\t" + GetSysVersion();
+            return "WP\t" + Common.GetSysVersion() + "\tautohome\t" + GetAssemblyVersion();
         }
 
         /// <summary>

@@ -85,7 +85,7 @@ namespace ViewModels
 
                 wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
                 wc.Headers["Accept-Charset"] = "utf-8";
-                Uri urlSource = new Uri(url + "&" + Guid.NewGuid().ToString(), UriKind.Absolute);
+                Uri urlSource = new Uri(url, UriKind.Absolute);
                 wc.DownloadStringAsync(urlSource);
                 wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler((ss, ee) =>
                 {

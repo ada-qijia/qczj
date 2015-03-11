@@ -45,9 +45,7 @@ namespace AutoWP7.Utils
                     PhoneApplicationService.Current.State[channelName] = value;
                     if (oldValue != value)
                     {
-                        var myInfo = MeHelper.GetMyInfoModel();
-                        string userId = myInfo == null ? null : myInfo.UserID.ToString();
-                        RegisterNewDevice(userId);
+                        RegisterNewDevice();
                     }
                 }
                 else
@@ -125,11 +123,13 @@ namespace AutoWP7.Utils
         /// <summary>
         /// 注册推送通知服务
         /// </summary>
-        public static void RegisterNewDevice(string userId)
+        public static void RegisterNewDevice()
         {
             if (!string.IsNullOrEmpty(ChannelUrl))
             {
-                var deviceName = Handler.Common.GetAutoHomeUA();
+                var deviceName = HttpUtility.UrlEncode(Handler.Common.GetAutoHomeUA());
+                var myInfo = MeHelper.GetMyInfoModel();
+                string userId = myInfo == null ? null : myInfo.UserID.ToString();
                 string regUrl = string.Format(RegisterBaseUrl + "?appId={0}&deviceType={1}&deviceToken={2}&deviceName={3}&userId={4}", AppID, DeviceType, ChannelUrl, deviceName, userId);
 
                 WebClient wc = new WebClient();
@@ -175,7 +175,7 @@ namespace AutoWP7.Utils
         {
             if (!string.IsNullOrEmpty(ChannelUrl))
             {
-                var deviceName = Handler.Common.GetAutoHomeUA();
+                var deviceName = HttpUtility.UrlEncode(Handler.Common.GetAutoHomeUA());
                 var allowSys = allowSystem ? 0 : 1;
                 var allowPer = allowPerson ? 0 : 1;
                 string saveUrl = string.Format("{0}?appId={1}&deviceType={2}&deviceToken={3}&deviceName={4}&userId={5}&allowSystem={6}&allowPerson={7}&startTime={8}&endTime={9}",
@@ -231,11 +231,13 @@ namespace AutoWP7.Utils
         /// <summary>
         /// 获取客户端的推送设置
         /// </summary>
-        public static void GetUserSetting(string userId)
+        public static void GetUserSetting()
         {
             if (!string.IsNullOrEmpty(ChannelUrl))
             {
-                var deviceName = Handler.Common.GetAutoHomeUA();
+                var deviceName = HttpUtility.UrlEncode(Handler.Common.GetAutoHomeUA());
+                var myInfo = MeHelper.GetMyInfoModel();
+                string userId = myInfo == null ? null : myInfo.UserID.ToString();
                 string getUrl = string.Format("{0}?appId={1}&deviceType={2}&deviceToken={3}&deviceName={4}&userId={5}", GetSettingBaseUrl, AppID, DeviceType, ChannelUrl, deviceName, userId);
 
                 WebClient wcGetting = new WebClient();
@@ -247,11 +249,13 @@ namespace AutoWP7.Utils
         /// <summary>
         /// 注销用户设备
         /// </summary>
-        public static void UnRegisterDevice(string userId)
+        public static void UnRegisterDevice()
         {
             if (!string.IsNullOrEmpty(ChannelUrl))
             {
-                var deviceName = Handler.Common.GetAutoHomeUA();
+                var deviceName = HttpUtility.UrlEncode(Handler.Common.GetAutoHomeUA());
+                var myInfo = MeHelper.GetMyInfoModel();
+                string userId = myInfo == null ? null : myInfo.UserID.ToString();
                 string unregisterUrl = string.Format("{0}?appId={1}&deviceType={2}&deviceToken={3}&deviceName={4}&userId={5}", UnRegisterBaseUrl, AppID, DeviceType, ChannelUrl, deviceName, userId);
 
                 WebClient wc = new WebClient();
@@ -274,9 +278,10 @@ namespace AutoWP7.Utils
         /// <param name="result">9客户端接收到推送通知时，10客户端在通知中心通过点击或滑动操作进行处理时</param>
         public static void SampleLog(string categoryID, string messageID, string result, string userID)
         {
-            string appVersion = Handler.Common.GetSysVersion();
+            string appVersion = Handler.Common.GetAssemblyVersion();
             string deviceID = Handler.Common.GetDeviceID();
-            string getUrl = string.Format("{0}?appId={1}&CategoryId={2}&OID={3}&DeviceType={4}&DeviceToken={5}&Result={6}&Version={7}&userId={8}&CityId={9}&DeviceId={10}", SampleBaseUrl, AppID, categoryID, messageID, DeviceType, ChannelUrl, result, appVersion, userID, App.CityId, deviceID);
+            string osVersion = Handler.Common.GetSysVersion();
+            string getUrl = string.Format("{0}?appId={1}&CategoryId={2}&OID={3}&DeviceType={4}&DeviceToken={5}&Result={6}&Version={7}&userId={8}&CityId={9}&DeviceId={10}&OSVersion={11}", SampleBaseUrl, AppID, categoryID, messageID, DeviceType, ChannelUrl, result, appVersion, userID, App.CityId, deviceID, osVersion);
 
             WebClient wcGetting = new WebClient();
             wcGetting.DownloadStringAsync(new Uri(getUrl, UriKind.Absolute));

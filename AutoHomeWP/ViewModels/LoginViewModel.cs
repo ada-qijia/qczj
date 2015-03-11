@@ -166,19 +166,19 @@ namespace ViewModels
                                 UserInfoDataSource.Add(model);
 
 
-                                //存入文件
-                                var setting = IsolatedStorageSettings.ApplicationSettings;
-                                string key = "userInfo";
+                                ////存入文件
+                                //var setting = IsolatedStorageSettings.ApplicationSettings;
+                                //string key = "userInfo";
 
-                                if (setting.Contains(key))
-                                {
-                                    setting[key] = model;
-                                }
-                                else
-                                {
-                                    setting.Add(key, model);
-                                }
-                                setting.Save();
+                                //if (setting.Contains(key))
+                                //{
+                                //    setting[key] = model;
+                                //}
+                                //else
+                                //{
+                                //    setting.Add(key, model);
+                                //}
+                                //setting.Save();
 
                                 //将用户的论坛数据存入数据库
                                 using (LocalDataContext ldc = new LocalDataContext())

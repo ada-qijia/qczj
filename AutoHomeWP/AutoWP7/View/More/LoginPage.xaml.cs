@@ -116,6 +116,9 @@ namespace AutoWP7.View.More
                             {
                                 if (model.Success == 1)
                                 {
+                                    Utils.MeHelper.SaveMyInfo(model);
+                                    Utils.PushNotificationHelper.RegisterNewDevice();
+
                                     CleanUserInfoViewModel cleanM = new CleanUserInfoViewModel();
 
                                     string cleanUrl = string.Format("{0}/applogin/getmemberid?_appid=user&pcpopclub={1}", App.loginUrl, model.Authorization);
@@ -130,9 +133,7 @@ namespace AutoWP7.View.More
                             UserInfoDataSource.Clear();
 
                             //获取推送设置
-                            var userInfo = Utils.MeHelper.GetMyInfoModel();
-                            string userId = userInfo == null ? null : userInfo.UserID.ToString();
-                            Utils.PushNotificationHelper.GetUserSetting(userId);
+                            Utils.PushNotificationHelper.GetUserSetting();
                         }
                     });
                 });
@@ -200,9 +201,9 @@ namespace AutoWP7.View.More
                                 model.UserName = resultVM.UserName;
                                 model.Authorization = resultVM.Auth;
 
-                                var setting = IsolatedStorageSettings.ApplicationSettings;
-                                setting["userInfo"] = model;
-                                setting.Save();
+                                Utils.MeHelper.SaveMyInfo(model);
+                                Utils.PushNotificationHelper.RegisterNewDevice();
+                                Utils.PushNotificationHelper.GetUserSetting();
                             }
 
                             //返回登录前页面
@@ -248,9 +249,9 @@ namespace AutoWP7.View.More
                         model.WeiWang = result.Prestige.ToString();
                         model.UserPic = result.Img;
 
-                        var setting = IsolatedStorageSettings.ApplicationSettings;
-                        setting["userInfo"] = model;
-                        setting.Save();
+                        Utils.MeHelper.SaveMyInfo(model);
+                        Utils.PushNotificationHelper.RegisterNewDevice();
+                        Utils.PushNotificationHelper.GetUserSetting();
                     }
 
                     this.NavigationService.GoBack();

@@ -41,18 +41,25 @@ namespace AutoWP7.View.Me
 
         private void LoadMore(bool restart)
         {
-            GlobalIndicator.Instance.Text = "正在获取中...";
-            GlobalIndicator.Instance.IsBusy = true;
-
-            int nextPageIndex = this.OthersVM.PageIndex + 1;
+            int nextPageIndex;
             if (restart)
             {
                 this.OthersVM.ClearData();
                 nextPageIndex = 1;
             }
+            else
+            {
+                nextPageIndex = this.OthersVM.PageIndex + 1;
+            }
 
-            string url = Utils.MeHelper.GetUserInfoUrl(userID, nextPageIndex);
-            this.OthersVM.LoadDataAysnc(url);
+            if (!string.IsNullOrEmpty(userID))
+            {
+                GlobalIndicator.Instance.Text = "正在获取中...";
+                GlobalIndicator.Instance.IsBusy = true;
+
+                string url = Utils.MeHelper.GetUserInfoUrl(userID, nextPageIndex);
+                this.OthersVM.LoadDataAysnc(url);
+            }
         }
 
         #endregion

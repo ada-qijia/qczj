@@ -49,11 +49,8 @@ namespace AutoWP7.View.Me
                 {
                     case CustomMessageBoxResult.LeftButton:
                         //注销推送通知
-                        var userInfo = Utils.MeHelper.GetMyInfoModel();
-                        if (userInfo != null)
-                        {
-                            Utils.PushNotificationHelper.UnRegisterDevice(userInfo.UserID.ToString());
-                        }
+                        Utils.PushNotificationHelper.UnRegisterDevice();
+
 
                         //退出登录
                         var setting = IsolatedStorageSettings.ApplicationSettings;

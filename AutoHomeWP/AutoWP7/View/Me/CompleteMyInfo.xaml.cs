@@ -119,9 +119,9 @@ namespace AutoWP7.View.Me
                                 model.UserName = nickName;
                                 model.Authorization = auth;
 
-                                var setting = IsolatedStorageSettings.ApplicationSettings;
-                                setting["userInfo"] = model;
-                                setting.Save();
+                                Utils.MeHelper.SaveMyInfo(model);
+                                Utils.PushNotificationHelper.RegisterNewDevice();
+                                Utils.PushNotificationHelper.GetUserSetting();
 
                                 //返回登录页
                                 Common.showMsg("完善资料成功");
