@@ -226,7 +226,7 @@ namespace AutoWP7.View.Car
             //{
             //    carComPareInfoVM = new CarCompareInfoViewModel();
             //}
-            string url = string.Format("{0}{2}/cars/speccompare-a2-pm3-v1.6.0-t1-s{1}.html", App.appUrl, specIds, App.versionStr);
+            string url = string.Format("{0}{2}/cars/speccompare-a2-pm3-v{3}-t1-s{1}.html", App.appUrl, specIds, App.versionStr, App.version);
             carComPareInfoVM.LoadDataAysnc(url, specids);
             carComPareInfoVM.LoadDataCompleted += carComPareInfoVM_LoadDataCompleted;
 

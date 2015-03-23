@@ -75,11 +75,11 @@ namespace AutoWP7.View.Channel.Newest
             string url = string.Empty;
             if (pageType == 1)
             {
-                url = string.Format("{0}{4}/news/comments-a2-pm3-v1.6.0-n{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr);
+                url = string.Format("{0}{4}/news/comments-a2-pm3-v{5}-n{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr, App.version);
             }
             else if (pageType == 2)
             {
-                url = string.Format("{0}{4}/news/shuokecomments-a2-pm1-v1.6.0-n{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr);
+                url = string.Format("{0}{4}/news/shuokecomments-a2-pm1-v{5}-n{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr, App.version);
             }
             newestCommenteVM.LoadDataAysnc(url);
 

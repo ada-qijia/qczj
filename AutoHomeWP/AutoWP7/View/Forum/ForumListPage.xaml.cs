@@ -209,7 +209,7 @@ namespace AutoWP7.View.Forum
                 {
                     carSeriesForumVM = new CarSeriesAllForumViewModel();
                 }
-                string url = string.Format("{0}{1}/club/clubsseries-a2-pm3-v1.6.0-st0.html", App.appUrl, App.versionStr);
+                string url = string.Format("{0}{1}/club/clubsseries-a2-pm3-v{2}-st0.html", App.appUrl, App.versionStr, App.version);
                 carSeriesForumVM.LoadDataAysnc(url);
 
                 carSeriesForumVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<carSeriesAllForumModel>>>(carSeriesForumVM_LoadDataCompleted);
@@ -322,7 +322,7 @@ namespace AutoWP7.View.Forum
                 {
                     areaForumVM = new AreaForumViewModel();
                 }
-                string url = string.Format("{0}{1}/club/clubsarea-a2-pm3-v1.6.0-st0.html", App.appUrl, App.versionStr);
+                string url = string.Format("{0}{1}/club/clubsarea-a2-pm3-v{2}-st0.html", App.appUrl, App.versionStr, App.version);
                 areaForumVM.LoadDataAysnc(url);
 
                 areaForumVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<AreaForumModel>>>(areaForumVM_LoadDataCompleted);
@@ -393,7 +393,7 @@ namespace AutoWP7.View.Forum
                 {
                     subjectVM = new SubjectForumViewModel();
                 }
-                string url = string.Format("{0}{1}/club/clubstheme-a2-pm3-v1.6.0-st0.html", App.appUrl, App.versionStr);
+                string url = string.Format("{0}{1}/club/clubstheme-a2-pm3-v{2}-st0.html", App.appUrl, App.versionStr, App.version);
 
                 subjectVM.LoadDataAysnc(url);
                 subjectVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<SubjectForumModel>>>(subjectVM_LoadDataCompleted);

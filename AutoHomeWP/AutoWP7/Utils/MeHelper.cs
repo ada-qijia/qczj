@@ -128,6 +128,8 @@ namespace AutoWP7.Utils
 
         #region url
 
+        public const string UserBaseUrl = "http://app.api.autohome.com.cn/wpv1.7/User"; //"http://221.192.136.99:804/wpv1.7/user";
+
         public const string ThirdPartyLoginUrl = "http://i.api.autohome.com.cn/api/Login/OAuthLogin";
         public const string ThirdPartyRegisterUrl = "http://i.api.autohome.com.cn/api/Register/OAuthRegister";
         public const string ThirdPartyUpdateTokenUrl = "http://i.api.autohome.com.cn/api/openplatform/updatetoken";
@@ -139,9 +141,7 @@ namespace AutoWP7.Utils
         public const string SyncFavoriteCollectionUrl = "http://i.api.autohome.com.cn/api/collection/AppSyncCollection";
         public const string SyncPrivateMessageFriendsUrl = "http://i.api.autohome.com.cn/api/privateletter/privateletterdelete";
         public const string ServerTimestampUrl = "http://club.api.autohome.com.cn/api/system/timestamp";
-        public const string ThirdPartyBindingStateUrl = UserBaseUrl + "/GetUserOpenPlats.ashx";// "http://app.api.autohome.com.cn/wpv1.7/user/GetUserOpenPlats.ashx";
-
-        public const string UserBaseUrl = "http://221.192.136.99:804/wpv1.7/user";
+        public const string ThirdPartyBindingStateUrl = UserBaseUrl + "/GetUserOpenPlats.ashx";
 
         /// <param name="userID">if null, means me</param>
         public static string GetUserInfoUrl(string userID = null, int pageIndex = 1)
@@ -151,7 +151,7 @@ namespace AutoWP7.Utils
             {
                 string auth = string.IsNullOrEmpty(userID) ? userInfoModel.Authorization : string.Empty;
                 string id = string.IsNullOrEmpty(userID) ? userInfoModel.UserID.ToString() : userID;
-                string url = string.Format("{3}/GetUserInfo.ashx?a=2&pm=3&v=1.7.0&au={0}&u={1}&p={2}&s=20", auth, id, pageIndex, UserBaseUrl);
+                string url = string.Format("{3}/GetUserInfo.ashx?a=2&pm=3&v={4}&au={0}&u={1}&p={2}&s=20", auth, id, pageIndex, UserBaseUrl, App.version);
                 return url;
             }
             else
@@ -163,14 +163,14 @@ namespace AutoWP7.Utils
         public static string GetFavoriteUrl(int type = 0, int pageIndex = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string url = userInfoModel == null ? null : string.Format("{3}/GetCollectList.ashx?a=2&pm=3&v=1.7.0&p={0}&s=20&type={1}&au={2}", pageIndex, type, userInfoModel.Authorization, UserBaseUrl);
+            string url = userInfoModel == null ? null : string.Format("{3}/GetCollectList.ashx?a=2&pm=3&v={4}&p={0}&s=20&type={1}&au={2}", pageIndex, type, userInfoModel.Authorization, UserBaseUrl, App.version);
             return url;
         }
 
         public static string GetMyTritanUrl(int pageIndex = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string url = userInfoModel == null ? null : string.Format("{2}/usermainpost-a2-pm3-v1.7.0-u{0}-p{1}-s20.html", userInfoModel.UserID, pageIndex, UserBaseUrl);
+            string url = userInfoModel == null ? null : string.Format("{2}/usermainpost-a2-pm3-v{3}-u{0}-p{1}-s20.html", userInfoModel.UserID, pageIndex, UserBaseUrl, App.version);
             return url;
         }
 
@@ -178,7 +178,7 @@ namespace AutoWP7.Utils
         public static string GetMyCommentReplyUrl(int pageIndex = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string url = userInfoModel == null ? null : string.Format("{2}/ReCommentReply.ashx?a=2&pm=3&v=1.7.0&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex, UserBaseUrl);
+            string url = userInfoModel == null ? null : string.Format("{2}/ReCommentReply.ashx?a=2&pm=3&v={3}&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex, UserBaseUrl, App.version);
             return url;
         }
 
@@ -186,7 +186,7 @@ namespace AutoWP7.Utils
         public static string GetMyForumReplyUrl(int pageIndex = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string url = userInfoModel == null ? null : string.Format("{2}/ReForumReply.ashx?a=2&pm=3&v=1.7.0&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex, UserBaseUrl);
+            string url = userInfoModel == null ? null : string.Format("{2}/ReForumReply.ashx?a=2&pm=3&v={3}&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex, UserBaseUrl, App.version);
             return url;
         }
 
@@ -194,7 +194,7 @@ namespace AutoWP7.Utils
         public static string GetPrivateMessageFriendsUrl(int pageIndex = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string url = userInfoModel == null ? null : string.Format("{2}/GetPrivateLetterUserList.ashx?a=2&pm=3&v=1.7.0&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex, UserBaseUrl);
+            string url = userInfoModel == null ? null : string.Format("{2}/GetPrivateLetterUserList.ashx?a=2&pm=3&v={3}&au={0}&p={1}&s=20", userInfoModel.Authorization, pageIndex, UserBaseUrl, App.version);
             return url;
         }
 
@@ -205,7 +205,7 @@ namespace AutoWP7.Utils
         public static string GetPrivateMessageUrl(int friendID, int baseMessageID, int range = 1, int sort = 1)
         {
             var userInfoModel = GetMyInfoModel();
-            string url = userInfoModel == null ? null : string.Format("{5}/GetPrivateLetterListContainSelf.ashx?a=2&pm=3&v=1.7.0&au={0}&tid={1}&mid={2}&t={3}&o={4}&s=50", userInfoModel.Authorization, friendID, baseMessageID, range, sort, UserBaseUrl);
+            string url = userInfoModel == null ? null : string.Format("{5}/GetPrivateLetterListContainSelf.ashx?a=2&pm=3&v={6}&au={0}&tid={1}&mid={2}&t={3}&o={4}&s=50", userInfoModel.Authorization, friendID, baseMessageID, range, sort, UserBaseUrl, App.version);
             return url;
         }
 
@@ -216,7 +216,7 @@ namespace AutoWP7.Utils
 
         public static string GetCountryListUrl()
         {
-            return string.Format("{0}/GetCountryList.ashx?a=2&pm=3&v=1.7.0", UserBaseUrl);
+            return string.Format("{0}/GetCountryList.ashx?a=2&pm=3&v={1}", UserBaseUrl, App.version);
         }
 
         #endregion

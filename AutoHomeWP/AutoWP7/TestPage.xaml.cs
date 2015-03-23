@@ -32,7 +32,7 @@ namespace AutoWP7
             //videoPlayer.SetSource(video);
 
             //string url = "http://221.192.136.99:804/wpv1.5/content/news/wpvideopage-a2-pm3-v1.6.0-vidXNzkxNTM5MTMy.html";
-            string url = "http://221.192.136.99:804/wpv1.6/content/dealer/downprice-a2-pm1-v4.3.0-sp11007-n11983239-t0-d85260-ss806-nt0.html";
+            string url = "http://221.192.136.99:804/wpv1.7/content/dealer/downprice-a2-pm1-v4.3.0-sp11007-n11983239-t0-d85260-ss806-nt0.html";
             browser.Navigate(new Uri(url, UriKind.Absolute));
         }
 

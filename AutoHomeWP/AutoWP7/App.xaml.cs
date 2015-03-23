@@ -32,7 +32,7 @@ namespace AutoWP7
         //最新新闻列表最后一条新闻的lasttime、lastid值
         public static string newsLastTime { get; set; }
         private static string _carTypeId;
-        public static string UserAgent = "WindowsPhone\t8\tautohome\t1.6.0";
+        public static string UserAgent = "WindowsPhone\t8\tautohome\t"+version;
         /// <summary>
         /// 车型ID
         /// </summary>
@@ -241,7 +241,7 @@ namespace AutoWP7
         public static string replyUrl = "http://reply.autohome.com.cn";
 
         public static string clubUrl = "http://club.api.autohome.com.cn";
-        public static string versionStr = "/wpv1.6";
+        public static string versionStr = "/wpv1.7";
 
         #endregion
         /// <summary>
@@ -253,7 +253,7 @@ namespace AutoWP7
         //平台id
         public static int platForm = 3;
         //当前版本号
-        public static string version = "1.6.0";
+        public static string version = "1.7.0";
         //app相关信息
         public static string AppInfo
         {

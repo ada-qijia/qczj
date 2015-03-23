@@ -72,16 +72,16 @@ namespace AutoWP7.View.Channel.News
             string url = string.Empty;
             if (pageType == 1)
             {
-                url = string.Format("{0}{4}/news/comments-a2-pm3-v1.6.0-n{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr);
+                url = string.Format("{0}{4}/news/comments-a2-pm3-v{5}-n{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr, App.version);
             }
             else if (pageType == 2)
             {
-                url = string.Format("{0}{4}/news/shuokecomments-a2-pm1-v1.6.0-n{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr);
+                url = string.Format("{0}{4}/news/shuokecomments-a2-pm1-v{5}-n{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr, App.version);
             }
             else if (pageType == 3)
             {
                 //http://app.api.autohome.com.cn/wpv1.4/news/videocomments-a1-pm3-v1.6.0-vi23-o23-p1-s20.html
-                url = string.Format("{0}{4}/news/videocomments-a2-pm3-v1.6.0-vi{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr);
+                url = string.Format("{0}{4}/news/videocomments-a2-pm3-v{5}-vi{1}-o0-p{2}-s{3}.html", App.appUrl, newsid, pageIndex, pageSize, App.versionStr, App.version);
             }
             newsCommentVM.LoadDataAysnc(url);
             newsCommentVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<CommentModel>>>(newsCommentVM_LoadDataCompleted);

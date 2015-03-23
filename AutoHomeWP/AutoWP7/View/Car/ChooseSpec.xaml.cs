@@ -86,7 +86,7 @@ namespace AutoWP7.View.Car
             {
                 carSeriesQuoteVM = new CarSeriesQuoteViewModel();
             }
-            string url = string.Format("{0}{2}/cars/specslist-a2-pm3-v1.6.0-t0x000c-ss{1}.html", App.appUrl, seriesID, App.versionStr);
+            string url = string.Format("{0}{2}/cars/specslist-a2-pm3-v{3}-t0x000c-ss{1}.html", App.appUrl, seriesID, App.versionStr, App.version);
             carSeriesQuoteVM.LoadDataAysnc(url);
             carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(CarSeriesQuote_LoadDataCompleted);
 

@@ -108,7 +108,7 @@ namespace AutoWP7.View.Car
             }
             //Uri urlSource = new Uri(App.headUrl + "/clubapp/topicdetail/ownerReplyCount.ashx?" + new Guid().ToString() + "&topicId=" + topicId + "&bbsType=c&owner=0", UriKind.Absolute);
 
-            Uri url = new Uri(string.Format("{0}{2}/forum/club/topicinfo-a2-pm3-v1.6.0-t{1}-i0.html", App.topicPageDomain, topicId, App.versionStr), UriKind.Absolute);
+            Uri url = new Uri(string.Format("{0}{2}/forum/club/topicinfo-a2-pm3-v{3}-t{1}-i0.html", App.topicPageDomain, topicId, App.versionStr, App.version), UriKind.Absolute);
             wc.DownloadStringAsync(url);
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler(wc_DownloadStringCompleted);
         }

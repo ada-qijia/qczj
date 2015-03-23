@@ -779,7 +779,7 @@ namespace AutoWP7.View.Channel
             {
                 shuokeComm = new NewsViewModel();
             }
-            string url = string.Format("{0}{3}/news/shuokelist-a2-pm1-v1.6.0-p{1}-s{2}.html", App.appUrl, pageIndex, pageSize, App.versionStr);
+            string url = string.Format("{0}{3}/news/shuokelist-a2-pm1-v{4}-p{1}-s{2}.html", App.appUrl, pageIndex, pageSize, App.versionStr, App.version);
 
             shuokeComm.LoadDataAysnc(url, 2);
             shuokeComm.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<NewsModel>>>(shuoke_LoadDataCompleted);
