@@ -119,7 +119,15 @@ namespace AutoWP7.View.Channel.Newest
             }
             else
             {
-                Common.showMsg("发送失败");
+                var messageToken=json.SelectToken("message");
+                if (messageToken!=null)
+                {
+                    Common.showMsg(messageToken.ToString());
+                }
+                else
+                {
+                    Common.showMsg("发送失败");
+                }
             }
         }
     }

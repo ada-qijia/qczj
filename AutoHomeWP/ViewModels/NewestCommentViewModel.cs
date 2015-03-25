@@ -124,6 +124,7 @@ namespace ViewModels
                                 model.SourceId = ((int)commentJson[i].SelectToken("sourcenameid")).ToString();
                                 model.sourcename = (string)commentJson[i].SelectToken("sourcename");
                                 model.sourcecontent = (string)commentJson[i].SelectToken("sourcecontent");
+                                model.NameId = ((int)commentJson[i].SelectToken("nameid")).ToString();
                                 model.ShowData = "Visible";
                                 newestCommentDataSource.Add(model);
                             }

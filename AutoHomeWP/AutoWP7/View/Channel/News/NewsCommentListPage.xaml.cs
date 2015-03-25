@@ -205,7 +205,7 @@ namespace AutoWP7.View.Channel.News
             var model = (sender as FrameworkElement).DataContext as CommentModel;
             if (model != null)
             {
-                string url = string.Format("/View/Me/OthersHomePage.xaml?userID={0}", model.id);
+                string url = string.Format("/View/Me/OthersHomePage.xaml?userID={0}", model.NameId);
                 this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
             }
         }

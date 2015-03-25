@@ -1078,7 +1078,7 @@ namespace AutoWP7.View.Channel
                 //共享文章
                 Model.Me.FavoriteArticleModel favoriteModel = new Model.Me.FavoriteArticleModel();
                 favoriteModel.ID = news.id;
-                favoriteModel.Img = news.imgurl;
+                favoriteModel.Img = news.smallpic;
                 favoriteModel.Title = news.title;
                 favoriteModel.PublishTime = news.time;
                 int reply;

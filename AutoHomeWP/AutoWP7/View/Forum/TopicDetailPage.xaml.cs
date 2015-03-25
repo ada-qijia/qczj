@@ -408,6 +408,10 @@ namespace AutoWP7.View.Forum
 
                 favoriteVM.UploadOthers(url, data, uploadClient_UploadCompleted, null, series, null);
             }
+            else
+            {
+                saveFavoriteTopicLocally(add, itemId);
+            }
         }
 
         private void saveFavoriteTopicLocally(bool add, int itemId)
@@ -422,7 +426,8 @@ namespace AutoWP7.View.Forum
             }
             else
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Topic, new List<int> { itemId });
+                var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Topic, new List<int> { itemId }, curTime);
                 setFavoriteButton(success);
                 string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);
@@ -454,6 +459,7 @@ namespace AutoWP7.View.Forum
             model.BBSType = bbsType;
             model.ID = int.Parse(topicId);
             model.Title = topicTitle;
+            model.Time = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
             return model;
         }
 

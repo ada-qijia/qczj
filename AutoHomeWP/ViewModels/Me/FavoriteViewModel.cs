@@ -162,6 +162,12 @@ namespace ViewModels.Me
                             this.model.CarSeriesList.Insert(0, carSeriesModel);
                             changed = true;
                         }
+                        else if(find.Action!=1)
+                        {
+                            find.Action = 1;
+                            find.Time = carSeriesModel.Time;
+                            changed = true;
+                        }
                     }
                     break;
                 case FavoriteType.CarSpec:
@@ -173,6 +179,12 @@ namespace ViewModels.Me
                         {
                             carSpecModel.Action = 1;
                             this.model.CarSpecList.Insert(0, carSpecModel);
+                            changed = true;
+                        }
+                        else if (find.Action != 1)
+                        {
+                            find.Action = 1;
+                            find.Time = carSpecModel.Time;
                             changed = true;
                         }
                     }
@@ -188,6 +200,12 @@ namespace ViewModels.Me
                             this.model.ArticleList.Insert(0, articleModel);
                             changed = true;
                         }
+                        else if (find.Action != 1)
+                        {
+                            find.Action = 1;
+                            find.Time = articleModel.Time;
+                            changed = true;
+                        }
                     }
                     break;
                 case FavoriteType.Forum:
@@ -201,6 +219,12 @@ namespace ViewModels.Me
                             this.model.ForumList.Insert(0, forumModel);
                             changed = true;
                         }
+                        else if (find.Action != 1)
+                        {
+                            find.Action = 1;
+                            find.Time = forumModel.Time;
+                            changed = true;
+                        }
                     }
                     break;
                 case FavoriteType.Topic:
@@ -212,6 +236,12 @@ namespace ViewModels.Me
                         {
                             topicModel.Action = 1;
                             this.model.TopicList.Insert(0, topicModel);
+                            changed = true;
+                        }
+                        else if (find.Action != 1)
+                        {
+                            find.Action = 1;
+                            find.Time = topicModel.Time;
                             changed = true;
                         }
                     }
@@ -228,7 +258,7 @@ namespace ViewModels.Me
             return changed ? this.SaveLocally() : false;
         }
 
-        public bool Remove(FavoriteType type, List<int> ids)
+        public bool Remove(FavoriteType type, List<int> ids, string time)
         {
             if (ids == null) return false;
 
@@ -242,6 +272,7 @@ namespace ViewModels.Me
                         if (find != null)
                         {
                             find.Action = 2;
+                            find.Time = time;
                             // this.model.CarSeriesList.Remove(find);
                             changed = true;
                         }
@@ -254,6 +285,7 @@ namespace ViewModels.Me
                         if (findSpec != null)
                         {
                             findSpec.Action = 2;
+                            findSpec.Time = time;
                             //this.model.CarSpecList.Remove(findSpec);
                             changed = true;
                         }
@@ -266,6 +298,7 @@ namespace ViewModels.Me
                         if (findArticle != null)
                         {
                             findArticle.Action = 2;
+                            findArticle.Time = time;
                             // this.model.ArticleList.Remove(findArticle);
                             changed = true;
                         }
@@ -278,6 +311,7 @@ namespace ViewModels.Me
                         if (findForum != null)
                         {
                             findForum.Action = 2;
+                            findForum.Time = time;
                             //this.model.ForumList.Remove(findForum);
                             changed = true;
                         }
@@ -290,6 +324,7 @@ namespace ViewModels.Me
                         if (findTopic != null)
                         {
                             findTopic.Action = 2;
+                            findTopic.Time = time;
                             //this.model.TopicList.Remove(findTopic);
                             changed = true;
                         }
@@ -563,7 +598,7 @@ namespace ViewModels.Me
                             var itemlist = JsonHelper.DeserializeOrDefault<List<FavoriteTopicModel>>(blockToken.SelectToken("list").ToString());
                             foreach (var item in itemlist)
                             {
-                                var found = this.model.ForumList.FirstOrDefault(m => m.ID == item.ID);
+                                var found = this.model.TopicList.FirstOrDefault(m => m.ID == item.ID);
                                 if (found == null)
                                 {
                                     this.model.TopicList.Add(item);
@@ -595,7 +630,7 @@ namespace ViewModels.Me
                             var itemlist = JsonHelper.DeserializeOrDefault<List<FavoriteArticleModel>>(blockToken.SelectToken("list").ToString());
                             foreach (var item in itemlist)
                             {
-                                var found = this.model.ForumList.FirstOrDefault(m => m.ID == item.ID);
+                                var found = this.model.ArticleList.FirstOrDefault(m => m.ID == item.ID);
                                 if (found == null)
                                 {
                                     this.model.ArticleList.Add(item);
@@ -627,7 +662,7 @@ namespace ViewModels.Me
                             var itemlist = JsonHelper.DeserializeOrDefault<List<FavoriteCarSeriesModel>>(blockToken.SelectToken("list").ToString());
                             foreach (var item in itemlist)
                             {
-                                var found = this.model.ForumList.FirstOrDefault(m => m.ID == item.ID);
+                                var found = this.model.CarSeriesList.FirstOrDefault(m => m.ID == item.ID);
                                 if (found == null)
                                 {
                                     this.model.CarSeriesList.Add(item);
@@ -658,7 +693,7 @@ namespace ViewModels.Me
                             var itemlist = JsonHelper.DeserializeOrDefault<List<FavoriteCarSpecModel>>(blockToken.SelectToken("list").ToString());
                             foreach (var item in itemlist)
                             {
-                                var found = this.model.ForumList.FirstOrDefault(m => m.ID == item.ID);
+                                var found = this.model.CarSpecList.FirstOrDefault(m => m.ID == item.ID);
                                 if (found == null)
                                 {
                                     this.model.CarSpecList.Add(item);
@@ -822,6 +857,7 @@ namespace ViewModels.Me
                                             else if (item.action == 1)
                                             {
                                                 this.model.CarSeriesList.Remove(found);
+                                                this.CarSeriesList.Remove(found);
                                             }
                                         }
                                     }
@@ -843,6 +879,7 @@ namespace ViewModels.Me
                                             else if (item.action == 1)
                                             {
                                                 this.model.CarSpecList.Remove(found);
+                                                this.CarSpecList.Remove(found);
                                             }
                                         }
                                     }
@@ -895,6 +932,7 @@ namespace ViewModels.Me
                                             else if (item.action == 1)
                                             {
                                                 this.model.ForumList.Remove(found);
+                                                this.ForumList.Remove(found);
                                             }
                                         }
                                     }
@@ -915,6 +953,7 @@ namespace ViewModels.Me
                                             else if (item.action == 1)
                                             {
                                                 this.model.TopicList.Remove(found);
+                                                this.TopicList.Remove(found);
                                             }
                                         }
                                     }
@@ -935,6 +974,7 @@ namespace ViewModels.Me
                                             else if (item.action == 1)
                                             {
                                                 this.model.ArticleList.Remove(found);
+                                                this.ArticleList.Remove(found);
                                             }
                                         }
                                     }
@@ -942,6 +982,7 @@ namespace ViewModels.Me
                             }
 
                             this.SaveLocally();
+
                             break;
                         default://其他情况...
                             break;

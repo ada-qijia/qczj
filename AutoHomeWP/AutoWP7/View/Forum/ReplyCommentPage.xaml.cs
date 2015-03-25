@@ -38,7 +38,7 @@ namespace AutoWP7.View.Forum
         string url = string.Empty;
         //string replyId = "0";
         string pageindex = "0";
-        WebClient wc = null;
+
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -143,10 +143,7 @@ namespace AutoWP7.View.Forum
                 GlobalIndicator.Instance.Text = "正在发送中...";
                 GlobalIndicator.Instance.IsBusy = true;
 
-                if (wc == null)
-                {
-                    wc = new WebClient();
-                }
+                var wc = new WebClient();
                 wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
                 wc.Headers["Accept-Charset"] = "utf-8";
                 wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
@@ -188,7 +185,14 @@ namespace AutoWP7.View.Forum
                                 App.IsLoadTag = false;
                             else
                                 App.IsLoadTag = true;
+
+                            if (sharedModel != null)
+                            {
+                                DraftViewModel.SingleInstance.RemoveDraft(new DateTime[] { sharedModel.SavedTime });
+                            }
+
                             this.NavigationService.GoBack();
+                            Common.showMsg("发送成功");
                             //this.NavigationService.Navigate(new Uri("/View/Forum/TopicDetailPage.xaml?from=0&bbsId=" + bbsId + "&topicId=" + topicId + "&bbsType=" + bbsType + "&floor=" + floor, UriKind.Relative));
                         }
                     }

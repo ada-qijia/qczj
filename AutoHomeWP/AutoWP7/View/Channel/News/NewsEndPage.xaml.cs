@@ -38,7 +38,9 @@ namespace AutoWP7.View.Channel.News
         int pageCount;
         //评论数
         static int replyCount;
-        //请求页面类型 2-说客
+        /// <summary>
+        /// 请求页面类型 1-文章 2-说客
+        /// </summary>
         static int pageType;
         int buttonCount = 2;
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -95,9 +97,16 @@ namespace AutoWP7.View.Channel.News
             //设置收藏按钮状态
             setFavoriteButton();
 
-            //设置小图模式开关
-            bool isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode();
-            SetImageModeMenuItem(isSmallImageMode);
+            //设置小图模式开关,说客不支持
+            if (pageType == 2)
+            {
+                this.ApplicationBar.MenuItems.Clear();
+            }
+            else
+            {
+                bool isSmallImageMode = Utils.MeHelper.GetIsSmallImageMode();
+                SetImageModeMenuItem(isSmallImageMode);
+            }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -386,6 +395,7 @@ namespace AutoWP7.View.Channel.News
         private void uploadFavoriteArticle(bool add)
         {
             var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
+            this.news.Time = curTime;
             var model = new ViewModels.Me.FavoriteViewModel.FavoriteSyncItem() { id = news.ID, time = curTime, action = add ? 0 : 1 };
             List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem> series = new List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem>();
             series.Add(model);
@@ -419,6 +429,10 @@ namespace AutoWP7.View.Channel.News
 
                 favoriteVM.UploadOthers(url, data, uploadClient_UploadCompleted, null, null, series);
             }
+            else
+            {
+                saveFavoriteArticleLocally(add);
+            }
         }
 
         private void saveFavoriteArticleLocally(bool add)
@@ -432,7 +446,7 @@ namespace AutoWP7.View.Channel.News
             }
             else
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int> { news.ID });
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int> { news.ID }, this.news.Time);
                 setFavoriteButton(success);
                 string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);
@@ -442,7 +456,7 @@ namespace AutoWP7.View.Channel.News
         private void setFavoriteButton(bool? addFavorite = null)
         {
             var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-            if (news == null)
+            if (news == null || pageType == 2)
             {
                 favoriteBtn.IsEnabled = false;
             }
@@ -492,6 +506,7 @@ namespace AutoWP7.View.Channel.News
 
         private void AddRecents()
         {
+            news.IsShuoke = pageType == 2;
             ViewModels.Me.ViewHistoryViewModel.SingleInstance.AddItem(FavoriteType.Article, news);
         }
 

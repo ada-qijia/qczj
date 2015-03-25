@@ -116,6 +116,9 @@ namespace Model.Me
 
         [DataMember(Name = "replycount")]
         public int ReplyCount { get; set; }
+
+        [DataMember]
+        public bool IsShuoke { get; set; }
     }
 
     [DataContract]

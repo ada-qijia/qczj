@@ -43,7 +43,7 @@ namespace AutoWP7.View.Me
             bool passwordEmpty = string.IsNullOrEmpty(this.PasswordTextbox.Password);
             if (string.IsNullOrEmpty(this.UsernameTextbox.Text))
             {
-                string message = passwordEmpty ? "请您输入账号密码" : "请您输入账户名";
+                string message = passwordEmpty ? "请您输入帐号密码" : "请您输入帐户名";
                 Common.showMsg(message);
             }
             else if (passwordEmpty)
@@ -58,7 +58,7 @@ namespace AutoWP7.View.Me
                 //获取昵称
                 EventHandler<string> getNicknameCompleted = (object s, string nickname) =>
                 {
-                    //关联账号
+                    //关联帐号
                     string format = "_appid={0}&_timeStamp={1}&autohomeua={2}&logincode={3}&userPwd={4}&openId={5}&platformid={6}&token={7}&tokenSecret={8}&orginalName={9}";
                     string secret = thirdPartyModel.PlatformId == Utils.MeHelper.WeiboPlatformID ? Utils.MeHelper.WeiboAppSecret : Utils.MeHelper.QQAppSecret;
                     string data = string.Format(format, Utils.MeHelper.appID, Common.GetTimeStamp(), AutoWP7.Handler.Common.GetAutoHomeUA(), username, password, thirdPartyModel.OpenId, thirdPartyModel.PlatformId, thirdPartyModel.AccessToken, secret, nickname);

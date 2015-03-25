@@ -33,7 +33,7 @@ namespace AutoWP7.View.Me
 
             if (e.NavigationMode == NavigationMode.New)
             {
-                this.isLogin = Utils.MeHelper.GetMyInfoModel()!=null;
+                this.isLogin = Utils.MeHelper.GetMyInfoModel() != null;
                 if (this.isLogin)
                 {
                     this.LoadMore(true);
@@ -127,9 +127,19 @@ namespace AutoWP7.View.Me
                 var userInfoModel = Utils.MeHelper.GetMyInfoModel();
                 if (userInfoModel != null)
                 {
+                    int contentType = 1;
+                    if (model.ReplyType == 7)
+                    {
+                        contentType = 2;
+                    }
+                    else if (model.ReplyType == 4)
+                    {
+                        contentType = 3;
+                    }
+
                     this.NavigationService.Navigate(new Uri("/View/Channel/Newest/CommentPage.xaml?newsid=" +
                           model.ID + "&replyid=" + model.ReplyID + "&userid=" + userInfoModel.UserName + "&authorization=" + userInfoModel.Authorization
-                          + "&pageType=" + model.ReplyType, UriKind.Relative));
+                          + "&pageType=" + contentType, UriKind.Relative));
                 }
             }
         }

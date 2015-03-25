@@ -108,7 +108,7 @@ namespace WeiboSdk.PageViews
            {
                if (this.NavigationService != null)
                {
-                   this.NavigationService.RemoveBackEntry();
+                   this.NavigationService.GoBack();
                }
            });
         }

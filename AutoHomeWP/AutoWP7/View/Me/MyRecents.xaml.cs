@@ -68,8 +68,8 @@ namespace AutoWP7.View.Me
             if (model != null)
             {
                 View.Channel.News.NewsEndPage.ShareState(model);
-                //暂按文章处理
-                string url = string.Format("/View/Channel/News/NewsEndPage.xaml?newsid={0}&pageIndex={1}&pageType={2}", model.ID, 1, 1);
+                int pageType = model.IsShuoke ? 2 : 1;
+                string url = string.Format("/View/Channel/News/NewsEndPage.xaml?newsid={0}&pageIndex={1}&pageType={2}", model.ID, 1, pageType);
                 NavigationService.Navigate(new Uri(url, UriKind.Relative));
             }
         }

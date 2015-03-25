@@ -233,7 +233,7 @@ namespace AutoWP7.View.More
         {
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                //绑定成功，判断账号授权情况
+                //绑定成功，判断帐号授权情况
                 if (e == 0)
                 {
                     var result = this.thirdPartyLoginVM.LoginResult;
@@ -256,7 +256,7 @@ namespace AutoWP7.View.More
 
                     this.NavigationService.GoBack();
                 }
-                //未绑定车网账号
+                //未绑定车网帐号
                 else if (e == 2013022)
                 {
                     this.NavigationService.Navigate(new Uri("/View/Me/CompleteMyInfo.xaml?platformId=16", UriKind.Relative));

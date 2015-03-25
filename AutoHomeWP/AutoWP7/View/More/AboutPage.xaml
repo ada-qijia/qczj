@@ -43,7 +43,7 @@
                 <!--<TextBlock Foreground="Black" FontSize="22"  Text="Tel support："/>
                 <TextBlock Foreground="#3cadeb" x:Name="callAutohome" Height="60" Tap="callAutohome_Tap_1"  FontSize="25" Text=" +86 18618261181" Width="340" />-->
             </StackPanel>
-            <TextBlock Foreground="Black" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="Copyright ©2014 Beijing Autohome Information Techonology Ltd."/>
+            <TextBlock Foreground="Black" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Text="Copyright ©2015 Beijing Autohome Information Techonology Ltd."/>
             <!--<Image HorizontalAlignment="Center"
                      Width="300"  Height="166"                  
                     Source="/AutoWP7;component/Images/MainLOGO.png" 

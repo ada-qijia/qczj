@@ -118,7 +118,9 @@ namespace ViewModels
                             {
                                 model = new NewsDetailModel();
                                 model.Id = i;
-                                model.PageTitle = pageList.Split('|')[i - 1];
+                                string[] pages = pageList.Split('|');
+                                if (pages != null && pages.Length > i - 1)
+                                { model.PageTitle = pages[i - 1]; }
                                 model.Title = (string)array.SelectToken("title");
                                 model.Type = (string)array.SelectToken("type");
                                 model.PageCount = pageCount;

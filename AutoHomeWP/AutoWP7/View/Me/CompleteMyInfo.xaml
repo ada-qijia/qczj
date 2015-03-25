@@ -34,7 +34,7 @@
 
             <ucMe:UpdateSelfInfo x:Name="ThirdPartyRegisterPanel" IsPasswordVisible="False"/>
 
-            <Button x:Name="ConnectAccountButton" Grid.Row="1" Content="如有汽车之家账号，请关联账号" Style="{StaticResource ThemeButtonStyle}" VerticalAlignment="Top" Margin="0 12 0 0" Click="ConnectAccountButton_Click"/>
+            <Button x:Name="ConnectAccountButton" Grid.Row="1" Content="如有汽车之家帐号，请关联帐号" Style="{StaticResource ThemeButtonStyle}" VerticalAlignment="Top" Margin="0 12 0 0" Click="ConnectAccountButton_Click"/>
         </Grid>
     </Grid>
 

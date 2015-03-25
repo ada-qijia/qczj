@@ -429,6 +429,7 @@ namespace AutoWP7.View.Channel.Newest
         private void uploadFavoriteArticle(bool add)
         {
             var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
+            this.news.Time = curTime;
             var model = new ViewModels.Me.FavoriteViewModel.FavoriteSyncItem() { id = news.ID, time = curTime, action = add ? 0 : 1 };
             List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem> series = new List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem>();
             series.Add(model);
@@ -462,6 +463,10 @@ namespace AutoWP7.View.Channel.Newest
 
                 favoriteVM.UploadOthers(url, data, uploadClient_UploadCompleted, null, null, series);
             }
+            else
+            {
+                saveFavoriteArticleLocally(add);
+            }
         }
 
         private void saveFavoriteArticleLocally(bool add)
@@ -475,7 +480,7 @@ namespace AutoWP7.View.Channel.Newest
             }
             else
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int> { news.ID });
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, new List<int> { news.ID }, this.news.Time);
                 setFavoriteButton(success);
                 string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);
@@ -485,7 +490,7 @@ namespace AutoWP7.View.Channel.Newest
         private void setFavoriteButton(bool? addFavorite = null)
         {
             var favoriteBtn = this.ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-            if (news == null)
+            if (news == null || newsType == "说客")
             {
                 favoriteBtn.IsEnabled = false;
             }

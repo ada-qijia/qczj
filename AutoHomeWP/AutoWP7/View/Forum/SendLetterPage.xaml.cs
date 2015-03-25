@@ -72,8 +72,6 @@ namespace AutoWP7.View.Forum
         {
             if (isSending == false)
             {
-
-
                 //检查是否已经登录
                 var setting = IsolatedStorageSettings.ApplicationSettings;
                 string key = "userInfo";
@@ -89,7 +87,7 @@ namespace AutoWP7.View.Forum
                     string sign = string.Empty;
                     //名值对按key正序排列
                     string strData = "_appid=app"
-                        + "&_timestamp=" + DateTime.Now.Ticks//时间戳
+                        + "&_timestamp=" + Common.GetTimeStamp()//时间戳
                         + "&album_id=1"
                         + "&autohomeua=" + Common.GetAutoHomeUA() //设备类型\t系统版本号\tautohome\t客户端版本号
                         + "&bbsid=" + bbsId
@@ -114,7 +112,6 @@ namespace AutoWP7.View.Forum
             }
         }
 
-        WebClient wc = null;
         /// <summary>
         /// 发送数据
         /// </summary>
@@ -127,10 +124,7 @@ namespace AutoWP7.View.Forum
                 GlobalIndicator.Instance.Text = "正在发送中...";
                 GlobalIndicator.Instance.IsBusy = true;
 
-                if (wc == null)
-                {
-                    wc = new WebClient();
-                }
+                WebClient wc = new WebClient();
                 //wc.Encoding = DBCSEncoding.GetDBCSEncoding("utf-8");
                 wc.Headers["Referer"] = "http://www.autohome.com.cn/china";
                 wc.Headers["Accept-Charset"] = "utf-8";
@@ -144,7 +138,6 @@ namespace AutoWP7.View.Forum
                 wc.UploadStringCompleted += new UploadStringCompletedEventHandler((ss, ee) =>
                 {
                     APIEventArgs<string> apiArgs = new APIEventArgs<string>();
-
 
                     if (ee.Error != null)
                     {
@@ -163,17 +156,28 @@ namespace AutoWP7.View.Forum
                         }
                         else
                         {
-                            View.Forum.TopicDetailPage.ShareTitle(title);
-                            topicId = (int)json.SelectToken("result").SelectToken("topicid");
-                            this.NavigationService.Navigate(new Uri("/View/Forum/TopicDetailPage.xaml?bbsId=" + bbsId + "&topicId=" + topicId + "&bbsType=" + bbsType + "&issend=" + 1, UriKind.Relative));
+                            if (sharedModel != null)
+                            {
+                                DraftViewModel.SingleInstance.RemoveDraft(new DateTime[] { sharedModel.SavedTime });
+                                NavigationService.GoBack();
+                            }
+                            else
+                            {
+                                View.Forum.TopicDetailPage.ShareTitle(title);
+                                topicId = (int)json.SelectToken("result").SelectToken("topicid");
+                                this.NavigationService.Navigate(new Uri("/View/Forum/TopicDetailPage.xaml?bbsId=" + bbsId + "&topicId=" + topicId + "&bbsType=" + bbsType + "&issend=" + 1, UriKind.Relative));
+                            }
+                            Common.showMsg("发送成功");
                         }
                     }
                     isSending = false;
 
+                    GlobalIndicator.Instance.Text = "";
+                    GlobalIndicator.Instance.IsBusy = false;
                 });
             }
-            catch 
-            {}
+            catch
+            { }
         }
 
         private ObservableCollection<byte[]> imgDataSource = new ObservableCollection<byte[]>();

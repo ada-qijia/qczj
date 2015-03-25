@@ -423,7 +423,7 @@ namespace AutoWP7.View.Car
                 carSeriesQuoteVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<Model.CarSeriesQuoteModel>>>(carSeriesQuoteVM_LoadDataCompleted);
             }
 
-            string url = string.Format("{0}{2}/cars/seriessummary-a2-pm3-v{2}-s{1}-t0xffff-c0.html", App.appUrl, carSeriesId, App.versionStr, App.version);
+            string url = string.Format("{0}{2}/cars/seriessummary-a2-pm3-v{3}-s{1}-t0xffff-c0.html", App.appUrl, carSeriesId, App.versionStr, App.version);
             carSeriesQuoteVM.LoadDataAysnc(url, true);
             //这里已经有标准接口carSeriesQuoteVM.LoadDataAysnc(App.appUrl  + "/autov2.5.5/cars/seriessummary-a2-pm3-v2.5.5-s" + carSeriesId + "-t0XFFFF.html");
         }
@@ -1174,6 +1174,7 @@ namespace AutoWP7.View.Car
         private void uploadFavoriteCarSeries(bool add)
         {
             var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
+            this.carSeries.Time = curTime;
             var model = new ViewModels.Me.FavoriteViewModel.FavoriteSyncItem() { id = this.carSeries.ID, time = curTime, action = add ? 0 : 1 };
             List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem> series = new List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem>();
             series.Add(model);
@@ -1205,6 +1206,10 @@ namespace AutoWP7.View.Car
                     };
                 favoriteVM.UploadCar(url, data, uploadClient_UploadCompleted, series, null);
             }
+            else
+            {
+                saveFavoriteCarSeriesLocally(add);
+            }
         }
 
         private void saveFavoriteCarSeriesLocally(bool add)
@@ -1218,7 +1223,7 @@ namespace AutoWP7.View.Car
             }
             else
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSeries, new List<int> { this.carSeries.ID });
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSeries, new List<int> { this.carSeries.ID }, this.carSeries.Time);
                 setFavoriteButton(success);
                 string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);
@@ -1274,6 +1279,10 @@ namespace AutoWP7.View.Car
 
                 favoriteVM.UploadOthers(url, data, uploadClient_UploadCompleted, series, null, null);
             }
+            else
+            {
+                saveFavoriteForumLocally(add);
+            }
         }
 
         private void saveFavoriteForumLocally(bool add)
@@ -1288,7 +1297,8 @@ namespace AutoWP7.View.Car
             }
             else
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Forum, new List<int> { bbsId });
+                var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Forum, new List<int> { bbsId }, curTime);
                 setFavoriteButton(success);
                 string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);
@@ -1303,7 +1313,7 @@ namespace AutoWP7.View.Car
                 model.ID = bbsId;
                 model.Name = bbsName;
                 model.Type = bbsType;
-                model.Time = DateTime.Now.ToString("YYYY-MM-dd HH:mm:ss");
+                model.Time = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
                 return model;
             }
             else

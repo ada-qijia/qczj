@@ -58,7 +58,7 @@ namespace AutoWP7.View.Me
             if (userInfoModel != null && (seriesStr != null || specStr != null))
             {
                 string url = Utils.MeHelper.SyncFavoriteCarUrl;
-                string data = string.Format("_appid={5}&uc_ticket={0}&seriesStr={1}&specStr={2}&_timestamp={3}&autohomeua={4}", userInfoModel.Authorization, seriesStr, specStr, Common.GetTimeStamp(), Common.GetAutoHomeUA(),Utils.MeHelper.appID);
+                string data = string.Format("_appid={5}&uc_ticket={0}&seriesStr={1}&specStr={2}&_timestamp={3}&autohomeua={4}", userInfoModel.Authorization, seriesStr, specStr, Common.GetTimeStamp(), Common.GetAutoHomeUA(), Utils.MeHelper.appID);
                 data = Common.SortURLParamAsc(data);
                 string sign = Common.GetSignStr(data);
                 data += "&_sign=" + sign;
@@ -122,6 +122,7 @@ namespace AutoWP7.View.Me
 
         public override void AfterDeleteItems(System.Collections.IList selectedItems)
         {
+            var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
             List<int> removedIds = new List<int>();
 
             if (selectedItems.Count > 0)
@@ -132,16 +133,16 @@ namespace AutoWP7.View.Me
                     {
                         removedIds.Add(item.ID);
                     }
-                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSeries, removedIds);
+                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSeries, removedIds, curTime);
                     this.uploadCarData();
                 }
-                else if(selectedItems[0] is FavoriteCarSpecModel)
+                else if (selectedItems[0] is FavoriteCarSpecModel)
                 {
                     foreach (FavoriteCarSpecModel item in selectedItems)
                     {
                         removedIds.Add(item.ID);
                     }
-                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSpec, removedIds);
+                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSpec, removedIds, curTime);
                     this.uploadCarData();
                 }
                 else if (selectedItems[0] is FavoriteForumModel)
@@ -150,7 +151,7 @@ namespace AutoWP7.View.Me
                     {
                         removedIds.Add(item.ID);
                     }
-                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Forum, removedIds);
+                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Forum, removedIds, curTime);
                     this.uploadOthersData();
                 }
                 else if (selectedItems[0] is FavoriteTopicModel)
@@ -159,7 +160,7 @@ namespace AutoWP7.View.Me
                     {
                         removedIds.Add(item.ID);
                     }
-                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Topic, removedIds);
+                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Topic, removedIds, curTime);
                     this.uploadOthersData();
                 }
                 else if (selectedItems[0] is FavoriteArticleModel)
@@ -168,7 +169,7 @@ namespace AutoWP7.View.Me
                     {
                         removedIds.Add(item.ID);
                     }
-                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, removedIds);
+                    ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.Article, removedIds, curTime);
                     this.uploadOthersData();
                 }
             }
@@ -212,7 +213,6 @@ namespace AutoWP7.View.Me
             if (model != null)
             {
                 View.Channel.News.NewsEndPage.ShareState(model);
-                //暂按文章处理
                 string url = string.Format("/View/Channel/News/NewsEndPage.xaml?newsid={0}&pageIndex={1}&pageType={2}", model.ID, 1, 1);
                 NavigationService.Navigate(new Uri(url, UriKind.Relative));
             }

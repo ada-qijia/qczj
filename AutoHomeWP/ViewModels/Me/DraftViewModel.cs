@@ -71,11 +71,15 @@ namespace ViewModels.Me
         }
 
         //remove items and save file
-        public bool RemoveDraft(List<DraftModel> models)
+        public bool RemoveDraft(IEnumerable<DateTime> savedTimeList)
         {
-            foreach (var model in models)
+            foreach (var savedTime in savedTimeList)
             {
-                this.DraftList.Remove(model);
+                var found = this.DraftList.FirstOrDefault(item => item.SavedTime == savedTime);
+                if (found != null)
+                {
+                    this.DraftList.Remove(found);
+                }
             }
             return SaveDraft();
         }

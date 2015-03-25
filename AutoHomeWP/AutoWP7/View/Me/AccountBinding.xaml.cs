@@ -122,7 +122,7 @@ namespace AutoWP7.View.Me
             //qq
             if (settings.Contains(Utils.MeHelper.QQAuthResultKey) && settings[Utils.MeHelper.QQAuthResultKey] is ThirdPartyAccountModel)
             {
-                //使用第三方账号登录
+                //使用第三方帐号登录
             }
             else
             {
@@ -242,7 +242,7 @@ namespace AutoWP7.View.Me
                     data += "&_sign=" + sign;
                     ViewModels.Me.UpStreamViewModel.SingleInstance.UploadAsync(Utils.MeHelper.ThirdPartyUpdateTokenUrl, data, updateTokenCompleted, weiboModel);
                 }
-                else//首次绑定,关联账号
+                else//首次绑定,关联帐号
                 {
                     EventHandler<string> getNicknameCompleted = (object s, string e) =>
                         {

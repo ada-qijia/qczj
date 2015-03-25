@@ -276,7 +276,24 @@ namespace Model
             }
         }
 
-
+        //用户Id
+        private string _nameId;
+        public string NameId
+        {
+            get
+            {
+                return _nameId;
+            }
+            set
+            {
+                if (value != _nameId)
+                {
+                    OnPropertyChanging("NameId");
+                    _nameId = value;
+                    OnPropertyChanged("NameId");
+                }
+            }
+        }
 
 
         //属性更改时的事件

@@ -602,6 +602,7 @@ namespace AutoWP7.View.Car
         private void uploadFavoriteCarSpec(bool add)
         {
             var curTime = DateTime.Now.ToString(Utils.MeHelper.FavoriteTimeFormat);
+            this.carSpec.Time = curTime;
             var model = new ViewModels.Me.FavoriteViewModel.FavoriteSyncItem() { id = this.carSpec.ID, time = curTime, action = add ? 0 : 1 };
             List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem> specs = new List<ViewModels.Me.FavoriteViewModel.FavoriteSyncItem>();
             specs.Add(model);
@@ -633,6 +634,10 @@ namespace AutoWP7.View.Car
                 };
                 favoriteVM.UploadCar(url, data, uploadClient_UploadCompleted, null, specs);
             }
+            else
+            {
+                saveFavoriteCarSpecLocally(add);
+            }
         }
 
         private void saveFavoriteCarSpecLocally(bool add)
@@ -646,7 +651,7 @@ namespace AutoWP7.View.Car
             }
             else
             {
-                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSpec, new List<int> { this.carSpec.ID });
+                bool success = ViewModels.Me.FavoriteViewModel.SingleInstance.Remove(FavoriteType.CarSpec, new List<int> { this.carSpec.ID }, this.carSpec.Time);
                 setFavoriteButton(success);
                 string msg = success ? "取消收藏成功" : "取消收藏失败";
                 Common.showMsg(msg);
