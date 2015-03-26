@@ -29,7 +29,7 @@ namespace ViewModels
             //手机型号
             // string phoneType = "windows phone " + DeviceExtendedProperties.GetValue("DeviceName").ToString();
             //TODU  改为动态获取
-            String phoneType = "WP\t8\tautohome\t1.6.0\tWP";
+            String phoneType = "WP\t8\tautohome\t1.7.0\tWP";
             //手机设备id
             string deviceid = DeviceExtendedProperties.GetValue("DeviceUniqueId").ToString();
             //post 数据
