@@ -128,12 +128,12 @@ namespace AutoWP7.Utils
 
         #region url
 
-        public const string UserBaseUrl = "http://app.api.autohome.com.cn/wpv1.7/User"; //"http://221.192.136.99:804/wpv1.7/user";
+        public const string UserBaseUrl = "http://app.api.autohome.com.cn/wpv1.7/User"; //"http://221.192.136.99:804/wpv1.6/user"; 
 
         public const string ThirdPartyLoginUrl = "http://i.api.autohome.com.cn/api/Login/OAuthLogin";
         public const string ThirdPartyRegisterUrl = "http://i.api.autohome.com.cn/api/Register/OAuthRegister";
         public const string ThirdPartyUpdateTokenUrl = "http://i.api.autohome.com.cn/api/openplatform/updatetoken";
-        public const string ServiceProtocolUrl = "http://account.m.autohome.com.cn/RegisterAgreement.html";
+        public const string ServiceProtocolUrl = "http://app.api.autohome.com.cn/wpv1.7/Html/Register_protocol.html";
         public const string ConnectAccountUrl = "http://i.api.autohome.com.cn/api/OpenPlatform/BindOpenPlantRelation";
         public const string UserRegisterUrl = "http://i.api.autohome.com.cn/api/Register/index";
         public const string SendPrivateMessageUrl = "http://i.api.autohome.com.cn/api/privateletter/sendprivateletter";
@@ -146,18 +146,21 @@ namespace AutoWP7.Utils
         /// <param name="userID">if null, means me</param>
         public static string GetUserInfoUrl(string userID = null, int pageIndex = 1)
         {
-            var userInfoModel = GetMyInfoModel();
-            if (userInfoModel != null)
+            string url = null;
+            if (string.IsNullOrEmpty(userID))
             {
-                string auth = string.IsNullOrEmpty(userID) ? userInfoModel.Authorization : string.Empty;
-                string id = string.IsNullOrEmpty(userID) ? userInfoModel.UserID.ToString() : userID;
-                string url = string.Format("{3}/GetUserInfo.ashx?a=2&pm=3&v={4}&au={0}&u={1}&p={2}&s=20", auth, id, pageIndex, UserBaseUrl, App.version);
-                return url;
+                var userInfoModel = GetMyInfoModel();
+                if (userInfoModel != null)
+                {
+                    url = string.Format("{3}/GetUserInfo.ashx?a=2&pm=3&v={4}&au={0}&u={1}&p={2}&s=20", userInfoModel.Authorization, userInfoModel.UserID.ToString(), pageIndex, UserBaseUrl, App.version);
+                }
             }
             else
             {
-                return null;
+                url = string.Format("{2}/GetUserInfo.ashx?a=2&pm=3&v={3}&au=&u={0}&p={1}&s=20", userID, pageIndex, UserBaseUrl, App.version);
             }
+
+            return url;
         }
 
         public static string GetFavoriteUrl(int type = 0, int pageIndex = 1)

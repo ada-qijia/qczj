@@ -253,13 +253,13 @@
 
                                     <!--头条 or 说客 图标-->
                                     <StackPanel Width="290"  Grid.Column="1"  Grid.Row="2" >
-                                        <Rectangle Visibility="{Binding type,Converter={StaticResource NewsestShuoKeImgConverter}}"
+                                        <Rectangle Visibility="{Binding mediatype,Converter={StaticResource NewsestShuoKeImgConverter}}"
                                                    Margin="40,-85,2,0" Fill="#FFEB6C05" Height="25" Width="50"  HorizontalAlignment="Right"  ></Rectangle>
                                         <TextBlock   HorizontalAlignment="Right"  Foreground="White"  
                                                  Margin="40,-55,8,0" 
                                                  Text="说客" 
                                                  FontSize="18" FontWeight="Bold"
-                                                      Visibility="{Binding type,Converter={StaticResource NewsestShuoKeImgConverter}}"/>
+                                                      Visibility="{Binding mediatype,Converter={StaticResource NewsestShuoKeImgConverter}}"/>
                                         <Rectangle Visibility="{Binding type,Converter={StaticResource NewsestHeadImgConverter}}"
                                                    Margin="40,-85,2,0" Fill="#3cadeb " Height="25" Width="50"  HorizontalAlignment="Right"  ></Rectangle>
                                         <TextBlock   HorizontalAlignment="Right"  Foreground="White"  

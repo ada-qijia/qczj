@@ -94,14 +94,15 @@ namespace AutoWP7
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-
-            if (value != null && value.ToString() != "")
+            if(value is int)
             {
-                if (value.ToString() != "头条")
+                int mediaType=(int)value;
+                if (mediaType == 2)
                 {
                     return Visibility.Visible;
                 }
             }
+
             return Visibility.Collapsed;
         }
 

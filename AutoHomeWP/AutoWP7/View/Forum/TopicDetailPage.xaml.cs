@@ -13,6 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Model.Me;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AutoWP7.View.Forum
 {
@@ -241,13 +242,27 @@ namespace AutoWP7.View.Forum
         //加载中
         private void webTopicDetail_Navigating(object sender, NavigatingEventArgs e)
         {
-            IApplicationBarIconButton Icon;
-            for (int i = 0; i < 4; i++)
+            //导航到他的主页
+            Regex reg = new Regex(@"^actionfrom:user㊣\d+㊣.*$");
+            string targetUrl = e.Uri.ToString();
+            if (reg.IsMatch(targetUrl))
             {
-                Icon = this.ApplicationBar.Buttons[i] as IApplicationBarIconButton;
-                Icon.IsEnabled = false;
+                e.Cancel = true;
+                int startIndex = targetUrl.IndexOf('㊣');
+                string userId = targetUrl.Substring(startIndex + 1, targetUrl.LastIndexOf('㊣') - startIndex -1);
+                string url = string.Format("/View/Me/OthersHomePage.xaml?userID={0}", userId);
+                this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
             }
-            ProgBar.Visibility = Visibility.Visible;
+            else
+            {
+                IApplicationBarIconButton Icon;
+                for (int i = 0; i < 4; i++)
+                {
+                    Icon = this.ApplicationBar.Buttons[i] as IApplicationBarIconButton;
+                    Icon.IsEnabled = false;
+                }
+                ProgBar.Visibility = Visibility.Visible;
+            }
         }
 
         //加载完成
