@@ -26,7 +26,7 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <phone:WebBrowser x:Name="wb" Grid.Row="1" Margin="12 0" NavigationFailed="wb_NavigationFailed" Navigating="wb_Navigating" Navigated="wb_Navigated"/>
+        <phone:WebBrowser x:Name="wb" Grid.Row="1" Margin="12 0" IsScriptEnabled="True" NavigationFailed="wb_NavigationFailed" Navigating="wb_Navigating" Navigated="wb_Navigated"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

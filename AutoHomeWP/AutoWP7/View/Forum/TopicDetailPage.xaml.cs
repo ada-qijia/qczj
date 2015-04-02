@@ -1,19 +1,15 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using AutoWP7.Handler;
+﻿using AutoWP7.Handler;
 using Microsoft.Phone.Controls;
-using Newtonsoft.Json.Linq;
 using Microsoft.Phone.Shell;
-using System.IO.IsolatedStorage;
-using Model;
-using ViewModels.Handler;
-using System.Windows.Navigation;
+using Model.Me;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Model.Me;
-using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Navigation;
 
 namespace AutoWP7.View.Forum
 {
@@ -212,7 +208,7 @@ namespace AutoWP7.View.Forum
                                 pageCount = replyCount / 20 + 1;
                             }
                         }
-                        webTopicDetail.Navigate(urlSource);
+                        webTopicDetail.Navigate(urlSource, null, App.Referer);
                     }
                 }
                 catch
@@ -227,7 +223,7 @@ namespace AutoWP7.View.Forum
             UmengSDK.UmengAnalytics.onEvent("ForumActivity", "帖子最终页下一页点击量");
             pageIndex++;
             string url = CreateTopicView(pageIndex, false);
-            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute));
+            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute), null, App.Referer);
         }
 
         //上页
@@ -236,7 +232,7 @@ namespace AutoWP7.View.Forum
             UmengSDK.UmengAnalytics.onEvent("ForumActivity", "帖子最终页上一页点击量");
             pageIndex--;
             string url = CreateTopicView(pageIndex, false);
-            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute));
+            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute), null, App.Referer);
         }
 
         //加载中
@@ -249,7 +245,7 @@ namespace AutoWP7.View.Forum
             {
                 e.Cancel = true;
                 int startIndex = targetUrl.IndexOf('㊣');
-                string userId = targetUrl.Substring(startIndex + 1, targetUrl.LastIndexOf('㊣') - startIndex -1);
+                string userId = targetUrl.Substring(startIndex + 1, targetUrl.LastIndexOf('㊣') - startIndex - 1);
                 string url = string.Format("/View/Me/OthersHomePage.xaml?userID={0}", userId);
                 this.NavigationService.Navigate(new Uri(url, UriKind.Relative));
             }
@@ -486,7 +482,7 @@ namespace AutoWP7.View.Forum
         private void Refresh()
         {
             string url = CreateTopicView(1, false);
-            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute));
+            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute), null, App.Referer);
         }
 
         //切换大图小图模式

@@ -134,7 +134,7 @@ namespace AutoWP7.View.Car
                     {
                         pageCount = replyCount / 20 + 1;
                     }
-                    webTopicDetail.Navigate(urlSource);
+                    webTopicDetail.Navigate(urlSource, null, App.Referer);
                 }
             }
             catch
@@ -150,7 +150,7 @@ namespace AutoWP7.View.Car
             pageIndex++;
             //  webTopicDetail.Navigate(new Uri(App.headUrl + "/clubapp/topicdetail/topic_version110.aspx?topicId=" + topicId + "&bbsType=c&owner=0&pageIndex=" + pageIndex + "&pageSize=20", UriKind.Absolute));
             string url = CreateTopicViewUrl(pageIndex);
-            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute));
+            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute), null, App.Referer);
         }
 
         //上页
@@ -161,7 +161,7 @@ namespace AutoWP7.View.Car
             // webTopicDetail.Navigate(new Uri(App.headUrl + "/clubapp/topicdetail/topic_version110.aspx?topicId=" + topicId + "&bbsType=c&owner=0&pageIndex=" + pageIndex + "&pageSize=20", UriKind.Absolute));
             string url = CreateTopicViewUrl(pageIndex);
 
-            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute));
+            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute), null, App.Referer);
         }
 
         //加载中
@@ -269,7 +269,7 @@ namespace AutoWP7.View.Car
         private void Refresh()
         {
             string url = CreateTopicViewUrl(1);
-            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute));
+            webTopicDetail.Navigate(new Uri(url, UriKind.Absolute), null, App.Referer);
         }
 
         //切换大图小图模式

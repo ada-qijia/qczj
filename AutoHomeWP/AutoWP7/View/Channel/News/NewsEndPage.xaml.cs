@@ -168,7 +168,7 @@ namespace AutoWP7.View.Channel.News
                 }
 
                 string newsPageUrl = CreateNewsViewUrl(pageIndex);
-                wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute));
+                wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute), null, App.Referer);
             });
 
         }
@@ -177,7 +177,7 @@ namespace AutoWP7.View.Channel.News
         private void LoadShuokeData()
         {
             string newsPageUrl = AppUrlMgr.ShuoWebViewUrl(Convert.ToInt32(newsId), 0, 1, 1, 0, 0);
-            wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute));
+            wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute), null, App.Referer);
         }
 
         // 上页
@@ -188,7 +188,7 @@ namespace AutoWP7.View.Channel.News
 
             pageIndex = pageIndex - 1;
             string url = CreateNewsViewUrl(pageIndex);
-            wb.Navigate(new Uri(url, UriKind.Absolute));
+            wb.Navigate(new Uri(url, UriKind.Absolute), null, App.Referer);
 
         }
 
@@ -214,7 +214,7 @@ namespace AutoWP7.View.Channel.News
             pageIndex = pageIndex + 1;
             //上页可用
             string newsPageUrl = CreateNewsViewUrl(pageIndex);
-            wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute));
+            wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute), null, App.Referer);
             //wb.Navigate(new Uri(App.headUrl + "/news/news.aspx?newsid=" + newsId + "&pageIndex=" + pageIndex, UriKind.Absolute));
         }
 
@@ -361,7 +361,7 @@ namespace AutoWP7.View.Channel.News
         private void refreshButton_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
         {
             string newsPageUrl = pageType == 2 ? CreateShuokeViewUrl() : CreateNewsViewUrl(pageIndex);
-            wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute));
+            wb.Navigate(new Uri(newsPageUrl, UriKind.Absolute), null, "Referer:" + App.Referer);
             //wb.Navigate(new Uri(App.headUrl + "/news/news.aspx?newsid=" + newsId + "&pageIndex=" + pageIndex, UriKind.Absolute));
             refreshButton.Visibility = Visibility.Collapsed;
             wb.Visibility = Visibility.Visible;

@@ -18,7 +18,7 @@
             <RowDefinition Height="730"/>
         </Grid.RowDefinitions>
 
-        <phone:WebBrowser x:Name="wb"  NavigationFailed="wb_NavigationFailed_1" ScriptNotify="wb_ScriptNotify" Navigating="wb_Navigating" Navigated="wb_Navigated" Margin="0,0,0,-70"/>
+        <phone:WebBrowser x:Name="wb" IsScriptEnabled="True" NavigationFailed="wb_NavigationFailed_1" ScriptNotify="wb_ScriptNotify" Navigating="wb_Navigating" Navigated="wb_Navigated" Margin="0,0,0,-70"/>
         <ProgressBar Foreground="Blue" x:Name="ProgBar" Visibility="Collapsed" IsIndeterminate="True" Height="4" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="460" />
 
         <TextBlock x:Name="prompt" Visibility="Collapsed" Text="您的网络不可用~请检查连接设置" Height="200" Width="400" VerticalAlignment="Center" Foreground="LightGray" FontSize="26"/>

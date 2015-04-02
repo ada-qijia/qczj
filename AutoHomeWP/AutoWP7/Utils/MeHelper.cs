@@ -1,12 +1,13 @@
 ﻿using Model;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.IO.IsolatedStorage;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using ViewModels.Handler;
 
 namespace AutoWP7.Utils
@@ -43,6 +44,8 @@ namespace AutoWP7.Utils
         public const string WeiboRedirectUri = "http://account.autohome.com.cn/oauth/SinaoauthResult";
 
         public const string FavoriteTimeFormat = "yyyy-MM-dd HH:mm:ss";
+
+        #region public methods
 
         public static void InitalizeMePersistence()
         {
@@ -95,6 +98,8 @@ namespace AutoWP7.Utils
             settings.Save();
         }
 
+        #endregion
+
         #region weibo
 
         public static void GetWeiboUserNickname(string accessToken, string userId, EventHandler<string> completed = null)
@@ -128,7 +133,7 @@ namespace AutoWP7.Utils
 
         #region url
 
-        public const string UserBaseUrl = "http://app.api.autohome.com.cn/wpv1.7/User"; //"http://221.192.136.99:804/wpv1.6/user"; 
+        public const string UserBaseUrl = "http://app.api.autohome.com.cn/wpv1.7/User"; //"http://221.192.136.99:804/wpv1.6/user";
 
         public const string ThirdPartyLoginUrl = "http://i.api.autohome.com.cn/api/Login/OAuthLogin";
         public const string ThirdPartyRegisterUrl = "http://i.api.autohome.com.cn/api/Register/OAuthRegister";
@@ -224,4 +229,70 @@ namespace AutoWP7.Utils
 
         #endregion
     }
+
+    #region image with hot link protection
+
+    public static class ImageProperties
+    {
+
+        public static readonly DependencyProperty SourceWithCustomRefererProperty = DependencyProperty.RegisterAttached(
+            "SourceWithCustomReferer",
+            typeof(Uri),
+            typeof(ImageProperties),
+            new PropertyMetadata(OnSourceWithCustomRefererChanged));
+
+        private static void OnSourceWithCustomRefererChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var image = obj as Image;
+            if (image != null)
+            {
+                image.Source = null;
+                //load new image
+                var uri = e.NewValue as Uri;
+                if (uri != null)
+                {
+                    HttpWebRequest request = HttpWebRequest.Create(uri) as HttpWebRequest;
+                    request.Headers["Referer"] = "http://www.autohome.com.cn/china";
+                    request.BeginGetResponse((result) =>
+                    {
+                        try
+                        {
+                            Stream imageStream = request.EndGetResponse(result).GetResponseStream();
+                            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                            {
+                                BitmapImage bmp = new BitmapImage();
+                                bmp.CreateOptions = BitmapCreateOptions.BackgroundCreation;
+                                bmp.SetSource(imageStream);
+                                image.Source = bmp;
+                                imageStream.Dispose();
+                            });
+                        }
+                        catch
+                        {
+                            // add error handling
+                        }
+                    }, null);
+                }
+            }
+        }
+
+        public static Uri GetSourceWithCustomReferer(Image image)
+        {
+            if (image != null)
+            {
+                return image.GetValue(SourceWithCustomRefererProperty) as Uri;
+            }
+            return null;
+        }
+
+        public static void SetSourceWithCustomReferer(Image image, Uri value)
+        {
+            if (image != null)
+            {
+                image.SetValue(SourceWithCustomRefererProperty, value);
+            }
+        }
+    }
+
+    #endregion
 }

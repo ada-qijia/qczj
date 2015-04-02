@@ -623,7 +623,7 @@
 
                             <Grid Tap="MyInfo_Tap">
                                 <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageLeftStyle}" />
-                                <Image Source="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
+                                <Image util:ImageProperties.SourceWithCustomReferer="{Binding Img}" Style="{StaticResource ImageLeftStyle}"/>
                             </Grid>
 
                             <Grid Grid.Column="1" Background="Transparent" Tap="MyInfo_Tap">

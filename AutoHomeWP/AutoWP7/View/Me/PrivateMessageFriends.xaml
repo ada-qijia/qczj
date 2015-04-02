@@ -56,7 +56,7 @@
 
                                         <Grid Grid.RowSpan="2">
                                             <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageUserSmallStyle}"/>
-                                            <Image Source="{Binding Img}" Style="{StaticResource ImageUserSmallStyle}"/>
+                                            <Image util:ImageProperties.SourceWithCustomReferer="{Binding Img}" Style="{StaticResource ImageUserSmallStyle}"/>
                                         </Grid>
                                         <TextBlock Grid.Column="1" Text="{Binding UserName}"  Style="{StaticResource TitleLargeTextStyle}" VerticalAlignment="Center" TextWrapping="NoWrap"/>
                                         <TextBlock Grid.Column="2" Text="{Binding LastPostDate,Converter={StaticResource TimeStampToStringConverter}}" Style="{StaticResource ContentTextStyle}" VerticalAlignment="Center"/>

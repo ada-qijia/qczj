@@ -243,6 +243,7 @@ namespace AutoWP7
         public static string clubUrl = "http://club.api.autohome.com.cn";
         public static string versionStr = "/wpv1.7";
 
+        public const string Referer = "http://www.autohome.com.cn/china";
         #endregion
         /// <summary>
         /// 渠道号

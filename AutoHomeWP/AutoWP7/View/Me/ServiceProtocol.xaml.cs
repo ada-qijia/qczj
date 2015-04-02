@@ -11,7 +11,7 @@ namespace AutoWP7.View.Me
         {
             InitializeComponent();
 
-            wb.Navigate(new Uri(Utils.MeHelper.ServiceProtocolUrl, UriKind.Absolute));
+            wb.Navigate(new Uri(Utils.MeHelper.ServiceProtocolUrl, UriKind.Absolute), null, App.Referer);
         }
 
         #region web navigation events handler

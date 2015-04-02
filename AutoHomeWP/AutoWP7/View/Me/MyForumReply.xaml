@@ -52,7 +52,7 @@
 
                                         <Grid Tap="OthersHome_Tap">
                                             <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageUserSmallStyle}"/>
-                                            <Image Source="{Binding ReplyUserImg}" Style="{StaticResource ImageUserSmallStyle}"/>
+                                            <Image util:ImageProperties.SourceWithCustomReferer="{Binding ReplyUserImg}" Style="{StaticResource ImageUserSmallStyle}"/>
                                         </Grid>
                                         <TextBlock Grid.Column="1" Text="{Binding ReplyUserName}"  Style="{StaticResource TitleNormalTextStyle}" VerticalAlignment="Center" Foreground="{StaticResource App_Theme_Color}" Tap="OthersHome_Tap"/>
                                         <TextBlock Grid.Column="2" Text="{Binding ReplyTime}" Style="{StaticResource ContentTextStyle}" VerticalAlignment="Center"/>

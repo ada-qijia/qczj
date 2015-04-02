@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
+using Model.Search;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Phone.Controls;
 using ViewModels.Search;
-using Model.Search;
-using Microsoft.Phone.Tasks;
-using Model;
 
 namespace AutoWP7.UcControl.SearchResult
 {
@@ -118,7 +117,7 @@ namespace AutoWP7.UcControl.SearchResult
         //进入找车-车系车型页
         private void CarSeries_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            this.NavigateToCarSeriesModel();
+            this.NavigateToCarSeriesModel(0);
         }
 
         //跳至关注度最高的车型参数配置页
@@ -131,21 +130,13 @@ namespace AutoWP7.UcControl.SearchResult
         //找车-车系论坛帖子列表页
         private void CarSeriesBBS_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            var hotSeries=this.SearchResultVM.Series;
-            //var favorite = new Model.Me.FavoriteCarSeriesModel() { ID = hotSeries.ID, Img = hotSeries.Img, Name = hotSeries.Name, PriceBetween = hotSeries.PriceBetween };
-            //View.Car.CarSeriesDetailPage.ShareModel(favorite);
-            string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=3&carSeriesId={0}", this.SearchResultVM.Series.ID);
-            this.Navigate(url);
+            this.NavigateToCarSeriesModel(3);
         }
 
         //找车-车系口碑页
         private void CarSeriesKoubei_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            var hotSeries = this.SearchResultVM.Series;
-            //var favorite = new model.me.favoritecarseriesmodel() { id = hotseries.id, img = hotseries.img, name = hotseries.name, pricebetween = hotseries.pricebetween };
-            //view.car.carseriesdetailpage.sharemodel(favorite);
-            string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=4&carSeriesId={0}", this.SearchResultVM.Series.ID);
-            this.Navigate(url);
+            this.NavigateToCarSeriesModel(4);
         }
 
         //找车-车型经销商页
@@ -162,7 +153,7 @@ namespace AutoWP7.UcControl.SearchResult
         //找车-车系车型页
         private void CarModelMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            this.NavigateToCarSeriesModel();
+            this.NavigateToCarSeriesModel(0);
         }
 
         //找车-车系车型页
@@ -198,11 +189,7 @@ namespace AutoWP7.UcControl.SearchResult
         //车系图片页
         private void ImgMore_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (this.SearchResultVM.Series != null && this.SearchResultVM.Series.ID != 0)
-            {
-                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=1&carSeriesId={0}", this.SearchResultVM.Series.ID);
-                this.Navigate(url);
-            }
+            this.NavigateToCarSeriesModel(1);
         }
 
         //找车-车系车型页
@@ -265,11 +252,20 @@ namespace AutoWP7.UcControl.SearchResult
 
         #region common private methods
 
-        private void NavigateToCarSeriesModel()
+        private void NavigateToCarSeriesModel(int index)
         {
-            if (this.SearchResultVM.Series != null && this.SearchResultVM.Series.ID != 0)
+            var model = this.SearchResultVM.Series;
+            if (model != null && model.ID != 0)
             {
-                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", this.SearchResultVM.Series.ID);
+                //共享车系
+                Model.Me.FavoriteCarSeriesModel favoriteModel = new Model.Me.FavoriteCarSeriesModel();
+                favoriteModel.ID = model.ID;
+                favoriteModel.Img = model.Img;
+                favoriteModel.Name = model.Name;
+                favoriteModel.PriceBetween = model.PriceBetween;
+                View.Car.CarSeriesDetailPage.ShareModel(favoriteModel);
+
+                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId={0}&carSeriesId={1}", index, model.ID);
                 this.Navigate(url);
             }
         }

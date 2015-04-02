@@ -48,7 +48,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Grid>
                             <Image Source="/Images/DefaultUserIcon.png"/>
-                            <Image Source="{Binding Img}"/>
+                            <Image utils:ImageProperties.SourceWithCustomReferer="{Binding Img}"/>
                         </Grid>
                         <Image Source="/Images/Me/carOwner.png" Width="20" Visibility="{Binding IsCarOwner,Converter={StaticResource BoolToVisibleConverter},FallbackValue=Collapsed}" VerticalAlignment="Bottom"/>
                     </StackPanel>

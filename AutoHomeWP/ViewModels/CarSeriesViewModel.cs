@@ -120,6 +120,7 @@ namespace ViewModels
                                 model.Name = (string)carItemJson[j].SelectToken("name");
                                 model.ImgUrl = (string)carItemJson[j].SelectToken("imgurl");
                                 model.PriceBetween = (string)carItemJson[j].SelectToken("price");
+                                model.Level = (string)carItemJson[j].SelectToken("levelname");
                                 //ldc.carSeries.InsertOnSubmit(model);
                                 CarSeriesDataSource.Add(model);
                             }

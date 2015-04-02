@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.Phone.Controls;
+using Model.Search;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Phone.Controls;
 using ViewModels.Search;
-using Model.Search;
 
 namespace AutoWP7.UcControl.SearchResult
 {
@@ -32,10 +32,7 @@ namespace AutoWP7.UcControl.SearchResult
             //只有一条记录时导航到找车-车系车型页
             if (this.SearchResultVM.RowCount == 1)
             {
-                //var model = this.GetFavoriteModel(this.SearchResultVM.CarSeriesList[0]);
-                //View.Car.CarSeriesDetailPage.ShareModel(model);
-                string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", this.SearchResultVM.CarSeriesList[0].ID);
-                this.Navigate(url);
+                this.NavigateToCarSeriesDetail(this.SearchResultVM.CarSeriesList[0]);
             }
             else
             {
@@ -67,10 +64,22 @@ namespace AutoWP7.UcControl.SearchResult
         private void CarSeries_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             CarSeriesSearchModel model = (sender as FrameworkElement).DataContext as CarSeriesSearchModel;
+            this.NavigateToCarSeriesDetail(model);
+        }
+
+        private void NavigateToCarSeriesDetail(CarSeriesSearchModel model)
+        {
             if (model != null)
             {
-                //var favorite = this.GetFavoriteModel(model);
-                //View.Car.CarSeriesDetailPage.ShareModel(favorite);
+                //共享车系
+                Model.Me.FavoriteCarSeriesModel favoriteModel = new Model.Me.FavoriteCarSeriesModel();
+                favoriteModel.ID = model.ID;
+                favoriteModel.Img = model.Img;
+                favoriteModel.Level = model.Level;
+                favoriteModel.Name = model.Name;
+                favoriteModel.PriceBetween = model.PriceBetween;
+                View.Car.CarSeriesDetailPage.ShareModel(favoriteModel);
+
                 string url = string.Format("/View/Car/CarSeriesDetailPage.xaml?indexId=0&carSeriesId={0}", model.ID);
                 this.Navigate(url);
             }
@@ -82,23 +91,5 @@ namespace AutoWP7.UcControl.SearchResult
             frame.Navigate(new Uri(relativeUrl, UriKind.Relative));
         }
 
-        //private Model.Me.FavoriteCarSeriesModel GetFavoriteModel(CarSeriesSearchModel searchModel)
-        //{
-        //    if (searchModel == null)
-        //    {
-        //        return null;
-        //    }
-        //    else
-        //    {
-        //        Model.Me.FavoriteCarSeriesModel model = new Model.Me.FavoriteCarSeriesModel();
-        //        model.ID = searchModel.ID;
-        //        model.Img = searchModel.Img;
-        //        model.Level = searchModel.Level;
-        //        model.Name = searchModel.Name;
-        //        model.PriceBetween = searchModel.PriceBetween;
-
-        //        return model;
-        //    }
-        //}
     }
 }

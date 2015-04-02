@@ -86,7 +86,7 @@
 
                                         <Grid Grid.Row="1" Grid.Column="2" VerticalAlignment="Top">
                                             <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageUserSmallStyle}" Margin="12 0 0 0"/>
-                                            <Image Source="{Binding MeImg, ElementName=PrivateMessagePage}" Style="{StaticResource ImageUserSmallStyle}" Margin="12 0 0 0"/>
+                                            <Image util:ImageProperties.SourceWithCustomReferer="{Binding MeImg, ElementName=PrivateMessagePage}" Style="{StaticResource ImageUserSmallStyle}" Margin="12 0 0 0"/>
                                         </Grid>
                                     </Grid>
                                 </DataTemplate>
@@ -115,7 +115,7 @@
 
                                         <Grid Grid.Row="1" VerticalAlignment="Top">
                                             <Image Source="/Images/DefaultUserIcon.png" Style="{StaticResource ImageUserSmallStyle}"/>
-                                            <Image Source="{Binding FriendImg,ElementName=PrivateMessagePage}" Style="{StaticResource ImageUserSmallStyle}"/>
+                                            <Image util:ImageProperties.SourceWithCustomReferer="{Binding FriendImg,ElementName=PrivateMessagePage}" Style="{StaticResource ImageUserSmallStyle}"/>
                                         </Grid>
                                     </Grid>
                                 </DataTemplate>
