@@ -104,14 +104,14 @@ namespace AutoWP7.View.Car
                         }
                         else
                         {
-                            using (LocalDataContext ldc = new LocalDataContext())
+                        using (LocalDataContext ldc = new LocalDataContext())
+                        {
+                            var name = from s in ldc.carQuotes where s.Id == int.Parse(carId) select s.Name;
+                            foreach (var n in name)
                             {
-                                var name = from s in ldc.carQuotes where s.Id == int.Parse(carId) select s.Name;
-                                foreach (var n in name)
-                                {
-                                    carTypeName.Text = n;
-                                }
+                                carTypeName.Text = n;
                             }
+                        }
                         }
 
                         if (this.NavigationContext.QueryString.ContainsKey("selectedPage"))
@@ -336,7 +336,7 @@ namespace AutoWP7.View.Car
             }
             catch
             { }
-        }
+            }
 
         #endregion
 
@@ -499,7 +499,7 @@ namespace AutoWP7.View.Car
                 alibiVM.LoadDataCompleted += alibiVM_LoadDataCompleted;
             }
 
-            //string url = "http://app.api.autohome.com.cn/wpv1.4/alibi/specalibilist-a2-pm3-v1.6.0-sp12129-p1-s20.html";
+            //string url = "http://app.api.autohome.com.cn/wpv1.4/alibi/specalibilist-a2-pm3-v1.6.2-sp12129-p1-s20.html";
             string url = string.Format("{0}{1}/alibi/specalibilist-{2}-sp{3}-p{4}-s{5}.html", App.appUrl, App.versionStr, App.AppInfo, App.CarTypeId, alibiPageIndex, pageSize);
             alibiVM.LoadDataAysnc(url);
         }
