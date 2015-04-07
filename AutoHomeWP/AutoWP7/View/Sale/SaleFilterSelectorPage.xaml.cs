@@ -58,7 +58,7 @@ namespace AutoWP7.View.Sale
             //http://221.192.136.99:804/wpv1.6/mobile/PriceDownOptions.ashx?a=2&pm=3&v=1.6.0&types=price|0,level|0,buyorder|0
             //string url = string.Format("{0}{1}/news/videopagejson-{2}-vid{3}.html", App.appUrl, App.versionStr, App.AppInfo, videoId);
             string appInfo = string.Format("a={0}&pm={1}&v{2}", App.appId, App.platForm, App.version);
-            string url = string.Format("{0}{1}/mobile/PriceDownOptions.ashx?{2}&types=price|0,level|0,buyorder|0", "http://221.192.136.99:804", App.versionStr, appInfo);
+            string url = string.Format("{0}{1}/mobile/PriceDownOptions.ashx?{2}&types=price|0,level|0,buyorder|0", App.appUrl, App.versionStr, appInfo);
             VM.LoadDataAysnc(url);
             VM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<SaleFilterModel>>((ss, ee) =>
             {
