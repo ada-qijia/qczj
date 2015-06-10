@@ -9,42 +9,39 @@ using ViewModels.Handler;
 
 namespace AutoWP7.Handler
 {
-    public  class UpdateDBHelper
+    public class UpdateDBHelper
     {
         private void AddColumn<T>(int oldDBVersion, int newDBVersion, string columnName)
         {
-          
             using (LocalDataContext db = new LocalDataContext())
             {
-               
                 DatabaseSchemaUpdater dbUpdate = db.CreateDatabaseSchemaUpdater();
                 //Get database version
                 int dbVersion = dbUpdate.DatabaseSchemaVersion;
-                if (dbVersion == oldDBVersion)
+                if (dbVersion < newDBVersion)
                 {
                     dbUpdate.AddColumn<T>(columnName);
-                    
+
                     dbUpdate.DatabaseSchemaVersion = newDBVersion;
                     try
                     {
                         dbUpdate.Execute();
                     }
-                    catch (Exception ex) 
+                    catch (Exception ex)
                     {
-                       //捕获异常，不处理
-                       //原因：修改数据，在卸载安装App时，时有版本号归1情况出现（实际数据库表结构已修改），如果再次修改，则报错->闪退，暂未查明原因。
-                       //效果：保证了接口数据正常加载，不闪退。
+                        System.Diagnostics.Debug.WriteLine("Add column error:" + ex.Message);
+                        //捕获异常，不处理
+                        //原因：修改数据，在卸载安装App时，时有版本号归1情况出现（实际数据库表结构已修改），如果再次修改，则报错->闪退，暂未查明原因。
+                        //效果：保证了接口数据正常加载，不闪退。
                     }
                 }
-                dbVersion = dbUpdate.DatabaseSchemaVersion;
             }
         }
+
         private void AddTable<T>(int oldDBVersion, int newDBVersion)
         {
-
             using (LocalDataContext db = new LocalDataContext())
             {
-
                 DatabaseSchemaUpdater dbUpdate = db.CreateDatabaseSchemaUpdater();
                 //Get database version
                 int dbVersion = dbUpdate.DatabaseSchemaVersion;
@@ -67,12 +64,13 @@ namespace AutoWP7.Handler
                 dbVersion = dbUpdate.DatabaseSchemaVersion;
             }
         }
+
         /// <summary>
         /// 1.4版本对数据库的更改
         /// </summary>
         public void update_14()
         {
-            
+
             //最新，增加lasttime字段
             this.AddColumn<NewsModel>(1, 2, "lasttimeandid");
             this.AddColumn<CarSeriesQuoteModel>(2, 3, "GroupOrder");
@@ -83,6 +81,14 @@ namespace AutoWP7.Handler
 
             this.AddTable<CarCompareModelT>(7, 8);
 
+        }
+
+        /// <summary>
+        /// 对不含UserID字段的已有表添加该字段
+        /// </summary>
+        public void update_17()
+        {
+            this.AddColumn<MyForumModel>(8, 9, "UserID");
         }
     }
 }

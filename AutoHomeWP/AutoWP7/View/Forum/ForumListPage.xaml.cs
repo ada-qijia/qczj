@@ -113,16 +113,21 @@ namespace AutoWP7.View.Forum
             string key = "userInfo";
             if (setting.Contains(key))
             {
-                using (LocalDataContext ldc = new LocalDataContext())
+                try
                 {
-                    var queryResult = from s in ldc.myForum where s.Id > 0 select s;
-                    if (queryResult.Count() > 0)
+                    using (LocalDataContext ldc = new LocalDataContext())
                     {
-                        myForumListbox.Visibility = Visibility.Visible;
-                        loginPanel.Visibility = Visibility.Collapsed;
-                        myForumListbox.ItemsSource = queryResult;
+                        var queryResult = from s in ldc.myForum where s.Id > 0 select s;
+                        if (queryResult.Count() > 0)
+                        {
+                            myForumListbox.Visibility = Visibility.Visible;
+                            loginPanel.Visibility = Visibility.Collapsed;
+                            myForumListbox.ItemsSource = queryResult;
+                        }
                     }
                 }
+                catch
+                { }
 
                 return true;
             }

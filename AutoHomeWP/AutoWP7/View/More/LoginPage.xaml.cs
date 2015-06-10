@@ -78,7 +78,10 @@ namespace AutoWP7.View.More
 
                     tr = new Thread(new ThreadStart(delegate()
                     {
-                        UserInfoDataSource.Clear();
+                        if (UserInfoDataSource != null)
+                        {
+                            UserInfoDataSource.Clear();
+                        }
 
                         LoadData(App.loginUrl + "/login/applogin?userInfo=1&isAutho=0&imei=wp&encoding=gb2312", postData);
                     }));
@@ -98,44 +101,52 @@ namespace AutoWP7.View.More
 
                 loginVM.LoadDataCompleted += new EventHandler<ViewModels.Handler.APIEventArgs<IEnumerable<MyForumModel>>>((ss, ee) =>
                 {
-                    this.Dispatcher.BeginInvoke(() =>
+                    try
                     {
-                        GlobalIndicator.Instance.Text = "";
-                        GlobalIndicator.Instance.IsBusy = false;
-                        IApplicationBarIconButton Icon = this.ApplicationBar.Buttons[0] as IApplicationBarIconButton;
-                        Icon.IsEnabled = true;
-                        isLogining = false;
-                        if (ee.Error != null)
+                        this.Dispatcher.BeginInvoke(() =>
                         {
-                            Common.showMsg("登录失败啦~~请重新登录");
-                        }
-                        else
-                        {
-                            UserInfoDataSource = (ObservableCollection<MyForumModel>)ee.Result;
-                            foreach (MyForumModel model in UserInfoDataSource)
+                            GlobalIndicator.Instance.Text = "";
+                            GlobalIndicator.Instance.IsBusy = false;
+                            IApplicationBarIconButton Icon = this.ApplicationBar.Buttons[0] as IApplicationBarIconButton;
+                            Icon.IsEnabled = true;
+                            isLogining = false;
+                            if (ee.Error != null)
                             {
-                                if (model.Success == 1)
-                                {
-                                    Utils.MeHelper.SaveMyInfo(model);
-                                    Utils.PushNotificationHelper.RegisterNewDevice();
-
-                                    CleanUserInfoViewModel cleanM = new CleanUserInfoViewModel();
-
-                                    string cleanUrl = string.Format("{0}/applogin/getmemberid?_appid=user&pcpopclub={1}", App.loginUrl, model.Authorization);
-                                    cleanM.LoadDataAsync(cleanUrl);
-                                    this.NavigationService.GoBack();
-                                }
-                                else
-                                {
-                                    Common.showMsg(model.Message);
-                                }
+                                Common.showMsg("登录失败啦~~请重新登录");
                             }
-                            UserInfoDataSource.Clear();
+                            else
+                            {
+                                UserInfoDataSource = (ObservableCollection<MyForumModel>)ee.Result;
+                                if (UserInfoDataSource != null)
+                                {
+                                    foreach (MyForumModel model in UserInfoDataSource)
+                                    {
+                                        if (model.Success == 1)
+                                        {
+                                            Utils.MeHelper.SaveMyInfo(model);
+                                            Utils.PushNotificationHelper.RegisterNewDevice();
 
-                            //获取推送设置
-                            Utils.PushNotificationHelper.GetUserSetting();
-                        }
-                    });
+                                            CleanUserInfoViewModel cleanM = new CleanUserInfoViewModel();
+
+                                            string cleanUrl = string.Format("{0}/applogin/getmemberid?_appid=user&pcpopclub={1}", App.loginUrl, model.Authorization);
+                                            cleanM.LoadDataAsync(cleanUrl);
+                                            this.NavigationService.GoBack();
+                                        }
+                                        else
+                                        {
+                                            Common.showMsg(model.Message);
+                                        }
+                                    }
+                                    UserInfoDataSource.Clear();
+                                }
+
+                                //获取推送设置
+                                Utils.PushNotificationHelper.GetUserSetting();
+                            }
+                        });
+                    }
+                    catch
+                    { }
                 });
 
                 loginVM.LoadDataAsync(url, postData);

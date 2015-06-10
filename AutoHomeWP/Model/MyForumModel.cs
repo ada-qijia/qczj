@@ -265,9 +265,9 @@ namespace Model
         }
 
         //用户ID
-        private int _userID;
-        [Column]
-        public int UserID
+        private int? _userID;
+        [Column(CanBeNull = true)]
+        public int? UserID
         {
             get { return _userID; }
             set

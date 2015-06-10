@@ -420,7 +420,6 @@ namespace AutoWP7
 
             using (ViewModels.Handler.LocalDataContext db = new ViewModels.Handler.LocalDataContext())
             {
-
                 if (!db.DatabaseExists())
                 {
                     db.CreateDatabase();
@@ -438,7 +437,6 @@ namespace AutoWP7
                     {
                         try
                         {
-
                             schemaUpdater.AddColumn<NewsModel>("pageIndex");
                             schemaUpdater.AddTable<MyForumModel>();
                             schemaUpdater.DatabaseSchemaVersion = 1;
@@ -451,13 +449,14 @@ namespace AutoWP7
                             schema.DatabaseSchemaVersion = 1;
                             schema.Execute();
                         }
-
                     }
+
                 }
             }
             //调用全局方法，更改本地数据库数据结构
             UpdateDBHelper upHelper = new UpdateDBHelper();
             upHelper.update_14();
+            upHelper.update_17();
 
             UmengSDK.UmengAnalytics.setDebug(true);
             UmengSDK.UmengAnalytics.onLaunching("5056b77d5270155f88000125", ChannelId);
