@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="zh-CN" />
-  <App xmlns="" ProductID="{01b1bc54-0081-4469-ae05-40d5a5c6de07}" Title="汽车之家" RuntimeType="Silverlight" Version="1.7.0.0" Genre="apps.normal" Author="北京车之家信息技术有限公司" Description="第一汽车互动媒体" Publisher="北京车之家信息技术有限公司" BitsPerPixel="16" PublisherID="{82f99994-9992-4c06-8c48-859b7da8e3b6}">
+  <App xmlns="" ProductID="{01b1bc54-0081-4469-ae05-40d5a5c6de07}" Title="汽车之家" RuntimeType="Silverlight" Version="1.7.1.0" Genre="apps.normal" Author="北京车之家信息技术有限公司" Description="第一汽车互动媒体" Publisher="北京车之家信息技术有限公司" BitsPerPixel="16" PublisherID="{82f99994-9992-4c06-8c48-859b7da8e3b6}">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <!--<Capability Name="ID_CAP_GAMERSERVICES" />-->
