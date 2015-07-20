@@ -642,7 +642,7 @@ namespace AutoWP7.View.Car
                             DealerVM = new DealerViewModel();
                             DealerVM.LoadDataCompleted += new EventHandler<APIEventArgs<IEnumerable<DealerModel>>>(DealerVM_LoadDataCompleted);
                         }
-                        string url = string.Format("{0}{3}/dealer/pddealers-a2-pm1-v{3}-sp0-ss{1}-c{2}-sc0-p1-s20.html", App.appUrl, carSeriesId, cityId, App.versionStr, App.version);
+                        string url = string.Format("{0}{4}/dealer/pddealers-a2-pm3-v{3}-sp0-ss{1}-c{2}-sc0-p1-s20.html", App.appUrl, carSeriesId, cityId, App.version, App.versionStr);
                         DealerVM.LoadDataAysnc(url, carSeriesId, cityId);
                         //DealerVM.LoadDataAysnc(App.headUrl + "/dealers/Profile/Getlist.ashx?action=0x45b5&cityid=" + cityId + "&seriesid=" + carSeriesId, carSeriesId, cityId);
                     }
